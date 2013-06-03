@@ -74,7 +74,7 @@ public class WereScrewedGame extends Game {
 		else
 			defaultShader = null;
 
-		ScreenManager.getInstance( ).show( ScreenType.LOADING );
+		ScreenManager.getInstance( ).show( ScreenType.LOADING_MENU );
 
 		logger = new FPSLogger( );
 
@@ -144,7 +144,7 @@ public class WereScrewedGame extends Game {
 //		this.dispose( );
 		manager = new AssetManager( );
 		ScreenManager.getInstance( ).initialize( this );
-		ScreenManager.getInstance( ).show( ScreenType.LOADING );
+		ScreenManager.getInstance( ).show( ScreenType.LOADING_MENU );
 	}
 	
 	public void pause( ) {

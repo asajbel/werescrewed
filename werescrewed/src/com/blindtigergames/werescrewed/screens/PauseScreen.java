@@ -41,20 +41,15 @@ class PauseScreen extends Screen {
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		screenLabel = new Label( "Pause Screen", fancyFont );
 		
-		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/transitions/trans-gear.png", Texture.class );
-		trans = new Sprite( transition );
-		scaleMax = trans.getHeight( ) * SCALE_MAX;
-		scale = scaleMax;
-		
 		returnButton = new TextButton( "Return to Game", fancyFont, 
 				new ScreenSwitchHandler( ScreenManager.getPrevScreen( ) ) );
 		mainMenuButton = new TextButton( "Main Menu", fancyFont,
-				new ScreenSwitchHandler( ScreenType.MAIN_MENU ) );
+				new ScreenSwitchHandler( ScreenType.LOADING_MENU ) );
 		Buttons = new ArrayList< Button >( );
 		Buttons.add( returnButton );
 		Buttons.add( mainMenuButton );
 		returnButton.setColored( true );
+		setClearColor( 40, 40, 40, 255 );
 	}
 
 	public void disposeAll( ) {
@@ -85,14 +80,8 @@ class PauseScreen extends Screen {
 		}
 		
 		if ( !transOutEnd ) {
-			if ( buttonIndex != 0 ) {
-				trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
-				drawTransOut( batch );
-			}
-			else {
-				transOutEnd = true;
-				Buttons.get( buttonIndex ).setSelected( true );
-			}
+			transOutEnd = true;
+			Buttons.get( buttonIndex ).setSelected( true );
 		}
 		
 		batch.end( );
@@ -129,10 +118,10 @@ class PauseScreen extends Screen {
 	}
 
 	@Override
-	public void resize( int width, int height ) {
-		super.resize( width, height );
+	public void resize( int _width, int _height ) {
+		super.resize( _width, _height );
 		camera = new OrthographicCamera( );
-		camera.setToOrtho( false, width, height );
+		camera.setToOrtho( false, WereScrewedGame.getWidth(), WereScrewedGame.getHeight() );
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int centerY = height / 2;

@@ -34,6 +34,38 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
+                <Item xsi:type="RectangleItem" Name="tail_skeleton_super" Visible="true">
+                    <Position>
+                        <X>5104</X>
+                        <Y>-1968</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>RootSkeleton</string>
+                        </Property>
+                        <Property Name="setChildSkelsToSleep" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="alwaysvisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="rectangle" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>8016</Width>
+                    <Height>1088</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
                         <X>-1472</X>
@@ -1511,7 +1543,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="balloon3_super" Visible="true">
                     <Position>
-                        <X>2080</X>
+                        <X>2096</X>
                         <Y>-3520</Y>
                     </Position>
                     <CustomProperties>
@@ -1525,6 +1557,9 @@
                             <string />
                         </Property>
                         <Property Name="setChildSkelsToSleep" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="rectangle" Type="string" Description="">
                             <string />
                         </Property>
                     </CustomProperties>
@@ -2052,35 +2087,6 @@
                     </CustomProperties>
                     <Width>240</Width>
                     <Height>48</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="RectangleItem" Name="tail_skeleton_super" Visible="true">
-                    <Position>
-                        <X>5104</X>
-                        <Y>-2640</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>skeleton</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>RootSkeleton</string>
-                        </Property>
-                        <Property Name="setchildskelstosleep" Type="string" Description="">
-                            <string />
-                        </Property>
-                        <Property Name="alwaysvisible" Type="string" Description="">
-                            <string />
-                        </Property>
-                    </CustomProperties>
-                    <Width>8016</Width>
-                    <Height>1760</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -6169,6 +6175,9 @@
                             <string />
                         </Property>
                         <Property Name="setChildSkelsToSleep" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="rectangle" Type="string" Description="">
                             <string />
                         </Property>
                     </CustomProperties>
@@ -16789,8 +16798,8 @@
         <NextItemNumber>1116</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-1166.12329</X>
-            <Y>2430.65283</Y>
+            <X>20850.64</X>
+            <Y>-1502.69641</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
