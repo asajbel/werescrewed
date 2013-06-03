@@ -332,9 +332,13 @@ public class Screen implements com.badlogic.gdx.Screen {
 			load();
 		}
 		if (bgm != null){
-//			bgm.setLooping( true );
-//			bgm.setVolume( SoundManager.getMusicVolume( ) );
-//			bgm.play( );
+			bgm.setLooping( true );
+			bgm.setVolume( SoundManager.getMusicVolume( ) );
+			try {
+				bgm.play( );
+			} catch (com.badlogic.gdx.utils.GdxRuntimeException audioFail){
+				Gdx.app.log( "Audio Fail", "", audioFail );
+			}
 		}
 	}
 
@@ -374,7 +378,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 			sounds = null;
 		}
 		assetsLoaded = false;
-		
 	}
 
 	/**
