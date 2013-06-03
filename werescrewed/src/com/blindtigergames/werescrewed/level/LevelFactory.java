@@ -657,7 +657,7 @@ public class LevelFactory {
 		} else {
 			// attach skeleton to skeleton
 			SkeletonBuilder skeleBuilder = new SkeletonBuilder( level.world );
-			skeleBuilder.name( item.name ).position( item.pos ).texture( null );
+			skeleBuilder.name( item.name ).texture( null );
 
 			if ( item.props.containsKey( "rectangle" ) ) {
 				skeleBuilder.setUseBoundingRect( true );
@@ -667,9 +667,19 @@ public class LevelFactory {
 								item.pos.y-item.element.getFloat( "Height" ),
 								item.element.getFloat( "Width" ),
 								item.element.getFloat( "Height" ) );
+				
+				float width = item.element.getFloat( "Width" );
+				float height = item.element.getFloat( "Height" );
+				int tileWidth = ( int ) ( width / Platform.tile );
+				int tileHeight = ( int ) ( height / Platform.tile );
+
+				float xPos = item.pos.x + ( width / 2 );
+				float yPos = item.pos.y - ( height / 2 );
+				skeleBuilder.position( new Vector2(xPos, yPos) );
+
 			} else {
 				Array< Vector2 > polySprite = contstructSkeletonPoly( item );
-
+				skeleBuilder.position( item.pos );
 				if ( item.props.containsKey( "invisible" ) ) {
 					skeleBuilder.invisibleVerts( polySprite );
 
