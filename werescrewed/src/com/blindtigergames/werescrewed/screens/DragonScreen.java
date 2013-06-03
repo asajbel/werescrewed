@@ -930,7 +930,7 @@ public class DragonScreen extends Screen {
 		b=level.world.createBody( bdef );
 		e=new Entity("bg-gradient",new Vector2(0,-500),null,b,false,0);
 		
-		e.changeSprite( Sprite.scale( clouds_sun_bg.createSprite( "bg-gradient" ), 140f,1 ) );//67.5f
+		e.changeSprite( Sprite.scale( clouds_sun_bg.createSprite( "bg-gradient" ), .194444444f*WereScrewedGame.getWidth( ),1 ) );//67.5f
 		level.backgroundRootSkeleton.addLooseEntity( e );
 		m = new ParallaxMover( new Vector2(xOffset,0+yOffset),
 				 new Vector2(xOffset,-2048+yOffset),
@@ -947,7 +947,7 @@ public class DragonScreen extends Screen {
 		float mountainW = (1859-100)*level.bgCamZoomMax, mountainY = 100;
 
 		float alpha, aOffset;
-		for(int i = 0; i < numMountains; ++i ){
+		/*for(int i = 0; i < numMountains; ++i ){
 			bdef=new BodyDef();
 			bdef.fixedRotation=true;
 			bdef.type=BodyType.StaticBody;
@@ -961,7 +961,7 @@ public class DragonScreen extends Screen {
 					new Vector2(-mountainW,mountainY),
 					 0.00001f,alpha, null, true, LinearAxis.HORIZONTAL );
 			e.setMoverAtCurrentState( m );
-		}
+		}*/
 		
 		//mountains
 		mountainW = 1275*level.bgCamZoomMax; mountainY = -200f;
@@ -991,7 +991,7 @@ public class DragonScreen extends Screen {
 		e=new Entity("sun",new Vector2(),null,b,false,0);//0,2048-2*
 		e.changeSprite( Sprite.scale( clouds_sun_bg.createSprite( "sun" ), sunScale ) );
 		//e.setPosition( new Vector2().mul( Util.PIXEL_TO_BOX ) );
-		float sunYPos = 2348-sunScale*e.sprite.getHeight( )+yOffset;
+		float sunYPos = (3.26111f*WereScrewedGame.getHeight( ))-sunScale*e.sprite.getHeight( )+yOffset;
 		m = new ParallaxMover( new Vector2(400,sunYPos),
 				 new Vector2(400,-2048+sunYPos),
 				 0.00009f,0.00001f, level.camera, false, LinearAxis.VERTICAL );
@@ -1006,25 +1006,30 @@ public class DragonScreen extends Screen {
 				.get( "fuck_jaw_skeleton" ),
 				head_skeletonSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
-		TextureAtlas headAtlas = WereScrewedGame.manager.getAtlas( "head" );
-		float scale = 3;//1f/.66f;
+		TextureAtlas head_left = WereScrewedGame.manager.getAtlas( "head_left" );
+		TextureAtlas head_right = WereScrewedGame.manager.getAtlas( "head_top_right" );
+		TextureAtlas head_jaw = WereScrewedGame.manager.getAtlas( "head_jaw" );
+		float scale = 2;//1f/.66f;
 		//UPPER HEAD
 		Sprite s;
 		
 		Vector2 headPos = new Vector2(-3500,-1460 );
-		s = headAtlas.createSprite( "dragontop_left" );
+		s = head_left.createSprite( "head_left" );
 		head_skeletonSkeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
 		head_skeletonSkeleton.addFGDecal( 
-				Sprite.scale( headAtlas.createSprite( "dragontop_right" ), scale ), 
-				new Vector2(s.getWidth( )*scale-10,1085).add( headPos ) );
+				Sprite.scale( head_right.createSprite( "head_right" ), scale ), 
+				new Vector2(4946,1029).add( headPos ) );
+		head_skeletonSkeleton.addFGDecal( 
+				Sprite.scale( head_right.createSprite( "head_middle" ), scale ), 
+				new Vector2(2982,30).add( headPos ) );
 		addFGSkeleton( head_skeletonSkeleton );
 		
 		//LOW HEAD/ JAW
 		Vector2 pos = new Vector2(-1375,-615);
-		s = headAtlas.createSprite( "dragonbottom_left" );
+		s = head_jaw.createSprite( "dragonbottom_left" );
 		jaw_skeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( pos ) );//959,615
-		jaw_skeleton.addFGDecal( Sprite.scale( headAtlas.createSprite( "dragonbottom_right" ), scale ), 
-				new Vector2(s.getWidth( )*scale-10,25).add( pos ) );
+		jaw_skeleton.addFGDecal( Sprite.scale( head_jaw.createSprite( "dragonbottom_right" ), scale ), 
+				new Vector2(s.getWidth( )*scale-8,16).add( pos ) );
 		addFGSkeleton( jaw_skeleton );
 		
 		
@@ -1047,16 +1052,17 @@ public class DragonScreen extends Screen {
 		Skeleton tail2_skeleton = (Skeleton)LevelFactory.entities.get( "tail2_skeleton" );
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
 		TextureAtlas tailInterior = WereScrewedGame.manager.getAtlas( "interior_tail2_bodyright" );
+		Sprite s;
 		
-		//do fg
-		tail2_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail2" ), 2), new Vector2(-1206,-638) );//227,17
+		//fg
+		s = Sprite.scale( tailAtlas.createSprite( "tail2" ), 2);
+		s.setOrigin( 0, 0 ); //this one has weird origin issues in the pack or something
+		tail2_skeleton.addFGDecal( s, new Vector2(-1206,-638) );
 		tail2_skeleton.fgSprite=null;
-		//tail2_skeleton.setFgFade( true );
 		addFGSkeleton( tail2_skeleton );
 		
-		//bg
-		//tail2_interior
-		tail2_skeleton.addBGDecal( Sprite.scale( tailInterior.createSprite( "tail2_interior" ), 2), new Vector2(-1137,-525) );//227,17
+		//bg interior
+		tail2_skeleton.addBGDecal( Sprite.scale( tailInterior.createSprite( "tail2_interior" ), 2), new Vector2(-1137,-525) );//-1137,-525
 		tail2_skeleton.bgSprite=null;
 		addBGSkeleton( tail2_skeleton );
 	}
@@ -1183,7 +1189,7 @@ public class DragonScreen extends Screen {
 		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
 				new Vector2( pos.cpy( ).add(0,n*h) ),
 				new Vector2(),
-				25, level.world, true );
+				 level.world, true );
 		for(int i =0; i < 5; ++i ){
 			fireballEmitter.addParticle( createBoltEnemy( pos.cpy( ).add(0,n*h), i ), 10, 0, i*5 );
 		}
