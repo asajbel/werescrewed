@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.entity.hazard;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -44,6 +45,7 @@ public class MouthFire extends Hazard {
 		this.totalLength = posStep.len( );
 		this.widthMeter = totalLength/totalSteps/2; //because set as box doubles width
 		posStep = posStep.nor( ).mul( widthMeter*2 );
+		
 		this.heightMStep = (endHeightM-startHeightM)/totalSteps;
 		
 		this.currStep = 0;
@@ -55,6 +57,7 @@ public class MouthFire extends Hazard {
 		this.fixtureList = new Array< Fixture >(totalSteps);
 		
 		this.maxConcurrentFixtures = totalSteps/3;
+		//Gdx.app.log( "posStep", posStep.toString( )+", maxFix:"+this.maxConcurrentFixtures );
 		
 		constructBody( posMeter );
 		

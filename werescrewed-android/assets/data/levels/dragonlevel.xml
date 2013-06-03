@@ -34,7 +34,7 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="tail_skeleton_super" Visible="true">
+                <Item xsi:type="RectangleItem" Name="tail_skeleton_super" Visible="false">
                     <Position>
                         <X>5088</X>
                         <Y>-3376</Y>
@@ -68,8 +68,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>-1472</X>
-                        <Y>2000</Y>
+                        <X>25824</X>
+                        <Y>-1280</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -191,8 +191,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
-                        <X>-1472</X>
-                        <Y>2128</Y>
+                        <X>25824</X>
+                        <Y>-1152</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -222,8 +222,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
-                        <X>-1392</X>
-                        <Y>2128</Y>
+                        <X>25904</X>
+                        <Y>-1152</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -6095,8 +6095,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="neck_skeleton_super" Visible="true">
                     <Position>
-                        <X>20976</X>
-                        <Y>-2464</Y>
+                        <X>21040</X>
+                        <Y>-2368</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -16720,6 +16720,46 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
+                <Item xsi:type="TextureItem" Name="jaw_structure_screw" Visible="true">
+                    <Position>
+                        <X>25424</X>
+                        <Y>-944</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>head_skeleton</string>
+                        </Property>
+                        <Property Name="skeltargetrev" Type="string" Description="">
+                            <string>head_skeleton</string>
+                        </Property>
+                        <Property Name="screwtype" Type="string" Description="">
+                            <string>ScrewStructural</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>structurescrew.png</texture_filename>
+                    <asset_name>structurescrew</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>1</X>
@@ -16729,11 +16769,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>1120</NextItemNumber>
+        <NextItemNumber>1121</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>11817.293</X>
-            <Y>713.9749</Y>
+            <X>29450.5273</X>
+            <Y>-486.028137</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
