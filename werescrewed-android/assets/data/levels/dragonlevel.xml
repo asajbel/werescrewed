@@ -34,7 +34,7 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="tail_skeleton_super" Visible="false">
+                <Item xsi:type="RectangleItem" Name="tail_skeleton_super" Visible="true">
                     <Position>
                         <X>5088</X>
                         <Y>-3376</Y>
@@ -68,8 +68,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>25824</X>
-                        <Y>-1280</Y>
+                        <X>-1488</X>
+                        <Y>-48</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -191,8 +191,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
-                        <X>25824</X>
-                        <Y>-1152</Y>
+                        <X>-1488</X>
+                        <Y>1920</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -222,8 +222,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
-                        <X>25904</X>
-                        <Y>-1152</Y>
+                        <X>-1408</X>
+                        <Y>1920</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -16772,8 +16772,8 @@
         <NextItemNumber>1121</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>29450.5273</X>
-            <Y>-486.028137</Y>
+            <X>-1066.21216</X>
+            <Y>-219.359741</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
