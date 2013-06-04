@@ -29,13 +29,16 @@ public class TrophyScreen extends Screen {
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont;
+	private BitmapFont smallerFont;
 	private int trophyLength = 5;
 	private int lineHeight = 0;
 	private int trophyMax = 30; // Current number of possible trophies
 	private float offSet = 96;
 	private ScreenType screenTag = null;
 	private Label[ ] player1 = new Label[ trophyLength ];
+	private Label[ ] player1Desc = new Label[ trophyLength ];
 	private Label[ ] player2 = new Label[ trophyLength ];
+	private Label[ ] player2Desc = new Label[ trophyLength ];
 	//private TextureRegion[ ] trophyIcon = new TextureRegion[ trophyMax ]; // Holds ALL trophy icons
 	private Sprite[ ] trophies1 = new Sprite[ trophyLength ]; // trophy images
 																// that go next
@@ -58,8 +61,8 @@ public class TrophyScreen extends Screen {
 			screenTag = nextLvl;
 		}
 		batch = new SpriteBatch( );
-		font = new BitmapFont( );
-		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
+		font = new BitmapFont( );		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
+		smallerFont = WereScrewedGame.manager.getFont( "longdon-small" );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		player1Name = new Label( "Player 1", fancyFont );
 		player2Name = new Label( "Player 2", fancyFont );
@@ -93,6 +96,8 @@ public class TrophyScreen extends Screen {
 		for ( int k = 0; k < trophyLength; k++ ) {
 			player1[ k ] = null;
 			player2[ k ] = null;
+			player1Desc[k]=null;
+			player2Desc[k]=null;
 			trophies1[ k ] = null;
 			trophies2[ k ] = null;
 		}
@@ -139,12 +144,16 @@ public class TrophyScreen extends Screen {
 			if ( trophyIndices[i] == trophyNum ) return;
 		}
 		
+		Label[] player = (playerNum==1)?player1:player2;
+		Label[] playerDesc = (playerNum==1)?player1Desc:player1Desc;
+		
 		switch ( trophyNum ) {
 		case 1: // Longest Running Time
 			if ( playerNum == 1
 					&& Metrics.getTrophyMetric( TrophyMetric.P1RUNDIST ) > Metrics
 							.getTrophyMetric( TrophyMetric.P2RUNDIST ) ){
 				player1[ index ] = new Label( "Marathon Runner", fancyFont );
+				player1Desc[index] = new Label("Longest running time", smallerFont);
 				trophies1[ index ] =  texAtlas.createSprite("trophy1");
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -152,6 +161,7 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P2RUNDIST ) > Metrics
 							.getTrophyMetric( TrophyMetric.P1RUNDIST ) ){
 				player2[ index ] = new Label( "Marathon Runner", fancyFont );
+				player2Desc[index] = new Label("Longest running time", smallerFont);
 				trophies2[ index ] = texAtlas.createSprite("trophy1");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -161,6 +171,7 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P1UNSCREWED ) > Metrics
 							.getTrophyMetric( TrophyMetric.P2UNSCREWED ) ){
 				player1[ index ] = new Label( "You Got A Screw Loose", fancyFont );
+				player1Desc[index] = new Label("Most structure screws unscrewed", smallerFont);
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
@@ -170,6 +181,7 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P2UNSCREWED ) > Metrics
 							.getTrophyMetric( TrophyMetric.P1UNSCREWED ) ){
 				player2[ index ] = new Label( "You Got A Screw Loose", fancyFont );
+				player2Desc[index] = new Label("Most structure screws unscrewed", smallerFont);
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
@@ -181,6 +193,7 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P1AIRTIME ) > Metrics
 							.getTrophyMetric( TrophyMetric.P2AIRTIME ) ){
 				player1[ index ] = new Label( "Hang Time", fancyFont );
+				player1Desc[index] = new Label("Longest air time", smallerFont);
 				trophies1[ index ] = texAtlas.createSprite("trophy3");
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -188,6 +201,7 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P2AIRTIME ) > Metrics
 							.getTrophyMetric( TrophyMetric.P1AIRTIME ) ){
 				player2[ index ] = new Label( "Hang Time", fancyFont );
+				player2Desc[index] = new Label("Longest air time", smallerFont);
 				trophies2[ index ] = texAtlas.createSprite("trophy3");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -197,6 +211,7 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P1FALLDEATHS ) > Metrics
 							.getTrophyMetric( TrophyMetric.P2FALLDEATHS ) ){
 				player1[ index ] = new Label( "Fall Guy", fancyFont );
+				player1Desc[index] = new Label("Most fall deaths", smallerFont);
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
@@ -206,6 +221,7 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P2FALLDEATHS ) > Metrics
 							.getTrophyMetric( TrophyMetric.P1FALLDEATHS ) ){
 				player2[ index ] = new Label( "Fall Guy", fancyFont );
+				player2Desc[index] = new Label("Most fall deaths", smallerFont);
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
@@ -217,6 +233,7 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P1PUZZLETIME ) > Metrics
 							.getTrophyMetric( TrophyMetric.P2PUZZLETIME ) ){
 				player1[ index ] = new Label( "Inventor's Apprentice", fancyFont );
+				player1Desc[index] = new Label("Most time spent on puzzle screws", smallerFont);
 				trophies1[ index ] = texAtlas.createSprite("trophy5");
 				trophyIndices[ index ] = trophyNum;
 			}
@@ -224,6 +241,7 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P2PUZZLETIME ) > Metrics
 							.getTrophyMetric( TrophyMetric.P1PUZZLETIME ) ){
 				player2[ index ] = new Label( "Inventor's Apprentice", fancyFont );
+				player2Desc[index] = new Label("Most time spent on puzzle screws", smallerFont);
 				trophies2[ index ] = texAtlas.createSprite("trophy5");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -233,6 +251,7 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P1DEATHS ) > Metrics
 							.getTrophyMetric( TrophyMetric.P2DEATHS ) ){
 				player1[ index ] = new Label( "Call The Suicide \n Hotline", fancyFont );
+				player1Desc[index] = new Label("Most deaths", smallerFont);
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
@@ -242,6 +261,7 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P2DEATHS ) > Metrics
 							.getTrophyMetric( TrophyMetric.P1DEATHS ) ){
 				player2[ index ] = new Label( "Call The Suicide \n Hotline", fancyFont );
+				player2Desc[index] = new Label("Most deaths", smallerFont);
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
@@ -253,6 +273,7 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P1HEADSTANDS ) > Metrics
 							.getTrophyMetric( TrophyMetric.P2HEADSTANDS ) ){
 				player1[ index ] = new Label( "Always On Top", fancyFont );
+				player1Desc[index] = new Label("Most head jumps", smallerFont);
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
@@ -262,6 +283,7 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P2HEADSTANDS ) > Metrics
 							.getTrophyMetric( TrophyMetric.P1HEADSTANDS ) ){
 				player2[ index ] = new Label( "Always On Top", fancyFont );
+				player2Desc[index] = new Label("Most head jumps", smallerFont);
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/trophies/trophy.png", Texture.class );
 				trophies2[ index ] = new Sprite ( icon );
@@ -273,6 +295,7 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P1REVIVES ) > Metrics
 							.getTrophyMetric( TrophyMetric.P2REVIVES ) ){
 				player1[ index ] = new Label( "I Help Dead People", fancyFont );
+				
 				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 						+ "/common/trophies/trophy.png", Texture.class );
 				trophies1[ index ] = new Sprite ( icon );
