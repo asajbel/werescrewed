@@ -3,9 +3,7 @@ package com.blindtigergames.werescrewed.checkpoints;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -40,7 +38,7 @@ public class ProgressManager {
 	private HashMap< String, Player > players;
 	private HashMap< String, ResurrectScrew > rezScrewMap;
 	private HashMap< String, Entity > ghostMap;
-	public ArrayList<CheckPoint> checkPoints;
+	public ArrayList< CheckPoint > checkPoints;
 	// private HashMap< String, TextureRegion > ghostTextures;
 	private World world;
 	private Vector2 oldChkptPos;
@@ -50,7 +48,7 @@ public class ProgressManager {
 	private final Vector2 screwRightOffset = new Vector2( 270, 150 );
 	private float animTime = 0f;
 	private float rezDelay = Float.MAX_VALUE;
-	boolean noPlayersDead = false; 
+	boolean noPlayersDead = false;
 
 	/**
 	 * 
@@ -62,7 +60,7 @@ public class ProgressManager {
 		players = new HashMap< String, Player >( );
 		rezScrewMap = new HashMap< String, ResurrectScrew >( );
 		ghostMap = new HashMap< String, Entity >( );
-		checkPoints = new ArrayList<CheckPoint>( );
+		checkPoints = new ArrayList< CheckPoint >( );
 		// ghostTextures = new HashMap< String, TextureRegion >( );
 		// TextureAtlas atlas = WereScrewedGame.manager.getAtlas(
 		// "common-textures");
@@ -89,12 +87,12 @@ public class ProgressManager {
 	public void hitNewCheckPoint( CheckPoint checkPoint, Player player ) {
 		// If the checkpoint hit is not the currently activated one
 		if ( currentCheckPoint != checkPoint
-				&& player.body.getType( ) != BodyType.KinematicBody 
+				&& player.body.getType( ) != BodyType.KinematicBody
 				&& !player.isPlayerDead( ) ) {
 			// Deactivate the current checkpoint
 			currentCheckPoint.deactivate( );
 			oldChkptPos = currentCheckPoint.getPositionPixel( ).cpy( );
-			if (!noPlayersDead) {
+			if ( !noPlayersDead ) {
 				checkPoint.getSpinemator( ).changeAnimation( "wait", true );
 			}
 			// Then set it to the one the players hit
@@ -122,14 +120,23 @@ public class ProgressManager {
 					}
 				}
 			}
-		} else {
-			if ( player.body.getType( ) == BodyType.KinematicBody && !player.isPlayerDead( ) ) {
-				player.setDeadPlayerHitCheckpnt( true );
-				player.setMoverAtCurrentState( null );
+			for ( Player movingPlayer : players.values( ) ) {
+				if ( movingPlayer.currentMover( ) != null && 
+						movingPlayer.body.getType( ) == BodyType.KinematicBody &&
+						movingPlayer.currentMover( ) instanceof FollowEntityWithVelocity ) {
+					FollowEntityWithVelocity playerMover = ( FollowEntityWithVelocity )movingPlayer.currentMover( );
+					playerMover.changeEntityToFollow( checkPoint );
+				}
 			}
-		}
+		} 
 	}
+	
 
+	
+	public boolean isPlayerCollidingWithCurrentChkpt ( Player player ) {
+		return currentCheckPoint.body.getFixtureList( ).get( 0 ).testPoint( player.getPosition( ) );
+	}
+	
 	/**
 	 * 
 	 * @param deltaTime
@@ -138,7 +145,7 @@ public class ProgressManager {
 		animTime += deltaTime;
 		noPlayersDead = true;
 		int index = 0;
-		while ( this.currentCheckPoint == null && index < checkPoints.size()) {
+		while ( this.currentCheckPoint == null && index < checkPoints.size( ) ) {
 			if ( checkPoints.get( index ) != null ) {
 				this.currentCheckPoint = checkPoints.get( index );
 			} else {
@@ -152,7 +159,9 @@ public class ProgressManager {
 				player.body.setType( BodyType.KinematicBody );
 				this.startSpawn( player );
 			}
-			if ( player.isDeadPlayerHitCheckpnt( ) ) {
+			if ( player.body.getType( ) == BodyType.KinematicBody && 
+					!player.isPlayerDead( ) && 
+					isPlayerCollidingWithCurrentChkpt( player ) ) {
 				wait( player );
 			}
 			if ( !player.isPlayerDead( ) && ghostMap.containsKey( player.name ) ) {
@@ -162,10 +171,17 @@ public class ProgressManager {
 				if ( !rezScrewMap.containsKey( player.name ) ) {
 					handleDeadPlayer( player );
 				} else {
-					Body jointBody = rezScrewMap.get( player.name ).
-							body.getJointList( ).get( 0 ).joint.getBodyB( );
-					if ( jointBody  == null || !jointBody.isActive( ) || jointBody.isAwake( ) ) {
-						rezScrewMap.get( player.name ).connectScrewToEntity( currentCheckPoint );
+					ResurrectScrew rezScrew = rezScrewMap.get( player.name );
+					if ( ( rezScrew.entityJoint.getBodyA( ) != null && rezScrew.entityJoint.getBodyA( ) != rezScrew.body
+							&& rezScrew.entityJoint.getBodyA( ) != null && ( !rezScrew.entityJoint
+							.getBodyA( ).isActive( ) || !rezScrew.entityJoint
+							.getBodyA( ).isAwake( ) ) )
+							|| ( rezScrew.entityJoint.getBodyB( ) != null && rezScrew.entityJoint.getBodyB( ) != rezScrew.body
+									&& rezScrew.entityJoint.getBodyA( ) != null && ( !rezScrew.entityJoint
+									.getBodyA( ).isActive( ) || !rezScrew.entityJoint
+									.getBodyA( ).isAwake( ) ) ) ) {
+						rezScrewMap.get( player.name ).connectScrewToEntity(
+								currentCheckPoint );
 					}
 				}
 				noPlayersDead = false;
@@ -177,8 +193,6 @@ public class ProgressManager {
 					spawnAtCheckPoint( player );
 				}
 			}
-
-			player.setDeadPlayerHitCheckpnt( false );
 		}
 		if ( noPlayersDead ) {
 			removeRezScrew( );
@@ -252,11 +266,11 @@ public class ProgressManager {
 	private void buildGhost( Player player ) {
 		Entity ghost;
 		// build ghost entity
-		// Gdx.app.log("ghost:", player.name);
-		SimpleSpinemator spine = new SimpleSpinemator(player.getSpinemator( ).getSkeletonData( ),"Ghost",true);
+		SimpleSpinemator spine = new SimpleSpinemator( player.getSpinemator( )
+				.getSkeletonData( ), "Ghost", true );
 
-		ghost = new Entity( player.name + "Ghost", player.getPositionPixel( ).cpy( )
-				.add( -64f, 64f ), false, spine, null );
+		ghost = new Entity( player.name + "Ghost", player.getPositionPixel( )
+				.cpy( ).add( -64f, 64f ), false, spine, null );
 		// build ghost mover
 		LerpMover ghostMover = new LerpMover( player.getPositionPixel( ).cpy( )
 				.add( hoverOffset ), currentCheckPoint.getPositionPixel( ).sub(
@@ -346,30 +360,32 @@ public class ProgressManager {
 		removeRezScrew( );
 		player.setRezTime( 0f );
 		player.respawnPlayer( );
-		Vector2 rezPoint = new Vector2( currentCheckPoint.getPositionPixel( ) );
-		// rezPoint.add( -60 * Util.PIXEL_TO_BOX , 60f * Util.PIXEL_TO_BOX );
-
-		Vector2 diff = rezPoint.sub( player.getPositionPixel( ) ).mul( 0.25f );
 
 		player.setMoverAtCurrentState( new FollowEntityWithVelocity( player
-				.getPositionPixel( ), currentCheckPoint, Vector2.Zero, diff ) );
-		//player.deactivateAnchors( );
+				.getPositionPixel( ), currentCheckPoint ) );
+		// player.deactivateAnchors( );
 		// player.body.setLinearVelocity( diff );
 		player.setVisible( false, true );
 
+		player.activateAnchors( );
+		
 		if ( rezScrewMap.containsKey( player.name ) ) {
 			rezScrewMap.get( player.name ).remove( );
 			if ( rezScrewMap.get( player.name ).isRemoved( ) ) {
 				rezScrewMap.remove( player.name );
 			}
 		}
-		
+
 	}
 
 	private void wait( Player player ) {
 		currentCheckPoint.getSpinemator( ).changeAnimation( "birth", false );
 		rezDelay = currentCheckPoint.getSpinemator( ).getAnimationDuration( ) / 10f;
+		player.setVisible( true );
 		player.setRezzing( true );
+		player.setMoverAtCurrentState( null );
+		player.body.setType( BodyType.DynamicBody );
+		player.body.setLinearVelocity( Vector2.Zero );
 		animTime = 0f;
 	}
 
@@ -395,8 +411,6 @@ public class ProgressManager {
 		rezPoint.add( -60 * Util.PIXEL_TO_BOX, 36f * Util.PIXEL_TO_BOX );
 		player.activateAnchors( );
 		player.body.setTransform( rezPoint, 0.0f );
-		player.body.setType( BodyType.DynamicBody );
-		player.body.setLinearVelocity( Vector2.Zero );
 		player.setVisible( true );
 		Filter filter = new Filter( );
 		for ( Fixture f : player.body.getFixtureList( ) ) {

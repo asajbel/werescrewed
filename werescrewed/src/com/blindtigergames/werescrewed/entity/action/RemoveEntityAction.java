@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.entity.action;
 
+import com.badlogic.gdx.Gdx;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
@@ -32,6 +33,7 @@ public class RemoveEntityAction implements IAction {
 			}
 			
 			entity.setRemoveNextStep( );
+			Gdx.app.log( "remove enetiey action", entity.name);
 			// Gdx.app.log( "removing Entity", entity.name );
 		} else {
 			Player player = ( Player ) entity;
