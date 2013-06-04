@@ -40,6 +40,8 @@ public class LoadingScreen extends Screen {
 	private boolean p1SelectFemale = false;
 	private int p1LabelPositionX, p2LabelPositionX;
 	private OrthographicCamera camera = null;
+	
+	private boolean initialLoadFinished = false;
 
 	/**
 	 * Displays the loading screen and loads the appropriate contents for the
@@ -60,71 +62,7 @@ public class LoadingScreen extends Screen {
 		} else {
 			screenTag = "commonLevel";
 		}
-		// Gdx.app.log( "Loading assets for", screenTag );
 
-		// check for level1
-		if ( currLevel == 1 ) {
-
-			WereScrewedGame.manager.load(
-					"data/common/slides/slide1_intro.png", Texture.class );
-			WereScrewedGame.manager.load(
-					"data/common/slides/slide2_audience.png", Texture.class );
-			WereScrewedGame.manager.load(
-					"data/common/slides/slide3_alphabot.png", Texture.class );
-			WereScrewedGame.manager.load(
-					"data/common/slides/slide4_players.png", Texture.class );
-
-			WereScrewedGame.manager.finishLoading( );
-
-			storyBoardArray.add( WereScrewedGame.manager.get(
-					"data/common/slides/slide1_intro.png", Texture.class ) );
-			storyBoardArray.add( WereScrewedGame.manager.get(
-					"data/common/slides/slide2_audience.png", Texture.class ) );
-			storyBoardArray.add( WereScrewedGame.manager.get(
-					"data/common/slides/slide3_alphabot.png", Texture.class ) );
-			storyBoardArray.add( WereScrewedGame.manager.get(
-					"data/common/slides/slide4_players.png", Texture.class ) );
-			
-			if ( WereScrewedGame.p1Controller != null
-					&& WereScrewedGame.p2Controller != null ) {
-				characterSelect = true;
-
-				pressStart = new Label( "Press Start To Volunteer!",
-						WereScrewedGame.manager.getFont( "longdon" ) );
-				pressToConfirm = new Label(
-						"Left/Right to switch, Start to confirm",
-						WereScrewedGame.manager.getFont( "longdon" ) );
-
-				player1 = new Label( "Player1",
-						WereScrewedGame.manager.getFont( "longdon" ) );
-				player2 = new Label( "Player2",
-						WereScrewedGame.manager.getFont( "longdon" ) );
-
-				pressToConfirm.setX( width / 2
-						- pressToConfirm.getWidth( ) / 2 );
-				pressToConfirm.setY( height / 4 );
-
-				pressStart.setX( width / 2 - pressStart.getWidth( ) / 2 );
-				pressStart.setY( height / 4 );
-
-				p1LabelPositionX = ( width / 2 );// - player1.getWidth( )
-														// / 2;
-				player1.setX( p1LabelPositionX );
-				player1.setY( height / 4 - 100 );
-
-				p2LabelPositionX = ( width / 2 );// + player2.getWidth( )
-														// / 2 + 100;
-				player2.setX( p2LabelPositionX );
-				player2.setY( height / 4 - 50 );
-			}
-
-			// debug turning character select off until someone else can finish
-			// it
-
-			playersHaveBeenSelected = true;
-		}
-
-		// stage = new Stage( );
 		// loadFilesInDirectory( WereScrewedGame.dirHandle, screenTag );
 		setClearColor( 40, 40, 40, 255 );
 
@@ -152,10 +90,77 @@ public class LoadingScreen extends Screen {
 	@Override
 	public void render( float delta ) {
 		super.render( delta );
-
+		
 		// tell me how much has loaded
 		float percentLoaded = WereScrewedGame.manager.getProgress( ) * 100;
 		loadingLabel.setCaption( "Loading... " + ( int ) percentLoaded + "%" );
+		
+		if(!initialLoadFinished){
+			// check for level1
+			if ( currLevel == 1 ) {
+
+				WereScrewedGame.manager.load(
+						"data/common/slides/slide1_intro.png", Texture.class );
+				WereScrewedGame.manager.load(
+						"data/common/slides/slide2_audience.png", Texture.class );
+				WereScrewedGame.manager.load(
+						"data/common/slides/slide3_alphabot.png", Texture.class );
+				WereScrewedGame.manager.load(
+						"data/common/slides/slide4_players.png", Texture.class );
+
+				WereScrewedGame.manager.finishLoading( );
+
+				storyBoardArray.add( WereScrewedGame.manager.get(
+						"data/common/slides/slide1_intro.png", Texture.class ) );
+				storyBoardArray.add( WereScrewedGame.manager.get(
+						"data/common/slides/slide2_audience.png", Texture.class ) );
+				storyBoardArray.add( WereScrewedGame.manager.get(
+						"data/common/slides/slide3_alphabot.png", Texture.class ) );
+				storyBoardArray.add( WereScrewedGame.manager.get(
+						"data/common/slides/slide4_players.png", Texture.class ) );
+				
+				if ( WereScrewedGame.p1Controller != null
+						&& WereScrewedGame.p2Controller != null ) {
+					characterSelect = true;
+
+					pressStart = new Label( "Press Start To Volunteer!",
+							WereScrewedGame.manager.getFont( "longdon" ) );
+					pressToConfirm = new Label(
+							"Left/Right to switch, Start to confirm",
+							WereScrewedGame.manager.getFont( "longdon" ) );
+
+					player1 = new Label( "Player1",
+							WereScrewedGame.manager.getFont( "longdon" ) );
+					player2 = new Label( "Player2",
+							WereScrewedGame.manager.getFont( "longdon" ) );
+
+					pressToConfirm.setX( width / 2
+							- pressToConfirm.getWidth( ) / 2 );
+					pressToConfirm.setY( height / 4 );
+
+					pressStart.setX( width / 2 - pressStart.getWidth( ) / 2 );
+					pressStart.setY( height / 4 );
+
+					p1LabelPositionX = ( width / 2 );// - player1.getWidth( )
+															// / 2;
+					player1.setX( p1LabelPositionX );
+					player1.setY( height / 4 - 100 );
+
+					p2LabelPositionX = ( width / 2 );// + player2.getWidth( )
+															// / 2 + 100;
+					player2.setX( p2LabelPositionX );
+					player2.setY( height / 4 - 50 );
+				}
+
+				// debug turning character select off until someone else can finish
+				// it
+
+				playersHaveBeenSelected = true;
+			}
+			initialLoadFinished=true;
+		}
+
+		
 
 		if ( WereScrewedGame.manager.isAtlasLoaded( "common-textures" )
 				&& loadingBar.sprite == null ) {
@@ -179,9 +184,9 @@ public class LoadingScreen extends Screen {
 		if ( WereScrewedGame.manager.update( ) ) {
 
 			// HIT ANY KEY TO SKIP
-			if ( Gdx.app.getInput( ).isTouched( ) ) {
-				ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
-			}
+//			if ( Gdx.app.getInput( ).isTouched( ) ) {
+//				ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
+//			}
 			if ( currLevel == 0 ) {
 				// assets have been loaded!
 				loadingLabel.setCaption( "Loading Complete!!" );
@@ -381,6 +386,7 @@ public class LoadingScreen extends Screen {
 		// and reads each line which is a path and loads that file
 		FileHandle handle = Gdx.files.internal( "data/" + filename + ".txt" );
 		String split[] = handle.readString( ).split( "\\r?\\n" );
+		EntityDef.clearDefs( );
 		for ( String s : split ) {
 			s.replaceAll( "\\s", "" );
 			if ( s.length( ) > 0 ) {

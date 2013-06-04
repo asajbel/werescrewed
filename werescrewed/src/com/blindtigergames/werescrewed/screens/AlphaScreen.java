@@ -1809,7 +1809,7 @@ public class AlphaScreen extends Screen {
 		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
 				new Vector2( pos.cpy( ).add(0,n*h) ),
 				new Vector2(),
-				25, level.world, true );
+				 level.world, true );
 		for(int i = 0; i < 1; ++i ){
 			fireballEmitter.addParticle( createBoltEnemy( pos.cpy( ), i ), 5, 0, i*5 );
 		}
