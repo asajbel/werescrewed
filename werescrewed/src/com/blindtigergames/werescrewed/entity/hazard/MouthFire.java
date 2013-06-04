@@ -71,7 +71,6 @@ public class MouthFire extends Hazard {
 		e.setAngleDiff( angleDiff, 0 ); 
 		float ang = angle - (float) Math.PI / 2; 
 		e.setEffectAngle( ang );
-		Gdx.app.log( "bla", "blah" );
 	}
 	
 	/**
