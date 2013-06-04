@@ -38,8 +38,8 @@ public class FollowEntityWithVelocity implements IMover {
 		this.currentPoint = beginningPoint.cpy( );
 		this.entity = entity;
 		puzzleType = PuzzleType.OVERRIDE_ENTITY_MOVER;
-		timesFlewByX = 0.25f;
-		timesFlewByY = 0.25f;
+		timesFlewByX = 1f;
+		timesFlewByY = 1f;
 		speedX = (entity.getPositionPixel( ).x - currentPoint.x )* timesFlewByX;
 		speedY = (entity.getPositionPixel( ).y - currentPoint.y )* timesFlewByY;
 		greaterThanX = (beginningPoint.x>entity.getPositionPixel( ).x) ? true : false;
