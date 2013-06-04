@@ -49,7 +49,6 @@ public class ProgressManager {
 	private final Vector2 screwRightOffset = new Vector2( 270, 150 );
 	private float animTime = 0f;
 	private float rezDelay = Float.MAX_VALUE;
-	private Skeleton rootBoundingBoxChkptSkel;
 	boolean noPlayersDead = false;
 
 	/**
@@ -367,13 +366,14 @@ public class ProgressManager {
 		player.setRezTime( 0f );
 		player.respawnPlayer( );
 
+		
 		player.setMoverAtCurrentState( new FollowEntityWithVelocity( player
 				.getPositionPixel( ), currentCheckPoint ) );
 		// player.deactivateAnchors( );
 		// player.body.setLinearVelocity( diff );
 		player.setVisible( false, true );
 
-		// player.activateAnchors( );
+		player.activateAnchors( );
 
 		if ( rezScrewMap.containsKey( player.name ) ) {
 			rezScrewMap.get( player.name ).remove( );
@@ -401,37 +401,11 @@ public class ProgressManager {
 	 */
 	private void spawnAtCheckPoint( Player player ) {
 		player.setRezzing( false );
-		// tele-port to checkpoint with velocity
-		// float frameRate = 1 / deltaTime;
-		// bring the player back to life
-		// remove the instance of the rez screw
-
-		// move the player to the current checkpoint
-		// tele-port to checkpoint with velocity
-		// move the player to checkpoint with transform collision problems
-		// player.body.setType( BodyType.DynamicBody );
-		// player.body.setTransform( rezPoint, 0.0f );
-		// player.body.setLinearVelocity( Vector2.Zero );
+		
 		Vector2 rezPoint = new Vector2( currentCheckPoint.body.getPosition( ) );
 		rezPoint.add( -60 * Util.PIXEL_TO_BOX, 36f * Util.PIXEL_TO_BOX );
-		player.activateAnchors( );
-		// Skeleton skel = currentCheckPoint.getParentSkeleton( );
-		// Skeleton parentSkel = skel.getParentSkeleton( );
-		// if ( skel != null ) {
-		// while( skel.getParentSkeleton( ) != null ) {
-		// Skeleton temp = parentSkel;
-		// if ( skel.getParentSkeleton( ).)
-		// parentSkel.respawningDontPutToSleep;
-		// parentSkel = skel.getParentSkeleton( );
-		// skel = temp;
-		// }
-		// }
-		// if ( parentSkel != null && !parentSkel.isUpdatable( ) ) {
-		// player.waitingOnInactiveSkelToRespwan = true;
-		// } else
-		{
-			player.body.setType( BodyType.DynamicBody );
-		}
+		//player.activateAnchors( );
+		player.body.setType( BodyType.DynamicBody );
 		player.body.setTransform( rezPoint, 0.0f );
 		player.setVisible( true );
 		Filter filter = new Filter( );

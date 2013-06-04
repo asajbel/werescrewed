@@ -890,16 +890,7 @@ public class Skeleton extends Platform {
 	}
 
 	public boolean isUpdatable( ) {
-		if ( !useBoundingRect ) {
-			return ( !this.isFadingSkel( ) || this.isFGFaded( ) );
-		} else if ( updatedOnce ) {
-			boundingRect.x = this.getPositionPixel( ).x
-					- ( boundingRect.width / 2.0f );
-			boundingRect.y = this.getPositionPixel( ).y
-					- ( boundingRect.height / 2.0f );
-			return !boundingRect.overlaps( lastCameraRect );
-		}
-		return true;
+		return isUpdatable;
 	}
 
 	private String getUniqueName( String nonUniqueName ) {
