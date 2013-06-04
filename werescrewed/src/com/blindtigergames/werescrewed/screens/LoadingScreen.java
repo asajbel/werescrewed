@@ -203,14 +203,10 @@ public class LoadingScreen extends Screen {
 		if ( WereScrewedGame.manager.update( ) ) {
 
 			// HIT ANY KEY TO SKIP
-			if ( currLevel == 1 && (Gdx.app.getInput( ).isTouched( ) || 
-				WereScrewedGame.p1ControllerListener.jumpPressed( ) ||
-				WereScrewedGame.p2ControllerListener.jumpPressed( ))) {
+			if ( currLevel == 1 && (Gdx.app.getInput( ).isTouched( ))) {
 				ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
 			}
-			if ( currLevel == 2 && (Gdx.app.getInput( ).isTouched( ) ||
-				WereScrewedGame.p1ControllerListener.jumpPressed( ) ||
-				WereScrewedGame.p2ControllerListener.jumpPressed( ))) {
+			if ( currLevel == 2 && (Gdx.app.getInput( ).isTouched( ))) {
 				ScreenManager.getInstance( ).show( ScreenType.DRAGON );
 			}
 			if ( currLevel == 0 ) {
@@ -224,15 +220,15 @@ public class LoadingScreen extends Screen {
 				if ( characterSelect ) {
 					if ( playersHaveBeenSelected ) {
 						WereScrewedGame.player1Female = p1SelectFemale;
-						if ( WereScrewedGame.p1ControllerListener.jumpPressed( ) ||
-							 WereScrewedGame.p2ControllerListener.jumpPressed( )){
+				//		if ( WereScrewedGame.p1ControllerListener.jumpPressed( ) ||
+					//		 WereScrewedGame.p2ControllerListener.jumpPressed( )){
 							if ( screenTag != null && screenTag.equals( "level1" ) ) {
 								ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
 							} else if ( screenTag != null
 									&& screenTag.equals( "level2" ) ) {
 								ScreenManager.getInstance( ).show( ScreenType.DRAGON );
 							}
-						}
+						//}
 					}
 				} else {
 					if ( screenTag != null && screenTag.equals( "level1" ) ) {
