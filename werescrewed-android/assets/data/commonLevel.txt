@@ -8,6 +8,7 @@
 @ bg /levels/alphabot/alphabot-interior.png
 @ outline /levels/alphabot/alphabot-outline.png
 @ fg /levels/alphabot/alphabot-fg.png
+@ tilecolor 255 255 255
 
 
 ##sounds

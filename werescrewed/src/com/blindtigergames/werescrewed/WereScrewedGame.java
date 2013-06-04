@@ -10,6 +10,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.blindtigergames.werescrewed.asset.AssetManager;
@@ -34,6 +35,7 @@ public class WereScrewedGame extends Game {
 	private boolean metricsFlag = false;
 
 	private static boolean mouseJustClicked = false;
+	
 
 	public static boolean isMouseClicked( ) {
 		return mouseJustClicked;
@@ -79,6 +81,7 @@ public class WereScrewedGame extends Game {
 		logger = new FPSLogger( );
 
 		manager.loadDummyAssets( );
+		
 
 		setUpControllers( );
 	}
@@ -210,4 +213,5 @@ public class WereScrewedGame extends Game {
 	public static void setReconnect( boolean reconnect ) {
 		WereScrewedGame.reconnect = reconnect;
 	}
+	
 }

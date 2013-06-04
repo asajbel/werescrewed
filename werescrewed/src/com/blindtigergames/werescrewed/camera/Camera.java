@@ -40,7 +40,7 @@ public class Camera {
 	// Zoom
 	private static final float ZOOM_SIG_DIFF = 0.003f;
 	public static final float MIN_ZOOM = 1f;
-	public static final float STANDARD_ZOOM = 1f;//1.2
+	public static final float STANDARD_ZOOM = 1.2f;
 	public static final float MAX_ZOOM = 16f;
 	public static final float SCREEN_TO_ZOOM = 1468.6f;
 	private int fps;

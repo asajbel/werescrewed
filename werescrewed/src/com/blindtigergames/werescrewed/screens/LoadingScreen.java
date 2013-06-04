@@ -443,18 +443,33 @@ public class LoadingScreen extends Screen {
 		 * @ bg /path/to/bg/tex
 		 * 
 		 * @ outline /path/to/outline/tex
+		 * 
+		 * @ tilecolor r g b 
+		 * r, g, b = [0-255]
 		 */
 		String[ ] options = s.split( "\\s" );
-		loadFromPath( options[ 2 ] );
-		WereScrewedGame.manager.finishLoading( );
-		Texture tex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ options[ 2 ], Texture.class );
-		if ( options[ 1 ].equals( "fg" ) ) {
-			WereScrewedGame.manager.setLevelRobotFGTex( tex );
-		} else if ( options[ 1 ].equals( "bg" ) ) {
-			WereScrewedGame.manager.setLevelRobotBGTex( tex );
-		} else if ( options[ 1 ].equals( "outline" ) ) {
-			WereScrewedGame.manager.setLevelRobotOutlineTex( tex );
+		if(options[1].equals( "tilecolor" )){
+			int r=255,g=255,b=255;
+			try{
+				r = Integer.parseInt( options[2] );
+				g = Integer.parseInt( options[3] );
+				b = Integer.parseInt( options[4] );
+			}catch(ArrayIndexOutOfBoundsException e){
+				
+			}
+			WereScrewedGame.manager.setTileColor(r,g,b);
+		}else{
+			loadFromPath( options[ 2 ] );
+			WereScrewedGame.manager.finishLoading( );
+			Texture tex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+					+ options[ 2 ], Texture.class );
+			if ( options[ 1 ].equals( "fg" ) ) {
+				WereScrewedGame.manager.setLevelRobotFGTex( tex );
+			} else if ( options[ 1 ].equals( "bg" ) ) {
+				WereScrewedGame.manager.setLevelRobotBGTex( tex );
+			} else if ( options[ 1 ].equals( "outline" ) ) {
+				WereScrewedGame.manager.setLevelRobotOutlineTex( tex );
+			}
 		}
 	}
 
