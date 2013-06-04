@@ -995,6 +995,10 @@ public class Entity implements GleedLoadable {
 			for ( Anchor anchor : anchors ) {
 				anchor.setPosition( new Vector2( sprite.getX( ), sprite.getY( ) ) );
 			}
+		} else if ( spinemator != null ) {
+			for ( Anchor anchor : anchors ) {
+				anchor.setPosition( spinemator.getPosition( ) );
+			}
 		}
 	}
 
@@ -1307,8 +1311,10 @@ public class Entity implements GleedLoadable {
 		Vector2 bodyPos = this.getPositionPixel( );
 		float angle = this.getAngle( );
 		if ( bodyPos != oldPos
-				|| angle != oldAngle || ( this.getParentSkeleton( ) != null 
-				&& ( this.getParentSkeleton( ).hasMoved( ) || this.getParentSkeleton( ).hasRotated( ) ) ) ) {
+				|| angle != oldAngle
+				|| ( this.getParentSkeleton( ) != null && ( this
+						.getParentSkeleton( ).hasMoved( ) || this
+						.getParentSkeleton( ).hasRotated( ) ) ) ) {
 			oldPos = bodyPos;
 			oldAngle = angle;
 			float cos = ( float ) Math.cos( angle ), sin = ( float ) Math

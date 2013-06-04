@@ -81,6 +81,7 @@ public class Skeleton extends Platform {
 	protected Rectangle lastCameraRect = new Rectangle( 0, 0, 0, 0 );
 	protected boolean removed = false;
 
+	public boolean respawningDontPutToSleep = false;
 	private ShapeRenderer shapeRender;
 
 	/**
@@ -430,7 +431,7 @@ public class Skeleton extends Platform {
 							- ( boundingRect.height / 2.0f );
 					if ( !boundingRect.overlaps( lastCameraRect ) ) {
 						isUpdatable = false;
-						if ( !wasInactive ) 
+						if ( !wasInactive )
 							setSkeletonEntitiesToSleepRecursively( );
 					}
 				} else if ( !useBoundingRect && !isUpdatable
@@ -499,7 +500,7 @@ public class Skeleton extends Platform {
 						if ( chkpt.removeNextStep ) {
 							entitiesToRemove.add( chkpt );
 						} else {
-							if ( wasInactive  ) {
+							if ( wasInactive ) {
 								chkpt.body.setActive( true );
 								chkpt.body.setAwake( false );
 							}
@@ -578,7 +579,7 @@ public class Skeleton extends Platform {
 				// }
 				// recursively update child skeletons
 
-				if ( !setChildSkeletonsToSleep || isUpdatable( ) ) {
+				if ( !setChildSkeletonsToSleep || isUpdatable ) {
 					for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
 						if ( skeleton.removeNextStep ) {
 							entitiesToRemove.add( skeleton );
@@ -752,14 +753,14 @@ public class Skeleton extends Platform {
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		if ( !removed && !removeNextStep ) {
-//			 if ( this.useBoundingRect ) {
-//			 shapeRender.setProjectionMatrix( camera.combined( ) );
-//			 shapeRender.begin( ShapeType.Rectangle );
-//			 shapeRender.rect( boundingRect.x, boundingRect.y,
-//			 boundingRect.width,
-//			 boundingRect.height );
-//			 shapeRender.end( );
-//			 }
+			// if ( this.useBoundingRect ) {
+			// shapeRender.setProjectionMatrix( camera.combined( ) );
+			// shapeRender.begin( ShapeType.Rectangle );
+			// shapeRender.rect( boundingRect.x, boundingRect.y,
+			// boundingRect.width,
+			// boundingRect.height );
+			// shapeRender.end( );
+			// }
 			super.draw( batch, deltaTime, camera );
 			if ( visible ) {
 				drawChildren( batch, deltaTime, camera );
@@ -802,8 +803,6 @@ public class Skeleton extends Platform {
 			for ( Rope rope : ropeMap.values( ) ) {
 				rope.draw( batch, deltaTime, camera );
 			}
-		}
-		if ( isUpdatable && wasInactive ) {
 		}
 		// draw the entities of the parent skeleton before recursing through
 		// the
@@ -885,9 +884,22 @@ public class Skeleton extends Platform {
 	public void setUseBoundingRect( boolean setting ) {
 		useBoundingRect = setting;
 	}
+	
+	public boolean getIsUsingBoundingBox( ) {
+		return useBoundingRect;
+	}
 
 	public boolean isUpdatable( ) {
-		return isUpdatable;
+		if ( !useBoundingRect ) {
+			return ( !this.isFadingSkel( ) || this.isFGFaded( ) );
+		} else if ( updatedOnce ) {
+			boundingRect.x = this.getPositionPixel( ).x
+					- ( boundingRect.width / 2.0f );
+			boundingRect.y = this.getPositionPixel( ).y
+					- ( boundingRect.height / 2.0f );
+			return !boundingRect.overlaps( lastCameraRect );
+		}
+		return true;
 	}
 
 	private String getUniqueName( String nonUniqueName ) {
