@@ -123,6 +123,7 @@ fastSteam.p
 slowSteam.p
 fire.p
 fire_new.p
+mouth_fire.p
 cannon.p
 smoke_puff_small.p
 /fire/fire_tiny.p
