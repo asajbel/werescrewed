@@ -70,17 +70,22 @@ public class MouthFire extends Hazard {
 		//Gdx.app.log( "posStep", posStep.toString( )+", maxFix:"+this.maxConcurrentFixtures );
 	
 		constructBody( posMeter );
+		
+		float milliComplete = secondsToComplete * 1000; 
+		float emitLength = widthMeter * 2 * maxConcurrentFixtures;
+		int emitTime = (int) (milliComplete * (emitLength / totalLength));
 
 		addFrontParticleEffect( "mouth_fire", false, false ); 
 		ParticleEffect e = getEffect( "mouth_fire" ); 
-		e.setLifeTime( secondsToComplete * 1000 - 300, 500 );
+		e.setDuration( emitTime ); 
+		e.setPosition( pos.x, pos.y );
+		e.setLifeTime( milliComplete - 300, 500 );
 		e.setVelocity( (totalLength*Util.BOX_TO_PIXEL-50)/secondsToComplete, 50 );
 		e.setSize( endHeightPix / 3, 0 );
-		float angleDiff = (float) Math.atan( endHeightPix/totalLength*Util.BOX_TO_PIXEL ); 
+		float angleDiff = (float) Math.atan( endHeightPix/(totalLength*Util.BOX_TO_PIXEL) ); 
 		e.setAngleDiff( angleDiff, 0 ); 
 		float ang = angle - (float) Math.PI / 2; 
 		e.setEffectAngle( ang );
-		Gdx.app.log( "bla", "blah" );
 	}
 	
 	/**
