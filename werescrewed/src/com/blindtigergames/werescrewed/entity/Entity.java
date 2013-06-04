@@ -1325,10 +1325,11 @@ public class Entity implements GleedLoadable {
 		Vector2 bodyPos = this.getPositionPixel( );
 		float angle = this.getAngle( );
 		if ( bodyPos != oldPos
-				|| angle != oldAngle
+				|| angle != oldAngle || this.currentMover( ) != null
 				|| ( this.getParentSkeleton( ) != null && ( this
 						.getParentSkeleton( ).hasMoved( ) || this
-						.getParentSkeleton( ).hasRotated( ) ) ) ) {
+						.getParentSkeleton( ).hasRotated( )
+						|| this.getParentSkeleton( ).currentMover( ) != null ) ) ) {
 			oldPos = bodyPos;
 			oldAngle = angle;
 			float cos = ( float ) Math.cos( angle ), sin = ( float ) Math
