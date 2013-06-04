@@ -1093,7 +1093,7 @@ public class DragonScreen extends Screen {
 	void bodyDecals(){
 		Skeleton neck_skeleton = (Skeleton)LevelFactory.entities.get( "neck_skeleton" );
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "body-neck" );
-		TextureAtlas bodyRight = WereScrewedGame.manager.getAtlas( "body_right" );
+		TextureAtlas bodyRight = WereScrewedGame.manager.getAtlas( "body_right-head_interior" );
 		TextureAtlas interiorLeftAtlas = WereScrewedGame.manager.getAtlas( "interior_tail3_bodyleft" );
 		TextureAtlas interiorRightAtlas = WereScrewedGame.manager.getAtlas( "interior_tail2_bodyright" );
 		TextureAtlas dragon_objects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
@@ -1221,4 +1221,6 @@ public class DragonScreen extends Screen {
 				.get( "tail2_ss_right" );
 		
 	}
+	
+	//body_balloon_center/left/right
 }

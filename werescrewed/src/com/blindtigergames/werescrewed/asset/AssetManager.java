@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.RefCountedContainer;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Array;
@@ -40,6 +41,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	Texture robotOutlineTex;// = "/levels/alphabot/alphabot-outline.png";
 	Texture robotTexFG;// = "/levels/alphabot/alphabot-outline.png";
 	private int particleEffectCt = 0;
+	private static Color tileColor;
 
 	// TODO: set default values for this
 
@@ -50,6 +52,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		palette = new ArrayList< String >( );
 		particleEffects = new HashMap< String, ParticleEffect >( );
 		dummyAssets = new HashMap< Class< ? >, String >( );
+		tileColor = new Color(1f,1f,1f,1f);
 	}
 
 	/**
@@ -280,5 +283,19 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	public synchronized void clear () {
 		EntityDef.clearDefs( );
 		super.clear();
+	}
+	
+
+	/**
+	 * @param r [0-255]
+	 * @param g [0-255]
+	 * @param b [0-255]
+	 */
+	public void setTileColor(int r, int g, int b){
+		tileColor = new Color(r/255f,g/255f,b/255f,1f);
+	}
+	
+	public Color getTileColor(){
+		return tileColor;
 	}
 }
