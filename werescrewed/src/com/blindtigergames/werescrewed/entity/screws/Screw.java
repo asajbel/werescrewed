@@ -73,7 +73,6 @@ public class Screw extends Entity {
 	 */
 	public Screw( String name, Vector2 pos, Entity entity, World world ) {
 		super( name, pos, null, null, false );
-		loadSounds( );
 		this.world = world;
 		this.sprite = constructSprite( screwTexRegion );
 		this.entity = entity;
@@ -87,6 +86,7 @@ public class Screw extends Entity {
 		body.setTransform( body.getPosition( ), sprite.getRotation( )
 				* Util.DEG_TO_RAD );
 		addStructureJoint( entity );
+		loadSounds();
 	}
 
 	protected void loadSounds( ) {
@@ -110,12 +110,12 @@ public class Screw extends Entity {
 	 */
 	public Screw( String name, Vector2 pos, TextureRegion tex ) {
 		super( name, pos, null, null, false );
-		loadSounds( );
 		if ( tex == null )
 			tex = WereScrewedGame.manager.getAtlas( "common-textures" )
 					.findRegion( "flat_head_circular" );
 		this.sprite = constructSprite( tex );
 		entityType = EntityType.SCREW;
+		loadSounds();
 	}
 
 	/**

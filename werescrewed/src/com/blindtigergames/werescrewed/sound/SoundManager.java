@@ -95,7 +95,23 @@ public class SoundManager implements Disposable {
 		}
 		return sounds.get( id , index );
 	}
+	
+	public SoundRef setSound( String id, int index, String assetName){
+		Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
+		SoundRef ref = new SoundRef(s);
+		ref.assetName = assetName;
+		sounds.set( id, index, ref );
+		return ref;
+	}
 
+	public void clearSounds( String id ){
+		if (hasSound(id)){
+			for (int i = 0; i < sounds.getAll( id ).size; i++){
+				sounds.remove( id, i );
+			}
+		}
+	}
+	
 	public SoundRef getSound( String id, String assetName ) {
 		Sound s = WereScrewedGame.manager.get( assetName, Sound.class );
 		SoundRef ref = new SoundRef(s);

@@ -25,7 +25,7 @@ public class ArrayHash< K, V > {
 		if ( !data.containsKey( key ) ) {
 			data.put( key, new Array< V >( ) );
 		}
-		if ( index > data.get( key ).size ) {
+		if ( index >= data.get( key ).size ) {
 			data.get( key ).ensureCapacity( index );
 		}
 		data.get( key ).set( index, value );

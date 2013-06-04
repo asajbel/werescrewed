@@ -151,6 +151,12 @@ public class DragonScreen extends Screen {
 			bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
 					+ "/levels/dragon/riding.mp3", Music.class );
 		}
+		if (sounds == null){
+			sounds = new SoundManager();
+			//sounds.getSound( "roar_calm" );
+			//sounds.getSound( "roar_angry" );
+			//sounds.getSound( "jaw_close" );			
+		}
 	}
 	void buildBalloon( ) {
 		balloon1 = ( Platform ) LevelFactory.entities.get( "balloon1" );
