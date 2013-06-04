@@ -996,7 +996,7 @@ public class DragonScreen extends Screen {
 		e=new Entity("sun",new Vector2(),null,b,false,0);//0,2048-2*
 		e.changeSprite( Sprite.scale( clouds_sun_bg.createSprite( "sun" ), sunScale ) );
 		//e.setPosition( new Vector2().mul( Util.PIXEL_TO_BOX ) );
-		float sunYPos = (3.26111f*WereScrewedGame.getHeight( ))-sunScale*e.sprite.getHeight( )+yOffset;
+		float sunYPos = (2.99111f*WereScrewedGame.getHeight( ))-sunScale*e.sprite.getHeight( )+yOffset;
 		m = new ParallaxMover( new Vector2(400,sunYPos),
 				 new Vector2(400,-2048+sunYPos),
 				 0.00009f,0.00001f, level.camera, false, LinearAxis.VERTICAL );
