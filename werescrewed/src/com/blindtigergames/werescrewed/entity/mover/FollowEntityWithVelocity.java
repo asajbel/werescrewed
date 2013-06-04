@@ -12,10 +12,10 @@ public class FollowEntityWithVelocity implements IMover {
 	private Vector2 currentPoint;
 	private Entity entity;
 	private PuzzleType puzzleType;
-	private int timesFlewByX;
-	private int timesFlewByY;
-	private boolean greaterThanX;
-	private boolean greaterThanY;
+	private float timesFlewByX;
+	private float timesFlewByY;
+	private Boolean greaterThanX;
+	private Boolean greaterThanY;
 	float speedX;
 	float speedY;
 
@@ -38,8 +38,8 @@ public class FollowEntityWithVelocity implements IMover {
 		this.currentPoint = beginningPoint.cpy( );
 		this.entity = entity;
 		puzzleType = PuzzleType.OVERRIDE_ENTITY_MOVER;
-		timesFlewByX = 10;
-		timesFlewByY = 10;
+		timesFlewByX = 0.25f;
+		timesFlewByY = 0.25f;
 		speedX = (entity.getPositionPixel( ).x - currentPoint.x )* timesFlewByX;
 		speedY = (entity.getPositionPixel( ).y - currentPoint.y )* timesFlewByY;
 		greaterThanX = (beginningPoint.x>entity.getPositionPixel( ).x) ? true : false;
@@ -49,15 +49,13 @@ public class FollowEntityWithVelocity implements IMover {
 	@Override
 	public void move( float deltaTime, Body body ) {
 		currentPoint = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-		boolean stillGreaterThanX = (currentPoint.x>entity.getPositionPixel( ).x) ? true : false;
-		boolean stillGreaterThanY = (currentPoint.y>entity.getPositionPixel( ).y) ? true : false;
-		if ( stillGreaterThanX != greaterThanX || stillGreaterThanY != greaterThanY ) {
-			if ( stillGreaterThanX != greaterThanX  ) {
-				speedX = (entity.getPositionPixel( ).x - currentPoint.x );
-			}
-			if ( stillGreaterThanY != greaterThanY ) {
-				speedY = (entity.getPositionPixel( ).y - currentPoint.y );
-			}
+		Boolean stillGreaterThanX = (currentPoint.x>entity.getPositionPixel( ).x) ? Boolean.TRUE : Boolean.FALSE;
+		Boolean stillGreaterThanY = (currentPoint.y>entity.getPositionPixel( ).y) ? Boolean.TRUE : Boolean.FALSE;
+		if ( !stillGreaterThanX.equals( greaterThanX ) ) {
+			speedX = (entity.getPositionPixel( ).x - currentPoint.x );
+		}
+		if ( !stillGreaterThanY.equals( greaterThanY ) ) {
+			speedY = (entity.getPositionPixel( ).y - currentPoint.y );
 		}
 		
 		body.setLinearVelocity( speedX * Util.PIXEL_TO_BOX, speedY * Util.PIXEL_TO_BOX );

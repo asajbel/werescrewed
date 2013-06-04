@@ -81,7 +81,7 @@ public class Skeleton extends Platform {
 	protected Rectangle lastCameraRect = new Rectangle( 0, 0, 0, 0 );
 	protected boolean removed = false;
 
-	// private ShapeRenderer shapeRender;
+	private ShapeRenderer shapeRender;
 
 	/**
 	 * Constructor used by SkeletonBuilder
@@ -101,7 +101,7 @@ public class Skeleton extends Platform {
 		entityType = EntityType.SKELETON;
 		alphaFadeAnimator = new SimpleFrameAnimator( ).speed( 0 )
 				.loop( LoopBehavior.STOP ).time( 1 );
-		// shapeRender = new ShapeRenderer( );
+		shapeRender = new ShapeRenderer( );
 	}
 
 	/**
@@ -430,12 +430,12 @@ public class Skeleton extends Platform {
 							- ( boundingRect.height / 2.0f );
 					if ( !boundingRect.overlaps( lastCameraRect ) ) {
 						isUpdatable = false;
-						setSkeletonEntitiesToSleepRecursively( );
+						if ( !wasInactive ) 
+							setSkeletonEntitiesToSleepRecursively( );
 					}
 				} else if ( !useBoundingRect && !isUpdatable
-						&& this.setChildSkeletonsToSleep ) {
+						&& this.setChildSkeletonsToSleep && !wasInactive ) {
 					setSkeletonEntitiesToSleepRecursively( );
-
 				}
 				updatedOnce = true;
 				if ( isUpdatable || isMacroSkeleton ) {
@@ -539,10 +539,13 @@ public class Skeleton extends Platform {
 						rope.update( deltaTime );
 					}
 					if ( wasInactive ) {
+						this.body.setActive( true );
+						this.body.setAwake( false );
 						for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
 							skeleton.body.setActive( true );
 							skeleton.body.setAwake( false );
 						}
+						wasInactive = false;
 					}
 				} else {
 					if ( !wasInactive ) {
@@ -666,8 +669,8 @@ public class Skeleton extends Platform {
 				}
 			}
 		}
-		for ( JointEdge j : body.getJointList( ) ) {
-			world.destroyJoint( j.joint );
+		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
 		}
 		world.destroyBody( body );
 		this.removed = true;
@@ -749,14 +752,14 @@ public class Skeleton extends Platform {
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		if ( !removed && !removeNextStep ) {
-			// if ( this.useBoundingRect ) {
-			// shapeRender.setProjectionMatrix( camera.combined( ) );
-			// shapeRender.begin( ShapeType.Rectangle );
-			// shapeRender.rect( boundingRect.x, boundingRect.y,
-			// boundingRect.width,
-			// boundingRect.height );
-			// shapeRender.end( );
-			// }
+//			 if ( this.useBoundingRect ) {
+//			 shapeRender.setProjectionMatrix( camera.combined( ) );
+//			 shapeRender.begin( ShapeType.Rectangle );
+//			 shapeRender.rect( boundingRect.x, boundingRect.y,
+//			 boundingRect.width,
+//			 boundingRect.height );
+//			 shapeRender.end( );
+//			 }
 			super.draw( batch, deltaTime, camera );
 			if ( visible ) {
 				drawChildren( batch, deltaTime, camera );
@@ -801,7 +804,6 @@ public class Skeleton extends Platform {
 			}
 		}
 		if ( isUpdatable && wasInactive ) {
-			wasInactive = false;
 		}
 		// draw the entities of the parent skeleton before recursing through
 		// the
