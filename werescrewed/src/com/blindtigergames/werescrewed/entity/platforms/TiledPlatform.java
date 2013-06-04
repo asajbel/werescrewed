@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.entity.platforms;
 import java.util.Iterator;
 import java.util.Vector;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.util.Util;
@@ -36,6 +38,8 @@ public class TiledPlatform extends Platform {
 	protected Vector< Tile > tiles;
 	protected Vector< Tile > bleedTiles = null;
 	protected Vector< Tile > decal;
+	
+	protected Color tileColor;
 
 	// private boolean doBleed;
 
@@ -48,6 +52,8 @@ public class TiledPlatform extends Platform {
 		// this.tileSet = tileset;
 		this.tileHeight = height;
 		this.tileWidth = width;
+		
+		tileColor = WereScrewedGame.manager.getTileColor( );
 
 		if ( tileHeight > 1 && tileWidth > 1 ) {
 			shape = Shape.RECTANGLE;
@@ -294,7 +300,7 @@ public class TiledPlatform extends Platform {
 		temp.setOrigin( offset_x, offset_y );
 		temp.setPosition( bodypos.x - offset_x, bodypos.y - offset_y );
 		temp.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
-
+		temp.setColor( tileColor );
 		return ( new Tile( offset_x, offset_y, temp ) );
 	}
 
