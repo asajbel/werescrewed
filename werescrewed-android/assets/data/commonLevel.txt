@@ -109,6 +109,13 @@
 /common/slides/slide3_alphabot.png
 /common/slides/slide4_players.png
 
+/common/slides/slide1_dragon.png
+/common/slides/slide2_dragon.png
+/common/slides/slide3_dragon.png
+/common/slides/slide4_dragon.png
+/common/slides/slide5_dragon.png
+/common/slides/slide6_dragon.png
+
 ##Particle effects
 skid_left.p
 skid_right.p
