@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.entity.mover;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -22,7 +21,7 @@ public class DirectionFlipMover implements IMover {
 	 * @param moveLeft Starting direction
 	 * @param impulseStrength 0.001f is a good slow acceleration speed
 	 * @param entityToMove Must be dynamic
-	 * @param timeToFlipAfterNoMove seconds to flip after being stuck on a wall. 3 is a good time.
+	 * @param timeToFlipAfterNoMove seconds to flip after being stuck on a wall. 1.5 is a good time.
 	 * @param maxSpeed 0.03 is a good speed
 	 */
 	public DirectionFlipMover(boolean moveLeft, float impulseStrength, Entity entityToMove, float timeToFlipAfterNoMove, float maxSpeed){

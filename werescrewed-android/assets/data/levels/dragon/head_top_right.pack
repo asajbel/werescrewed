@@ -1,0 +1,26 @@
+head_top_right.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+head_right
+  rotate: false
+  xy: 682, 2
+  size: 1326, 568
+  orig: 1326, 568
+  offset: 0, 0
+  index: -1
+eyebrow
+  rotate: false
+  xy: 2, 2
+  size: 678, 245
+  orig: 696, 255
+  offset: 5, 3
+  index: -1
+head_middle
+  rotate: false
+  xy: 2, 572
+  size: 986, 1322
+  orig: 986, 1322
+  offset: 0, 0
+  index: -1

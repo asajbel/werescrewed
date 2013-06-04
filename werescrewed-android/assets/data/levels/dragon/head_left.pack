@@ -1,12 +1,12 @@
-body_right.png
+head_left.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 offset: 0, 0
-body_right
+head_left
   rotate: false
-  xy: 4, 4
-  size: 1396, 997
-  orig: 1396, 997
+  xy: 2, 2
+  size: 1495, 1650
+  orig: 1495, 1650
   offset: 0, 0
   index: -1

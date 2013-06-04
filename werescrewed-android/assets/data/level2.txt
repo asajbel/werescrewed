@@ -43,7 +43,9 @@
 /levels/dragon/mountains-back-clouds.pack
 
 #head zoner
-/levels/dragon/head.pack
+/levels/dragon/head_jaw.pack
+/levels/dragon/head_top_right.pack
+/levels/dragon/head_left.pack
 
 #Object assets
 /levels/dragon/dragon_objects.pack

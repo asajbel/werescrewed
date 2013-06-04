@@ -27,28 +27,17 @@ public class EntityParticleEmitter extends Entity {
 	 * Entities
 	 * 
 	 * @param name
-	 *            String
+	 *            String name of this entity
 	 * @param positionPixels
-	 *            Vector2
-	 * @param texture
-	 *            Texture
-	 * @param body
-	 *            Body
-	 * @param baseEntity
-	 *            Entity
-	 * @param lifeSpan
-	 *            float
-	 * @param mover
-	 *            IMover
+	 *            Vector2 position entities will be emitted from
+	 * @param particleEmitImpulse
 	 * @param active
 	 *            boolean
 	 */
-	public EntityParticleEmitter( String name, Vector2 positionPixels, Vector2 particleEmitImpulse, float lifeSpan, World world,
+	public EntityParticleEmitter( String name, Vector2 positionPixels, Vector2 particleEmitImpulse, World world,
 			boolean active ) {
 		super( name, positionPixels, null, null, false );
 		particles = new ArrayList< EntityParticle >( );
-		//EntityParticle p = new EntityParticle( baseEntity, lifeSpan );
-		//particles.add( p );
 		this.world = world;
 		constructBody( positionPixels );
 		activeEmitting = active;

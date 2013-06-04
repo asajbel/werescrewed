@@ -165,7 +165,7 @@ public class AlphaScreen extends Screen {
 		// right arm: 2600f, 6000f >>>> side
 		// left side hand <- -2224, 3008
 
-		Vector2 spawnPos = new Vector2( 480, 256 );
+		Vector2 spawnPos = new Vector2( 350, 200 );
 
 		if ( level.player1 == null ) {
 			level.player1 = new PlayerBuilder( ).world( level.world )
@@ -1809,7 +1809,7 @@ public class AlphaScreen extends Screen {
 		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
 				new Vector2( pos.cpy( ).add(0,n*h) ),
 				new Vector2(),
-				25, level.world, true );
+				 level.world, true );
 		for(int i = 0; i < 1; ++i ){
 			fireballEmitter.addParticle( createBoltEnemy( pos.cpy( ), i ), 5, 0, i*5 );
 		}

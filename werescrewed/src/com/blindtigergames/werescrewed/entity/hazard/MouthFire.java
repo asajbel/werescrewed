@@ -32,7 +32,16 @@ public class MouthFire extends Hazard {
 	private Array< Fixture > fixtureList;
 	
 	
-	
+	/**
+	 * Mouth fire object for dragon level.
+	 * @param name
+	 * @param pos source of fire
+	 * @param destinationPix fire will go to get here
+	 * @param secondsToComplete 1s is quick
+	 * @param startHeightPix at source of fire, how tall will it be
+	 * @param endHeightPix at end of fire, max height it reaches
+	 * @param world
+	 */
 	public MouthFire( String name, Vector2 pos, Vector2 destinationPix, float secondsToComplete, float startHeightPix, float endHeightPix, World world) {
 		super( name, pos, null, world, true );
 		
@@ -61,17 +70,22 @@ public class MouthFire extends Hazard {
 		//Gdx.app.log( "posStep", posStep.toString( )+", maxFix:"+this.maxConcurrentFixtures );
 	
 		constructBody( posMeter );
+		
+		float milliComplete = secondsToComplete * 1000; 
+		float emitLength = widthMeter * 2 * maxConcurrentFixtures;
+		int emitTime = (int) (milliComplete * (emitLength / totalLength));
 
 		addFrontParticleEffect( "mouth_fire", false, false ); 
 		ParticleEffect e = getEffect( "mouth_fire" ); 
-		e.setLifeTime( secondsToComplete * 1000 - 300, 500 );
+		e.setDuration( emitTime ); 
+		e.setPosition( pos.x, pos.y );
+		e.setLifeTime( milliComplete - 300, 500 );
 		e.setVelocity( (totalLength*Util.BOX_TO_PIXEL-50)/secondsToComplete, 50 );
 		e.setSize( endHeightPix / 3, 0 );
-		float angleDiff = (float) Math.atan( endHeightPix/totalLength*Util.BOX_TO_PIXEL ); 
+		float angleDiff = (float) Math.atan( endHeightPix/(totalLength*Util.BOX_TO_PIXEL) ); 
 		e.setAngleDiff( angleDiff, 0 ); 
 		float ang = angle - (float) Math.PI / 2; 
 		e.setEffectAngle( ang );
-		Gdx.app.log( "bla", "blah" );
 	}
 	
 	/**
