@@ -1,6 +1,6 @@
 head_jaw.png
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Linear,Linear
 repeat: none
 offset: 0, 0
 dragonbottom_right
