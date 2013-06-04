@@ -381,6 +381,7 @@ public class LoadingScreen extends Screen {
 		// and reads each line which is a path and loads that file
 		FileHandle handle = Gdx.files.internal( "data/" + filename + ".txt" );
 		String split[] = handle.readString( ).split( "\\r?\\n" );
+		EntityDef.clearDefs( );
 		for ( String s : split ) {
 			s.replaceAll( "\\s", "" );
 			if ( s.length( ) > 0 ) {

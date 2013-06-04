@@ -276,7 +276,6 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	}
 	/** Clears and disposes all assets and the preloading queue. */
 	public synchronized void clear () {
-		EntityDef.clearDefs( );
 		super.clear();
 	}
 }
