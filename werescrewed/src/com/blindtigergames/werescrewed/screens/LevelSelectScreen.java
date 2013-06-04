@@ -22,7 +22,7 @@ public class LevelSelectScreen extends MenuScreen {
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
 	private Sprite menuBG = null;
-	private Sprite fade = null;
+//	private Sprite fade = null;
 	private Label screenLabel = null;
 //	private TextButton resurrectButton = null;
 //	private TextButton hazardButton = null;
@@ -44,27 +44,33 @@ public class LevelSelectScreen extends MenuScreen {
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, WereScrewedGame.getWidth(), WereScrewedGame.getHeight() );
 		font = new BitmapFont( );
+	}
+
+	@Override
+	public void load( ){
+		super.load( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
-		// fancyFont = WereScrewedGame.manager.getFont( "Screwball" );
-		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
+		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/transitions/trans-gear.png", Texture.class );
+		trans = new Sprite( transition );
 		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/menu/menu.png", Texture.class );
-		Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/transition.png", Texture.class );
 		menuBG = new Sprite( back );
-		fade = new Sprite( fadeScreen );
+		//Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		//		+ "/menu/transition.png", Texture.class );
+		//fade = new Sprite( fadeScreen );
 		
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 50 );
 		screenLabel = new Label( "Level Select", fancyFont );
+		
+		buttonTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/menu/button.png", Texture.class );
 		
 		man = new SimpleSpinemator( "red_male_atlas", "male", "fall_idle", true );
 		lady = new SimpleSpinemator( "red_female_atlas", "female", "fall_idle", true );
 		gears = new Array< Falling >( );
 		debris = new Array< Falling >( );
 		
-		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/transitions/trans-gear.png", Texture.class );
-		trans = new Sprite( transition );
 		scale = trans.getHeight( ) * SCALE_MAX;
 		scaleMax = scale;
 		transInEnd = false;
@@ -74,24 +80,9 @@ public class LevelSelectScreen extends MenuScreen {
 				.getAtlas( "common-textures" );
 		for ( int i = 0; i < 5; i++ )
 			createDebris( gearsAtlas, common );
+		
 		loadButtons( );
 		setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f );
-	}
-
-	@Override
-	public void dispose( ) {
-	}
-
-	@Override
-	public void hide( ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void pause( ) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -144,10 +135,10 @@ public class LevelSelectScreen extends MenuScreen {
 		int leftX = ( int ) menuBG.getWidth( ) / 2;// / 5 - 20;
 		int centerY = height / 2;
 
-		fade.setPosition( width / 2 - fade.getWidth( ) / 2, height
-				/ 2 - fade.getHeight( ) / 2 );
-		fade.setScale( width / fade.getWidth( ), height
-				/ fade.getHeight( ) );
+		//fade.setPosition( width / 2 - fade.getWidth( ) / 2, height
+		//		/ 2 - fade.getHeight( ) / 2 );
+		//fade.setScale( width / fade.getWidth( ), height
+		//		/ fade.getHeight( ) );
 		// menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth(
 		// ) );
 		menuBG.setPosition( 0, WereScrewedGame.getHeight( ) / 2 - menuBG.getHeight( ) / 2 );
@@ -182,33 +173,22 @@ public class LevelSelectScreen extends MenuScreen {
 
 	}
 
-	@Override
-	public void resume( ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void show( ) {
-
-	}
-
 	/**
 	 * loads buttons appropriately
 	 */
-	private void loadButtons( ) {
-		physicsButton = new TextButton( "Physics Test Screen", fancyFont,
+	private void loadButtons( ) {		
+		physicsButton = new TextButton( "Physics Test Screen", fancyFont, buttonTex,
 				new ScreenSwitchHandler( ScreenType.PHYSICS ) );
 //		resurrectButton = new TextButton( "Parallax Test Screen", fancyFont,
 //				new ScreenSwitchHandler( ScreenType.RESURRECT ) );
 //		hazardButton = new TextButton( "Hazard Test Screen", fancyFont,
 //				new ScreenSwitchHandler( ScreenType.HAZARD ) );
-		level1Button = new TextButton( "AlphaBot", fancyFont,
+		level1Button = new TextButton( "AlphaBot", fancyFont, buttonTex,
 				new ScreenSwitchHandler( ScreenType.LOADING_1 ) );
-		dragonButton = new TextButton( "Dragon", fancyFont,
+		dragonButton = new TextButton( "Dragon", fancyFont, buttonTex,
 				new ScreenSwitchHandler( ScreenType.LOADING_2 ) );
 
-		backButton = new TextButton( "Back", fancyFont,
+		backButton = new TextButton( "Back", fancyFont, buttonTex,
 				new ScreenSwitchHandler( ScreenType.MAIN_MENU ) );
 		physicsButton.setColored( true );
 

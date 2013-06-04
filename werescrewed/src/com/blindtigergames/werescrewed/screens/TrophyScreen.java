@@ -57,7 +57,12 @@ public class TrophyScreen extends Screen {
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		player1Name = new Label( "Player 1", fancyFont );
 		player2Name = new Label( "Player 2", fancyFont );
-		next = new TextButton( "Next Level", fancyFont, 
+
+		// Button classes now require you to send in a texture for the button image.
+		buttonTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/menu/button.png", Texture.class );
+		
+		next = new TextButton( "Next Level", fancyFont, buttonTex, 
 				new ScreenSwitchHandler( screenTag ) );
 		next.setColored( true );
 

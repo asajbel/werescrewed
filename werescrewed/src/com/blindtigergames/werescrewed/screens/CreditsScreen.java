@@ -32,12 +32,18 @@ class CreditsScreen extends MenuScreen {
 	private int lineHeight = 0;
 
 	public CreditsScreen( ) {
+		super( );
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+	}
+
+	@Override
+	public void load( ){
+		super.load( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
-		// fancyFont = WereScrewedGame.manager.getFont( "ornatique" );
 		//logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 		//		+ "/common/title_background.png", Texture.class );
+				
 		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/transitions/trans-gear.png", Texture.class );
 		trans = new Sprite( transition );
@@ -53,8 +59,10 @@ class CreditsScreen extends MenuScreen {
 		artLabel = new Label( "Artists: ", fancyFont );
 		soundLabel = new Label( "Musicians", fancyFont );
 		
-		backButton = new TextButton( "Back", fancyFont,
-				new ScreenSwitchHandler( ScreenType.MAIN_MENU ) );
+		buttonTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/menu/button.png", Texture.class );
+		backButton = new TextButton( "Back", fancyFont, buttonTex,
+				new ScreenSwitchHandler( ScreenType.LOADING_MENU ) );
 		backButton.setColored( true );
 		 initPeople( );
 	}
@@ -103,7 +111,7 @@ class CreditsScreen extends MenuScreen {
 		}
 		
 		if ( !transOutEnd ) {
-			drawTransOut( batch, ScreenType.MAIN_MENU );
+			drawTransOut( batch, ScreenType.LOADING_MENU );
 		}
 		
 		batch.end( );
@@ -174,21 +182,5 @@ class CreditsScreen extends MenuScreen {
 		versionLabel.setY( centerY + k * lineHeight );
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 100 + backButton.getHeight( ) );
-	}
-
-	@Override
-	public void show( ) {
-	}
-
-	@Override
-	public void hide( ) {
-	}
-
-	@Override
-	public void pause( ) {
-	}
-
-	@Override
-	public void resume( ) {
 	}
 }

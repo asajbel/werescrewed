@@ -14,15 +14,12 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 
 public class Button {
 
-	
-	
 	protected static final Color NORMAL_COLOR = new Color( 0.24f, 0.24f, 0.24f,
 			1f );
 	protected static final Color HOVER_COLOR = new Color( 0f, 0.5f, 0.8f, 1f );
 
 	protected String caption = null;
 	protected BitmapFont font = null;
-	protected BitmapFont smallFont = null;
 	protected int x = 0;
 	protected int y = 0;
 	protected int width = 287; // width of button image
@@ -50,22 +47,17 @@ public class Button {
 	 *            String
 	 * @param font
 	 *            BitmapFont
-	 * @param handler
-	 *            ButtonHandler
 	 * @param x
 	 *            int
 	 * @param y
 	 *            int
 	 */
-	public Button( String caption, BitmapFont font, int x, int y ) {
+	public Button( String caption, BitmapFont font, Texture button, int x, int y ) {
 		this.caption = caption;
 		this.font = font;
 		this.x = x;
 		this.y = y;
-		smallFont = WereScrewedGame.manager.getFont( "longdon-small" );
-		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/button.png", Texture.class );
-		box = new Sprite( back );
+		box = new Sprite( button );
 		
 		bounds = new Rectangle( x, y - height, width, height );
 		calculateDimensions( );
@@ -78,11 +70,9 @@ public class Button {
 	 *            String
 	 * @param font
 	 *            BitmapFont
-	 * @param handler
-	 *            ButtonHandler
 	 */
-	public Button( String caption, BitmapFont font ) {
-		this( caption, font, 0, 0 );
+	public Button( String caption, BitmapFont font, Texture button ) {
+		this( caption, font, button, 0, 0 );
 	}
 
 	/**
@@ -185,16 +175,17 @@ public class Button {
 		
 		if ( colored ) {
 			font.setColor( HOVER_COLOR );
+			font.setScale( 1f );
 			font.draw( batch, caption, x - capWidth / 2 + width / 2 + 5, y - height
 					- capHeight / 2 );
-			font.setColor( originalColor );
 		}
 		else {
-			smallFont.setColor( NORMAL_COLOR );
-			smallFont.draw( batch, caption, x - smallCapWidth / 2 + width / 2 + 5, 
+			font.setColor( NORMAL_COLOR );
+			font.setScale( 0.5f );
+			font.draw( batch, caption, x - smallCapWidth / 2 + width / 2 + 5, 
 					y - height - smallCapHeight * 2 + 5 );
-			smallFont.setColor( originalColor );
 		}
+		font.setColor( originalColor );
 
 	}
 
@@ -231,8 +222,7 @@ public class Button {
 		capWidth = Math.round( dimensions.width );
 		capHeight = Math.round( dimensions.height );
 		
-		TextBounds smallDim = smallFont.getBounds( caption );
-		smallCapWidth = Math.round( smallDim.width );
-		smallCapHeight = Math.round( smallDim.height );
+		smallCapWidth = Math.round( capWidth / 2 );
+		smallCapHeight = Math.round( capHeight / 2 );
 	}
 }

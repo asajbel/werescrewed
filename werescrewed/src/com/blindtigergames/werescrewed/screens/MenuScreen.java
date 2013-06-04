@@ -10,8 +10,8 @@ import com.blindtigergames.werescrewed.sound.SoundManager;
 public class MenuScreen extends Screen {
 
 	public MenuScreen( ) {
-		super();
-		loadSounds();
+		super( );
+		loadSounds( );
 	}
 
 	protected void menuMoveUp(){

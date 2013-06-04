@@ -64,16 +64,15 @@ public final class ScreenManager {
 			screens.put( screen.ordinal( ), screen.getScreenInstance( ) );
 		}
 
-		if ( screen != ScreenType.PAUSE ) {
+		if ( screen != ScreenType.PAUSE && screen != ScreenType.OPTIONS_PAUSE ) {
 			if ( prevScreen != null ) {
-
 				if ( screen != prevScreen ) {
 					// Gdx.app.log( "disposing", screens
 					// .get( prevScreen.ordinal( ) ).getClass( )
 					// .getSimpleName( ) );
 					screens.get( prevScreen.ordinal( ) ).dispose( );
 					dispose( prevScreen );
-					pauseScreenShown = false;
+					//pauseScreenShown = false;
 				}
 
 			}
@@ -88,14 +87,13 @@ public final class ScreenManager {
 					// Gdx.app.log( "disposing", screens
 					// .get( prevScreen.ordinal( ) ).getClass( )
 					// .getSimpleName( ) );
-					screens.get( prevScreen.ordinal( ) ).dispose( );
-					dispose( prevScreen );
+					//screens.get( prevScreen.ordinal( ) ).dispose( );
+					//dispose( prevScreen );
 					screens.get( ScreenType.PAUSE.ordinal( ) ).dispose( );
 					dispose( ScreenType.PAUSE );
 					pauseScreenShown = false;
 				}
 			}
-
 			game.setScreen( screens.get( screen.ordinal( ) ) );
 			prevScreen = screen;
 		}

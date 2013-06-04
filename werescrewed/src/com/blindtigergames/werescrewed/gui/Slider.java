@@ -18,12 +18,13 @@ public class Slider extends OptionControl {
 	private final float SHIFT = 1.2f;
 	private SoundType type = null;
 	
-	public Slider( int min, int max, int current, int x, int y, SoundType type ) {
+	public Slider( int min, int max, int current, int x, int y, 
+			SoundType type, Texture slidTex, Texture screwTex ) {
 		super( min, max, current, x, y );
-		Texture slidTex = WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle + "/menu/slider.png", Texture.class );
-		Texture screwTex = WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle + "/menu/screw.png", Texture.class );
+		//Texture slidTex = WereScrewedGame.manager.get(
+		//		WereScrewedGame.dirHandle + "/menu/slider.png", Texture.class );
+		//Texture screwTex = WereScrewedGame.manager.get(
+		//		WereScrewedGame.dirHandle + "/menu/screw.png", Texture.class );
 		volume = new Sprite( slidTex );
 		screw = new Sprite( screwTex );
 		maxPos = x + 180;
@@ -31,8 +32,8 @@ public class Slider extends OptionControl {
 		this.type = type;
 	}
 	
-	public Slider( int min, int max, int current, SoundType type ) {
-		this( min, max, current, 0, 0, type );
+	public Slider( int min, int max, int current, SoundType type, Texture slidTex, Texture screwTex ) {
+		this( min, max, current, 0, 0, type, slidTex, screwTex );
 	}
 
 	@Override

@@ -59,6 +59,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected final float SCALE_MAX = 10.0f;
 	protected final float SCALE_SIZE = 150.0f;
 	protected float scaleMax = 0.0f;
+	protected Texture buttonTex = null;
 	protected Sprite trans = null;
 	protected boolean alphaFinish = false;
 	protected boolean transInEnd = true;
@@ -97,8 +98,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		sounds = null;
 	}
 
-	public void load(){
-	}
+	public void load(){ }
 	
 	@Override
 	public void render( float delta ) {
