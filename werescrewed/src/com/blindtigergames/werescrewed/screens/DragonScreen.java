@@ -102,7 +102,7 @@ public class DragonScreen extends Screen {
 		getTailStructureScrews();
 		initFireballEnemy(new Vector2(13750, 300));
 
-		initEyebrow(  );
+		
 		
 		mouthFire = new MouthFire( "mouth-fire", new Vector2(25000, 900), new Vector2(32000, 500),
 				5f, 100f, 1000f, level.world);
@@ -144,6 +144,8 @@ public class DragonScreen extends Screen {
 		jaw_skeleton.addMover( new TimelineTweenMover( t.start( ) ) );
 		
 		headDecals();
+		
+		initEyebrow(  );
 		
 	}
 	@Override
@@ -1051,16 +1053,18 @@ public class DragonScreen extends Screen {
 		Skeleton skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
 		Vector2 posPix = skeleton.getPositionPixel( ).add( -575,800 );//-975,306
-		TiledPlatform brow = new PlatformBuilder(level.world).name( "eyebrow" ).dimensions( 2,2 ).position( posPix.cpy() ).buildTilePlatform( );
-		skeleton.addPlatform( brow );
-		brow.noCollide( );
-		brow.setVisible( false );
+		//TiledPlatform brow = new PlatformBuilder(level.world).name( "eyebrow" ).dimensions( 2,2 ).position( posPix.cpy() ).buildTilePlatform( );
+		Skeleton brow = new Skeleton( "eyebrow", posPix.cpy(), null, level.world );
+		skeleton.addSkeleton( brow );
+		//brow.noCollide( );
+		brow.setVisible( true );
+		brow.setFgFade( false );
 		
 		TextureAtlas browAtlas = new TextureAtlas(
 				Gdx.files.internal( "data/levels/dragon/head_top_right.pack" ) );
 		//At rest the eyebrow is unrotated at 0,0 local position.
-		brow.addFGDecal( browAtlas.createSprite( "eyebrow" ));//, new Vector2(-393,-161) );
-		addFGEntity( brow );
+		brow.addFGDecal( Sprite.scale( browAtlas.createSprite( "eyebrow" ),1.6f));//, new Vector2(-393,-161) );
+		addFGSkeleton( brow );
 		
 		//angry mover
 		Timeline browSequence = Timeline.createSequence( );
@@ -1116,6 +1120,7 @@ public class DragonScreen extends Screen {
 		browSequence = browSequence.repeat( Tween.INFINITY, 0f );
 		
 		brow.addMover( new TimelineTweenMover( browSequence.start( ) ), RobotState.IDLE );
+		brow.setCurrentMover( RobotState.HOSTILE);
 		
 		//((TimelineTweenMover)brow.currentMover( )).timeline.start( );
 		
@@ -1254,11 +1259,6 @@ public class DragonScreen extends Screen {
 		
 		
 	}
-	
-	void neckDecal(){
-		
-	}
-	
 
 	void createMotor(Skeleton rotating, Skeleton parent, float motorSpeed){
 		
@@ -1324,6 +1324,4 @@ public class DragonScreen extends Screen {
 				.get( "tail2_ss_right" );
 		
 	}
-	
-	//body_balloon_center/left/right
 }
