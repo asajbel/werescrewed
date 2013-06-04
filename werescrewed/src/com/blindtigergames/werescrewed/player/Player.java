@@ -1193,10 +1193,10 @@ public class Player extends Entity {
 	private void updateFootFrictionNew( ) {
 
 		if ( prevButton != null ) {
-			if ( body.getLinearVelocity( ).x > MAX_VELOCITY ) {
+			if ( body.getType( ) != BodyType.KinematicBody && body.getLinearVelocity( ).x > MAX_VELOCITY ) {
 				body.setLinearVelocity( MAX_VELOCITY,
 						body.getLinearVelocity( ).y );
-			} else if ( body.getLinearVelocity( ).x < -MAX_VELOCITY ) {
+			} else if ( body.getType( ) != BodyType.KinematicBody && body.getLinearVelocity( ).x < -MAX_VELOCITY ) {
 				body.setLinearVelocity( -MAX_VELOCITY,
 						body.getLinearVelocity( ).y );
 			}

@@ -3,7 +3,6 @@ package com.blindtigergames.werescrewed.checkpoints;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
@@ -121,23 +120,18 @@ public class ProgressManager {
 					}
 				}
 			}
-		} else {
-//			if ( player.body.getType( ) == BodyType.KinematicBody && !player.isPlayerDead( ) ) {
-//				player.setMoverAtCurrentState( null );
-//				player.setDeadPlayerHitCheckpnt( true );
-//			}
-		}
+			for ( Player movingPlayer : players.values( ) ) {
+				if ( movingPlayer.currentMover( ) != null && 
+						movingPlayer.body.getType( ) == BodyType.KinematicBody &&
+						movingPlayer.currentMover( ) instanceof FollowEntityWithVelocity ) {
+					FollowEntityWithVelocity playerMover = ( FollowEntityWithVelocity )movingPlayer.currentMover( );
+					playerMover.changeEntityToFollow( checkPoint );
+				}
+			}
+		} 
 	}
 	
 
-	/**
-	 * end hit checkpoint
-	 */
-	public void endHitCheckPoint( CheckPoint chkpt, Player player ) {
-		//if ( chkpt == currentCheckPoint ) {
-		//	player.setDeadPlayerHitCheckpnt( false );
-		//}
-	}
 	
 	public boolean isPlayerCollidingWithCurrentChkpt ( Player player ) {
 		return currentCheckPoint.body.getFixtureList( ).get( 0 ).testPoint( player.getPosition( ) );
@@ -166,9 +160,9 @@ public class ProgressManager {
 				this.startSpawn( player );
 			}
 			if ( player.body.getType( ) == BodyType.KinematicBody && 
+					!player.isPlayerDead( ) && 
 					isPlayerCollidingWithCurrentChkpt( player ) ) {
 				wait( player );
-				//Gdx.app.log( " progress 1", "player is waiting to rez");
 			}
 			if ( !player.isPlayerDead( ) && ghostMap.containsKey( player.name ) ) {
 				ghostMap.get( player.name ).clearAnchors( );
@@ -193,12 +187,9 @@ public class ProgressManager {
 				noPlayersDead = false;
 			}
 			if ( player.isRezzing( ) ) {
-				//Gdx.app.log( " progress 2", "player is rezzing");
 				if ( player.getRezTime( ) < rezDelay ) {
-					//Gdx.app.log( " progress 3", "player is rezzing");
 					player.setRezTime( player.getRezTime( ) + deltaTime );
 				} else {
-					//Gdx.app.log( " progress 2", "player is spawning");
 					spawnAtCheckPoint( player );
 				}
 			}
@@ -275,7 +266,6 @@ public class ProgressManager {
 	private void buildGhost( Player player ) {
 		Entity ghost;
 		// build ghost entity
-		// Gdx.app.log("ghost:", player.name);
 		SimpleSpinemator spine = new SimpleSpinemator( player.getSpinemator( )
 				.getSkeletonData( ), "Ghost", true );
 
@@ -370,17 +360,15 @@ public class ProgressManager {
 		removeRezScrew( );
 		player.setRezTime( 0f );
 		player.respawnPlayer( );
-		Vector2 rezPoint = new Vector2( currentCheckPoint.getPositionPixel( ) );
-		// rezPoint.add( -60 * Util.PIXEL_TO_BOX , 60f * Util.PIXEL_TO_BOX );
-
-		Vector2 diff = rezPoint.sub( player.getPositionPixel( ) ).mul( 0.25f );
 
 		player.setMoverAtCurrentState( new FollowEntityWithVelocity( player
-				.getPositionPixel( ), currentCheckPoint, Vector2.Zero, diff ) );
+				.getPositionPixel( ), currentCheckPoint ) );
 		// player.deactivateAnchors( );
 		// player.body.setLinearVelocity( diff );
 		player.setVisible( false, true );
 
+		player.activateAnchors( );
+		
 		if ( rezScrewMap.containsKey( player.name ) ) {
 			rezScrewMap.get( player.name ).remove( );
 			if ( rezScrewMap.get( player.name ).isRemoved( ) ) {
@@ -395,6 +383,9 @@ public class ProgressManager {
 		rezDelay = currentCheckPoint.getSpinemator( ).getAnimationDuration( ) / 10f;
 		player.setVisible( true );
 		player.setRezzing( true );
+		player.setMoverAtCurrentState( null );
+		player.body.setType( BodyType.DynamicBody );
+		player.body.setLinearVelocity( Vector2.Zero );
 		animTime = 0f;
 	}
 
@@ -419,10 +410,7 @@ public class ProgressManager {
 		Vector2 rezPoint = new Vector2( currentCheckPoint.body.getPosition( ) );
 		rezPoint.add( -60 * Util.PIXEL_TO_BOX, 36f * Util.PIXEL_TO_BOX );
 		player.activateAnchors( );
-		player.setMoverAtCurrentState( null );
 		player.body.setTransform( rezPoint, 0.0f );
-		player.body.setType( BodyType.DynamicBody );
-		player.body.setLinearVelocity( Vector2.Zero );
 		player.setVisible( true );
 		Filter filter = new Filter( );
 		for ( Fixture f : player.body.getFixtureList( ) ) {

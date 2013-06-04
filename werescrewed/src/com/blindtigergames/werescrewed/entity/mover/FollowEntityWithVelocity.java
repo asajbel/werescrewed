@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.entity.mover;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.entity.Entity;
@@ -11,15 +10,14 @@ import com.blindtigergames.werescrewed.util.Util;
 public class FollowEntityWithVelocity implements IMover {
 
 	private Vector2 currentPoint;
-	private Vector2 offset;
 	private Entity entity;
-	private Vector2 speed;
-	private float alpha = 0;
-	private boolean below = false;
-	private boolean toTheLeft = false;
-	private boolean pastUp = false;
-	private boolean pastBy = false;
 	private PuzzleType puzzleType;
+	private int timesFlewByX;
+	private int timesFlewByY;
+	private boolean greaterThanX;
+	private boolean greaterThanY;
+	float speedX;
+	float speedY;
 
 	/**
 	 * use this contructor of lerp mover to create a auto moving lerp either an
@@ -36,52 +34,53 @@ public class FollowEntityWithVelocity implements IMover {
 	 * @param loopTime
 	 *            how many loops this goes through
 	 */
-	public FollowEntityWithVelocity( Vector2 beginningPoint, Entity entity,
-			Vector2 offset, Vector2 speed ) {
+	public FollowEntityWithVelocity( Vector2 beginningPoint, Entity entity ) {
 		this.currentPoint = beginningPoint.cpy( );
-		this.offset = offset.cpy( );
 		this.entity = entity;
-		if ( beginningPoint.x < entity.getPositionPixel( ).x ) {
-			toTheLeft = true;
-		}
-		if ( beginningPoint.y < entity.getPositionPixel( ).y ) {
-			below = true;
-		}
-		this.speed = speed;
 		puzzleType = PuzzleType.OVERRIDE_ENTITY_MOVER;
+		timesFlewByX = 10;
+		timesFlewByY = 10;
+		speedX = (entity.getPositionPixel( ).x - currentPoint.x )* timesFlewByX;
+		speedY = (entity.getPositionPixel( ).y - currentPoint.y )* timesFlewByY;
+		greaterThanX = (beginningPoint.x>entity.getPositionPixel( ).x) ? true : false;
+		greaterThanY = (beginningPoint.y>entity.getPositionPixel( ).y) ? true : false;
 	}
 
 	@Override
 	public void move( float deltaTime, Body body ) {
 		currentPoint = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-		float speedX = entity.getPositionPixel( ).x - currentPoint.x;
-		if ( currentPoint.x > entity.getPositionPixel( ).x && toTheLeft ) {
-			speed.x = speedX * 0.1f;
-			toTheLeft = false;
-		} else if ( currentPoint.x < entity.getPositionPixel( ).x
-				&& !toTheLeft ) {
-			speed.x = speedX * 0.1f;
-			toTheLeft = true;
+		boolean stillGreaterThanX = (currentPoint.x>entity.getPositionPixel( ).x) ? true : false;
+		boolean stillGreaterThanY = (currentPoint.y>entity.getPositionPixel( ).y) ? true : false;
+		if ( stillGreaterThanX != greaterThanX || stillGreaterThanY != greaterThanY ) {
+			if ( stillGreaterThanX != greaterThanX  ) {
+				speedX = (entity.getPositionPixel( ).x - currentPoint.x );
+			}
+			if ( stillGreaterThanY != greaterThanY ) {
+				speedY = (entity.getPositionPixel( ).y - currentPoint.y );
+			}
 		}
-		float speedY = entity.getPositionPixel( ).y - currentPoint.y;
-		if ( currentPoint.y > entity.getPositionPixel( ).y && below ) {
-			speed.y = speedY * 0.1f;
-			below = false;
-		} else if ( currentPoint.y < entity.getPositionPixel( ).y && !below ) {
-			speed.y = speedY * 0.1f;
-			below = true;
-		}
-		//Gdx.app.log( "Follow entity with velocity", speed.toString( ));
-		body.setLinearVelocity( speed );
+		
+		body.setLinearVelocity( speedX * Util.PIXEL_TO_BOX, speedY * Util.PIXEL_TO_BOX );
 	}
 
 	@Override
 	public void runPuzzleMovement( Screw screw, float screwVal, Platform p ) {
-		alpha = screwVal;
+		//dont use for puzzles
 	}
 
 	@Override
 	public PuzzleType getMoverType( ) {
 		return puzzleType;
+	}
+	
+	/**
+	 * change the entity that the body follows
+	 */
+	public void changeEntityToFollow( Entity entity ) {
+		this.entity = entity;
+		speedX = (entity.getPositionPixel( ).x - currentPoint.x )* timesFlewByX;
+		speedY = (entity.getPositionPixel( ).y - currentPoint.y )* timesFlewByY;
+		greaterThanX = (currentPoint.x>entity.getPositionPixel( ).x) ? true : false;
+		greaterThanY = (currentPoint.y>entity.getPositionPixel( ).y) ? true : false;
 	}
 }

@@ -117,13 +117,6 @@ public class CheckPoint extends Entity {
 	}
 	
 	/**
-	 * end hit checkpoint
-	 */
-	public void endHitCheckPoint( Player player ) {
-		progressManager.endHitCheckPoint( this, player );
-	}
-	
-	/**
 	 * returns the entity this checkpoint is attached to
 	 */
 	public Entity getEntity( ) {

@@ -450,16 +450,6 @@ public class Skeleton extends Platform {
 					// event.setTargetPosRotFromSkeleton( frameRate, this );
 				}
 
-				for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-					if ( chkpt.removeNextStep ) {
-						entitiesToRemove.add( chkpt );
-					} else {
-						// if ( wasInactive && isUpdatable ) {
-						// chkpt.body.setType( BodyType.DynamicBody );
-						// }
-						chkpt.update( deltaTime );
-					}
-				}
 				if ( isUpdatable ) {
 					for ( Platform platform : kinematicPlatformMap.values( ) ) {
 						if ( platform.removeNextStep ) {
@@ -503,6 +493,17 @@ public class Skeleton extends Platform {
 							}
 							platform.updateMover( deltaTime );
 							platform.update( deltaTime );
+						}
+					}
+					for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+						if ( chkpt.removeNextStep ) {
+							entitiesToRemove.add( chkpt );
+						} else {
+							if ( wasInactive  ) {
+								chkpt.body.setActive( true );
+								chkpt.body.setAwake( false );
+							}
+							chkpt.update( deltaTime );
 						}
 					}
 					for ( Screw screw : screwMap.values( ) ) {
@@ -693,13 +694,14 @@ public class Skeleton extends Platform {
 				platform.body.setActive( false );
 			}
 		}
-		// for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-		// if ( chkpt.removeNextStep ) {
-		// entitiesToRemove.add( chkpt );
-		// } else {
-		// chkpt.body.setType( BodyType.KinematicBody );
-		// }
-		// }
+		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+			if ( chkpt.removeNextStep ) {
+				entitiesToRemove.add( chkpt );
+			} else {
+				chkpt.body.setActive( true );
+				chkpt.body.setAwake( false );
+			}
+		}
 		for ( Screw screw : screwMap.values( ) ) {
 			if ( screw.removeNextStep ) {
 				entitiesToRemove.add( screw );
