@@ -802,6 +802,8 @@ public class DragonScreen extends Screen {
 	}
 
 	void buildBackground(){
+		float ratio = (float)screenHeight/(float)height;
+		
 		TextureAtlas clouds_sun_bg = WereScrewedGame.manager.getAtlas( "clouds_sun_bg" );
 		TextureAtlas mountains_back_clouds = WereScrewedGame.manager.getAtlas( "mountains-back-clouds" );
 		float frontTopCloudsY = 2400, midOrangeCloudsY = -900, bottomFrontCloudsY = -1000;
@@ -969,7 +971,7 @@ public class DragonScreen extends Screen {
 		float alpha, aOffset;
 		
 		//mountains
-		mountainW = 1275*level.bgCamZoomMax; mountainY = -200f;
+		mountainW = 1275*level.bgCamZoomMax; mountainY = -200f*ratio;
 		for(int i = 0; i < numMountains; ++i ){
 			bdef=new BodyDef();
 			bdef.fixedRotation=true;
@@ -996,9 +998,11 @@ public class DragonScreen extends Screen {
 		e=new Entity("sun",new Vector2(),null,b,false,0);//0,2048-2*
 		e.changeSprite( Sprite.scale( clouds_sun_bg.createSprite( "sun" ), sunScale ) );
 		//e.setPosition( new Vector2().mul( Util.PIXEL_TO_BOX ) );
-		float sunYPos = (2.99111f*WereScrewedGame.getHeight( ))-sunScale*e.sprite.getHeight( )+yOffset;
-		m = new ParallaxMover( new Vector2(400,sunYPos),
-				 new Vector2(400,-2048+sunYPos),
+		float sunYPos = (2.99111f*height)-sunScale*e.sprite.getHeight( )+yOffset;
+		sunYPos = sunYPos * ratio; 
+		float endHeight = -2048/ratio+sunYPos; 
+		m = new ParallaxMover( new Vector2(400*ratio,sunYPos),
+				 new Vector2(400*ratio,endHeight),
 				 0.00009f,0.00001f, level.camera, false, LinearAxis.VERTICAL );
 		e.setMoverAtCurrentState( m );
 		m.setLoopRepeat( false );
