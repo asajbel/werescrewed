@@ -1,19 +1,12 @@
 mountains-back-clouds.png
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Linear,Linear
 repeat: none
 offset: 0, 0
 mountains
   rotate: false
-  xy: 2, 681
-  size: 1280, 641
-  orig: 1280, 641
-  offset: 0, 0
-  index: -1
-back-clouds
-  rotate: false
   xy: 2, 2
-  size: 1859, 677
-  orig: 1859, 677
+  size: 1280, 753
+  orig: 1280, 753
   offset: 0, 0
   index: -1

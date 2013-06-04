@@ -1035,6 +1035,20 @@ public class Entity implements GleedLoadable {
 		}
 
 	}
+	
+	/**
+	 * Make this entity's body collide with nothing.
+	 */
+	public void noCollide( ) {
+		Filter filter;
+		for ( Fixture f : body.getFixtureList( ) ) {
+			filter = f.getFilterData( );
+			filter.categoryBits = Util.CATEGORY_IGNORE;
+			filter.maskBits = Util.CATEGORY_NOTHING;
+			f.setFilterData( filter );
+		}
+
+	}
 
 	/**
 	 * sets the Density of all fixtures associated with this entity

@@ -967,21 +967,6 @@ public class DragonScreen extends Screen {
 		float mountainW = (1859-100)*level.bgCamZoomMax, mountainY = 100;
 
 		float alpha, aOffset;
-		/*for(int i = 0; i < numMountains; ++i ){
-			bdef=new BodyDef();
-			bdef.fixedRotation=true;
-			bdef.type=BodyType.StaticBody;
-			b=level.world.createBody( bdef );
-			e=new Entity("back-clouds"+i,new Vector2(),null,b,false,0);
-			e.changeSprite( mountains_back_clouds.createSprite( "back-clouds" ) );
-			level.backgroundRootSkeleton.addLooseEntity( e );
-			aOffset=i*.0001f;
-			alpha = (i)*(1f/(numMountains));//+aOffset;
-			m = new ParallaxMover( new Vector2(mountainW,mountainY),
-					new Vector2(-mountainW,mountainY),
-					 0.00001f,alpha, null, true, LinearAxis.HORIZONTAL );
-			e.setMoverAtCurrentState( m );
-		}*/
 		
 		//mountains
 		mountainW = 1275*level.bgCamZoomMax; mountainY = -200f;

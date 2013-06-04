@@ -32,6 +32,7 @@
 /levels/alphabot/foot_shin_thigh.pack
 /levels/alphabot/knee_chest_in.pack
 /levels/alphabot/engine.pack
+/common/chest-engine.png
 /levels/alphabot/chest_pipes_thigh_pipes.pack
 /levels/alphabot/left-arm-internal.pack
 /levels/alphabot/head_left.pack
