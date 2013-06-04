@@ -1,6 +1,6 @@
 gears.png
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Linear,Linear
 repeat: none
 offset: 0, 0
 gear2

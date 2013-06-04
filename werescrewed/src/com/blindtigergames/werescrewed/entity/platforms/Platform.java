@@ -16,6 +16,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Skeleton;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.util.Util;
@@ -67,8 +68,7 @@ public class Platform extends Entity {
 	private Vector2 originRelativeToSkeleton; // box meters
 
 	protected Joint extraSkeletonJoint;
-	
-	
+	private boolean firstStep = true;
 
 	// ============================================
 	// Constructors
@@ -187,9 +187,7 @@ public class Platform extends Entity {
 		Vector2 bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 		if ( previousPosition.x != localPosition.x
 				|| previousPosition.y != localPosition.y
-				|| ( body != null
-				&& ( prevBodyPos.x != bodyPos.x 
-				|| prevBodyPos.y != bodyPos.y) ) ) {
+				|| ( body != null && ( prevBodyPos.x != bodyPos.x || prevBodyPos.y != bodyPos.y ) ) ) {
 			return true;
 		}
 		return false;
@@ -212,10 +210,48 @@ public class Platform extends Entity {
 	 * returns previous rotation last time it rotated
 	 */
 	public boolean hasRotated( ) {
-		if ( previousRotation != localRotation || prevBodyAngle != body.getAngle( ) ) {
+		if ( previousRotation != localRotation
+				|| prevBodyAngle != body.getAngle( ) ) {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void updateDecals( float deltaTime ) {
+		if ( firstStep || hasMoved( ) || hasRotated( ) || this.currentMover( ) != null || 
+				( this.getParentSkeleton( ) != null && ( this.getParentSkeleton( ).hasMoved( ) || 
+				this.getParentSkeleton( ).hasRotated( ) 
+				|| this.getParentSkeleton( ).currentMover( ) != null ) ) ) {
+			Vector2 bodyPos = this.getPositionPixel( );
+			float angle = this.getAngle( ), cos = ( float ) Math.cos( angle ), sin = ( float ) Math
+					.sin( angle );
+			float x, y, r;
+			Vector2 offset;
+			Sprite decal;
+			float a = angle * Util.RAD_TO_DEG;
+			for ( int i = 0; i < fgDecals.size( ); i++ ) {
+				offset = fgDecalOffsets.get( i );
+				decal = fgDecals.get( i );
+				r = fgDecalAngles.get( i );
+				x = bodyPos.x + ( ( offset.x ) * cos ) - ( ( offset.y ) * sin );
+				y = bodyPos.y + ( ( offset.y ) * cos ) + ( ( offset.x ) * sin );
+				decal.setPosition( x + decal.getOriginX( ),
+						y + decal.getOriginY( ) );
+				decal.setRotation( r + a );
+			}
+			for ( int i = 0; i < bgDecals.size( ); i++ ) {
+				offset = bgDecalOffsets.get( i );
+				decal = bgDecals.get( i );
+				r = bgDecalAngles.get( i );
+				x = bodyPos.x + ( ( offset.x ) * cos ) - ( ( offset.y ) * sin );
+				y = bodyPos.y + ( ( offset.y ) * cos ) + ( ( offset.x ) * sin );
+				decal.setPosition( x + decal.getOriginX( ),
+						y + decal.getOriginY( ) );
+				decal.setRotation( r + a );
+			}
+		}
+		firstStep = false;
 	}
 
 	/**

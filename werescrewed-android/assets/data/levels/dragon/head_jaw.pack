@@ -1,19 +1,19 @@
-body-neck.png
+head_jaw.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 offset: 0, 0
-neck
+dragonbottom_right
   rotate: false
-  xy: 4, 1007
-  size: 1289, 906
-  orig: 1289, 906
+  xy: 2, 2
+  size: 1676, 423
+  orig: 1676, 423
   offset: 0, 0
   index: -1
-body_left
+dragonbottom_left
   rotate: false
-  xy: 4, 4
-  size: 1432, 997
-  orig: 1432, 997
+  xy: 2, 427
+  size: 1228, 1017
+  orig: 1228, 1017
   offset: 0, 0
   index: -1

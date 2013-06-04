@@ -350,7 +350,7 @@ public class EntityDef {
 	
 	public void loadTexture(){
 		if (!texName.equals( "" )){
-			WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/" + texName,
+			texture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/" + texName,
 					Texture.class ) ;
 		}
 	}
