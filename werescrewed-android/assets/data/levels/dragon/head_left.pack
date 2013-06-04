@@ -1,12 +1,12 @@
-mountains-back-clouds.png
+head_left.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 offset: 0, 0
-mountains
+head_left
   rotate: false
   xy: 2, 2
-  size: 1280, 753
-  orig: 1280, 753
+  size: 1495, 1650
+  orig: 1495, 1650
   offset: 0, 0
   index: -1

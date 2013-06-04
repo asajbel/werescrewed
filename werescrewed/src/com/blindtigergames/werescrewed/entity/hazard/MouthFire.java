@@ -32,7 +32,16 @@ public class MouthFire extends Hazard {
 	private Array< Fixture > fixtureList;
 	
 	
-	
+	/**
+	 * Mouth fire object for dragon level.
+	 * @param name
+	 * @param pos source of fire
+	 * @param destinationPix fire will go to get here
+	 * @param secondsToComplete 1s is quick
+	 * @param startHeightPix at source of fire, how tall will it be
+	 * @param endHeightPix at end of fire, max height it reaches
+	 * @param world
+	 */
 	public MouthFire( String name, Vector2 pos, Vector2 destinationPix, float secondsToComplete, float startHeightPix, float endHeightPix, World world) {
 		super( name, pos, null, world, true );
 		

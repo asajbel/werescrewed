@@ -908,7 +908,7 @@ public class PhysicsTestScreen extends Screen {
 		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
 				new Vector2( pos.cpy( ).add(0,n*h) ),
 				new Vector2(),
-				25, world, true );
+				 world, true );
 		for(int i =0; i < 5; ++i ){
 			fireballEmitter.addParticle( createBoltEnemy( pos.cpy( ).add(0,n*h), i ), 30, 0, i*5 );
 		}
@@ -925,11 +925,13 @@ public class PhysicsTestScreen extends Screen {
 	void initEyebrow(Vector2 pos){
 		TiledPlatform brow = platBuilder.name( "eyebrow" ).dimensions( 2,2 ).position( pos.cpy() ).buildTilePlatform( );
 		skeleton.addPlatform( brow );
+		brow.noCollide( );
+		brow.setVisible( false );
 		
 		TextureAtlas browAtlas = new TextureAtlas(
-				Gdx.files.internal( "data/levels/dragon/head.pack" ) );
+				Gdx.files.internal( "data/levels/dragon/head_top_right.pack" ) );
 		//At rest the eyebrow is unrotated at 0,0 local position.
-		brow.addFGDecal( browAtlas.createSprite( "dragoneyebrow" ));//, new Vector2(-393,-161) );
+		brow.addFGDecal( browAtlas.createSprite( "eyebrow" ));//, new Vector2(-393,-161) );
 		addFGEntity( brow );
 		
 		//angry mover

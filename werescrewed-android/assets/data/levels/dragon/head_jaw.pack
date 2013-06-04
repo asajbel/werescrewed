@@ -1,0 +1,19 @@
+head_jaw.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+offset: 0, 0
+dragonbottom_right
+  rotate: false
+  xy: 2, 2
+  size: 1676, 423
+  orig: 1676, 423
+  offset: 0, 0
+  index: -1
+dragonbottom_left
+  rotate: false
+  xy: 2, 427
+  size: 1228, 1017
+  orig: 1228, 1017
+  offset: 0, 0
+  index: -1

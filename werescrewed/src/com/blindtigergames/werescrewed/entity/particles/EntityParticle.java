@@ -21,7 +21,7 @@ public class EntityParticle {
 	private float initLifeSpan;
 	private Entity particle;
 	private Vector2 initPositionMeter;
-	private float delay, delayDelta;
+	private float initDelay, delayDelta;
 	private boolean isDelayDone;
 
 	/**
@@ -46,9 +46,9 @@ public class EntityParticle {
 		this.initLifeSpan = initLifeSpan;
 		this.lifeDelta = initLifeSpan;
 		this.initPositionMeter = particleEntity.getPosition( );
-		this.delay = delay;
+		this.initDelay = delay;
 		this.delayDelta = delay;
-		isDelayDone = (this.delay <= 0);
+		isDelayDone = (this.initDelay <= 0);
 	}
 
 	/**
@@ -109,12 +109,12 @@ public class EntityParticle {
 	}
 	
 	/**
-	 * Reset particle to initial constructor lifetime & position
+	 * Reset particle to initial constructor lifetime, position, and delay
 	 */
 	public void hardReset(){
 		particle.setPosition( initPositionMeter.cpy() );
 		lifeDelta = initLifeSpan;
-		delayDelta = delay;
+		delayDelta = initDelay;
 	}
 	
 	public Entity getEntity(){
