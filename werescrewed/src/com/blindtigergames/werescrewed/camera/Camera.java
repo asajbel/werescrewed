@@ -43,7 +43,7 @@ public class Camera {
 	public static final float STANDARD_ZOOM = 1f;//1.2
 	public static final float MAX_ZOOM = 16f;
 	public static final float SCREEN_TO_ZOOM = 1468.6f;
-	private int fps = 60;
+	private int fps;
 
 	// Fields for timer
 	public static final int MS_BEFORE_ZOOM = 3000;
@@ -113,6 +113,8 @@ public class Camera {
 		this.targetZoom = MIN_ZOOM;
 		this.anchorList = AnchorList.getInstance( camera );
 		this.anchorList.clear( );
+		
+		this.fps = 60;
 
 		this.prevActiveAnchors = 0;
 		this.currActiveAnchors = 0;
