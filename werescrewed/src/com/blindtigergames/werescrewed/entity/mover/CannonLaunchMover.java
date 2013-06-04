@@ -2,10 +2,12 @@ package com.blindtigergames.werescrewed.entity.mover;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class CannonLaunchMover implements IMover {
@@ -13,16 +15,19 @@ public class CannonLaunchMover implements IMover {
 	Skeleton cannon;
 	float impulseStrength;
 	float delay;
-
+	SoundManager sounds;
+	
 	public CannonLaunchMover( Skeleton cannon, float impulseStrength,
 			float delaySeconds ) {
 		this.impulseStrength = impulseStrength;
 		this.cannon = cannon;
 		this.delay = delaySeconds;
+		loadSounds();
 	}
 
 	@Override
 	public void move( float deltaTime, Body body ) {
+		sounds.update(deltaTime);
 		delay -= deltaTime;
 		if ( delay <= 0f ) {
 			// Gdx.app.log( "CannonLaunchMover", "LAUNCHING!" );
@@ -32,6 +37,7 @@ public class CannonLaunchMover implements IMover {
 			( ( Entity ) ( body.getUserData( ) ) ).setMoverNullAtCurrentState( ); // delete
 																					// this
 																					// mover!
+			sounds.playSound( "launch" );
 			cannon.addBehindParticleEffect( "cannon", true, true ).start( );
 		}
 
@@ -49,4 +55,9 @@ public class CannonLaunchMover implements IMover {
 		return null;
 	}
 
+	public void loadSounds(){
+		sounds = new SoundManager();
+		sounds.getSound( "launch" , WereScrewedGame.dirHandle + "/levels/dragon/cannon.ogg");
+		
+	}
 }

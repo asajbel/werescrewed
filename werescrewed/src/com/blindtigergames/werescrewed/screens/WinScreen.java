@@ -9,7 +9,7 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
 
-class WinScreen implements com.badlogic.gdx.Screen {
+class WinScreen extends MenuScreen {
 
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
