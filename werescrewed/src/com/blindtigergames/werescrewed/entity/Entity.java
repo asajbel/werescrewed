@@ -419,16 +419,7 @@ public class Entity implements GleedLoadable {
 			if ( anchors != null && anchors.size( ) != 0 ) {
 				updateAnchors( );
 			}
-			// animation stuff may go here
-			// bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-			// if ( sprite != null ) {
-			// sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-			// sprite.setRotation( MathUtils.radiansToDegrees
-			// * body.getAngle( ) );
-			// sprite.update( deltaTime );
-			// }
 			updateDecals( deltaTime );
-
 		}
 		if ( spinemator != null ) {
 			spinemator.update( deltaTime );

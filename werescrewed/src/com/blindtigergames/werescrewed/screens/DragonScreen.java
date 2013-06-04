@@ -22,11 +22,13 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.action.RotateTweenAction;
+import com.blindtigergames.werescrewed.entity.action.SetRobotStateAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Enemy;
@@ -100,7 +102,7 @@ public class DragonScreen extends Screen {
 		getTailStructureScrews();
 		initFireballEnemy(new Vector2(13750, 300));
 
-		
+		initEyebrow(  );
 		
 		mouthFire = new MouthFire( "mouth-fire", new Vector2(25000, 900), new Vector2(32000, 500),
 				5f, 100f, 1000f, level.world);
@@ -782,7 +784,7 @@ public class DragonScreen extends Screen {
 			s = balloons.createSprite( "balloon_big"+i );
 			balloon1.addFGDecal( Sprite.scale( s,scale), new Vector2(-s.getWidth( )/2*scale,-s.getHeight( )/2.8f*scale) );
 			addFGEntity( balloon1 );
-			
+			//pizza2
 			
 			
 		}
@@ -1009,25 +1011,26 @@ public class DragonScreen extends Screen {
 		//head_skeleton
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "fuck_jaw_skeleton" ),
-				head_skeletonSkeleton = ( Skeleton ) LevelFactory.entities
+				head_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
 		TextureAtlas head_left = WereScrewedGame.manager.getAtlas( "head_left" );
 		TextureAtlas head_right = WereScrewedGame.manager.getAtlas( "head_top_right" );
 		TextureAtlas head_jaw = WereScrewedGame.manager.getAtlas( "head_jaw" );
+		TextureAtlas head_interior = WereScrewedGame.manager.getAtlas( "body_right-head_interior" );
 		float scale = 2;//1f/.66f;
 		//UPPER HEAD
 		Sprite s;
 		
 		Vector2 headPos = new Vector2(-3500,-1460 );
 		s = head_left.createSprite( "head_left" );
-		head_skeletonSkeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
-		head_skeletonSkeleton.addFGDecal( 
+		head_skeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
+		head_skeleton.addFGDecal( 
 				Sprite.scale( head_right.createSprite( "head_right" ), scale ), 
 				new Vector2(4946,1029).add( headPos ) );
-		head_skeletonSkeleton.addFGDecal( 
+		head_skeleton.addFGDecal( 
 				Sprite.scale( head_right.createSprite( "head_middle" ), scale ), 
 				new Vector2(2982,30).add( headPos ) );
-		addFGSkeleton( head_skeletonSkeleton );
+		addFGSkeleton( head_skeleton );
 		
 		//LOW HEAD/ JAW
 		Vector2 pos = new Vector2(-1375,-615);
@@ -1036,6 +1039,87 @@ public class DragonScreen extends Screen {
 		jaw_skeleton.addFGDecal( Sprite.scale( head_jaw.createSprite( "dragonbottom_right" ), scale ), 
 				new Vector2(s.getWidth( )*scale-8,16).add( pos ) );
 		addFGSkeleton( jaw_skeleton );
+		
+		//inside of head.
+		head_skeleton.addBGDecal( 
+				Sprite.scale(head_interior.createSprite( "head-interior" ),1f/.4f), 
+				new Vector2(-1300,-720) );
+		addBGSkeleton( head_skeleton );
+	}
+	
+	void initEyebrow(){
+		Skeleton skeleton = ( Skeleton ) LevelFactory.entities
+				.get( "head_skeleton" );
+		Vector2 posPix = skeleton.getPositionPixel( ).add( -575,800 );//-975,306
+		TiledPlatform brow = new PlatformBuilder(level.world).name( "eyebrow" ).dimensions( 2,2 ).position( posPix.cpy() ).buildTilePlatform( );
+		skeleton.addPlatform( brow );
+		brow.noCollide( );
+		brow.setVisible( false );
+		
+		TextureAtlas browAtlas = new TextureAtlas(
+				Gdx.files.internal( "data/levels/dragon/head_top_right.pack" ) );
+		//At rest the eyebrow is unrotated at 0,0 local position.
+		brow.addFGDecal( browAtlas.createSprite( "eyebrow" ));//, new Vector2(-393,-161) );
+		addFGEntity( brow );
+		
+		//angry mover
+		Timeline browSequence = Timeline.createSequence( );
+		//begin the mover by moving it to the starting position quickly
+		browSequence.beginParallel( );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, .5f )
+				.target( 0,0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, .5f )
+				.target( 0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.end( );
+		
+		browSequence.beginParallel( );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, .5f )
+				.target( 100, -100f ).ease( TweenEquations.easeInOutQuad ).start( ) );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, .5f )
+					.target( -Util.FOURTH_PI/2 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.end( );
+		
+		browSequence.beginParallel( );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 2f )
+					.target( 110, -130 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 3, 0 ).start( ) );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 2f )
+				.target( -Util.FOURTH_PI/2-Util.FOURTH_PI/6 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 3, 0 ).start( ) );
+		browSequence.end( );
+		
+		
+		browSequence.beginParallel( );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 1.5f )
+					.target( 0,0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 1.5f )
+					.target( 0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+			browSequence.end( );
+		browSequence = browSequence.repeat( Tween.INFINITY, 0f );
+		
+		//brow.addMover( new TimelineTweenMover( angry.start( ) ) );
+		brow.addMover( new TimelineTweenMover( browSequence.start( ) ), RobotState.HOSTILE );
+		
+		//IDLE sequence
+		browSequence = Timeline.createSequence( );
+		browSequence.beginParallel( );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, .5f )
+				.target( 0,0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, .5f )
+				.target( 0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.end( );
+		
+		browSequence.beginParallel( );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 5f )
+			.target( 20, -20f ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 5, 0 ).start( ) );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 5f )
+				.target( -Util.FOURTH_PI/6 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 5, 0 ).start( ) );
+		browSequence.end( );
+		browSequence = browSequence.repeat( Tween.INFINITY, 0f );
+		
+		brow.addMover( new TimelineTweenMover( browSequence.start( ) ), RobotState.IDLE );
+		
+		//((TimelineTweenMover)brow.currentMover( )).timeline.start( );
+		
+		
 		
 		
 	}
@@ -1150,6 +1234,25 @@ public class DragonScreen extends Screen {
 		bodySkeleton.addBGDecal( dragon_objects.createSprite( "rotation_machine_decal_right" ),new Vector2(995,9).add( screwP ));
 		addBGSkeleton( bodySkeleton );
 		//338,383
+		
+		//balloons
+		//body_balloon_center/left/right
+		TextureAtlas balloons = WereScrewedGame.manager.getAtlas( "balloons" );
+		
+		String[] bodyBalloons = {"body_balloon_left","body_balloon_center","body_balloon_right"};
+		float balloonScale=1f;
+		//PIZZA1
+		for(int i=0;i<bodyBalloons.length;++i){
+			if(i==1)balloonScale = 1f/.4f;
+			else balloonScale = 1f/.6f;
+			s = Sprite.scale(balloons.createSprite( "balloon_big"+(i%3+1) ),balloonScale);
+			Entity entity = LevelFactory.entities.get( bodyBalloons[i] );
+			entity.addFGDecal( s,new Vector2(-s.getWidth( )/2*balloonScale,-s.getHeight( )/2*balloonScale) );
+			entity.sprite=null;
+			addFGEntity( entity );
+		}
+		
+		
 	}
 	
 	void neckDecal(){

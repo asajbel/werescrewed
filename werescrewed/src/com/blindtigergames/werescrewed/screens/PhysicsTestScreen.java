@@ -926,7 +926,7 @@ public class PhysicsTestScreen extends Screen {
 		TiledPlatform brow = platBuilder.name( "eyebrow" ).dimensions( 2,2 ).position( pos.cpy() ).buildTilePlatform( );
 		skeleton.addPlatform( brow );
 		brow.noCollide( );
-		brow.setVisible( false );
+		brow.setVisible( true );
 		
 		TextureAtlas browAtlas = new TextureAtlas(
 				Gdx.files.internal( "data/levels/dragon/head_top_right.pack" ) );
