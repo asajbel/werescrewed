@@ -42,6 +42,7 @@ public class Util {
 	public static final short CATEGORY_SCREWS = 0x0040;
 	public static final short CATEGORY_ROPE = 0x0080;
 	public static final short CATEGROY_HAZARD = 0x0100;
+	public static final short CATEGORY_SKELS = 0x2000;
 	public static final short CATEGORY_IGNORE = 0x1000;
 	public static final short CATEGORY_NOTHING = 0x0000;
 	public static final short CATEGORY_EVERYTHING = -1;

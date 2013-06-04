@@ -83,10 +83,12 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		return palette.get( WereScrewedGame.random.nextInt( palette.size( ) ) );
 	}
 
-	public void loadAtlas( String fullPathToAtlas ) {
+	public TextureAtlas loadAtlas( String fullPathToAtlas ) {
 		FileHandle fileHandle = Gdx.files.internal( fullPathToAtlas );
-		atlasMap.put( fileHandle.nameWithoutExtension( ), new TextureAtlas(
-				fileHandle ) );
+		TextureAtlas atlas = new TextureAtlas(
+				fileHandle );
+		atlasMap.put( fileHandle.nameWithoutExtension( ), atlas );
+		return atlas;
 	}
 
 	public TextureAtlas getAtlas( String atlasPackName ) {

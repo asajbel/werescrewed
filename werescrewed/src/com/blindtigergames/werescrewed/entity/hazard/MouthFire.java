@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.entity.hazard;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
+import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class MouthFire extends Hazard {
@@ -44,6 +46,7 @@ public class MouthFire extends Hazard {
 		this.totalLength = posStep.len( );
 		this.widthMeter = totalLength/totalSteps/2; //because set as box doubles width
 		posStep = posStep.nor( ).mul( widthMeter*2 );
+		
 		this.heightMStep = (endHeightM-startHeightM)/totalSteps;
 		
 		this.currStep = 0;
@@ -55,9 +58,20 @@ public class MouthFire extends Hazard {
 		this.fixtureList = new Array< Fixture >(totalSteps);
 		
 		this.maxConcurrentFixtures = totalSteps/3;
-		
+		//Gdx.app.log( "posStep", posStep.toString( )+", maxFix:"+this.maxConcurrentFixtures );
+	
 		constructBody( posMeter );
-		
+
+		addFrontParticleEffect( "mouth_fire", false, false ); 
+		ParticleEffect e = getEffect( "mouth_fire" ); 
+		e.setLifeTime( secondsToComplete * 1000 - 300, 500 );
+		e.setVelocity( (totalLength*Util.BOX_TO_PIXEL-50)/secondsToComplete, 50 );
+		e.setSize( endHeightPix / 3, 0 );
+		float angleDiff = (float) Math.atan( endHeightPix/totalLength*Util.BOX_TO_PIXEL ); 
+		e.setAngleDiff( angleDiff, 0 ); 
+		float ang = angle - (float) Math.PI / 2; 
+		e.setEffectAngle( ang );
+		Gdx.app.log( "bla", "blah" );
 	}
 	
 	/**
@@ -123,6 +137,7 @@ public class MouthFire extends Hazard {
 		if(!activeHazard){
 			resetFire( );
 		}
+		getEffect("mouth_fire").reset( ); 
 	}
 	
 	private void resetFire(){
