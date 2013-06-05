@@ -219,9 +219,10 @@ public class Platform extends Entity {
 
 	@Override
 	public void updateDecals( float deltaTime ) {
-		if ( firstStep || hasMoved( ) || hasRotated( ) || 
+		if ( firstStep || hasMoved( ) || hasRotated( ) || this.currentMover( ) != null || 
 				( this.getParentSkeleton( ) != null && ( this.getParentSkeleton( ).hasMoved( ) || 
-				this.getParentSkeleton( ).hasRotated( ) ) ) ) {
+				this.getParentSkeleton( ).hasRotated( ) 
+				|| this.getParentSkeleton( ).currentMover( ) != null ) ) ) {
 			Vector2 bodyPos = this.getPositionPixel( );
 			float angle = this.getAngle( ), cos = ( float ) Math.cos( angle ), sin = ( float ) Math
 					.sin( angle );

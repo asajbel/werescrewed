@@ -24,6 +24,13 @@ steam
   orig: 84, 71
   offset: 0, 0
   index: -1
+cloud2
+  rotate: false
+  xy: 426, 2
+  size: 77, 51
+  orig: 77, 51
+  offset: 0, 0
+  index: -1
 door-right
   rotate: false
   xy: 93, 334
