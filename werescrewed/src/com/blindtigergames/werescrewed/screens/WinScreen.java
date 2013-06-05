@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
@@ -26,8 +29,11 @@ class WinScreen extends MenuScreen {
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		firstLine = new Label( "Mission Complete!", font );
 		secLine = new Label( "Winners Never Lose!!", font );
-		nextButton = new TextButton( "Continue", font, new ScreenSwitchHandler(
-				ScreenType.TROPHY ) );
+
+		TextureRegion buttonTex = WereScrewedGame.manager.
+				getAtlas( "menu-textures" ).findRegion( "button" );
+		nextButton = new TextButton( "Continue", font, buttonTex, 
+				new ScreenSwitchHandler( ScreenType.TROPHY ) );
 	}
 
 	@Override

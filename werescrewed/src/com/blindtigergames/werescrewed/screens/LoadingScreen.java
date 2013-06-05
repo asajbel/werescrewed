@@ -53,7 +53,7 @@ public class LoadingScreen extends Screen {
 	 *            A string to designate which files to load for the next screen
 	 */
 	public LoadingScreen( String st ) {
-		WereScrewedGame.manager.clear( );
+		
 		if ( st != null && !st.isEmpty( ) ) {
 			screenTag = st;
 			if ( screenTag.equals( "level1" ) ) {
@@ -123,31 +123,31 @@ public class LoadingScreen extends Screen {
 				} if (currLevel == 2 ){
 					WereScrewedGame.manager.load(
 							"data/common/slides/slide1_dragon.png", Texture.class );
-					WereScrewedGame.manager.load(
-							"data/common/slides/slide2_dragon.png", Texture.class );
-					WereScrewedGame.manager.load(
-							"data/common/slides/slide3_dragon.png", Texture.class );
-					WereScrewedGame.manager.load(
-							"data/common/slides/slide4_dragon.png", Texture.class );
-					WereScrewedGame.manager.load(
-							"data/common/slides/slide5_dragon.png", Texture.class );
-					WereScrewedGame.manager.load(
-							"data/common/slides/slide6_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide2_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide3_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide4_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide5_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide6_dragon.png", Texture.class );
 		
 					WereScrewedGame.manager.finishLoading( );
 		
 					storyBoardArray.add( WereScrewedGame.manager.get(
 							"data/common/slides/slide1_dragon.png", Texture.class ) );
-					storyBoardArray.add( WereScrewedGame.manager.get(
-							"data/common/slides/slide2_dragon.png", Texture.class ) );
-					storyBoardArray.add( WereScrewedGame.manager.get(
-							"data/common/slides/slide3_dragon.png", Texture.class ) );
-					storyBoardArray.add( WereScrewedGame.manager.get(
-							"data/common/slides/slide4_dragon.png", Texture.class ) );
-					storyBoardArray.add( WereScrewedGame.manager.get(
-							"data/common/slides/slide5_dragon.png", Texture.class ) );
-					storyBoardArray.add( WereScrewedGame.manager.get(
-							"data/common/slides/slide6_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide2_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide3_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide4_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide5_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide6_dragon.png", Texture.class ) );
 				}
 							
 				if ( WereScrewedGame.p1Controller != null
@@ -384,7 +384,7 @@ public class LoadingScreen extends Screen {
 
 	@Override
 	public void dispose( ) {
-		// WereScrewedGame.manager.dispose( );
+		//WereScrewedGame.manager.dispose( );
 	}
 
 	@Override

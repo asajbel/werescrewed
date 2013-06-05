@@ -98,8 +98,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		sounds = null;
 	}
 
-	public void load(){
-	}
+	public void load(){ }
 	
 	@Override
 	public void render( float delta ) {

@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
@@ -26,9 +28,9 @@ public class OptionButton extends Button {
 	 * @param y
 	 *            int
 	 */
-	public OptionButton( String caption, BitmapFont font,
+	public OptionButton( String caption, BitmapFont font, TextureRegion button,
 			OptionControl control, int x, int y ) {
-		super( caption, font, x, y );
+		super( caption, font, button, x, y );
 		this.caption = caption;
 		this.font = font;
 		this.x = x;
@@ -47,8 +49,9 @@ public class OptionButton extends Button {
 	 * @param handler
 	 *            ButtonHandler
 	 */
-	public OptionButton( String caption, BitmapFont font, OptionControl control ) {
-		this( caption, font, control, 0, 0 );
+	public OptionButton( String caption, BitmapFont font, 
+			TextureRegion button, OptionControl control ) {
+		this( caption, font, button, control, 0, 0 );
 	}
 
 	@Override

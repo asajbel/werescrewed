@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
@@ -27,9 +29,10 @@ public class TextButton extends Button {
 	 * @param y
 	 *            int
 	 */
-	public TextButton( String caption, BitmapFont font, ButtonHandler handler,
+	public TextButton( String caption, BitmapFont font, TextureRegion button,
+			ButtonHandler handler,
 			int x, int y ) {
-		super( caption, font, x, y );
+		super( caption, font, button, x, y );
 		this.caption = caption;
 		this.font = font;
 		this.x = x;
@@ -48,8 +51,9 @@ public class TextButton extends Button {
 	 * @param handler
 	 *            ButtonHandler
 	 */
-	public TextButton( String caption, BitmapFont font, ButtonHandler handler ) {
-		this( caption, font, handler, 0, 0 );
+	public TextButton( String caption, BitmapFont font, 
+			TextureRegion button, ButtonHandler handler ) {
+		this( caption, font, button, handler, 0, 0 );
 	}
 
 	public void draw( SpriteBatch batch, Camera camera ) {

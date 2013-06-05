@@ -1027,7 +1027,7 @@ public class DragonScreen extends Screen {
 		//UPPER HEAD
 		Sprite s;
 		
-		Vector2 headPos = new Vector2(-3500,-1460 );
+		Vector2 headPos = new Vector2(-3500,-1455 );
 		s = head_left.createSprite( "head_left" );
 		head_skeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
 		head_skeleton.addFGDecal( 
