@@ -468,11 +468,15 @@ public class Player extends Entity {
 				runTimeout = 0;
 				break;
 			default:
-				playerState = PlayerState.Falling;
+				if ( !hitSolidObject ) 
+					playerState = PlayerState.Falling;
+				else 
+					playerState = PlayerState.Standing;
 				runTimeout = 0;
 				break;
 			}
-			setGrounded( false );
+			if ( !hitSolidObject ) 
+				setGrounded( false );
 		} else if ( playerState == PlayerState.Falling
 				&& !isHeadStandPossible( ) ) {
 			// if the player is falling but y velocity is too slow
@@ -888,7 +892,6 @@ public class Player extends Entity {
 			// reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
-
 		// Trophy check for player movement, checks which player and increments
 		// time running
 		if ( this.name == Metrics.player1( )
@@ -914,7 +917,6 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
-
 		if ( playerState != PlayerState.Screwing ) {
 			playerDirection = PlayerDirection.Left;
 		}
@@ -924,7 +926,6 @@ public class Player extends Entity {
 			// reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
-
 		// Trophy check for player movement, checks which player and increments
 		// time running
 		if ( this.name == Metrics.player1( )
@@ -987,7 +988,6 @@ public class Player extends Entity {
 	 * Causes the player to jump
 	 */
 	public void jump( ) {
-
 		if ( Metrics.activated
 				&& ( grounded || playerState == PlayerState.Screwing ) ) {
 			Metrics.addPlayerJumpPosition( this.getPositionPixel( ) );
@@ -1024,7 +1024,6 @@ public class Player extends Entity {
 	public void hitScrew( Screw screw ) {
 		if ( playerState != PlayerState.Screwing && !isDead && currentMover( )  == null ) {
 			currentScrew = screw;
-
 			// Trophy check for if player attaches to a stripped screw
 			if ( screw != null ) {
 				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_STRIPPED ) {
@@ -1144,55 +1143,7 @@ public class Player extends Entity {
 	 * slowly increases friction to avoid that silly stopping bug. Call this
 	 * every player.update()
 	 */
-	@SuppressWarnings( "unused" )
-	private void updateFootFriction( ) {
-
-		if ( isGrounded( ) ) {
-			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
-				// if ( playerState != PlayerState.Screwing && otherPlayer ==
-				// null ) {
-				// playerState = PlayerState.Landing;
-				// }
-				frictionCounter += FRICTION_INCREMENT;
-
-				CircleShape ps = new CircleShape( );
-				ps.setRadius( feet.getShape( ).getRadius( ) );
-
-				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X,
-						FEET_OFFSET_Y ) );
-				FixtureDef fd = new FixtureDef( );
-
-				fd.shape = ps;
-				fd.density = 1f;
-				fd.restitution = 0.001f;
-				fd.friction = frictionCounter;
-
-				if ( playerState == PlayerState.Screwing ) {
-					fd.isSensor = true;
-				}
-
-				fd.filter.categoryBits = Util.CATEGORY_PLAYER;
-				fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
-
-				body.destroyFixture( feet );
-
-				feet = body.createFixture( fd );
-
-				if ( feet.getFriction( ) > PLAYER_FRICTION ) {
-					feet.setFriction( PLAYER_FRICTION );
-
-				}
-				// currentScrew = null;
-			}
-		} else {
-			frictionCounter = 0f;
-			feet.setFriction( frictionCounter );
-		}
-
-	}
-
 	private void updateFootFrictionNew( ) {
-
 		if ( prevButton != null ) {
 			if ( body.getType( ) != BodyType.KinematicBody && body.getLinearVelocity( ).x > MAX_VELOCITY ) {
 				body.setLinearVelocity( MAX_VELOCITY,
@@ -1202,39 +1153,27 @@ public class Player extends Entity {
 						body.getLinearVelocity( ).y );
 			}
 		}
-
 		if ( prevButton == null ) {
-
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
-
 				frictionCounter += FRICTION_INCREMENT;
-
 				if ( frictionCounter > PLAYER_FRICTION ) {
 					frictionCounter = PLAYER_FRICTION;
-
 				}
-
 				createCircle( frictionCounter );
-
 			}
 		} else {
-
 			if ( grounded && ( prevPlayerDir != playerDirection ) ) {
 				createCircle( PLAYER_FRICTION );
 				frictionCounter = PLAYER_FRICTION;
 			}
-
 			if ( feet.getFriction( ) > 0 ) {
-
 				frictionCounter -= FRICTION_INCREMENT;
 				if ( frictionCounter < 0 ) {
 					frictionCounter = 0;
 				}
 				createCircle( frictionCounter );
-
 			}
 		}
-
 	}
 
 	/**
@@ -1247,16 +1186,16 @@ public class Player extends Entity {
 			// hits you
 			// you get knocked off
 			knockedOff = true;
+		} 
+		if ( platform == null ) {
+			currentPlatform = platform;
+			hitSolidObject = false;
 		} else {
 			currentPlatform = platform;
+			setGrounded( true );
 			if ( playerState == PlayerState.Falling ) {
 				playerState = PlayerState.Standing;
 			}
-		}
-		if ( platform == null ) {
-			// knockedOff = false;
-			hitSolidObject = false;
-		} else {
 			if ( platform.isKinematic( ) && platform.currentMover( ) == null ) {
 				lastPlatformHit = platform;
 			}
@@ -1854,9 +1793,7 @@ public class Player extends Entity {
 		}
 		if ( !controllerListener.jumpPressed( ) ) {
 			canJumpOffScrew = true;
-			if ( isGrounded( ) || topPlayer ) {
-				jumpPressedController = false;
-			} else if ( playerState == PlayerState.Screwing ) {
+			if ( isGrounded( ) || topPlayer || hitSolidObject || playerState == PlayerState.Screwing ) {
 				jumpPressedController = false;
 			} else {
 				jumpPressedController = true;
@@ -1879,27 +1816,12 @@ public class Player extends Entity {
 		}
 		if ( !inputHandler.jumpPressed( ) ) {
 			canJumpOffScrew = true;
-			if ( isGrounded( ) || topPlayer ) {
-				jumpPressedKeyboard = false;
-			} else if ( playerState == PlayerState.Screwing ) {
+			if ( isGrounded( ) || topPlayer || hitSolidObject || playerState == PlayerState.Screwing ) {
 				jumpPressedKeyboard = false;
 			} else {
 				jumpPressedKeyboard = true;
 			}
 		}
-	}
-
-	/**
-	 * Transforms player position by offset
-	 * 
-	 * @param posOffset
-	 *            is the offset you want to apply to player
-	 */
-	@SuppressWarnings( "unused" )
-	private void setPlatformTransform( Vector2 posOffset ) {
-		// Gdx.app.log( name + "old:", " " + body.getPosition( ) );
-		body.setTransform( body.getPosition( ).cpy( ).add( posOffset ), 0 );
-		// Gdx.app.log( name + "new:", " " + body.getPosition( ) );
 	}
 
 	/**
