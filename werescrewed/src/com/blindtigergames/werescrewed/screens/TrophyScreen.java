@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.tween.LabelAccessor;
@@ -66,7 +67,12 @@ public class TrophyScreen extends Screen {
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		player1Name = new Label( "Player 1", fancyFont );
 		player2Name = new Label( "Player 2", fancyFont );
-		next = new TextButton( "Next Level", fancyFont, 
+
+		// Button classes now require you to send in a texture for the button image.
+		TextureRegion buttonTex = WereScrewedGame.manager.
+				getAtlas( "menu-textures" ).findRegion( "button" );
+		
+		next = new TextButton( "Next Level", fancyFont, buttonTex, 
 				new ScreenSwitchHandler( screenTag ) );
 		next.setColored( true );
 

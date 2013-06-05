@@ -133,8 +133,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="chest_sub_skeleton1" Visible="true">
                     <Position>
-                        <X>-1008</X>
-                        <Y>-4096</Y>
+                        <X>-368</X>
+                        <Y>-4384</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -153,8 +153,200 @@
                             <string />
                         </Property>
                     </CustomProperties>
-                    <Width>864</Width>
-                    <Height>224</Height>
+                    <Width>1600</Width>
+                    <Height>720</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton2" Visible="true">
+                    <Position>
+                        <X>-1728</X>
+                        <Y>-6464</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                        <Property Name="setchildskelstosleep" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="alwaysvisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="rectangle" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>1520</Width>
+                    <Height>1392</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton3" Visible="true">
+                    <Position>
+                        <X>-1472</X>
+                        <Y>-5120</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                        <Property Name="setchildskelstosleep" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="alwaysvisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="rectangle" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>1200</Width>
+                    <Height>1552</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton4" Visible="true">
+                    <Position>
+                        <X>1248</X>
+                        <Y>-4896</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                        <Property Name="setchildskelstosleep" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="alwaysvisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="rectangle" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>1344</Width>
+                    <Height>1264</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton5" Visible="true">
+                    <Position>
+                        <X>1104</X>
+                        <Y>-6368</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                        <Property Name="setchildskelstosleep" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="alwaysvisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="rectangle" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>1824</Width>
+                    <Height>1552</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton6" Visible="true">
+                    <Position>
+                        <X>-240</X>
+                        <Y>-6448</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                        <Property Name="setchildskelstosleep" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="alwaysvisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="rectangle" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>1424</Width>
+                    <Height>1184</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton7" Visible="true">
+                    <Position>
+                        <X>-288</X>
+                        <Y>-5456</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>chestSkeleton</string>
+                        </Property>
+                        <Property Name="setchildskelstosleep" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="alwaysvisible" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="rectangle" Type="string" Description="">
+                            <string />
+                        </Property>
+                    </CustomProperties>
+                    <Width>1760</Width>
+                    <Height>1104</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -1472,8 +1664,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>416</X>
-                        <Y>-336</Y>
+                        <X>1056</X>
+                        <Y>-464</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -3737,7 +3929,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                         <Property Name="anchor1" Type="string" Description="">
                             <string>0, 0, 800, 100</string>
@@ -3807,7 +3999,7 @@
                         </Property>
                     </CustomProperties>
                     <Width>150</Width>
-                    <Height>50</Height>
+                    <Height>53</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -3876,8 +4068,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="decal_zipper_4" Visible="true">
                     <Position>
-                        <X>1363</X>
-                        <Y>-4547</Y>
+                        <X>1360</X>
+                        <Y>-4544</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="definition" Type="string" Description="">
@@ -4094,7 +4286,7 @@
                         </Property>
                     </CustomProperties>
                     <Width>240</Width>
-                    <Height>32</Height>
+                    <Height>35</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -4116,7 +4308,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton4</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -4150,7 +4342,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton7</string>
                         </Property>
                     </CustomProperties>
                     <Width>624</Width>
@@ -4176,7 +4368,7 @@
                             <string>5</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                         <Property Name="createscrew" Type="string" Description="">
                             <string />
@@ -4216,7 +4408,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                         <Property Name="crushable" Type="string" Description="">
                             <string />
@@ -4245,7 +4437,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton3</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -4282,7 +4474,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton4</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -4319,7 +4511,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton4</string>
                         </Property>
                         <Property Name="anchor1" Type="string" Description="">
                             <string>0, -100, 200, 600</string>
@@ -4349,14 +4541,14 @@
                 <Item xsi:type="TextureItem" Name="chest_gear_1" Visible="true">
                     <Position>
                         <X>-832</X>
-                        <Y>-4438</Y>
+                        <Y>-4432</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
                             <string>gearSmall</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton3</string>
                         </Property>
                         <Property Name="dynamic" Type="string" Description="">
                             <string />
@@ -4405,7 +4597,7 @@
                             <string>gearSmall</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton3</string>
                         </Property>
                         <Property Name="dynamic" Type="string" Description="">
                             <string />
@@ -4448,7 +4640,7 @@
                             <string>gearSmall</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton3</string>
                         </Property>
                         <Property Name="dynamic" Type="string" Description="">
                             <string />
@@ -4497,7 +4689,7 @@
                             <string>destoryjoint</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton3</string>
                         </Property>
                         <Property Name="applyto" Type="string" Description="">
                             <string>chest_gear_fall</string>
@@ -4578,7 +4770,7 @@
                             <string>ScrewPuzzle</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton1</string>
                         </Property>
                         <Property Name="maxDepth" Type="string" Description="">
                             <string>100</string>
@@ -4622,21 +4814,21 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="chestPlat7" Visible="true">
                     <Position>
-                        <X>1635</X>
-                        <Y>-4595</Y>
+                        <X>1632</X>
+                        <Y>-4592</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton4</string>
                         </Property>
                         <Property Name="crushable" Type="string" Description="">
                             <string />
                         </Property>
                     </CustomProperties>
-                    <Width>288</Width>
+                    <Width>291</Width>
                     <Height>32</Height>
                     <FillColor>
                         <R>192</R>
@@ -4648,8 +4840,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chestPuzzleScrew3" Visible="true">
                     <Position>
-                        <X>1779</X>
-                        <Y>-4691</Y>
+                        <X>1776</X>
+                        <Y>-4688</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4659,7 +4851,7 @@
                             <string>ScrewPuzzle</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton4</string>
                         </Property>
                         <Property Name="maxDepth" Type="string" Description="">
                             <string>100</string>
@@ -4714,7 +4906,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton7</string>
                         </Property>
                         <Property Name="crushable" Type="string" Description="">
                             <string />
@@ -4743,7 +4935,7 @@
                             <string>ScrewPuzzle</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton7</string>
                         </Property>
                         <Property Name="maxDepth" Type="string" Description="">
                             <string>200</string>
@@ -4795,7 +4987,7 @@
                             <string>ScrewPuzzle</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton7</string>
                         </Property>
                         <Property Name="maxDepth" Type="string" Description="">
                             <string>200</string>
@@ -4844,7 +5036,7 @@
                             <string>pipe</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestEngine</string>
+                            <string>chest_sub_skeleton2</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -4994,7 +5186,7 @@
                             <string>ScrewPuzzle</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton7</string>
                         </Property>
                         <Property Name="maxDepth" Type="string" Description="">
                             <string>200</string>
@@ -5106,7 +5298,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -5177,7 +5369,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                     </CustomProperties>
                     <Width>432</Width>
@@ -5200,7 +5392,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                     </CustomProperties>
                     <Width>32</Width>
@@ -5215,7 +5407,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="chestRotatePlat3" Visible="true">
                     <Position>
-                        <X>2208</X>
+                        <X>2128</X>
                         <Y>-6000</Y>
                     </Position>
                     <CustomProperties>
@@ -5223,7 +5415,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                     </CustomProperties>
                     <Width>208</Width>
@@ -5280,7 +5472,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton2</string>
                         </Property>
                         <Property Name="crushable" Type="string" Description="">
                             <string />
@@ -5309,7 +5501,7 @@
                             <string>ScrewPuzzle</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton3</string>
                         </Property>
                         <Property Name="maxDepth" Type="string" Description="">
                             <string>150</string>
@@ -5361,7 +5553,7 @@
                             <string>4</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton2</string>
                         </Property>
                         <Property Name="createscrew" Type="string" Description="">
                             <string />
@@ -5401,7 +5593,7 @@
                             <string>pipe</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton2</string>
                         </Property>
                         <Property Name="dynamic" Type="string" Description="">
                             <string />
@@ -5462,7 +5654,7 @@
                             <string>screw</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton2</string>
                         </Property>
                         <Property Name="targetrev" Type="string" Description="">
                             <string>falling_pipe</string>
@@ -5508,7 +5700,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton3</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -5545,7 +5737,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton2</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -5571,8 +5763,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chestStrippedScrew12" Visible="true">
                     <Position>
-                        <X>-733</X>
-                        <Y>-5404</Y>
+                        <X>-736</X>
+                        <Y>-5408</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5582,7 +5774,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton2</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -5619,7 +5811,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton2</string>
                         </Property>
                         <Property Name="anchor1" Type="string" Description="">
                             <string>-100, 100, 500, 300</string>
@@ -5656,7 +5848,7 @@
                             <string>checkpoint</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton3</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -5840,7 +6032,7 @@
                             <string>checkpoint</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                         <Property Name="anchor1" Type="string" Description="">
                             <string>0, 0, 100, 100</string>
@@ -5869,8 +6061,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chestStrippedScrew9" Visible="true">
                     <Position>
-                        <X>2032</X>
-                        <Y>-6032</Y>
+                        <X>1280</X>
+                        <Y>-6112</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5880,7 +6072,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                         <Property Name="anchor1" Type="string" Description="">
                             <string>0, -300, 100, 100</string>
@@ -6468,7 +6660,7 @@
                             <string>checkpoint</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton2</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -8923,7 +9115,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton6</string>
                         </Property>
                     </CustomProperties>
                     <Width>1312</Width>
@@ -9933,8 +10125,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="chest_right_path_1" Visible="true">
                     <Position>
-                        <X>1699</X>
-                        <Y>-4595</Y>
+                        <X>1696</X>
+                        <Y>-4592</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="definition" Type="string" Description="">
@@ -11024,7 +11216,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton4</string>
                         </Property>
                         <Property Name="crushable" Type="string" Description="">
                             <string />
@@ -11053,7 +11245,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton4</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -12306,7 +12498,7 @@
                             <string>pipe</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestEngine</string>
+                            <string>chest_sub_skeleton6</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -12365,7 +12557,7 @@
                             <string>pipe</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestEngine</string>
+                            <string>chest_sub_skeleton6</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -12432,7 +12624,7 @@
                             <string>pipe</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton6</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -13381,7 +13573,7 @@
                             <string>tiledPlatform</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                     </CustomProperties>
                     <Width>432</Width>
@@ -13983,7 +14175,7 @@
                             <string>powerswitch</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton1</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -14017,7 +14209,7 @@
                             <string>powerswitch</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton1</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -14255,7 +14447,7 @@
                             <string>pipe</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton1</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -14511,7 +14703,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton1</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -16157,7 +16349,7 @@
                             <string>eventtrigger</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton4</string>
                         </Property>
                         <Property Name="beginaction" Type="string" Description="">
                             <string>activate_anchor checkpoint4 1</string>
@@ -16241,7 +16433,7 @@
                             <string>eventtrigger</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                         <Property Name="beginaction" Type="string" Description="">
                             <string>activate_anchor chestPlatform3 1</string>
@@ -16331,7 +16523,7 @@
                             <string>eventtrigger</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton7</string>
                         </Property>
                         <Property Name="beginaction" Type="string" Description="">
                             <string>activate_anchor chestSkeleton 1</string>
@@ -16413,8 +16605,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="chestStrippedScrew10" Visible="true">
                     <Position>
-                        <X>-858</X>
-                        <Y>-5150</Y>
+                        <X>-864</X>
+                        <Y>-5152</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -16424,7 +16616,7 @@
                             <string>ScrewStripped</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton2</string>
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -16458,7 +16650,7 @@
                             <string>powerswitch</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton2</string>
                         </Property>
                         <Property Name="repeatable" Type="string" Description="">
                             <string />
@@ -16495,7 +16687,7 @@
                             <string>eventtrigger</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton4</string>
                         </Property>
                         <Property Name="beginaction" Type="string" Description="">
                             <string>activate_anchor rightThighStripped3 1</string>
@@ -16585,7 +16777,7 @@
                             <string>eventtrigger</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton4</string>
                         </Property>
                         <Property Name="beginaction" Type="string" Description="">
                             <string>activate_anchor chestStrippedScrew2 1</string>
@@ -16756,7 +16948,7 @@
                             <string>eventtrigger</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton3</string>
                         </Property>
                         <Property Name="beginaction" Type="string" Description="">
                             <string>activate_anchor chestStrippedScrew13 1</string>
@@ -16846,7 +17038,7 @@
                             <string>powerswitch</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                         <Property Name="repeatable" Type="string" Description="">
                             <string />
@@ -16883,7 +17075,7 @@
                             <string>powerswitch</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                         <Property Name="repeatable" Type="string" Description="">
                             <string />
@@ -16920,7 +17112,7 @@
                             <string>eventtrigger</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                         <Property Name="beginaction" Type="string" Description="">
                             <string>activate_anchor chestStrippedScrew9 1</string>
@@ -17010,7 +17202,7 @@
                             <string>eventtrigger</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                         <Property Name="beginaction" Type="string" Description="">
                             <string>activate_anchor chestStrippedScrew9 2</string>
@@ -18752,7 +18944,7 @@
                             <string>eventtrigger</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton4</string>
                         </Property>
                         <Property Name="twoplayerstoactivate" Type="string" Description="">
                             <string />
@@ -22540,7 +22732,7 @@
                             <string>panel</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton1</string>
                         </Property>
                         <Property Name="atlas" Type="string" Description="">
                             <string>alphabot-panel</string>
@@ -22618,7 +22810,7 @@
                             <string>panel</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton7</string>
                         </Property>
                         <Property Name="atlas" Type="string" Description="">
                             <string>alphabot-panel</string>
@@ -22644,7 +22836,7 @@
                             <string>panel</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton6</string>
                         </Property>
                         <Property Name="atlas" Type="string" Description="">
                             <string>alphabot-panel</string>
@@ -22918,7 +23110,7 @@
                             <string>checkpoint</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton5</string>
                         </Property>
                         <Property Name="anchor1" Type="string" Description="">
                             <string>0, 0, 100, 100</string>
@@ -23277,7 +23469,7 @@
                             <string>pipe</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestEngine</string>
+                            <string>chest_sub_skeleton2</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -23344,7 +23536,7 @@
                             <string>pipe</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton2</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -25068,11 +25260,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>967</NextItemNumber>
+        <NextItemNumber>976</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-42.6555824</X>
-            <Y>-2092.71655</Y>
+            <X>857.3458</X>
+            <Y>-642.7109</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -20,7 +21,6 @@ public class Button {
 
 	protected String caption = null;
 	protected BitmapFont font = null;
-	protected BitmapFont smallFont = null;
 	protected int x = 0;
 	protected int y = 0;
 	protected int width = 287; // width of button image
@@ -40,6 +40,7 @@ public class Button {
 	protected int scaleY = height - scaleSize;
 	protected float xPos = 0.5f * -scaleSize;
 	protected float yPos = 0.5f * -scaleSize;
+	private boolean once = true;
 
 	/**
 	 * makes a new button instance
@@ -48,22 +49,18 @@ public class Button {
 	 *            String
 	 * @param font
 	 *            BitmapFont
-	 * @param handler
-	 *            ButtonHandler
 	 * @param x
 	 *            int
 	 * @param y
 	 *            int
 	 */
-	public Button( String caption, BitmapFont font, int x, int y ) {
+	public Button( String caption, BitmapFont font, TextureRegion button, int x, int y ) {
 		this.caption = caption;
 		this.font = font;
 		this.x = x;
 		this.y = y;
-		smallFont = WereScrewedGame.manager.getFont( "longdon-small" );
-		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/button.png", Texture.class );
-		box = new Sprite( back );
+		
+		box = new Sprite( button );
 		
 		bounds = new Rectangle( x, y - height, width, height );
 		calculateDimensions( );
@@ -76,11 +73,9 @@ public class Button {
 	 *            String
 	 * @param font
 	 *            BitmapFont
-	 * @param handler
-	 *            ButtonHandler
 	 */
-	public Button( String caption, BitmapFont font ) {
-		this( caption, font, 0, 0 );
+	public Button( String caption, BitmapFont font, TextureRegion button ) {
+		this( caption, font, button, 0, 0 );
 	}
 
 	/**
@@ -183,17 +178,17 @@ public class Button {
 		
 		if ( colored ) {
 			font.setColor( HOVER_COLOR );
+			font.setScale( 1f );
 			font.draw( batch, caption, x - capWidth / 2 + width / 2 + 5, y - height
 					- capHeight / 2 );
-			font.setColor( originalColor );
 		}
 		else {
-			smallFont.setColor( NORMAL_COLOR );
-			smallFont.draw( batch, caption, x - smallCapWidth / 2 + width / 2 + 5, 
+			font.setColor( NORMAL_COLOR );
+			font.setScale( 0.5f );
+			font.draw( batch, caption, x - smallCapWidth / 2 + width / 2 + 5, 
 					y - height - smallCapHeight * 2 + 5 );
-			smallFont.setColor( originalColor );
 		}
-
+		font.setColor( originalColor );
 	}
 
 	protected void setScale( ) {
@@ -225,12 +220,12 @@ public class Button {
 	}
 
 	protected void calculateDimensions( ) {
+		font.setScale( 1f );
 		TextBounds dimensions = font.getBounds( caption );
 		capWidth = Math.round( dimensions.width );
 		capHeight = Math.round( dimensions.height );
 		
-		TextBounds smallDim = smallFont.getBounds( caption );
-		smallCapWidth = Math.round( smallDim.width );
-		smallCapHeight = Math.round( smallDim.height );
+		smallCapWidth = Math.round( capWidth / 2 );
+		smallCapHeight = Math.round( capHeight / 2 );
 	}
 }

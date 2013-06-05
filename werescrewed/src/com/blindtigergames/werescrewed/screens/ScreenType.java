@@ -119,6 +119,22 @@ public enum ScreenType {
 			return options;
 		}
 	},
+	OPTIONS_MENU {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			OptionsScreen options = new OptionsScreen( ScreenType.MAIN_MENU );
+			options.screenType = ScreenType.OPTIONS;
+			return options;
+		}
+	},
+	OPTIONS_PAUSE {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			OptionsScreen options = new OptionsScreen( ScreenType.PAUSE );
+			options.screenType = ScreenType.OPTIONS;
+			return options;
+		}
+	},
 	PAUSE {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
@@ -159,7 +175,6 @@ public enum ScreenType {
 			return menu;
 		}
 	},
-
 	WIN {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
@@ -168,7 +183,6 @@ public enum ScreenType {
 			return winning;
 		}
 	},
-
 	TROPHY {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
@@ -177,7 +191,6 @@ public enum ScreenType {
 			return trophy;
 		}
 	},
-	
 	TROPHY_1 { //Called from Level 1
 			   //--Goes to Level 2!!
 		@Override
@@ -187,7 +200,6 @@ public enum ScreenType {
 			return trophy;
 		}
 	},
-
 	TROPHY_2 { //Called from Level 2
 		       //--Goes to Level 3!!
 		@Override
@@ -197,7 +209,6 @@ public enum ScreenType {
 			return trophy;
 		}
 	},
-	
 	TROPHY_END { 
 			     //Goes to credits screen
 		@Override
@@ -207,7 +218,6 @@ public enum ScreenType {
 			return trophy;
 		}
 	},
-
 	PREVSCREEN {
 
 		// USED IN PAUSE SCREEN TO RETURN TO THE LAST SCREEN
@@ -218,7 +228,6 @@ public enum ScreenType {
 			return null;
 		}
 	},
-
 	DRAGON {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
@@ -229,5 +238,4 @@ public enum ScreenType {
 	};
 
 	protected abstract com.badlogic.gdx.Screen getScreenInstance( );
-
 }

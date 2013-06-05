@@ -100,7 +100,6 @@
 #/fonts/ArmenianCircus.fnt
 #/fonts/Screwball.fnt
 /fonts/longdon.fnt
-/fonts/longdon-small.fnt
 
 #slides
 ## TODO: unload these during the level
@@ -164,5 +163,5 @@ grey.palette
 ##Trophy icons
 /common/trophies/trophy.png
 
-#Button Image for Menus and Pause Screen
-/menu/button.png
+##transition images
+/transitions/trans-gear.png
