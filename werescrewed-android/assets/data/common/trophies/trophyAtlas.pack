@@ -3,44 +3,23 @@ format: RGBA8888
 filter: Linear,Linear
 repeat: none
 offset: 0, 0
-trophy
-  rotate: false
-  xy: 2, 2
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
 trophy11
   rotate: false
-  xy: 2, 68
+  xy: 200, 2
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-trophy30
+trophy9
   rotate: false
-  xy: 2, 266
+  xy: 68, 200
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-trophy5
+trophy25
   rotate: false
-  xy: 68, 266
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-trophy3
-  rotate: false
-  xy: 134, 200
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-trophy15
-  rotate: false
-  xy: 134, 68
+  xy: 68, 134
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -52,44 +31,93 @@ trophy1
   orig: 64, 64
   offset: 0, 0
   index: -1
-trophy12
+trophy4
   rotate: false
-  xy: 68, 68
+  xy: 332, 134
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-trophy18
+trophy5
   rotate: false
-  xy: 134, 134
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-trophy19
-  rotate: false
-  xy: 2, 200
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-trophy28
-  rotate: false
-  xy: 68, 200
+  xy: 398, 134
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 trophy16
   rotate: false
-  xy: 2, 134
+  xy: 68, 68
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy12
+  rotate: false
+  xy: 266, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy22
+  rotate: false
+  xy: 398, 68
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy
+  rotate: false
+  xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy13
+  rotate: false
+  xy: 332, 2
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 trophy17
   rotate: false
-  xy: 68, 134
+  xy: 134, 68
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy7
+  rotate: false
+  xy: 2, 200
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy23
+  rotate: false
+  xy: 2, 134
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy3
+  rotate: false
+  xy: 200, 134
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy18
+  rotate: false
+  xy: 200, 68
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy14
+  rotate: false
+  xy: 398, 2
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -97,6 +125,41 @@ trophy17
 trophy10
   rotate: false
   xy: 134, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy28
+  rotate: false
+  xy: 134, 134
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy20
+  rotate: false
+  xy: 332, 68
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy19
+  rotate: false
+  xy: 266, 68
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy15
+  rotate: false
+  xy: 2, 68
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy30
+  rotate: false
+  xy: 266, 134
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

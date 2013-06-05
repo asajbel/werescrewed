@@ -5,14 +5,12 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
@@ -81,7 +79,8 @@ public class Skeleton extends Platform {
 	protected Rectangle lastCameraRect = new Rectangle( 0, 0, 0, 0 );
 	protected boolean removed = false;
 
-	private ShapeRenderer shapeRender;
+	public boolean respawningDontPutToSleep = false;
+	//private ShapeRenderer shapeRender;
 
 	/**
 	 * Constructor used by SkeletonBuilder
@@ -101,7 +100,7 @@ public class Skeleton extends Platform {
 		entityType = EntityType.SKELETON;
 		alphaFadeAnimator = new SimpleFrameAnimator( ).speed( 0 )
 				.loop( LoopBehavior.STOP ).time( 1 );
-		shapeRender = new ShapeRenderer( );
+		//shapeRender = new ShapeRenderer( );
 	}
 
 	/**
@@ -430,7 +429,7 @@ public class Skeleton extends Platform {
 							- ( boundingRect.height / 2.0f );
 					if ( !boundingRect.overlaps( lastCameraRect ) ) {
 						isUpdatable = false;
-						if ( !wasInactive ) 
+						if ( !wasInactive )
 							setSkeletonEntitiesToSleepRecursively( );
 					}
 				} else if ( !useBoundingRect && !isUpdatable
@@ -499,7 +498,7 @@ public class Skeleton extends Platform {
 						if ( chkpt.removeNextStep ) {
 							entitiesToRemove.add( chkpt );
 						} else {
-							if ( wasInactive  ) {
+							if ( wasInactive ) {
 								chkpt.body.setActive( true );
 								chkpt.body.setAwake( false );
 							}
@@ -578,7 +577,7 @@ public class Skeleton extends Platform {
 				// }
 				// recursively update child skeletons
 
-				if ( !setChildSkeletonsToSleep || isUpdatable( ) ) {
+				if ( !setChildSkeletonsToSleep || isUpdatable ) {
 					for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
 						if ( skeleton.removeNextStep ) {
 							entitiesToRemove.add( skeleton );
@@ -752,14 +751,14 @@ public class Skeleton extends Platform {
 	@Override
 	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		if ( !removed && !removeNextStep ) {
-//			 if ( this.useBoundingRect ) {
-//			 shapeRender.setProjectionMatrix( camera.combined( ) );
-//			 shapeRender.begin( ShapeType.Rectangle );
-//			 shapeRender.rect( boundingRect.x, boundingRect.y,
-//			 boundingRect.width,
-//			 boundingRect.height );
-//			 shapeRender.end( );
-//			 }
+			// if ( this.useBoundingRect ) {
+			// shapeRender.setProjectionMatrix( camera.combined( ) );
+			// shapeRender.begin( ShapeType.Rectangle );
+			// shapeRender.rect( boundingRect.x, boundingRect.y,
+			// boundingRect.width,
+			// boundingRect.height );
+			// shapeRender.end( );
+			// }
 			super.draw( batch, deltaTime, camera );
 			if ( visible ) {
 				drawChildren( batch, deltaTime, camera );
@@ -802,8 +801,6 @@ public class Skeleton extends Platform {
 			for ( Rope rope : ropeMap.values( ) ) {
 				rope.draw( batch, deltaTime, camera );
 			}
-		}
-		if ( isUpdatable && wasInactive ) {
 		}
 		// draw the entities of the parent skeleton before recursing through
 		// the
@@ -884,6 +881,10 @@ public class Skeleton extends Platform {
 
 	public void setUseBoundingRect( boolean setting ) {
 		useBoundingRect = setting;
+	}
+	
+	public boolean getIsUsingBoundingBox( ) {
+		return useBoundingRect;
 	}
 
 	public boolean isUpdatable( ) {

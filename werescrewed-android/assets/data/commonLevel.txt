@@ -8,6 +8,7 @@
 @ bg /levels/alphabot/alphabot-interior.png
 @ outline /levels/alphabot/alphabot-outline.png
 @ fg /levels/alphabot/alphabot-fg.png
+@ tilecolor 255 255 255
 
 
 ##sounds
@@ -108,6 +109,13 @@
 /common/slides/slide3_alphabot.png
 /common/slides/slide4_players.png
 
+/common/slides/slide1_dragon.png
+/common/slides/slide2_dragon.png
+/common/slides/slide3_dragon.png
+/common/slides/slide4_dragon.png
+/common/slides/slide5_dragon.png
+/common/slides/slide6_dragon.png
+
 ##Particle effects
 skid_left.p
 skid_right.p
@@ -126,6 +134,8 @@ mouth_fire.p
 cannon.p
 smoke_puff_small.p
 /fire/fire_tiny.p
+ghost_spark.p
+ghost_fount.p
 
 ##Palette Def
 ##Define with <colorName>.palette

@@ -4,16 +4,16 @@ active: true
 lowMin: 175.0
 lowMax: 175.0
 - Duration - 
-lowMin: 27.0
-lowMax: 27.0
+lowMin: 1499.0
+lowMax: 1499.0
 - Count - 
 min: 5
-max: 20
+max: 30
 - Emission - 
 lowMin: 4.0
 lowMax: 4.0
-highMin: 2000.0
-highMax: 2000.0
+highMin: 5.0
+highMax: 5.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -92,8 +92,8 @@ timeline2: 1.0
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: -45.0
-highMax: 45.0
+highMin: -4.0
+highMax: 4.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
@@ -159,16 +159,16 @@ active: true
 lowMin: 175.0
 lowMax: 175.0
 - Duration - 
-lowMin: 27.0
-lowMax: 27.0
+lowMin: 1499.0
+lowMax: 1499.0
 - Count - 
 min: 5
-max: 20
+max: 30
 - Emission - 
-lowMin: 4.0
-lowMax: 4.0
-highMin: 2000.0
-highMax: 2000.0
+lowMin: 5.0
+lowMax: 5.0
+highMin: 5.0
+highMax: 5.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -256,8 +256,8 @@ timeline2: 1.0
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: -45.0
-highMax: 45.0
+highMin: -4.0
+highMax: 4.0
 relative: false
 scalingCount: 3
 scaling0: 1.0

@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.RefCountedContainer;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Array;
@@ -40,6 +41,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	Texture robotOutlineTex;// = "/levels/alphabot/alphabot-outline.png";
 	Texture robotTexFG;// = "/levels/alphabot/alphabot-outline.png";
 	private int particleEffectCt = 0;
+	private static Color tileColor;
 
 	// TODO: set default values for this
 
@@ -50,6 +52,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		palette = new ArrayList< String >( );
 		particleEffects = new HashMap< String, ParticleEffect >( );
 		dummyAssets = new HashMap< Class< ? >, String >( );
+		tileColor = new Color(1f,1f,1f,1f);
 	}
 
 	/**
@@ -85,10 +88,14 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 
 	public TextureAtlas loadAtlas( String fullPathToAtlas ) {
 		FileHandle fileHandle = Gdx.files.internal( fullPathToAtlas );
-		TextureAtlas atlas = new TextureAtlas(
+		TextureAtlas newAtlas = new TextureAtlas(
 				fileHandle );
-		atlasMap.put( fileHandle.nameWithoutExtension( ), atlas );
-		return atlas;
+		String name = fileHandle.nameWithoutExtension( );
+		TextureAtlas old = atlasMap.get( name );
+		if(old!=null)
+			atlasMap.remove( name ).dispose( );
+		atlasMap.put( name, newAtlas );
+		return newAtlas;
 	}
 
 	public TextureAtlas getAtlas( String atlasPackName ) {
@@ -197,6 +204,8 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	@Override
 	public void dispose( ) {
 		super.dispose( );
+		for(TextureAtlas atlas : atlasMap.values( ))
+			atlas.dispose( );
 		atlasMap.clear( );
 	}
 
@@ -239,18 +248,13 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	
 	/**
 	 * Get a random rivet by name. then do commom-textures.createSprite(random
-	 * rivet name)
+	 * rivet name).For alphabot.
 	 * 
 	 * @author Stew
 	 * @return
 	 */
 	public String getRandomRivetName( ) {
-		return "rivet" + ( WereScrewedGame.random.nextInt( 4 ) + 1 );// there's
-																		// only
-																		// 4
-																		// rivets
-																		// in
-																		// common-textures.
+		return "rivet" + ( WereScrewedGame.random.nextInt( 4 ) + 1 );
 	}
 
 	public void setLevelRobotBGTex( Texture tex ) {
@@ -276,8 +280,26 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	public Texture getLevelRobotOutlineTex( ) {
 		return robotOutlineTex;
 	}
+	
 	/** Clears and disposes all assets and the preloading queue. */
 	public synchronized void clear () {
 		super.clear();
+		for(TextureAtlas atlas : atlasMap.values( ))
+			atlas.dispose( );
+		atlasMap.clear( );
+	}
+	
+
+	/**
+	 * @param r [0-255]
+	 * @param g [0-255]
+	 * @param b [0-255]
+	 */
+	public void setTileColor(int r, int g, int b){
+		tileColor = new Color(r/255f,g/255f,b/255f,1f);
+	}
+	
+	public Color getTileColor(){
+		return tileColor;
 	}
 }

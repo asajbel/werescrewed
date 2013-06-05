@@ -88,6 +88,7 @@ public class ResurrectScrew extends Screw {
 				* Util.DEG_TO_RAD );
 		rotation = ( int ) ( body.getAngle( ) * Util.RAD_TO_DEG );
 		connectScrewToEntity( entity );
+		addBehindParticleEffect( "ghost_spark", false, true ).start( ); 
 	}
 	
 	@Override
