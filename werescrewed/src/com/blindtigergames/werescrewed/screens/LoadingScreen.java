@@ -53,7 +53,7 @@ public class LoadingScreen extends Screen {
 	 *            A string to designate which files to load for the next screen
 	 */
 	public LoadingScreen( String st ) {
-		WereScrewedGame.manager.clear( );
+		
 		if ( st != null && !st.isEmpty( ) ) {
 			screenTag = st;
 			if ( screenTag.equals( "level1" ) ) {
@@ -384,7 +384,7 @@ public class LoadingScreen extends Screen {
 
 	@Override
 	public void dispose( ) {
-		// WereScrewedGame.manager.dispose( );
+		//WereScrewedGame.manager.dispose( );
 	}
 
 	@Override
