@@ -58,6 +58,8 @@ public class LoadingScreen extends Screen {
 			screenTag = st;
 			if ( screenTag.equals( "level1" ) ) {
 				currLevel = 1;
+			} else if ( screenTag.equals( "level2" ) ) {
+				currLevel = 2;
 			}
 		} else {
 			screenTag = "commonLevel";
@@ -97,28 +99,57 @@ public class LoadingScreen extends Screen {
 		
 		if(!initialLoadFinished){
 			// check for level1
-			if ( currLevel == 1 ) {
-
-				WereScrewedGame.manager.load(
-						"data/common/slides/slide1_intro.png", Texture.class );
-				WereScrewedGame.manager.load(
-						"data/common/slides/slide2_audience.png", Texture.class );
-				WereScrewedGame.manager.load(
-						"data/common/slides/slide3_alphabot.png", Texture.class );
-				WereScrewedGame.manager.load(
-						"data/common/slides/slide4_players.png", Texture.class );
-
-				WereScrewedGame.manager.finishLoading( );
-
-				storyBoardArray.add( WereScrewedGame.manager.get(
-						"data/common/slides/slide1_intro.png", Texture.class ) );
-				storyBoardArray.add( WereScrewedGame.manager.get(
-						"data/common/slides/slide2_audience.png", Texture.class ) );
-				storyBoardArray.add( WereScrewedGame.manager.get(
-						"data/common/slides/slide3_alphabot.png", Texture.class ) );
-				storyBoardArray.add( WereScrewedGame.manager.get(
-						"data/common/slides/slide4_players.png", Texture.class ) );
-				
+			if ( currLevel != 0 ) {
+				if( currLevel == 1 ) {
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide1_intro.png", Texture.class );
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide2_audience.png", Texture.class );
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide3_alphabot.png", Texture.class );
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide4_players.png", Texture.class );
+		
+					WereScrewedGame.manager.finishLoading( );
+		
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide1_intro.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide2_audience.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide3_alphabot.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide4_players.png", Texture.class ) );
+				} if (currLevel == 2 ){
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide1_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide2_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide3_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide4_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide5_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide6_dragon.png", Texture.class );
+		
+					WereScrewedGame.manager.finishLoading( );
+		
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide1_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide2_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide3_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide4_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide5_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide6_dragon.png", Texture.class ) );
+				}
+							
 				if ( WereScrewedGame.p1Controller != null
 						&& WereScrewedGame.p2Controller != null ) {
 					characterSelect = true;
@@ -299,7 +330,7 @@ public class LoadingScreen extends Screen {
 			}
 
 		}
-		if ( currLevel == 1 ) {
+		if ( currLevel > 0 ) {
 			int posX = width / 2
 					- storyBoardArray.get( currIndex ).getWidth( ) / 2;
 			int posY = height / 2
@@ -319,7 +350,7 @@ public class LoadingScreen extends Screen {
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, WereScrewedGame.getWidth(), WereScrewedGame.getHeight() );
 		batch.setProjectionMatrix( camera.combined );
-		if ( currLevel == 1 && characterSelect ) {
+		if ( currLevel > 0 && characterSelect ) {
 
 			pressStart.setX( width / 2 - pressStart.getWidth( ) / 2 );
 			pressStart.setY( height / 4 );
@@ -412,18 +443,33 @@ public class LoadingScreen extends Screen {
 		 * @ bg /path/to/bg/tex
 		 * 
 		 * @ outline /path/to/outline/tex
+		 * 
+		 * @ tilecolor r g b 
+		 * r, g, b = [0-255]
 		 */
 		String[ ] options = s.split( "\\s" );
-		loadFromPath( options[ 2 ] );
-		WereScrewedGame.manager.finishLoading( );
-		Texture tex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ options[ 2 ], Texture.class );
-		if ( options[ 1 ].equals( "fg" ) ) {
-			WereScrewedGame.manager.setLevelRobotFGTex( tex );
-		} else if ( options[ 1 ].equals( "bg" ) ) {
-			WereScrewedGame.manager.setLevelRobotBGTex( tex );
-		} else if ( options[ 1 ].equals( "outline" ) ) {
-			WereScrewedGame.manager.setLevelRobotOutlineTex( tex );
+		if(options[1].equals( "tilecolor" )){
+			int r=255,g=255,b=255;
+			try{
+				r = Integer.parseInt( options[2] );
+				g = Integer.parseInt( options[3] );
+				b = Integer.parseInt( options[4] );
+			}catch(ArrayIndexOutOfBoundsException e){
+				
+			}
+			WereScrewedGame.manager.setTileColor(r,g,b);
+		}else{
+			loadFromPath( options[ 2 ] );
+			WereScrewedGame.manager.finishLoading( );
+			Texture tex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+					+ options[ 2 ], Texture.class );
+			if ( options[ 1 ].equals( "fg" ) ) {
+				WereScrewedGame.manager.setLevelRobotFGTex( tex );
+			} else if ( options[ 1 ].equals( "bg" ) ) {
+				WereScrewedGame.manager.setLevelRobotBGTex( tex );
+			} else if ( options[ 1 ].equals( "outline" ) ) {
+				WereScrewedGame.manager.setLevelRobotOutlineTex( tex );
+			}
 		}
 	}
 

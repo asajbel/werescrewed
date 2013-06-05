@@ -48,7 +48,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 	private float accum = 0f;               
 	private final float step = 1f / 60f;    
 	private final float maxAccum = 1f / 17f;
-	private int screenWidth, screenHeight;
+	protected static int screenWidth;
+	protected static int screenHeight;
 	private int x;
 	private int y;
 	private int bX;
@@ -97,8 +98,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		sounds = null;
 	}
 
-	public void load(){
-	}
+	public void load(){ }
 	
 	@Override
 	public void render( float delta ) {

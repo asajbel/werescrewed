@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
@@ -24,9 +25,10 @@ class OptionsScreen extends MenuScreen {
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
+	private ScreenType backScreen = null;
 	@SuppressWarnings( "unused" )
 	private Sprite menuBG = null;
-	private Sprite fade = null;
+	//private Sprite fade = null;
 	private int lineHeight = 0;
 	private final int VOLUME_MAX = 100;
 	private final int VOLUME_MIN = 0;
@@ -45,7 +47,6 @@ class OptionsScreen extends MenuScreen {
 	private OptionButton sound = null;
 	private OptionButton noise = null;
 	// private OptionButton subtitles = null;
-	private TextButton creditsButton = null;
 	private TextButton backButton = null;
 	private CheckBox fullBox;
 	private OptionButton fullCheck;
@@ -57,18 +58,24 @@ class OptionsScreen extends MenuScreen {
 	 * the volume of the noise work. Subtitles: Turns subtitle on and off for
 	 * the noise work.
 	 */
-	public OptionsScreen( ) {
+	public OptionsScreen( ScreenType screen ) {
+		super( );
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		this.backScreen = screen;
+	}
+	
+	public OptionsScreen( ) {
+		this( null );
+	}
+	
+	@Override
+	public void load( ){
+		super.load( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
-
-		Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/transition.png", Texture.class );
-		fade = new Sprite( fadeScreen );
-		/*@SuppressWarnings( "unused" )
-		int width = Gdx.graphics.getWidth( );
-		@SuppressWarnings( "unused" )
-		int height = Gdx.graphics.getHeight( );*/
+		//Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		//		+ "/menu/transition.png", Texture.class );
+		//fade = new Sprite( fadeScreen );
 		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/transitions/trans-gear.png", Texture.class );
 		trans = new Sprite( transition );
@@ -76,41 +83,25 @@ class OptionsScreen extends MenuScreen {
 		scaleMax = scale;
 		transInEnd = false;
 		
+		fancyFont.setScale( 1.0f );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
 		screenLabel = new Label( "OPTIONS", fancyFont );
-
+		
 		loadButtons( );
 		setClearColor( 40, 40, 40, 255 );
 	}
-
-	@Override
-	public void dispose( ) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void hide( ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void pause( ) {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 	@Override
 	public void render( float delta ) {
 		super.render( delta );
 		batch.begin( );
+		fancyFont.setScale( 1.0f );
 		screenLabel.draw( batch );
 		controls.draw( batch, camera );
 		music.draw( batch, camera );
 		sound.draw( batch, camera );
 		noise.draw( batch, camera );
 		// subtitles.draw( batch, camera );
-		creditsButton.draw( batch, camera );
 		backButton.draw( batch, camera );
 		fullCheck.draw( batch, camera );
 
@@ -139,7 +130,7 @@ class OptionsScreen extends MenuScreen {
 		int leftX = width / 4;
 		int centerY = height / 2;
 
-		fade.setPosition( 0, 0 );
+		//fade.setPosition( 0, 0 );
 
 		screenLabel.setX( centerX - screenLabel.getWidth( ) / 2 );
 		screenLabel.setY( centerY + 7 * ( lineHeight - 20 ) );
@@ -155,8 +146,6 @@ class OptionsScreen extends MenuScreen {
 		// subtitles.setY( centerY );
 		fullCheck.setX( leftX -  fullCheck.getWidth( ) / 2 );
 		fullCheck.setY( centerY );
-		creditsButton.setX( leftX - creditsButton.getWidth( ) / 2 );
-		creditsButton.setY( centerY - lineHeight);
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 100 + backButton.getHeight( ) );
 
@@ -180,37 +169,31 @@ class OptionsScreen extends MenuScreen {
 		noiseSlider.setYPos( ( float ) noiseSlider.getY( ) );
 	}
 
-	@Override
-	public void resume( ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void show( ) {
-		// TODO Auto-generated method stub
-
-	}
-
 	private void loadButtons( ) {
+		buttonTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "button" );
+		TextureRegion slidTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "slider" );
+		TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "screw" );
+		
+		ScreenType back = ScreenType.MAIN_MENU;
+		if ( backScreen != null )
+			back = backScreen;
+		
 		musicSlider = new Slider( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2,
-				SoundType.MUSIC );
+				SoundType.MUSIC, slidTex, screwTex );
 		soundSlider = new Slider( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2,
-				SoundType.SFX );
+				SoundType.SFX, slidTex, screwTex );
 		noiseSlider = new Slider( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2,
-				SoundType.NOISE );
+				SoundType.NOISE, slidTex, screwTex );
 		fullBox = new CheckBox ( 0, 1, 0 );
-		controls = new Button( "Controls", fancyFont );
-		music = new OptionButton( "Music", fancyFont, musicSlider );
-		sound = new OptionButton( "Sound", fancyFont, soundSlider );
-		noise = new OptionButton( "Noise", fancyFont, noiseSlider );
+		controls = new Button( "Controls", fancyFont, buttonTex );
+		music = new OptionButton( "Music", fancyFont, buttonTex, musicSlider );
+		sound = new OptionButton( "Sound", fancyFont, buttonTex, soundSlider );
+		noise = new OptionButton( "Noise", fancyFont, buttonTex, noiseSlider );
 		// subtitles = new OptionButton( "Subtitles", fancyFont,
 		// subBox );
-		fullCheck = new OptionButton( "Fullscreen", fancyFont, fullBox );
-		creditsButton = new TextButton( "Credits", fancyFont,
-				new ScreenSwitchHandler( ScreenType.CREDITS ) );
-		backButton = new TextButton( "Back", fancyFont,
-				new ScreenSwitchHandler( ScreenType.MAIN_MENU ) );
+		fullCheck = new OptionButton( "Fullscreen", fancyFont, buttonTex, fullBox );
+		backButton = new TextButton( "Back", fancyFont, buttonTex,
+				new ScreenSwitchHandler( back ) );
 
 		controls.setColored( true );
 
@@ -220,7 +203,6 @@ class OptionsScreen extends MenuScreen {
 		Buttons.add( sound );
 		Buttons.add( noise );
 		Buttons.add( fullCheck );
-		Buttons.add( creditsButton );
 		Buttons.add( backButton );
 	}
 }

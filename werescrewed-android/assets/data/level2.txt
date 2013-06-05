@@ -5,6 +5,7 @@
 ## uncomment line below to do only black outlines for alphabot
 @ outline /common/black.png
 @ fg /levels/alphabot/alphabot-fg.png
+@ tilecolor 0 255 255
 
 ##music
 /levels/dragon/riding.mp3
@@ -54,7 +55,7 @@
 #Fg packs
 /levels/dragon/tail-fg.pack
 /levels/dragon/body-neck.pack
-/levels/dragon/body_right.pack
+/levels/dragon/body_right-head_interior.pack
 
 #Interior bg packs
 /levels/dragon/interior_tail2_bodyright.pack

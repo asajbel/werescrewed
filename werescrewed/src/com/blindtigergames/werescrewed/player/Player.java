@@ -158,6 +158,7 @@ public class Player extends Entity {
 	private boolean kinematicTransform = false;
 	private boolean changeDirectionsOnceInAir = false;
 	private boolean autoRezzing = false;
+	public boolean waitingOnInactiveSkelToRespwan = false;
 
 	@SuppressWarnings( "unused" )
 	private boolean changeDirections = false;
@@ -681,7 +682,7 @@ public class Player extends Entity {
 	}
 	
 	/**
-	 * deactivates players anchors
+	 * activates players anchors
 	 */
 	public void activateAnchors( ) {
 		for (Anchor a: anchors){

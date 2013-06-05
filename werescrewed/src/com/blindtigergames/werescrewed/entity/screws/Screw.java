@@ -58,8 +58,7 @@ public class Screw extends Entity {
 	public static float UNSCREW_SOUND_DELAY = 0.5f;
 	public static int SCREW_SOUND_DEGREES = 45;
 
-	private static TextureRegion screwTexRegion = WereScrewedGame.manager
-			.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
+	private TextureRegion screwTexRegion;
 
 	/**
 	 * constructor to use if you want a cosmetic screw
@@ -87,6 +86,7 @@ public class Screw extends Entity {
 		body.setTransform( body.getPosition( ), sprite.getRotation( )
 				* Util.DEG_TO_RAD );
 		addStructureJoint( entity );
+		screwTexRegion = WereScrewedGame.manager.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
 	}
 
 	protected void loadSounds( ) {

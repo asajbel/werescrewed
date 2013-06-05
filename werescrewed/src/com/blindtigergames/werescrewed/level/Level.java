@@ -60,7 +60,7 @@ public class Level {
 	public OrthographicCamera backgroundCam;
 	public RootSkeleton backgroundRootSkeleton;
 	public SpriteBatch backgroundBatch;
-	public float bgCamZoomScale = 0f, bgCamZoomMax = 1f, bgCamZoomMin=1f;
+	public float bgCamZoomScale = 0f, bgCamZoomMax = 1f, bgCamZoomMin = 1f;
 
 	public Level( ) {
 
@@ -184,7 +184,7 @@ public class Level {
 			player2.draw( batch, deltaTime, camera );
 
 		drawFGStuff( batch );
-		
+
 		player1.drawBubble( batch );
 		player2.drawBubble( batch );
 
@@ -212,45 +212,77 @@ public class Level {
 	}
 
 	private void drawBGStuff( SpriteBatch batch, float deltaTime ) {
+		ArrayList< Skeleton > skelsToRemove = new ArrayList< Skeleton >( );
+		ArrayList< Entity > entitiesToRemove = new ArrayList< Entity >( );
 		for ( Skeleton skel : skelBGList ) {
-			if ( skel.isActive( ) ) {
-				if ( skel.bgSprite != null
-						&& ( !skel.isFadingSkel( ) || skel.isFGFaded( ) ) ) {
-					skel.bgSprite.draw( batch );
-				}
-				if ( skel.isUpdatable( ) ) {
-					skel.drawBGDecals( batch, camera );
+			if ( skel.getPositionPixel( ).y < -4000 ) {
+				skelsToRemove.add( skel );
+			} else {
+				if ( skel.isActive( ) ) {
+					if ( skel.bgSprite != null
+							&& ( !skel.isFadingSkel( ) || skel.isFGFaded( ) ) ) {
+						skel.bgSprite.draw( batch );
+					}
+					if ( skel.isUpdatable( ) ) {
+						skel.drawBGDecals( batch, camera );
+					}
 				}
 			}
 		}
 		for ( Entity e : entityBGList ) {
-			if ( e.isActive( )
-					&& ( e.getParentSkeleton( ) == null || ( e
-							.getParentSkeleton( ).isUpdatable( ) && !e
-							.getParentSkeleton( ).getWasInactive( ) ) ) ) {
-				{
-					e.drawBGDecals( batch, camera );
+			if ( e.getPositionPixel( ).y < -4000 ) {
+				entitiesToRemove.add( e );
+			} else {
+				if ( e.isActive( )
+						&& ( e.getParentSkeleton( ) == null || ( e
+								.getParentSkeleton( ).isUpdatable( ) && !e
+								.getParentSkeleton( ).getWasInactive( ) ) ) ) {
+					{
+						e.drawBGDecals( batch, camera );
+					}
 				}
 			}
+		}
+		for ( int i = 0; i < skelsToRemove.size( ); i++ ) {
+			skelBGList.remove( skelsToRemove.get( i ) );
+		}
+		for ( int i = 0; i < entitiesToRemove.size( ); i++ ) {
+			entityBGList.remove( entitiesToRemove.get( i ) );
 		}
 	}
 
 	private void drawFGStuff( SpriteBatch batch ) {
+		ArrayList< Skeleton > skelsToRemove = new ArrayList< Skeleton >( );
+		ArrayList< Entity > entitiesToRemove = new ArrayList< Entity >( );
 		for ( Entity e : entityFGList ) {
-			if ( e.getParentSkeleton( ) == null
-					|| ( e.getParentSkeleton( ).isUpdatable( ) && !e
-							.getParentSkeleton( ).getWasInactive( ) ) ) {
-				e.drawFGDecals( batch, camera );
+			if ( e.getPositionPixel( ).y < -4000 ) {
+				entitiesToRemove.add( e );
+			} else {
+				if ( e.getParentSkeleton( ) == null
+						|| ( e.getParentSkeleton( ).isUpdatable( ) && !e
+								.getParentSkeleton( ).getWasInactive( ) ) ) {
+					e.drawFGDecals( batch, camera );
+				}
 			}
 		}
 		for ( Skeleton skel : skelFGList ) {
-			if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
-				skel.fgSprite.draw( batch );
+			if ( skel.getPositionPixel( ).y < -4000 ) {
+				skelsToRemove.add( skel );
+			} else {
+				if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {
+					skel.fgSprite.draw( batch );
+				}
+				// if ( !skel.isUpdatable( ) )
+				{
+					skel.drawFGDecals( batch, camera );
+				}
 			}
-			// if ( !skel.isUpdatable( ) )
-			{
-				skel.drawFGDecals( batch, camera );
-			}
+		}
+		for ( int i = 0; i < skelsToRemove.size( ); i++ ) {
+			skelBGList.remove( skelsToRemove.get( i ) );
+		}
+		for ( int i = 0; i < entitiesToRemove.size( ); i++ ) {
+			entityBGList.remove( entitiesToRemove.get( i ) );
 		}
 	}
 
@@ -269,9 +301,8 @@ public class Level {
 		}
 
 	}
-	
-	
-	public void initBackgroundRoot(){
+
+	public void initBackgroundRoot( ) {
 		// background stuff
 		backgroundBatch = new SpriteBatch( );
 		backgroundRootSkeleton = new RootSkeleton( "backgroundroot",

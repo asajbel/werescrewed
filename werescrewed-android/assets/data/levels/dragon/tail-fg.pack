@@ -1,26 +1,26 @@
 tail-fg.png
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Linear,Linear
 repeat: none
 offset: 0, 0
 tail
   rotate: false
-  xy: 2, 1387
+  xy: 2, 617
   size: 1219, 424
   orig: 1219, 424
   offset: 0, 0
   index: -1
 tail2
   rotate: false
-  xy: 2, 772
+  xy: 2, 2
   size: 1305, 613
   orig: 1307, 615
   offset: 0, 1
   index: -1
 tail3
   rotate: false
-  xy: 2, 2
-  size: 1498, 768
-  orig: 1498, 768
-  offset: 0, 0
+  xy: 2, 1043
+  size: 1078, 567
+  orig: 1084, 575
+  offset: 2, 5
   index: -1
