@@ -5,14 +5,12 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.camera.Camera;
@@ -82,7 +80,7 @@ public class Skeleton extends Platform {
 	protected boolean removed = false;
 
 	public boolean respawningDontPutToSleep = false;
-	private ShapeRenderer shapeRender;
+	//private ShapeRenderer shapeRender;
 
 	/**
 	 * Constructor used by SkeletonBuilder
@@ -102,7 +100,7 @@ public class Skeleton extends Platform {
 		entityType = EntityType.SKELETON;
 		alphaFadeAnimator = new SimpleFrameAnimator( ).speed( 0 )
 				.loop( LoopBehavior.STOP ).time( 1 );
-		shapeRender = new ShapeRenderer( );
+		//shapeRender = new ShapeRenderer( );
 	}
 
 	/**
