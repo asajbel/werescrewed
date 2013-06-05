@@ -40,14 +40,12 @@ public class PuzzleScrew extends Screw {
 	private final int animeSteps = 12;
 	@SuppressWarnings( "unused" )
 	private int soundCounter = 0;
-
-	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas(
-			"common-textures" ).findRegion( "hex_screw" );
-
+	
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, int startDepth, boolean resetable,
 			Vector2 detachDirection ) {
-		super( name, pos, screwTex );
+		super( name, pos, WereScrewedGame.manager.getAtlas(
+				"common-textures" ).findRegion( "hex_screw" ) );
 		this.world = world;
 		this.detachDirection = detachDirection;
 		this.entity = entity;
@@ -91,7 +89,8 @@ public class PuzzleScrew extends Screw {
 
 	public PuzzleScrew( String name, Vector2 pos, int max, World world,
 			int startDepth, boolean resetable ) {
-		super( name, pos, screwTex );
+		super( name, pos, WereScrewedGame.manager.getAtlas(
+				"common-textures" ).findRegion( "hex_screw" ) );
 		this.world = world;
 		maxDepth = max;
 		this.startDepth = depth = startDepth;

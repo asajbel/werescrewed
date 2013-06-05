@@ -372,9 +372,11 @@ public class Screen implements com.badlogic.gdx.Screen {
 		
 		if (bgm != null){
 			bgm.stop( );
+			bgm.dispose( );
 			bgm = null;
 		}
 		if (sounds != null){
+			sounds.stopAll( );
 			sounds.dispose( );
 			sounds = null;
 		}

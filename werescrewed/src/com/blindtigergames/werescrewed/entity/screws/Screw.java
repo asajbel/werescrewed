@@ -58,9 +58,6 @@ public class Screw extends Entity {
 	public static float UNSCREW_SOUND_DELAY = 0.5f;
 	public static int SCREW_SOUND_DEGREES = 45;
 
-	private static TextureRegion screwTexRegion = WereScrewedGame.manager
-			.getAtlas( "common-textures" ).findRegion( "flat_head_circular" );
-
 	/**
 	 * constructor to use if you want a cosmetic screw
 	 * 
@@ -74,7 +71,8 @@ public class Screw extends Entity {
 	public Screw( String name, Vector2 pos, Entity entity, World world ) {
 		super( name, pos, null, null, false );
 		this.world = world;
-		this.sprite = constructSprite( screwTexRegion );
+		this.sprite = constructSprite( WereScrewedGame.manager
+				.getAtlas( "common-textures" ).findRegion( "flat_head_circular" ) );
 		this.entity = entity;
 		this.entityAngle = entity.getAngle( );
 		screwType = ScrewType.SCREW_COSMETIC;

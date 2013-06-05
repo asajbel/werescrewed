@@ -41,7 +41,8 @@ public class StrippedScrew extends Screw {
 
 	public StrippedScrew( String name, Vector2 pos, Entity entity, World world,
 			Vector2 detachDirection ) {
-		super( name, pos, screwTex );
+		super( name, pos, WereScrewedGame.manager.getAtlas(
+				"common-textures" ).findRegion( "flat_head_circular2" ) );
 		this.world = world;
 		this.detachDirection = detachDirection;
 		this.entity = entity;
@@ -85,7 +86,8 @@ public class StrippedScrew extends Screw {
 	 * @param world
 	 */
 	public StrippedScrew( String name, Vector2 pos, World world ) {
-		super( name, pos, screwTex );
+		super( name, pos, WereScrewedGame.manager.getAtlas(
+				"common-textures" ).findRegion( "flat_head_circular2" ) );
 		this.world = world;
 		this.depth = 0;
 		screwType = ScrewType.SCREW_STRIPPED;

@@ -152,8 +152,7 @@ public class DragonScreen extends Screen {
 	public void load(){
 		super.load( );
 		if (bgm == null){
-			bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
-					+ "/levels/dragon/riding.mp3", Music.class );
+			bgm = Gdx.audio.newMusic(Gdx.files.internal("data/common/music/waltz.mp3"));
 		}
 		if (sounds == null){
 			sounds = new SoundManager();
