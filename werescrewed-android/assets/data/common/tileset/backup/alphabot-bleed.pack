@@ -1,6 +1,6 @@
 alphabot-bleed.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 offset: 32, 32
 gold2

@@ -1,6 +1,6 @@
 dragon_objects.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 offset: 0, 0
 rotation_machine_decal_middle

@@ -1,6 +1,6 @@
 body_right-head_interior.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 offset: 0, 0
 body_right
