@@ -212,9 +212,7 @@ public class TrophyScreen extends Screen {
 							.getTrophyMetric( TrophyMetric.P2FALLDEATHS ) ){
 				player1[ index ] = new Label( "Fall Guy", fancyFont );
 				player1Desc[index] = new Label("Most fall deaths", smallerFont);
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies1[ index ] = new Sprite ( icon );
+				trophies1[ index ] = texAtlas.createSprite("trophy4");
 				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
@@ -222,9 +220,7 @@ public class TrophyScreen extends Screen {
 							.getTrophyMetric( TrophyMetric.P1FALLDEATHS ) ){
 				player2[ index ] = new Label( "Fall Guy", fancyFont );
 				player2Desc[index] = new Label("Most fall deaths", smallerFont);
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies2[ index ] = new Sprite ( icon );
+				trophies2[ index ] = texAtlas.createSprite("trophy4");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
@@ -274,9 +270,7 @@ public class TrophyScreen extends Screen {
 							.getTrophyMetric( TrophyMetric.P2HEADSTANDS ) ){
 				player1[ index ] = new Label( "Always On Top", fancyFont );
 				player1Desc[index] = new Label("Most head jumps", smallerFont);
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies1[ index ] = new Sprite ( icon );
+				trophies1[ index ] = texAtlas.createSprite("trophy7");
 				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
@@ -284,9 +278,7 @@ public class TrophyScreen extends Screen {
 							.getTrophyMetric( TrophyMetric.P1HEADSTANDS ) ){
 				player2[ index ] = new Label( "Always On Top", fancyFont );
 				player2Desc[index] = new Label("Most head jumps", smallerFont);
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies2[ index ] = new Sprite ( icon );
+				trophies2[ index ] = texAtlas.createSprite("trophy7");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
@@ -316,18 +308,14 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P1TEAMDEATHS ) > Metrics
 							.getTrophyMetric( TrophyMetric.P2TEAMDEATHS ) ){
 				player1[ index ] = new Label( "Well, He Jumped First", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies1[ index ] = new Sprite ( icon );
+				trophies1[ index ] = texAtlas.createSprite("trophy9");
 				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2TEAMDEATHS ) > Metrics
 							.getTrophyMetric( TrophyMetric.P1TEAMDEATHS ) ){
 				player2[ index ] = new Label( "Well, He Jumped First", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies2[ index ] = new Sprite ( icon );
+				trophies2[ index ] = texAtlas.createSprite("trophy9");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
@@ -382,18 +370,14 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P1ELECDEATHS ) > Metrics
 							.getTrophyMetric( TrophyMetric.P2ELECDEATHS ) ){
 				player1[ index ] = new Label( "A Shocking Revelation", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies1[ index ] = new Sprite ( icon );
+				trophies1[ index ] = texAtlas.createSprite("trophy13");
 				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2ELECDEATHS ) > Metrics
 							.getTrophyMetric( TrophyMetric.P1ELECDEATHS ) ){
 				player2[ index ] = new Label( "A Shocking Revelation", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies2[ index ] = new Sprite ( icon );
+				trophies2[ index ] = texAtlas.createSprite("trophy13");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
@@ -402,18 +386,14 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P1GROUNDTIME ) > Metrics
 							.getTrophyMetric( TrophyMetric.P2GROUNDTIME ) ){
 				player1[ index ] = new Label( "Landlubber", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies1[ index ] = new Sprite ( icon );
+				trophies1[ index ] = texAtlas.createSprite("trophy14");
 				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2GROUNDTIME ) > Metrics
 							.getTrophyMetric( TrophyMetric.P1GROUNDTIME ) ){
 				player2[ index ] = new Label( "Landlubber", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies2[ index ] = new Sprite ( icon );
+				trophies2[ index ] = texAtlas.createSprite("trophy14");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
@@ -502,18 +482,14 @@ public class TrophyScreen extends Screen {
 					&& Metrics.getTrophyMetric( TrophyMetric.P1STRIPATTACH ) > Metrics
 							.getTrophyMetric( TrophyMetric.P2STRIPATTACH ) ){
 				player1[ index ] = new Label( "Crafty Climber", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies1[ index ] = new Sprite ( icon );
+				trophies1[ index ] = texAtlas.createSprite("trophy20");
 				trophyIndices[ index ] = trophyNum;
 			}
 			else if ( playerNum == 2
 					&& Metrics.getTrophyMetric( TrophyMetric.P2STRIPATTACH ) > Metrics
 							.getTrophyMetric( TrophyMetric.P1STRIPATTACH ) ){
 				player2[ index ] = new Label( "Crafty Climber", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies2[ index ] = new Sprite ( icon );
+				trophies2[ index ] = texAtlas.createSprite("trophy20");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
@@ -535,30 +511,22 @@ public class TrophyScreen extends Screen {
 		case 22: // Random 2
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "My Screwdriver's Bigger", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies1[ index ] = new Sprite ( icon );
+				trophies1[ index ] = texAtlas.createSprite("trophy22");
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "My Screwdriver's Bigger", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies2[ index ] = new Sprite ( icon );
+				trophies2[ index ] = texAtlas.createSprite("trophy22");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
 		case 23: // Random 3
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "You Unlocked \n An Achievement!!", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies1[ index ] = new Sprite ( icon );
+				trophies1[ index ] = texAtlas.createSprite("trophy23");
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "You Unlocked \n An Achievement!!", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies2[ index ] = new Sprite ( icon );
+				trophies2[ index ] = texAtlas.createSprite("trophy23");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
@@ -580,15 +548,11 @@ public class TrophyScreen extends Screen {
 		case 25: // Random 5
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Gives Awesome Hugs", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies1[ index ] = new Sprite ( icon );
+				trophies1[ index ] = texAtlas.createSprite("trophy25");
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Gives Awesome Hugs", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies2[ index ] = new Sprite ( icon );
+				trophies2[ index ] = texAtlas.createSprite("trophy25");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;
@@ -611,16 +575,12 @@ public class TrophyScreen extends Screen {
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label(
 						"You Played \n The Best Game Ever!!", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies1[ index ] = new Sprite ( icon );
+				trophies1[ index ] = texAtlas.createSprite("trophy27");
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label(
 						"You Played \n The Best Game Ever!!", fancyFont );
-				Texture icon = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-						+ "/common/trophies/trophy.png", Texture.class );
-				trophies2[ index ] = new Sprite ( icon );
+				trophies2[ index ] = texAtlas.createSprite("trophy27");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
 			break;

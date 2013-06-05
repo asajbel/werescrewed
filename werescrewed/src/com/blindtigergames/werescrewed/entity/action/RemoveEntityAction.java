@@ -33,7 +33,6 @@ public class RemoveEntityAction implements IAction {
 			}
 			
 			entity.setRemoveNextStep( );
-			Gdx.app.log( "remove enetiey action", entity.name);
 			// Gdx.app.log( "removing Entity", entity.name );
 		} else {
 			Player player = ( Player ) entity;

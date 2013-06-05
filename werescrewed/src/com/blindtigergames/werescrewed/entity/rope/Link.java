@@ -34,10 +34,8 @@ public class Link extends Entity {
 	
 	@SuppressWarnings( "unused" )
 	private boolean drawTwoLinks = false;
-	private static TextureRegion chainLinkTexRegion = WereScrewedGame.manager
-			.getAtlas( "common-textures" ).findRegion( "chainlink" );
-	private static TextureRegion chainLinkLongTexRegion = WereScrewedGame.manager
-			.getAtlas( "common-textures" ).findRegion( "chainlink-long" );
+	private TextureRegion chainLinkTexRegion;
+	private TextureRegion chainLinkLongTexRegion;
 
 	private static final float spriteScale = ( 22f / 64f );
 
@@ -50,6 +48,10 @@ public class Link extends Entity {
 		this.parent = null;
 		constructBody( pos );
 		Sprite temp;
+		chainLinkTexRegion = WereScrewedGame.manager
+				.getAtlas( "common-textures" ).findRegion( "chainlink" );
+		chainLinkLongTexRegion = WereScrewedGame.manager
+				.getAtlas( "common-textures" ).findRegion( "chainlink-long" );
 		if(this.height>64)
 			temp = constructSprite( chainLinkLongTexRegion );
 		else 

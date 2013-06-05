@@ -282,6 +282,7 @@ public class ProgressManager {
 
 		ghost = new Entity( player.name + "Ghost", player.getPositionPixel( )
 				.cpy( ).add( -64f, 64f ), false, spine, null );
+		ghost.addBehindParticleEffect( "ghost_fount", false, true ).start( );
 		// build ghost mover
 		LerpMover ghostMover = new LerpMover( player.getPositionPixel( ).cpy( )
 				.add( hoverOffset ), currentCheckPoint.getPositionPixel( ).sub(
