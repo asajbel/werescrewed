@@ -88,10 +88,14 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 
 	public TextureAtlas loadAtlas( String fullPathToAtlas ) {
 		FileHandle fileHandle = Gdx.files.internal( fullPathToAtlas );
-		TextureAtlas atlas = new TextureAtlas(
+		TextureAtlas newAtlas = new TextureAtlas(
 				fileHandle );
-		atlasMap.put( fileHandle.nameWithoutExtension( ), atlas );
-		return atlas;
+		String name = fileHandle.nameWithoutExtension( );
+		TextureAtlas old = atlasMap.get( name );
+		if(old!=null)
+			atlasMap.remove( name ).dispose( );
+		atlasMap.put( name, newAtlas );
+		return newAtlas;
 	}
 
 	public TextureAtlas getAtlas( String atlasPackName ) {
@@ -200,6 +204,8 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	@Override
 	public void dispose( ) {
 		super.dispose( );
+		for(TextureAtlas atlas : atlasMap.values( ))
+			atlas.dispose( );
 		atlasMap.clear( );
 	}
 
@@ -242,18 +248,13 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	
 	/**
 	 * Get a random rivet by name. then do commom-textures.createSprite(random
-	 * rivet name)
+	 * rivet name).For alphabot.
 	 * 
 	 * @author Stew
 	 * @return
 	 */
 	public String getRandomRivetName( ) {
-		return "rivet" + ( WereScrewedGame.random.nextInt( 4 ) + 1 );// there's
-																		// only
-																		// 4
-																		// rivets
-																		// in
-																		// common-textures.
+		return "rivet" + ( WereScrewedGame.random.nextInt( 4 ) + 1 );
 	}
 
 	public void setLevelRobotBGTex( Texture tex ) {
@@ -279,9 +280,13 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	public Texture getLevelRobotOutlineTex( ) {
 		return robotOutlineTex;
 	}
+	
 	/** Clears and disposes all assets and the preloading queue. */
 	public synchronized void clear () {
 		super.clear();
+		for(TextureAtlas atlas : atlasMap.values( ))
+			atlas.dispose( );
+		atlasMap.clear( );
 	}
 	
 
