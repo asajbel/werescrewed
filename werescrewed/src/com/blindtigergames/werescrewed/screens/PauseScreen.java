@@ -48,6 +48,8 @@ class PauseScreen extends MenuScreen {
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
 //		logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 //		+ "/common/title_background.png", Texture.class );
+
+		fancyFont.setScale( 1.0f );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		screenLabel = new Label( "Pause Screen", fancyFont );
 
@@ -55,8 +57,6 @@ class PauseScreen extends MenuScreen {
 				+ "/transitions/trans-gear.png", Texture.class );
 		trans = new Sprite( transition );
 		
-		buttonTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/button.png", Texture.class );
 		loadButtons( );
 		setClearColor( 40, 40, 40, 255 );
 	}
@@ -80,6 +80,7 @@ class PauseScreen extends MenuScreen {
 
 		batch.begin( );
 //		batch.draw( logo, 0, 0 );
+		fancyFont.setScale( 1.0f );
 		screenLabel.draw( batch );
 		returnButton.draw( batch, camera );
 		optionsButton.draw( batch, camera );
@@ -147,8 +148,7 @@ class PauseScreen extends MenuScreen {
 	}
 	
 	private void loadButtons( ) {
-		Texture buttonTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/button.png", Texture.class );
+		buttonTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "button" );
 		
 		returnButton = new TextButton( "Return to Game", fancyFont, buttonTex,
 				new ScreenSwitchHandler( ScreenManager.getPrevScreen( ) ) );
@@ -165,6 +165,9 @@ class PauseScreen extends MenuScreen {
 	
 	@Override
 	public void show( ) {
+		if (!assetsLoaded){
+			load();
+		}
 		SoundManager.setEnableLoops( false );
 	}
 

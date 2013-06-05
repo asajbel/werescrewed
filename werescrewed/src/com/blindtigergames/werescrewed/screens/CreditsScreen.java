@@ -51,6 +51,8 @@ class CreditsScreen extends MenuScreen {
 		scaleMax = scale;
 		transInEnd = false;
 		
+
+		fancyFont.setScale( 1.0f );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		screenLabel = new Label( "WE'RE SCREWED!! CREDITS", fancyFont );
 		licenseLabel = new Label( "Blind Tiger Games", fancyFont );
@@ -59,8 +61,8 @@ class CreditsScreen extends MenuScreen {
 		artLabel = new Label( "Artists: ", fancyFont );
 		soundLabel = new Label( "Musicians", fancyFont );
 		
-		buttonTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/button.png", Texture.class );
+		buttonTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "button" );
+		
 		backButton = new TextButton( "Back", fancyFont, buttonTex,
 				new ScreenSwitchHandler( ScreenType.LOADING_MENU ) );
 		backButton.setColored( true );

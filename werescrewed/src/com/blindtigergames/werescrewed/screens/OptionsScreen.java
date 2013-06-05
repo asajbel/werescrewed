@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
@@ -24,11 +25,9 @@ class OptionsScreen extends MenuScreen {
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
-	private ScreenType screen = null;
+	private ScreenType backScreen = null;
 	@SuppressWarnings( "unused" )
 	private Sprite menuBG = null;
-	private Texture slidTex = null;
-	private Texture screwTex = null;
 	//private Sprite fade = null;
 	private int lineHeight = 0;
 	private final int VOLUME_MAX = 100;
@@ -63,7 +62,7 @@ class OptionsScreen extends MenuScreen {
 		super( );
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
-		this.screen = screen;
+		this.backScreen = screen;
 	}
 	
 	public OptionsScreen( ) {
@@ -84,15 +83,9 @@ class OptionsScreen extends MenuScreen {
 		scaleMax = scale;
 		transInEnd = false;
 		
+		fancyFont.setScale( 1.0f );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
 		screenLabel = new Label( "OPTIONS", fancyFont );
-
-		buttonTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/button.png", Texture.class );
-		slidTex = WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle + "/menu/slider.png", Texture.class );
-		screwTex = WereScrewedGame.manager.get(
-				WereScrewedGame.dirHandle + "/menu/screw.png", Texture.class );
 		
 		loadButtons( );
 		setClearColor( 40, 40, 40, 255 );
@@ -102,6 +95,7 @@ class OptionsScreen extends MenuScreen {
 	public void render( float delta ) {
 		super.render( delta );
 		batch.begin( );
+		fancyFont.setScale( 1.0f );
 		screenLabel.draw( batch );
 		controls.draw( batch, camera );
 		music.draw( batch, camera );
@@ -176,9 +170,13 @@ class OptionsScreen extends MenuScreen {
 	}
 
 	private void loadButtons( ) {
+		buttonTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "button" );
+		TextureRegion slidTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "slider" );
+		TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "screw" );
+		
 		ScreenType back = ScreenType.MAIN_MENU;
-		if ( screen != null )
-			back = screen;
+		if ( backScreen != null )
+			back = backScreen;
 		
 		musicSlider = new Slider( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2,
 				SoundType.MUSIC, slidTex, screwTex );

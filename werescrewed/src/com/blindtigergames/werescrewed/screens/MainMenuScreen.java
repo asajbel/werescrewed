@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Falling;
@@ -57,8 +58,7 @@ class MainMenuScreen extends MenuScreen {
 	public void load( ){
 		super.load( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
-		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/menu.png", Texture.class );
+		TextureRegion back = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "menu" );
 		menuBG = new Sprite( back );
 		//Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 		//		+ "/menu/transition.png", Texture.class );
@@ -70,9 +70,6 @@ class MainMenuScreen extends MenuScreen {
 		scale = trans.getHeight( ) * SCALE_MAX;
 		scaleMax = scale;
 		transInEnd = false;
-		
-		buttonTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/button.png", Texture.class );
 		
 		man = new SimpleSpinemator( "red_male_atlas", "male", "fall_idle", true );
 		lady = new SimpleSpinemator( "red_female_atlas", "female", "fall_idle", true );
@@ -200,6 +197,8 @@ class MainMenuScreen extends MenuScreen {
 	 * loads all button related content appropriately
 	 */
 	private void loadButtons( ) {
+		buttonTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "button" );
+		
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 30 );
 		// headingLabel = new Label( "We're Screwed!!", fancyFont );
 

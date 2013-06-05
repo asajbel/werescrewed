@@ -2,12 +2,16 @@ package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.gui.OptionButton;
 import com.blindtigergames.werescrewed.gui.Slider;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 
 public class MenuScreen extends Screen {
+	
+	protected TextureRegion buttonTex = null;
 
 	public MenuScreen( ) {
 		super( );
@@ -61,8 +65,12 @@ public class MenuScreen extends Screen {
 	
 	protected void menuSelect(){
 		sounds.playSound("menu_select", 0.5f);
-		transOutEnd = false;
-		//Buttons.get( buttonIndex ).setSelected( true );
+		if ( Buttons.get( buttonIndex ) instanceof TextButton ) {
+			transOutEnd = false;
+		}
+		else {
+			Buttons.get( buttonIndex ).setSelected( true );
+		}
 		controllerTimer = controllerMax;
 	}
 	

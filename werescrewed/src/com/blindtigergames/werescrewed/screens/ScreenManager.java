@@ -16,6 +16,7 @@ public final class ScreenManager {
 
 	private static ScreenType prevScreen = null;
 	private boolean pauseScreenShown = false;
+	private boolean optionsPauseShown = false;
 	public static boolean escapeHeld, p1PauseHeld, p2PauseHeld;
 
 	private ScreenManager( ) {
@@ -81,6 +82,9 @@ public final class ScreenManager {
 		if ( screen == ScreenType.PAUSE ) {
 			pauseScreenShown = true;
 			game.setScreen( screens.get( screen.ordinal( ) ) );
+		} else if ( screen == ScreenType.OPTIONS_PAUSE ) {
+			optionsPauseShown = true;
+			game.setScreen( screens.get( screen.ordinal( ) ) );
 		} else {
 			if ( screen == ScreenType.MAIN_MENU ) {
 				if ( pauseScreenShown ) {
@@ -93,6 +97,11 @@ public final class ScreenManager {
 					dispose( ScreenType.PAUSE );
 					pauseScreenShown = false;
 				}
+			}
+			if ( optionsPauseShown ) {
+				screens.get( ScreenType.OPTIONS_PAUSE.ordinal( ) ).dispose( );
+				dispose( ScreenType.OPTIONS_PAUSE );
+				optionsPauseShown = false;
 			}
 			game.setScreen( screens.get( screen.ordinal( ) ) );
 			prevScreen = screen;

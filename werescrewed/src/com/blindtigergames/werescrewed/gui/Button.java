@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -39,6 +40,7 @@ public class Button {
 	protected int scaleY = height - scaleSize;
 	protected float xPos = 0.5f * -scaleSize;
 	protected float yPos = 0.5f * -scaleSize;
+	private boolean once = true;
 
 	/**
 	 * makes a new button instance
@@ -52,11 +54,12 @@ public class Button {
 	 * @param y
 	 *            int
 	 */
-	public Button( String caption, BitmapFont font, Texture button, int x, int y ) {
+	public Button( String caption, BitmapFont font, TextureRegion button, int x, int y ) {
 		this.caption = caption;
 		this.font = font;
 		this.x = x;
 		this.y = y;
+		
 		box = new Sprite( button );
 		
 		bounds = new Rectangle( x, y - height, width, height );
@@ -71,7 +74,7 @@ public class Button {
 	 * @param font
 	 *            BitmapFont
 	 */
-	public Button( String caption, BitmapFont font, Texture button ) {
+	public Button( String caption, BitmapFont font, TextureRegion button ) {
 		this( caption, font, button, 0, 0 );
 	}
 
@@ -186,7 +189,6 @@ public class Button {
 					y - height - smallCapHeight * 2 + 5 );
 		}
 		font.setColor( originalColor );
-
 	}
 
 	protected void setScale( ) {
@@ -218,6 +220,7 @@ public class Button {
 	}
 
 	protected void calculateDimensions( ) {
+		font.setScale( 1f );
 		TextBounds dimensions = font.getBounds( caption );
 		capWidth = Math.round( dimensions.width );
 		capHeight = Math.round( dimensions.height );

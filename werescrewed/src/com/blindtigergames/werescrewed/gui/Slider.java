@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.gui;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
@@ -19,7 +20,7 @@ public class Slider extends OptionControl {
 	private SoundType type = null;
 	
 	public Slider( int min, int max, int current, int x, int y, 
-			SoundType type, Texture slidTex, Texture screwTex ) {
+			SoundType type, TextureRegion slidTex, TextureRegion screwTex ) {
 		super( min, max, current, x, y );
 		//Texture slidTex = WereScrewedGame.manager.get(
 		//		WereScrewedGame.dirHandle + "/menu/slider.png", Texture.class );
@@ -32,7 +33,8 @@ public class Slider extends OptionControl {
 		this.type = type;
 	}
 	
-	public Slider( int min, int max, int current, SoundType type, Texture slidTex, Texture screwTex ) {
+	public Slider( int min, int max, int current, SoundType type, 
+			TextureRegion slidTex, TextureRegion screwTex ) {
 		this( min, max, current, 0, 0, type, slidTex, screwTex );
 	}
 

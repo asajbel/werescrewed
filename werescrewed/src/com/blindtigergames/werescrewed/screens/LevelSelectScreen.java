@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Falling;
@@ -53,8 +54,7 @@ public class LevelSelectScreen extends MenuScreen {
 		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/transitions/trans-gear.png", Texture.class );
 		trans = new Sprite( transition );
-		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/menu.png", Texture.class );
+		TextureRegion back = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "menu" );
 		menuBG = new Sprite( back );
 		//Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 		//		+ "/menu/transition.png", Texture.class );
@@ -62,9 +62,6 @@ public class LevelSelectScreen extends MenuScreen {
 		
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 50 );
 		screenLabel = new Label( "Level Select", fancyFont );
-		
-		buttonTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/button.png", Texture.class );
 		
 		man = new SimpleSpinemator( "red_male_atlas", "male", "fall_idle", true );
 		lady = new SimpleSpinemator( "red_female_atlas", "female", "fall_idle", true );
@@ -177,6 +174,8 @@ public class LevelSelectScreen extends MenuScreen {
 	 * loads buttons appropriately
 	 */
 	private void loadButtons( ) {		
+		buttonTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "button" );
+		
 		physicsButton = new TextButton( "Physics Test Screen", fancyFont, buttonTex,
 				new ScreenSwitchHandler( ScreenType.PHYSICS ) );
 //		resurrectButton = new TextButton( "Parallax Test Screen", fancyFont,

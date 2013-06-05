@@ -1,8 +1,5 @@
 ##menu assets
-/menu/menu.png
-/menu/button.png
-/menu/screw.png
-/menu/slider.png
+/menu/menu-textures.pack
 /menu/transition.png
 
 ##temp background

@@ -59,8 +59,8 @@ public class TrophyScreen extends Screen {
 		player2Name = new Label( "Player 2", fancyFont );
 
 		// Button classes now require you to send in a texture for the button image.
-		buttonTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/button.png", Texture.class );
+		TextureRegion buttonTex = WereScrewedGame.manager.
+				getAtlas( "menu-textures" ).findRegion( "button" );
 		
 		next = new TextButton( "Next Level", fancyFont, buttonTex, 
 				new ScreenSwitchHandler( screenTag ) );

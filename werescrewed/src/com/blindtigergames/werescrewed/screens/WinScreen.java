@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Label;
@@ -29,8 +30,8 @@ class WinScreen extends MenuScreen {
 		firstLine = new Label( "Mission Complete!", font );
 		secLine = new Label( "Winners Never Lose!!", font );
 
-		Texture buttonTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/button.png", Texture.class );
+		TextureRegion buttonTex = WereScrewedGame.manager.
+				getAtlas( "menu-textures" ).findRegion( "button" );
 		nextButton = new TextButton( "Continue", font, buttonTex, 
 				new ScreenSwitchHandler( ScreenType.TROPHY ) );
 	}
