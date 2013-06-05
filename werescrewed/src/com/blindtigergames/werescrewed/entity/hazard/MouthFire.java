@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.entity.hazard;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
+import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class MouthFire extends Hazard {
@@ -21,6 +23,7 @@ public class MouthFire extends Hazard {
 	private float heightMStep;
 	private float widthMeter;
 	private int totalSteps;
+	private int maxConcurrentFixtures;
 	
 	//iteration variables
 	private int currStep;
@@ -29,13 +32,22 @@ public class MouthFire extends Hazard {
 	private Array< Fixture > fixtureList;
 	
 	
-	
-	public MouthFire( String name, Vector2 pos, float secondsToComplete, World world) {
+	/**
+	 * Mouth fire object for dragon level.
+	 * @param name
+	 * @param pos source of fire
+	 * @param destinationPix fire will go to get here
+	 * @param secondsToComplete 1s is quick
+	 * @param startHeightPix at source of fire, how tall will it be
+	 * @param endHeightPix at end of fire, max height it reaches
+	 * @param world
+	 */
+	public MouthFire( String name, Vector2 pos, Vector2 destinationPix, float secondsToComplete, float startHeightPix, float endHeightPix, World world) {
 		super( name, pos, null, world, true );
 		
-		float startHeight = 10*Util.PIXEL_TO_BOX, endHeight = 600*Util.PIXEL_TO_BOX;
+		float startHeightM = 10*Util.PIXEL_TO_BOX, endHeightM = 600*Util.PIXEL_TO_BOX;
 		Vector2 posMeter = pos.cpy( ).mul( Util.PIXEL_TO_BOX );
-		Vector2 destinationM = posMeter.cpy().add(600*Util.PIXEL_TO_BOX,600*Util.PIXEL_TO_BOX);
+		Vector2 destinationM = destinationPix.cpy().mul(Util.PIXEL_TO_BOX);
 		this.angle = Util.angleBetweenPoints( posMeter, destinationM );
 		this.totalSteps = 20;
 		int stepLength;
@@ -43,8 +55,8 @@ public class MouthFire extends Hazard {
 		this.totalLength = posStep.len( );
 		this.widthMeter = totalLength/totalSteps/2; //because set as box doubles width
 		posStep = posStep.nor( ).mul( widthMeter*2 );
-		this.heightMStep = (endHeight-startHeight)/totalSteps;
 		
+		this.heightMStep = (endHeightM-startHeightM)/totalSteps;
 		
 		this.currStep = 0;
 		this.stepAccum = 0;
@@ -54,8 +66,37 @@ public class MouthFire extends Hazard {
 		
 		this.fixtureList = new Array< Fixture >(totalSteps);
 		
+		this.maxConcurrentFixtures = totalSteps/3;
+		//Gdx.app.log( "posStep", posStep.toString( )+", maxFix:"+this.maxConcurrentFixtures );
+	
 		constructBody( posMeter );
 		
+		float milliComplete = secondsToComplete * 1000; 
+		float emitLength = widthMeter * 2 * maxConcurrentFixtures;
+		int emitTime = (int) (milliComplete * (emitLength / totalLength));
+
+		addFrontParticleEffect( "mouth_fire", false, false ); 
+		ParticleEffect e = getEffect( "mouth_fire" ); 
+		e.setDuration( emitTime ); 
+		e.setPosition( pos.x, pos.y );
+		e.setLifeTime( milliComplete - 300, 500 );
+		e.setVelocity( (totalLength*Util.BOX_TO_PIXEL-50)/secondsToComplete, 50 );
+		e.setSize( endHeightPix / 3, 0 );
+		float angleDiff = (float) Math.atan( endHeightPix/(totalLength*Util.BOX_TO_PIXEL) ); 
+		e.setAngleDiff( angleDiff, 0 ); 
+		float ang = angle - (float) Math.PI / 2; 
+		e.setEffectAngle( ang );
+	}
+	
+	/**
+	 * For debug
+	 * @param name
+	 * @param pos
+	 * @param secondsToComplete
+	 * @param world
+	 */
+	public MouthFire( String name, Vector2 pos, float secondsToComplete, World world ){
+		this( name, pos, pos.cpy().add(600,600), secondsToComplete, 10, 600, world );
 	}
 	
 	private void constructBody( Vector2 positionM ) {
@@ -81,6 +122,11 @@ public class MouthFire extends Hazard {
 		fixtureList.add( this.body.createFixture( fixture ) );
 		
 		polygon.dispose( );
+		
+		if(fixtureList.size > maxConcurrentFixtures) {
+			body.destroyFixture( fixtureList.first( ) );
+			fixtureList.removeIndex( 0 );
+		}
 	}
 	
 	@Override
@@ -105,6 +151,7 @@ public class MouthFire extends Hazard {
 		if(!activeHazard){
 			resetFire( );
 		}
+		getEffect("mouth_fire").reset( ); 
 	}
 	
 	private void resetFire(){

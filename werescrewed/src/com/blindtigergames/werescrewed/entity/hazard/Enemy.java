@@ -85,8 +85,10 @@ public class Enemy extends Hazard {
 	@Override
 	public void reset(){
 		super.reset();
-		this.body.setAngularVelocity( 0 );
-		this.body.setLinearVelocity( 0, 0 );
+		if (this.body != null){
+			this.body.setAngularVelocity( 0 );
+			this.body.setLinearVelocity( 0, 0 );
+		}
 		this.addFrontParticleEffect( "smoke_puff_small", true, false ).restartAt( getPositionPixel( ) );
 	}
 }

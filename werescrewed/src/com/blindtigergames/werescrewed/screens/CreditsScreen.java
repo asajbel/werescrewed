@@ -13,7 +13,7 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
 
-class CreditsScreen extends Screen {
+class CreditsScreen extends MenuScreen {
 	// implements com.badlogic.gdx.Screen
 	private SpriteBatch batch = null;
 	private OrthographicCamera camera = null;
@@ -99,15 +99,11 @@ class CreditsScreen extends Screen {
 		backButton.draw( batch, camera );
 		
 		if ( !transInEnd ) {
-			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransIn( batch );
-			trans.setSize( scale, scale );
 		}
 		
 		if ( !transOutEnd ) {
-			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransOut( batch, ScreenType.MAIN_MENU );
-			trans.setSize( scale, scale );
 		}
 		
 		batch.end( );

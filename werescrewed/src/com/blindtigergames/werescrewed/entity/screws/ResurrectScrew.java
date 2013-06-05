@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
@@ -44,6 +45,7 @@ public class ResurrectScrew extends Screw {
 	private final int startFrame = 15;
 	private final int lastMotionFrame = 14;
 	private final int animeSteps = 12;
+	public RevoluteJoint entityJoint;
 
 	/**
 	 * 
@@ -85,6 +87,7 @@ public class ResurrectScrew extends Screw {
 				* Util.DEG_TO_RAD );
 		rotation = ( int ) ( body.getAngle( ) * Util.RAD_TO_DEG );
 		connectScrewToEntity( entity );
+		addBehindParticleEffect( "ghost_spark", false, true ).start( ); 
 	}
 
 	/**
@@ -358,6 +361,6 @@ public class ResurrectScrew extends Screw {
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
 		revoluteJointDef.enableMotor = false;
-		world.createJoint( revoluteJointDef );
+		entityJoint = (RevoluteJoint) world.createJoint( revoluteJointDef );
 	}
 }

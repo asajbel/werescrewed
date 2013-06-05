@@ -19,7 +19,7 @@ import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.sound.SoundManager.SoundType;
 
-class OptionsScreen extends Screen {
+class OptionsScreen extends MenuScreen {
 
 	private SpriteBatch batch = null;
 	private BitmapFont font = null;
@@ -115,12 +115,10 @@ class OptionsScreen extends Screen {
 		fullCheck.draw( batch, camera );
 
 		if ( !transInEnd ) {
-			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransIn( batch );
 		}
 		
 		if ( !transOutEnd ) {
-			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransOut( batch );
 		}
 		

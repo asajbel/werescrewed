@@ -240,10 +240,12 @@ public class ParticleEmitter {
 		boolean[ ] active = this.active;
 		int activeCount = this.activeCount;
 
-		for ( int i = 0, n = active.length; i < n; i++ )
-			if ( active[ i ] && particles[i].getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
+		for ( int i = 0, n = active.length; i < n; i++ ) {
+			if ( active[ i ] )//&& particles[i].getBoundingRectangle( ).overlaps( camera.getBounds( ) ) )
+			{
 				particles[ i ].draw( spriteBatch );
 			}
+		}
 		this.activeCount = activeCount;
 
 		if ( additive )
@@ -273,11 +275,17 @@ public class ParticleEmitter {
 		for ( int i = 0, n = active.length; i < n; i++ ) {
 			if ( active[ i ] ) {
 				Particle particle = particles[ i ];
-				if ( updateParticle( particle, delta, deltaMillis ) && particle.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) 
-					particle.draw( spriteBatch );
-				else {
-					active[ i ] = false;
-					activeCount--;
+				//if ( particle.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) 
+				{
+					if ( updateParticle( particle, delta, deltaMillis ) )
+					{ 
+						particle.draw( spriteBatch );
+					}
+					else 
+					{
+						active[ i ] = false;
+						activeCount--;
+					}
 				}
 			}
 		}
@@ -725,6 +733,7 @@ public class ParticleEmitter {
 		angleValue.setHigh( angleDeg - diffHighHalf, angleDeg + diffHighHalf );
 		angleValue.setLow( angleDeg - diffLowHalf, angleDeg + diffLowHalf );
 		angleValue.setTimeline( timeline ); 
+		setRotation( angleRad );
 	}
 
 	public void setRotation( float angleRad ) {
@@ -766,6 +775,32 @@ public class ParticleEmitter {
 				- emissionValue.getLowMin( );
 		emissionValue.setHigh( highEmits - diffHighHalf, highEmits );
 		emissionValue.setLow( lowEmits - diffLowHalf, lowEmits );
+	}
+	
+	public void setVelocity( float highVelocity, float lowVelocity ) {
+		velocityValue.active = true;
+		float diffHighHalf = ( velocityValue.getHighMax( ) - velocityValue.getHighMin( ) );
+		float diffLowHalf = ( velocityValue.getLowMax( ) - velocityValue.getLowMin( ) );
+		velocityValue.setHigh( highVelocity - diffHighHalf, highVelocity ); 
+		velocityValue.setLow( lowVelocity - diffLowHalf, lowVelocity ); 
+	}
+	
+	public void setSize( float highSize, float lowSize ) {
+		scaleValue.active = true;
+		float diffHighHalf = ( scaleValue.getHighMax( ) - scaleValue.getHighMin( ) );
+		float diffLowHalf = ( scaleValue.getLowMax( ) - scaleValue.getLowMin( ) );
+		scaleValue.setHigh( highSize - diffHighHalf, highSize );
+		scaleValue.setLow( lowSize - diffLowHalf, lowSize );
+	}
+	
+	public void setAngleDiff( float diffHigh, float diffLow ) {
+		angleValue.active = true;
+		float dfH = diffHigh/2 * Util.RAD_TO_DEG; 
+		float dfL = diffLow/2 * Util.RAD_TO_DEG; 
+		float highMid = ( angleValue.getHighMax( ) + angleValue.getHighMin( ) )/2;
+		float lowMid = ( angleValue.getLowMax( ) + angleValue.getLowMin( ) )/2;
+		angleValue.setHigh( highMid - dfH, highMid + dfH );
+		angleValue.setLow( lowMid - dfL, lowMid + dfL );
 	}
 
 	public ScaledNumericValue getEmission( ) {

@@ -1,0 +1,19 @@
+body_right-head_interior.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+body_right
+  rotate: false
+  xy: 4, 4
+  size: 1396, 997
+  orig: 1396, 997
+  offset: 0, 0
+  index: -1
+head-interior
+  rotate: false
+  xy: 4, 1007
+  size: 1105, 648
+  orig: 1105, 648
+  offset: 0, 0
+  index: -1

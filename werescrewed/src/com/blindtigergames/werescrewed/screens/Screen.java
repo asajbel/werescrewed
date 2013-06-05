@@ -48,7 +48,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 	private float accum = 0f;               
 	private final float step = 1f / 60f;    
 	private final float maxAccum = 1f / 17f;
-	private int screenWidth, screenHeight;
+	protected static int screenWidth;
+	protected static int screenHeight;
 	private int x;
 	private int y;
 	private int bX;
@@ -102,6 +103,9 @@ public class Screen implements com.badlogic.gdx.Screen {
 	
 	@Override
 	public void render( float delta ) {
+		if (sounds != null){
+			sounds.update( delta );
+		}
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
@@ -180,169 +184,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if ( Gdx.input.isKeyPressed( Input.Keys.BACKSPACE ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.TROPHY );
 		}
-
-		if ( Buttons.size( ) > 0 && transInEnd && transOutEnd ) {
-
-			if ( controllerTimer > 0 ) {
-				controllerTimer--;
-			} else {
-
-				if ( WereScrewedGame.p1Controller != null ) {
-					if ( WereScrewedGame.p1ControllerListener.jumpPressed( )
-							|| WereScrewedGame.p1ControllerListener
-									.pausePressed( ) ) {
-						transOutEnd = false;
-						//Buttons.get( buttonIndex ).setSelected( true );
-						controllerTimer = controllerMax;
-
-					} else if ( WereScrewedGame.p1ControllerListener
-							.downPressed( ) ) {
-
-						Buttons.get( buttonIndex ).setColored( false );
-						buttonIndex++;
-						buttonIndex = buttonIndex % Buttons.size( );
-						Buttons.get( buttonIndex ).setColored( true );
-						controllerTimer = controllerMax;
-
-					} else if ( WereScrewedGame.p1ControllerListener
-							.upPressed( ) ) {
-
-						Buttons.get( buttonIndex ).setColored( false );
-						if ( buttonIndex == 0 ) {
-							buttonIndex = Buttons.size( ) - 1;
-						} else {
-							buttonIndex--;
-						}
-						Buttons.get( buttonIndex ).setColored( true );
-						controllerTimer = controllerMax;
-
-					} else if ( WereScrewedGame.p1ControllerListener
-							.leftPressed( ) ) {
-
-						if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
-							OptionButton option = ( OptionButton ) Buttons
-									.get( buttonIndex );
-							if ( option.getOption( ) instanceof Slider ) {
-								Slider slider = ( Slider ) option.getOption( );
-								slider.moveLeft( );
-							}
-						}
-					} else if ( WereScrewedGame.p1ControllerListener
-							.rightPressed( ) ) {
-
-						if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
-							OptionButton option = ( OptionButton ) Buttons
-									.get( buttonIndex );
-							if ( option.getOption( ) instanceof Slider ) {
-								Slider slider = ( Slider ) option.getOption( );
-								slider.moveRight( );
-							}
-						}
-					}
-				}
-				if ( WereScrewedGame.p2Controller != null ) {
-					if ( WereScrewedGame.p2ControllerListener.jumpPressed( )
-							|| WereScrewedGame.p2ControllerListener
-									.pausePressed( ) ) {
-						transOutEnd = false;
-						//Buttons.get( buttonIndex ).setSelected( true );
-						controllerTimer = controllerMax;
-
-					} else if ( WereScrewedGame.p2ControllerListener
-							.downPressed( ) ) {
-
-						Buttons.get( buttonIndex ).setColored( false );
-						buttonIndex++;
-						buttonIndex = buttonIndex % Buttons.size( );
-						Buttons.get( buttonIndex ).setColored( true );
-						controllerTimer = controllerMax;
-
-					} else if ( WereScrewedGame.p2ControllerListener
-							.upPressed( ) ) {
-
-						Buttons.get( buttonIndex ).setColored( false );
-						if ( buttonIndex == 0 ) {
-							buttonIndex = Buttons.size( ) - 1;
-						} else {
-							buttonIndex--;
-						}
-						Buttons.get( buttonIndex ).setColored( true );
-						controllerTimer = controllerMax;
-
-					} else if ( WereScrewedGame.p2ControllerListener
-							.leftPressed( ) ) {
-
-						if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
-							OptionButton option = ( OptionButton ) Buttons
-									.get( buttonIndex );
-							if ( option.getOption( ) instanceof Slider ) {
-								Slider slider = ( Slider ) option.getOption( );
-								slider.moveLeft( );
-							}
-						}
-					} else if ( WereScrewedGame.p2ControllerListener
-							.rightPressed( ) ) {
-
-						if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
-							OptionButton option = ( OptionButton ) Buttons
-									.get( buttonIndex );
-							if ( option.getOption( ) instanceof Slider ) {
-								Slider slider = ( Slider ) option.getOption( );
-								slider.moveRight( );
-							}
-						}
-					}
-				}
-
-				if ( WereScrewedGame.p1Controller == null
-						&& WereScrewedGame.p2Controller == null ) {
-					if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-						transOutEnd = false;
-						//Buttons.get( buttonIndex ).setSelected( true );
-						controllerTimer = controllerMax;
-					}
-					if ( Gdx.input.isKeyPressed( Keys.DOWN ) ) {
-						Buttons.get( buttonIndex ).setColored( false );
-						buttonIndex++;
-						buttonIndex = buttonIndex % Buttons.size( );
-						Buttons.get( buttonIndex ).setColored( true );
-						controllerTimer = controllerMax;
-					}
-					if ( Gdx.input.isKeyPressed( Keys.UP ) ) {
-
-						Buttons.get( buttonIndex ).setColored( false );
-						if ( buttonIndex == 0 ) {
-							buttonIndex = Buttons.size( ) - 1;
-						} else {
-							buttonIndex--;
-						}
-						Buttons.get( buttonIndex ).setColored( true );
-						controllerTimer = controllerMax;
-					}
-					if ( Gdx.input.isKeyPressed( Keys.LEFT ) ) {
-						if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
-							OptionButton option = ( OptionButton ) Buttons
-									.get( buttonIndex );
-							if ( option.getOption( ) instanceof Slider ) {
-								Slider slider = ( Slider ) option.getOption( );
-								slider.moveLeft( );
-							} 
-						}
-					}
-					if ( Gdx.input.isKeyPressed( Keys.RIGHT ) ) {
-						if ( Buttons.get( buttonIndex ) instanceof OptionButton ) {
-							OptionButton option = ( OptionButton ) Buttons
-									.get( buttonIndex );
-							if ( option.getOption( ) instanceof Slider ) {
-								Slider slider = ( Slider ) option.getOption( );
-								slider.moveRight( );
-							} 
-						}
-					}
-				}
-			}
-		}
-
 	}
 	
 	protected void changeFullScreen( ) {
@@ -362,7 +203,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 		scale = scale - SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
-		trans.setSize( scale, scale );
+		//trans.setSize( scale, scale );
+		//trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
+		trans.setBounds( width / 2 - trans.getWidth( ) / 2 - 50, 
+				height / 2 - trans.getHeight( ) / 2 - 50, scale, scale );
 		trans.draw( batch );
 		if ( scale < SCALE_MIN ) {
 			transInEnd = true;
@@ -374,7 +218,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 		scale = scale + SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
-		trans.setSize( scale, scale );
+		trans.setBounds( width / 2 - trans.getWidth( ) / 2 + 50, 
+				height / 2 - trans.getHeight( ) / 2 + 50, scale, scale );
 		trans.draw( batch );
 		if ( scale > scaleMax ) {
 			transOutEnd = true;
@@ -388,7 +233,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 		scale = scale + SCALE_SIZE;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
-		trans.setSize( scale, scale );
+		trans.setBounds( width / 2 - trans.getWidth( ) / 2 + 50, 
+				height / 2 - trans.getHeight( ) / 2 + 50, scale, scale );
 		trans.draw( batch );
 		if ( scale > scaleMax ) {
 			transOutEnd = true;
@@ -489,7 +335,11 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if (bgm != null){
 			bgm.setLooping( true );
 			bgm.setVolume( SoundManager.getMusicVolume( ) );
-			bgm.play( );
+			try {
+				bgm.play( );
+			} catch (com.badlogic.gdx.utils.GdxRuntimeException audioFail){
+				Gdx.app.log( "Audio Fail", "", audioFail );
+			}
 		}
 	}
 
@@ -529,7 +379,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 			sounds = null;
 		}
 		assetsLoaded = false;
-		
 	}
 
 	/**

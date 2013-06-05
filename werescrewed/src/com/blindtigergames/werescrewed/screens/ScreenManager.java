@@ -67,7 +67,7 @@ public final class ScreenManager {
 		if ( screen != ScreenType.PAUSE ) {
 			if ( prevScreen != null ) {
 
-				if ( !pauseScreenShown ) {
+				if ( screen != prevScreen ) {
 					// Gdx.app.log( "disposing", screens
 					// .get( prevScreen.ordinal( ) ).getClass( )
 					// .getSimpleName( ) );
@@ -90,6 +90,8 @@ public final class ScreenManager {
 					// .getSimpleName( ) );
 					screens.get( prevScreen.ordinal( ) ).dispose( );
 					dispose( prevScreen );
+					screens.get( ScreenType.PAUSE.ordinal( ) ).dispose( );
+					dispose( ScreenType.PAUSE );
 					pauseScreenShown = false;
 				}
 			}

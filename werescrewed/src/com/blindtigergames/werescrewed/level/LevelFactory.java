@@ -45,13 +45,16 @@ import com.blindtigergames.werescrewed.entity.builders.PlayerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.RopeBuilder;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
+import com.blindtigergames.werescrewed.entity.hazard.Enemy;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
+import com.blindtigergames.werescrewed.entity.mover.DirectionFlipMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.MoverType;
 import com.blindtigergames.werescrewed.entity.mover.PistonTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
+import com.blindtigergames.werescrewed.entity.particles.EntityParticleEmitter;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.platforms.TiledPlatform;
@@ -96,6 +99,7 @@ public class LevelFactory {
 	protected static final String gleedImageTag = "image";
 	protected static final String atlasTag = "atlas";
 	protected static final String panelTag = "panel";
+	protected static final String entityEmitterTag = "entityemitter";
 
 	@SuppressWarnings( "unused" )
 	private Random random;
@@ -268,10 +272,12 @@ public class LevelFactory {
 			constructFixture( item );
 		} else if ( bluePrints.equals( "panel" ) ) {
 			out = constructPanel( item );
-		} else if ( !bluePrints.equals( "camera" )
+		} else if ( bluePrints.equals( entityEmitterTag )){
+			constructEntityEmitter(item);
+		}else if ( !bluePrints.equals( "camera" )
 				&& item.getDefinition( ).getCategory( ) == EntityCategory.COMPLEX_PLATFORM ) {
 			out = loadComplexPlatform( item );
-		} else {
+		}else {
 			out = null;
 		}
 
@@ -657,7 +663,7 @@ public class LevelFactory {
 		} else {
 			// attach skeleton to skeleton
 			SkeletonBuilder skeleBuilder = new SkeletonBuilder( level.world );
-			skeleBuilder.name( item.name ).position( item.pos ).texture( null );
+			skeleBuilder.name( item.name ).texture( null );
 
 			if ( item.props.containsKey( "rectangle" ) ) {
 				skeleBuilder.setUseBoundingRect( true );
@@ -667,9 +673,19 @@ public class LevelFactory {
 								item.pos.y-item.element.getFloat( "Height" ),
 								item.element.getFloat( "Width" ),
 								item.element.getFloat( "Height" ) );
+				
+				float width = item.element.getFloat( "Width" );
+				float height = item.element.getFloat( "Height" );
+				int tileWidth = ( int ) ( width / Platform.tile );
+				int tileHeight = ( int ) ( height / Platform.tile );
+
+				float xPos = item.pos.x + ( width / 2 );
+				float yPos = item.pos.y - ( height / 2 );
+				skeleBuilder.position( new Vector2(xPos, yPos) );
+
 			} else {
 				Array< Vector2 > polySprite = contstructSkeletonPoly( item );
-
+				skeleBuilder.position( item.pos );
 				if ( item.props.containsKey( "invisible" ) ) {
 					skeleBuilder.invisibleVerts( polySprite );
 
@@ -1787,6 +1803,35 @@ public class LevelFactory {
 		return ps;
 	}
 
+	private void constructEntityEmitter(Item item){
+		int entityCount = 0;
+		float delay=5;
+		float lifetime = 30;
+		//count
+		if(item.props.containsKey( "entitycount" )){
+			entityCount = Integer.parseInt( item.props.get( "entitycount" ) );
+		}
+		if(item.props.containsKey( "lifetime" )){
+			entityCount = Integer.parseInt( item.props.get( "lifetime" ) );
+		}
+		if(item.props.containsKey( "delay" )){
+			entityCount = Integer.parseInt( item.props.get( "delay" ) );
+		}
+		EntityParticleEmitter fireballEmitter = new EntityParticleEmitter( item.name,
+				new Vector2( item.pos ),
+				new Vector2(),
+				 level.world, true );
+		level.root.addLooseEntity( fireballEmitter );
+		Enemy e;
+		for(int i = 0; i < entityCount; ++i ){
+			e = new Enemy( item.name+"_hot-bolt"+i, item.pos,lifetime, level.world, true );
+			e.addMover( new DirectionFlipMover( false, 0.001f, e, 1.5f, .03f ) );
+			addBackGroundEntity( e );
+			fireballEmitter.addParticle( e, lifetime, 0, delay*i );
+		}
+	}
+	
+	
 	public Level getLevel( ) {
 		return level;
 	}

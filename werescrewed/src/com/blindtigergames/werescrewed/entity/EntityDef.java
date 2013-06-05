@@ -36,6 +36,7 @@ public class EntityDef {
 	protected static HashMap< String, EntityDef > definitions;
 
 	// Sprite Fields (i.e. everything needed to define just the sprite half)
+	protected String texName = "";
 	protected Texture texture;
 	protected String atlasName;
 	protected Array< TextureAtlas > atlases;
@@ -65,6 +66,15 @@ public class EntityDef {
 		definitions = new HashMap< String, EntityDef >( );
 	}
 
+	public static void clearDefs(){
+		definitions.clear( );
+	}
+	
+	public static void reloadDefs(){
+		for (EntityDef def: definitions.values( )){
+			def.loadTexture( );
+		}
+	}
 	// METHODS
 
 	/**
@@ -203,34 +213,7 @@ public class EntityDef {
 											// use it.
 		} else {
 			EntityDef out = null;
-			// Since the XML loader isn't done yet, create default entity
-			// definitions here, and put them in the hashmap.
-
-			if ( id.equals( "player" ) ) { // Player
-				BodyDef playerBodyDef = new BodyDef( );
-				playerBodyDef.type = BodyType.DynamicBody;
-				playerBodyDef.fixedRotation = true;
-				ArrayList< FixtureDef > fixes = new ArrayList< FixtureDef >( );
-
-				CircleShape playerfeetShape = new CircleShape( );
-				playerfeetShape.setRadius( 10f * Util.PIXEL_TO_BOX );
-				FixtureDef playerFixtureDef = makeFixtureDef( 9.9f, 0.0f, 0.0f,
-						playerfeetShape );
-				fixes.add( playerFixtureDef );
-
-				out = new EntityDef( "player", WereScrewedGame.manager.get(
-						WereScrewedGame.dirHandle.path( ) + "/common/"
-								+ "player_r_m.png", Texture.class ), "",
-						playerBodyDef, fixes );
-			} else if ( id.equals( "bottle" ) ) { // Bottle
-				BodyDef bottleBodyDef = new BodyDef( );
-				bottleBodyDef.type = BodyType.DynamicBody;
-				out = new EntityDef( "bottle", null, "", bottleBodyDef, null );
-				out.loadComplexBody( 1.0f, 0.5f, 0.0f, 1, "bottle" );
-			} else {
-				// Otherwise, trying loading from XML File
-				out = EntityDef.loadDefinition( id );
-			}
+			out = EntityDef.loadDefinition( id );
 			if ( out != null )
 				definitions.put( id, out ); // If we get a new definition, store
 											// it for later use.
@@ -260,10 +243,9 @@ public class EntityDef {
 			out.setCategory( xml.get( "category", "" ) ); // EntityCategory.tag,
 															// "" ) );
 			// Sprite Data
-			String texName = null;
 			@SuppressWarnings( "unused" )
 			String atlasName = null;
-			texName = xml.get( "texture", "" );
+			out.texName = xml.get( "texture", "" );
 			for ( Element atlasElem : xml.getChildrenByName( "atlas" ) ) {
 				// Gdx.app.log( "EntityDef",
 				// "Getting texture atlas " + atlasElem.getText( ) );
@@ -271,12 +253,8 @@ public class EntityDef {
 						.getText( ) ) );
 			}
 			if ( out.atlases.size < 1 ) {
-				texName = xml.get( "texture", "" );
-				if ( !texName.equals( "" ) ) {
-					out.setTexture( WereScrewedGame.manager.get(
-							WereScrewedGame.dirHandle.path( ) + "/" + texName,
-							Texture.class ) );
-				}
+				out.texName = xml.get( "texture", "" );
+				out.loadTexture( );
 			}
 			out.atlasName = xml.get( "atlas", "" );
 			out.color = xml.get( "color", "" );
@@ -368,5 +346,12 @@ public class EntityDef {
 	public void setScale( float x, float y ) {
 		spriteScale.x = x;
 		spriteScale.y = y;
+	}
+	
+	public void loadTexture(){
+		if (!texName.equals( "" )){
+			texture = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/" + texName,
+					Texture.class ) ;
+		}
 	}
 }

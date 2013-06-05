@@ -39,7 +39,7 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas;
  * See <a href="http://www.badlogicgames.com/wordpress/?p=1255">http://www.
  * badlogicgames.com/wordpress/?p=1255</a>
  * 
- * @author mzechner
+ * @author mzechner Anders Sajbel
  */
 public class ParticleEffect implements Disposable {
 	private final Array< ParticleEmitter > emitters;
@@ -51,19 +51,19 @@ public class ParticleEffect implements Disposable {
 	 * Flag for parent to delete this when it particle effect is complete
 	 */
 	public boolean removeOnComplete = false;
-	
-	public boolean updateAngleWithParent = true;
-	
-	public Vector2 offsetFromParent = new Vector2();
 
-	public String name; //unique instance name
-	
-	public String effectName; //common name of effect
+	public boolean updateAngleWithParent = true;
+
+	public Vector2 offsetFromParent = new Vector2( );
+
+	public String name; // unique instance name
+
+	public String effectName; // common name of effect
 
 	public ParticleEffect( ) {
 		emitters = new Array< ParticleEmitter >( 8 );
 		name = null;
-		effectName=null;
+		effectName = null;
 	}
 
 	public ParticleEffect( ParticleEffect effect ) {
@@ -74,7 +74,7 @@ public class ParticleEffect implements Disposable {
 		emitters = new Array< ParticleEmitter >( true, effect.emitters.size );
 		for ( int i = 0, n = effect.emitters.size; i < n; i++ )
 			emitters.add( new ParticleEmitter( effect.emitters.get( i ) ) );
-		
+
 	}
 
 	public void start( ) {
@@ -253,10 +253,16 @@ public class ParticleEffect implements Disposable {
 			e.setMaxParticleCount( max );
 		}
 	}
+	
+	public void setAngleDiff( float high, float low ) {
+		for ( ParticleEmitter e : emitters ) {
+			e.setAngleDiff( high, low ); 
+		}
+	}
 
 	/**
 	 * Changes the maximum size of a particle effect. Do not call continuously.
-	 * For fire change the values maxParticles = emitsMax * seconds + 10; 
+	 * For fire change the values maxParticles = emitsMax * seconds + 10;
 	 * emitsMax = 20 + 10 * seconds.
 	 * 
 	 * @author Anders
@@ -297,6 +303,34 @@ public class ParticleEffect implements Disposable {
 			e.setEmmisionValue( highEmit, emitsMin );
 			float highLife = e.getLife( ).getHighMax( );
 			e.setLifeValue( highLife, minLife );
+		}
+	}
+
+	/**
+	 * Sets the velocity values of all the emitters in a particle effect
+	 * 
+	 * @param maxVelocity
+	 *            Maximum velocity in pixels per second
+	 * @param minVelocity
+	 *            Minimum velocity in pixels per second
+	 */
+	public void setVelocity( float maxVelocity, float minVelocity ) {
+		for ( ParticleEmitter e : emitters ) {
+			e.setVelocity( maxVelocity, minVelocity );
+		}
+	}
+
+	/**
+	 * Sets the size values of all the emitters in a particle effect
+	 * 
+	 * @param maxSize
+	 *            Maximum size in pixels
+	 * @param minSize
+	 *            Minimum size in pixels
+	 */
+	public void setSize( float maxSize, float minSize ) {
+		for ( ParticleEmitter e : emitters ) {
+			e.setSize( maxSize, minSize );
 		}
 	}
 
@@ -445,9 +479,9 @@ public class ParticleEffect implements Disposable {
 	public void restartAt( Vector2 posPixels ) {
 		restartAt( posPixels.x, posPixels.y );
 	}
-	
-	public ParticleEffect setOffsetFromParent(int x, int y){
-		this.offsetFromParent.x= x;
+
+	public ParticleEffect setOffsetFromParent( int x, int y ) {
+		this.offsetFromParent.x = x;
 		this.offsetFromParent.y = y;
 		return this;
 	}

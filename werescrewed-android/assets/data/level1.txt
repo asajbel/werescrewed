@@ -16,7 +16,10 @@
 /levels/alphabot/sounds/arm_move_begin.ogg
 /levels/alphabot/sounds/arm_move_loop.ogg
 /levels/alphabot/sounds/arm_move_end.ogg
-
+/levels/alphabot/sounds/fireworks1.ogg
+/levels/alphabot/sounds/fireworks2.ogg
+/levels/alphabot/sounds/applause_action.ogg
+/levels/alphabot/sounds/applause_final.ogg
 
 ##stage assets
 /levels/alphabot/theater_floor_seats_stage.pack
@@ -29,6 +32,7 @@
 /levels/alphabot/foot_shin_thigh.pack
 /levels/alphabot/knee_chest_in.pack
 /levels/alphabot/engine.pack
+/common/chest-engine.png
 /levels/alphabot/chest_pipes_thigh_pipes.pack
 /levels/alphabot/left-arm-internal.pack
 /levels/alphabot/head_left.pack

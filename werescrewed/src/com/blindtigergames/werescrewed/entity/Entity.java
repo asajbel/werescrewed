@@ -77,6 +77,8 @@ public class Entity implements GleedLoadable {
 	private RobotState currentRobotState;
 	private EnumMap< RobotState, Integer > robotStateMap;
 	private ISpinemator spinemator;
+	private Vector2 oldPos;
+	private float oldAngle;
 
 	private Skeleton parentSkeleton; // pointer to parent skele, set by skeleton
 
@@ -191,10 +193,11 @@ public class Entity implements GleedLoadable {
 		this.setPixelPosition( positionPixels );
 		this.anchors = new ArrayList< Anchor >( );
 	}
-	
-	public Entity( String name, Vector2 positionPixels, boolean solid, ISpinemator spinemator, Body body) {
+
+	public Entity( String name, Vector2 positionPixels, boolean solid,
+			ISpinemator spinemator, Body body ) {
 		this.construct( name, solid );
-		this.spinemator = spinemator; 
+		this.spinemator = spinemator;
 		this.body = body;
 		if ( body != null ) {
 			world = body.getWorld( );
@@ -270,8 +273,8 @@ public class Entity implements GleedLoadable {
 			sprite.setPosition( xMeters * Util.BOX_TO_PIXEL, yMeters
 					* Util.BOX_TO_PIXEL );
 		} else if ( spinemator != null ) {
-			spinemator.setPosition( xMeters * Util.BOX_TO_PIXEL, 
-					yMeters * Util.BOX_TO_PIXEL );
+			spinemator.setPosition( xMeters * Util.BOX_TO_PIXEL, yMeters
+					* Util.BOX_TO_PIXEL );
 		}
 	}
 
@@ -312,12 +315,12 @@ public class Entity implements GleedLoadable {
 	public Vector2 getPositionPixel( ) {
 		if ( body != null ) {
 			return body.getPosition( ).cpy( ).mul( Util.BOX_TO_PIXEL );
-		} 
+		}
 		if ( sprite != null ) {
 			return new Vector2( sprite.getX( ), sprite.getY( ) );
 		}
-		if (spinemator != null ) {
-			return spinemator.getPosition( ); 
+		if ( spinemator != null ) {
+			return spinemator.getPosition( );
 		}
 		return Vector2.Zero;
 	}
@@ -416,20 +419,10 @@ public class Entity implements GleedLoadable {
 			if ( anchors != null && anchors.size( ) != 0 ) {
 				updateAnchors( );
 			}
-			// animation stuff may go here
-			// bodyPos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
-			// if ( sprite != null ) {
-			// sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-			// sprite.setRotation( MathUtils.radiansToDegrees
-			// * body.getAngle( ) );
-			// sprite.update( deltaTime );
-			// }
 			updateDecals( deltaTime );
-
-			
 		}
 		if ( spinemator != null ) {
-				spinemator.update( deltaTime );
+			spinemator.update( deltaTime );
 		}
 
 		updateParticleEffect( deltaTime, frontParticles );
@@ -993,6 +986,10 @@ public class Entity implements GleedLoadable {
 			for ( Anchor anchor : anchors ) {
 				anchor.setPosition( new Vector2( sprite.getX( ), sprite.getY( ) ) );
 			}
+		} else if ( spinemator != null ) {
+			for ( Anchor anchor : anchors ) {
+				anchor.setPosition( spinemator.getPosition( ) );
+			}
 		}
 	}
 
@@ -1031,6 +1028,20 @@ public class Entity implements GleedLoadable {
 			filter.categoryBits = Util.CATEGORY_PLATFORMS;
 			// player still collides with sensor of screw
 			filter.maskBits = Util.CATEGORY_EVERYTHING;
+			f.setFilterData( filter );
+		}
+
+	}
+	
+	/**
+	 * Make this entity's body collide with nothing.
+	 */
+	public void noCollide( ) {
+		Filter filter;
+		for ( Fixture f : body.getFixtureList( ) ) {
+			filter = f.getFilterData( );
+			filter.categoryBits = Util.CATEGORY_IGNORE;
+			filter.maskBits = Util.CATEGORY_NOTHING;
 			f.setFilterData( filter );
 		}
 
@@ -1291,41 +1302,53 @@ public class Entity implements GleedLoadable {
 	public void addFGDecal( Sprite s ) {
 		addFGDecal( s, new Vector2( s.getX( ), s.getY( ) ) );
 	}
-	
-	public void clearAllDecals(){
+
+	public void clearAllDecals( ) {
 		fgDecalAngles.clear( );
-		fgDecalOffsets.clear();
-		fgDecals.clear();
+		fgDecalOffsets.clear( );
+		fgDecals.clear( );
 		bgDecalAngles.clear( );
-		bgDecalOffsets.clear();
-		bgDecals.clear();
+		bgDecalOffsets.clear( );
+		bgDecals.clear( );
 	}
 
 	public void updateDecals( float deltaTime ) {
 		Vector2 bodyPos = this.getPositionPixel( );
-		float angle = this.getAngle( ), cos = ( float ) Math.cos( angle ), sin = ( float ) Math
-				.sin( angle );
-		float x, y, r;
-		Vector2 offset;
-		Sprite decal;
-		float a = angle * Util.RAD_TO_DEG;
-		for ( int i = 0; i < fgDecals.size( ); i++ ) {
-			offset = fgDecalOffsets.get( i );
-			decal = fgDecals.get( i );
-			r = fgDecalAngles.get( i );
-			x = bodyPos.x + ( ( offset.x ) * cos ) - ( ( offset.y ) * sin );
-			y = bodyPos.y + ( ( offset.y ) * cos ) + ( ( offset.x ) * sin );
-			decal.setPosition( x + decal.getOriginX( ), y + decal.getOriginY( ) );
-			decal.setRotation( r + a );
-		}
-		for ( int i = 0; i < bgDecals.size( ); i++ ) {
-			offset = bgDecalOffsets.get( i );
-			decal = bgDecals.get( i );
-			r = bgDecalAngles.get( i );
-			x = bodyPos.x + ( ( offset.x ) * cos ) - ( ( offset.y ) * sin );
-			y = bodyPos.y + ( ( offset.y ) * cos ) + ( ( offset.x ) * sin );
-			decal.setPosition( x + decal.getOriginX( ), y + decal.getOriginY( ) );
-			decal.setRotation( r + a );
+		float angle = this.getAngle( );
+		if ( bodyPos != oldPos
+				|| angle != oldAngle || this.currentMover( ) != null
+				|| ( this.getParentSkeleton( ) != null && ( this
+						.getParentSkeleton( ).hasMoved( ) || this
+						.getParentSkeleton( ).hasRotated( )
+						|| this.getParentSkeleton( ).currentMover( ) != null ) ) ) {
+			oldPos = bodyPos;
+			oldAngle = angle;
+			float cos = ( float ) Math.cos( angle ), sin = ( float ) Math
+					.sin( angle );
+			float x, y, r;
+			Vector2 offset;
+			Sprite decal;
+			float a = angle * Util.RAD_TO_DEG;
+			for ( int i = 0; i < fgDecals.size( ); i++ ) {
+				offset = fgDecalOffsets.get( i );
+				decal = fgDecals.get( i );
+				r = fgDecalAngles.get( i );
+				x = bodyPos.x + ( ( offset.x ) * cos ) - ( ( offset.y ) * sin );
+				y = bodyPos.y + ( ( offset.y ) * cos ) + ( ( offset.x ) * sin );
+				decal.setPosition( x + decal.getOriginX( ),
+						y + decal.getOriginY( ) );
+				decal.setRotation( r + a );
+			}
+			for ( int i = 0; i < bgDecals.size( ); i++ ) {
+				offset = bgDecalOffsets.get( i );
+				decal = bgDecals.get( i );
+				r = bgDecalAngles.get( i );
+				x = bodyPos.x + ( ( offset.x ) * cos ) - ( ( offset.y ) * sin );
+				y = bodyPos.y + ( ( offset.y ) * cos ) + ( ( offset.x ) * sin );
+				decal.setPosition( x + decal.getOriginX( ),
+						y + decal.getOriginY( ) );
+				decal.setRotation( r + a );
+			}
 		}
 	}
 
@@ -1336,9 +1359,9 @@ public class Entity implements GleedLoadable {
 	 */
 	public void drawFGDecals( SpriteBatch batch, Camera camera ) {
 		for ( Sprite decal : fgDecals ) {
-			if ( decal.alpha >= 0.25 ) 
-			{
-			if ( decal.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
+			if ( decal.alpha >= 0.25 ) {
+				if ( decal.getBoundingRectangle( )
+						.overlaps( camera.getBounds( ) ) ) {
 					decal.draw( batch );
 				}
 			}
@@ -1544,7 +1567,7 @@ public class Entity implements GleedLoadable {
 	// Idle sound
 	public void idleSound( ) {
 		if ( sounds != null && sounds.hasSound( "idle" ) ) {
-			sounds.addSoundToLoops( "idle", 0);
+			sounds.addSoundToLoops( "idle", 0 );
 			sounds.setSoundVolume( "idle", 0.0f );
 			// Gdx.app.log( name, "Starting Idle Sound" );
 		}

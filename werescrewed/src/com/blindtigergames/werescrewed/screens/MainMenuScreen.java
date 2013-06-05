@@ -19,7 +19,7 @@ import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.gui.TextButton.ButtonHandler;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 
-class MainMenuScreen extends Screen {
+class MainMenuScreen extends MenuScreen {
 
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
@@ -103,12 +103,10 @@ class MainMenuScreen extends Screen {
 		//fade.draw( batch, alpha );
 		
 		if ( !transInEnd ) {
-			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransIn( batch );
 		}
 		
 		if ( !transOutEnd ) {
-			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransOut( batch );
 		}
 		

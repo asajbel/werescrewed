@@ -14,7 +14,7 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
 
-public class LevelSelectScreen extends Screen {
+public class LevelSelectScreen extends MenuScreen {
 
 	public ScreenType screenType;
 	// private SpriteBatch batch = null;
@@ -123,12 +123,10 @@ public class LevelSelectScreen extends Screen {
 		//fade.draw( batch, alpha );
 
 		if ( !transInEnd ) {
-			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransIn( batch );
 		}
 		
 		if ( !transOutEnd ) {
-			trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
 			drawTransOut( batch );
 		}
 		
