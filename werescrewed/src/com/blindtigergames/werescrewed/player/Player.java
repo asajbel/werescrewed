@@ -1186,12 +1186,13 @@ public class Player extends Entity {
 			// hits you
 			// you get knocked off
 			knockedOff = true;
-		} 
-		if ( platform == null ) {
+		}  
+		if ( playerState != PlayerState.Screwing ) {
 			currentPlatform = platform;
+		}
+		if ( platform == null ) {
 			hitSolidObject = false;
 		} else {
-			currentPlatform = platform;
 			setGrounded( true );
 			if ( playerState == PlayerState.Falling ) {
 				playerState = PlayerState.Standing;
@@ -2149,11 +2150,6 @@ public class Player extends Entity {
 
 			xImpulse = ( float ) ( Math.sin( steamAngle ) * STEAM_IMPULSE );
 			yImpulse = ( float ) ( Math.cos( steamAngle ) * STEAM_IMPULSE );
-
-			// System.out.println( "x: " + xImpulse + ", y: " + yImpulse);
-			if ( name.equals( "player1" ) ) {
-				// System.out.println( body.getLinearVelocity( ) );
-			}
 
 			// body.applyForceToCenter( 0f, STEAM_FORCE );
 			// body.setLinearVelocity( new Vector2( body.getLinearVelocity( ).x,
