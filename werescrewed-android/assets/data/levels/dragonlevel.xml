@@ -36,8 +36,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="tail_skeleton_super" Visible="true">
                     <Position>
-                        <X>5088</X>
-                        <Y>-3376</Y>
+                        <X>5104</X>
+                        <Y>-3328</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -68,8 +68,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>22832</X>
-                        <Y>-2752</Y>
+                        <X>-1616</X>
+                        <Y>1792</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -191,8 +191,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
-                        <X>22800</X>
-                        <Y>-2624</Y>
+                        <X>-1664</X>
+                        <Y>1904</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -222,8 +222,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
-                        <X>22880</X>
-                        <Y>-2624</Y>
+                        <X>-1568</X>
+                        <Y>1904</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -322,6 +322,9 @@
                             <string>balloon1_super</string>
                         </Property>
                         <Property Name="dynamic" Type="string" Description="">
+                            <string />
+                        </Property>
+                        <Property Name="alwaysvisible" Type="string" Description="">
                             <string />
                         </Property>
                     </CustomProperties>
@@ -1493,6 +1496,9 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>balloon3_super</string>
                         </Property>
+                        <Property Name="alwaysvisible" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -2582,274 +2588,6 @@
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
                     <LineWidth>20</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
-                <Item xsi:type="PathItem" Name="tail_side_plat1" Visible="true">
-                    <Position>
-                        <X>7616</X>
-                        <Y>-1552</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>customPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-32</X>
-                            <Y>-48</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-32</X>
-                            <Y>48</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>64</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-32</X>
-                            <Y>-48</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>7616</X>
-                            <Y>-1552</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7584</X>
-                            <Y>-1600</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7584</X>
-                            <Y>-1504</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7680</X>
-                            <Y>-1552</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7584</X>
-                            <Y>-1600</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>10</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
-                <Item xsi:type="PathItem" Name="tail_side_plat2" Visible="true">
-                    <Position>
-                        <X>7616</X>
-                        <Y>-1360</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>customPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-32</X>
-                            <Y>-48</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-32</X>
-                            <Y>48</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>96</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-32</X>
-                            <Y>-48</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>7616</X>
-                            <Y>-1360</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7584</X>
-                            <Y>-1408</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7584</X>
-                            <Y>-1312</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7712</X>
-                            <Y>-1360</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7584</X>
-                            <Y>-1408</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>10</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
-                <Item xsi:type="PathItem" Name="tail_side_plat3" Visible="true">
-                    <Position>
-                        <X>7616</X>
-                        <Y>-1152</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>customPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-32</X>
-                            <Y>-48</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-32</X>
-                            <Y>48</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>128</X>
-                            <Y>16</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-32</X>
-                            <Y>-48</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>7616</X>
-                            <Y>-1152</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7584</X>
-                            <Y>-1200</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7584</X>
-                            <Y>-1104</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7744</X>
-                            <Y>-1136</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7584</X>
-                            <Y>-1200</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>10</LineWidth>
-                    <LineColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </LineColor>
-                </Item>
-                <Item xsi:type="PathItem" Name="tail_side_plat4" Visible="true">
-                    <Position>
-                        <X>7616</X>
-                        <Y>-960</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>customPlatform</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <LocalPoints>
-                        <Vector2>
-                            <X>0</X>
-                            <Y>0</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-32</X>
-                            <Y>-48</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-32</X>
-                            <Y>48</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>144</X>
-                            <Y>16</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-32</X>
-                            <Y>-48</Y>
-                        </Vector2>
-                    </LocalPoints>
-                    <WorldPoints>
-                        <Vector2>
-                            <X>7616</X>
-                            <Y>-960</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7584</X>
-                            <Y>-1008</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7584</X>
-                            <Y>-912</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7760</X>
-                            <Y>-944</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>7584</X>
-                            <Y>-1008</Y>
-                        </Vector2>
-                    </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -5818,24 +5556,24 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1152</X>
-                            <Y>944</Y>
+                            <X>-1424</X>
+                            <Y>1216</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1360</X>
-                            <Y>944</Y>
+                            <X>1504</X>
+                            <Y>1024</Y>
                         </Vector2>
                         <Vector2>
-                            <X>944</X>
-                            <Y>-848</Y>
+                            <X>1408</X>
+                            <Y>-864</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-928</X>
+                            <X>-1360</X>
                             <Y>-784</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1152</X>
-                            <Y>944</Y>
+                            <X>-1424</X>
+                            <Y>1216</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
@@ -5844,24 +5582,24 @@
                             <Y>-1376</Y>
                         </Vector2>
                         <Vector2>
-                            <X>15440</X>
-                            <Y>-432</Y>
+                            <X>15168</X>
+                            <Y>-160</Y>
                         </Vector2>
                         <Vector2>
-                            <X>17952</X>
-                            <Y>-432</Y>
+                            <X>18096</X>
+                            <Y>-352</Y>
                         </Vector2>
                         <Vector2>
-                            <X>17536</X>
-                            <Y>-2224</Y>
+                            <X>18000</X>
+                            <Y>-2240</Y>
                         </Vector2>
                         <Vector2>
-                            <X>15664</X>
+                            <X>15232</X>
                             <Y>-2160</Y>
                         </Vector2>
                         <Vector2>
-                            <X>15440</X>
-                            <Y>-432</Y>
+                            <X>15168</X>
+                            <Y>-160</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -6868,7 +6606,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="checkpoint_head" Visible="true">
                     <Position>
-                        <X>28576</X>
+                        <X>28400</X>
                         <Y>-1712</Y>
                     </Position>
                     <CustomProperties>
@@ -6902,15 +6640,15 @@
                 </Item>
                 <Item xsi:type="PathItem" Name="head_skeleton" Visible="true">
                     <Position>
-                        <X>24992</X>
-                        <Y>-1248</Y>
+                        <X>25008</X>
+                        <Y>-1264</Y>
                     </Position>
                     <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>skeleton</string>
-                        </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>RootSkeleton</string>
+                        </Property>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>skeleton</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -6919,54 +6657,62 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-704</X>
-                            <Y>544</Y>
+                            <X>-1504</X>
+                            <Y>912</Y>
                         </Vector2>
                         <Vector2>
-                            <X>992</X>
-                            <Y>624</Y>
+                            <X>1280</X>
+                            <Y>848</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1008</X>
-                            <Y>16</Y>
+                            <X>1264</X>
+                            <Y>-80</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-336</X>
-                            <Y>-144</Y>
+                            <X>288</X>
+                            <Y>-848</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-704</X>
-                            <Y>544</Y>
+                            <X>-1472</X>
+                            <Y>-800</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-1504</X>
+                            <Y>912</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
-                            <X>24992</X>
-                            <Y>-1248</Y>
+                            <X>25008</X>
+                            <Y>-1264</Y>
                         </Vector2>
                         <Vector2>
-                            <X>24288</X>
-                            <Y>-704</Y>
+                            <X>23504</X>
+                            <Y>-352</Y>
                         </Vector2>
                         <Vector2>
-                            <X>25984</X>
-                            <Y>-624</Y>
+                            <X>26288</X>
+                            <Y>-416</Y>
                         </Vector2>
                         <Vector2>
-                            <X>26000</X>
-                            <Y>-1232</Y>
+                            <X>26272</X>
+                            <Y>-1344</Y>
                         </Vector2>
                         <Vector2>
-                            <X>24656</X>
-                            <Y>-1392</Y>
+                            <X>25296</X>
+                            <Y>-2112</Y>
                         </Vector2>
                         <Vector2>
-                            <X>24288</X>
-                            <Y>-704</Y>
+                            <X>23536</X>
+                            <Y>-2064</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>23504</X>
+                            <Y>-352</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>20</LineWidth>
+                    <LineWidth>15</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -6977,8 +6723,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="head_sub_skeleton1" Visible="true">
                     <Position>
-                        <X>23472</X>
-                        <Y>-2272</Y>
+                        <X>23312</X>
+                        <Y>-2416</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -6995,7 +6741,7 @@
                         </Property>
                     </CustomProperties>
                     <Width>5760</Width>
-                    <Height>1728</Height>
+                    <Height>2272</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -7818,7 +7564,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -7885,7 +7631,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -7952,7 +7698,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -8030,7 +7776,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -8097,7 +7843,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -8164,7 +7910,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -8276,7 +8022,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -8353,8 +8099,8 @@
                             <Y>-576</Y>
                         </Vector2>
                     </WorldPoints>
-                    <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <IsPolygon>true</IsPolygon>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -8421,7 +8167,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -8496,7 +8242,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -8539,7 +8285,7 @@
                             <Y>416</Y>
                         </Vector2>
                         <Vector2>
-                            <X>32</X>
+                            <X>16</X>
                             <Y>416</Y>
                         </Vector2>
                         <Vector2>
@@ -8565,7 +8311,7 @@
                             <Y>-640</Y>
                         </Vector2>
                         <Vector2>
-                            <X>27952</X>
+                            <X>27936</X>
                             <Y>-640</Y>
                         </Vector2>
                         <Vector2>
@@ -8574,7 +8320,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -8641,7 +8387,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -8708,7 +8454,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -8775,7 +8521,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -8887,7 +8633,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -8965,7 +8711,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -9032,7 +8778,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -9107,7 +8853,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -9174,7 +8920,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -9206,12 +8952,12 @@
                             <Y>-63.95215</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-31.8886719</X>
+                            <X>-79.88867</X>
                             <Y>-64.03174</Y>
                         </Vector2>
                         <Vector2>
                             <X>-0.080078125</X>
-                            <Y>80</Y>
+                            <Y>96</Y>
                         </Vector2>
                         <Vector2>
                             <X>48.11133</X>
@@ -9228,12 +8974,12 @@
                             <Y>-1167.95215</Y>
                         </Vector2>
                         <Vector2>
-                            <X>27008.1113</X>
+                            <X>26960.1113</X>
                             <Y>-1168.03174</Y>
                         </Vector2>
                         <Vector2>
                             <X>27039.92</X>
-                            <Y>-1024</Y>
+                            <Y>-1008</Y>
                         </Vector2>
                         <Vector2>
                             <X>27088.1113</X>
@@ -9241,7 +8987,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -9308,7 +9054,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -9344,7 +9090,7 @@
                             <Y>48</Y>
                         </Vector2>
                         <Vector2>
-                            <X>96</X>
+                            <X>112</X>
                             <Y>-48</Y>
                         </Vector2>
                         <Vector2>
@@ -9370,7 +9116,7 @@
                             <Y>-576</Y>
                         </Vector2>
                         <Vector2>
-                            <X>27792</X>
+                            <X>27808</X>
                             <Y>-672</Y>
                         </Vector2>
                         <Vector2>
@@ -9383,7 +9129,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -15708,7 +15454,7 @@
                 <Item xsi:type="PathItem" Name="dragon_brain" Visible="true">
                     <Position>
                         <X>24400</X>
-                        <Y>-1760</Y>
+                        <Y>-1744</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -15747,27 +15493,27 @@
                     <WorldPoints>
                         <Vector2>
                             <X>24400</X>
-                            <Y>-1760</Y>
+                            <Y>-1744</Y>
                         </Vector2>
                         <Vector2>
                             <X>24016</X>
-                            <Y>-1376</Y>
+                            <Y>-1360</Y>
                         </Vector2>
                         <Vector2>
                             <X>25040</X>
-                            <Y>-1376</Y>
+                            <Y>-1360</Y>
                         </Vector2>
                         <Vector2>
                             <X>25040</X>
-                            <Y>-1952</Y>
+                            <Y>-1936</Y>
                         </Vector2>
                         <Vector2>
                             <X>24016</X>
-                            <Y>-1952</Y>
+                            <Y>-1936</Y>
                         </Vector2>
                         <Vector2>
                             <X>24016</X>
-                            <Y>-1376</Y>
+                            <Y>-1360</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -16878,6 +16624,401 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_1134" Visible="true">
+                    <Position>
+                        <X>7568</X>
+                        <Y>-1568</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>112</Width>
+                    <Height>48</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_1135" Visible="true">
+                    <Position>
+                        <X>7568</X>
+                        <Y>-1312</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>144</Width>
+                    <Height>48</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="Rectangle_1137" Visible="true">
+                    <Position>
+                        <X>7568</X>
+                        <Y>-1024</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>tiledPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>176</Width>
+                    <Height>48</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="Path_1138" Visible="true">
+                    <Position>
+                        <X>26720</X>
+                        <Y>-688</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>fuck_jaw_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-80</X>
+                            <Y>112</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>112</X>
+                            <Y>112</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>80</X>
+                            <Y>-32</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-48</X>
+                            <Y>-32</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-80</X>
+                            <Y>112</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>26720</X>
+                            <Y>-688</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26640</X>
+                            <Y>-576</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26832</X>
+                            <Y>-576</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26800</X>
+                            <Y>-720</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26672</X>
+                            <Y>-720</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26640</X>
+                            <Y>-576</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>10</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="Path_1139" Visible="true">
+                    <Position>
+                        <X>26464</X>
+                        <Y>-688</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>fuck_jaw_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-80</X>
+                            <Y>112</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>112</X>
+                            <Y>112</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>80</X>
+                            <Y>-32</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-48</X>
+                            <Y>-32</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-80</X>
+                            <Y>112</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>26464</X>
+                            <Y>-688</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26384</X>
+                            <Y>-576</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26576</X>
+                            <Y>-576</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26544</X>
+                            <Y>-720</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26416</X>
+                            <Y>-720</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26384</X>
+                            <Y>-576</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>10</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="PathItem" Name="Path_1140" Visible="true">
+                    <Position>
+                        <X>26688</X>
+                        <Y>-1056</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>head_sub_skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>80</X>
+                            <Y>-112</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-112</X>
+                            <Y>-112</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-64</X>
+                            <Y>64</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>32</X>
+                            <Y>64</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>80</X>
+                            <Y>-112</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>26688</X>
+                            <Y>-1056</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26768</X>
+                            <Y>-1168</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26576</X>
+                            <Y>-1168</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26624</X>
+                            <Y>-992</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26720</X>
+                            <Y>-992</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>26768</X>
+                            <Y>-1168</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>10</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
+                <Item xsi:type="TextureItem" Name="checkpoint_mouth" Visible="true">
+                    <Position>
+                        <X>26016</X>
+                        <Y>-576</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>checkpoint</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>head_sub_skeleton1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>false</FlipVertically>
+                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
+                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>64</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="PathItem" Name="Path_1143" Visible="true">
+                    <Position>
+                        <X>27968</X>
+                        <Y>-640</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>customPlatform</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>fuck_jaw_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <LocalPoints>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>0</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-32</X>
+                            <Y>64</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>32</X>
+                            <Y>64</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>0</X>
+                            <Y>-48</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>-32</X>
+                            <Y>64</Y>
+                        </Vector2>
+                    </LocalPoints>
+                    <WorldPoints>
+                        <Vector2>
+                            <X>27968</X>
+                            <Y>-640</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>27936</X>
+                            <Y>-576</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>28000</X>
+                            <Y>-576</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>27968</X>
+                            <Y>-688</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>27936</X>
+                            <Y>-576</Y>
+                        </Vector2>
+                    </WorldPoints>
+                    <IsPolygon>false</IsPolygon>
+                    <LineWidth>10</LineWidth>
+                    <LineColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </LineColor>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>1</X>
@@ -16887,11 +17028,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>1132</NextItemNumber>
+        <NextItemNumber>1143</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>26450.4883</X>
-            <Y>-1236.02954</Y>
+            <X>26916.7969</X>
+            <Y>-950.003662</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
