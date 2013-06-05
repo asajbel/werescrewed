@@ -134,6 +134,8 @@ mouth_fire.p
 cannon.p
 smoke_puff_small.p
 /fire/fire_tiny.p
+ghost_spark.p
+ghost_fount.p
 
 ##Palette Def
 ##Define with <colorName>.palette
