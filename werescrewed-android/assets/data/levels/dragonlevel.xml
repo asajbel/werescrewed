@@ -68,8 +68,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>-1616</X>
-                        <Y>1792</Y>
+                        <X>-1536</X>
+                        <Y>1904</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -191,8 +191,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
-                        <X>-1664</X>
-                        <Y>1904</Y>
+                        <X>-1584</X>
+                        <Y>2016</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -222,8 +222,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
-                        <X>-1568</X>
-                        <Y>1904</Y>
+                        <X>-1488</X>
+                        <Y>2016</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -17031,8 +17031,8 @@
         <NextItemNumber>1143</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>26916.7969</X>
-            <Y>-950.003662</Y>
+            <X>-1099.97546</X>
+            <Y>1666.6698</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
