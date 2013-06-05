@@ -39,12 +39,11 @@ public class StructureScrew extends Screw {
 	private final int lastMotionFrame = 14;
 	private final int animeSteps = 12;
 
-	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas(
-			"common-textures" ).findRegion( "flat_head_circular" );
 
 	public StructureScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, Vector2 detachDirection ) {
-		super( name, pos, screwTex );
+		super( name, pos, WereScrewedGame.manager.getAtlas(
+				"common-textures" ).findRegion( "flat_head_circular" ) );
 		loadSounds( );
 		this.world = world;
 		this.detachDirection = detachDirection;
@@ -87,7 +86,8 @@ public class StructureScrew extends Screw {
 
 	public StructureScrew( String name, Vector2 pos, int max, World world,
 			Vector2 detachDirection ) {
-		super( name, pos, screwTex );
+		super( name, pos, WereScrewedGame.manager.getAtlas(
+				"common-textures" ).findRegion( "flat_head_circular" ) );
 		loadSounds( );
 		this.world = world;
 		this.detachDirection = detachDirection;

@@ -34,10 +34,7 @@ import com.blindtigergames.werescrewed.util.Util;
 // Just your standard spikes.
 public class Spikes extends Hazard {
 
-	private static final TextureRegion texRotated = WereScrewedGame.manager
-			.getAtlas( "common-textures" ).findRegion( "spikes_rotated" );
-	private static final TextureRegion texUnRotated = WereScrewedGame.manager
-			.getAtlas( "common-textures" ).findRegion( "spikes" );
+	private TextureRegion texRotated, texUnRotated;
 
 	protected Vector< Tile > tiles = new Vector< Tile >( );
 	protected Vector2 bodypos;
@@ -68,6 +65,11 @@ public class Spikes extends Hazard {
 		super( name, pos, null, world, isActive );
 		entityType = EntityType.HAZARD;
 		hazardType = HazardType.SPIKES;
+		
+		texUnRotated = WereScrewedGame.manager
+				.getAtlas( "common-textures" ).findRegion( "spikes" );
+		texRotated = WereScrewedGame.manager
+				.getAtlas( "common-textures" ).findRegion( "spikes_rotated" );
 
 		if ( height > width ) {
 			this.hori = false;
@@ -137,9 +139,6 @@ public class Spikes extends Hazard {
 			spikeFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
 			spikeFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
 
-			// polygon.setAsBox( ( ( ( width * tileConstant ) / 2 ) - 6 )
-			// * Util.PIXEL_TO_BOX, ( height * tileConstant ) / 2
-			// * Util.PIXEL_TO_BOX );
 		} else {
 
 			bodyDef.position.set( ( position.x ) * Util.PIXEL_TO_BOX,
@@ -152,18 +151,11 @@ public class Spikes extends Hazard {
 			spikeFixtureDef.isSensor = true;
 			spikeFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
 			spikeFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
-
-			// polygon.setAsBox( ( width * tileConstant ) / 2 *
-			// Util.PIXEL_TO_BOX,
-			// ( ( ( height * tileConstant ) / 2 ) - 6 )
-			// * Util.PIXEL_TO_BOX );
 		}
 
 		body = world.createBody( bodyDef );
 		pointyEnd = body.createFixture( spikeFixtureDef );
 		body.setGravityScale( 0.1f );
-		// spikeFixtureDef.shape = polygon;
-		// body.createFixture( spikeFixtureDef );
 
 		polygon.dispose( );
 
@@ -171,21 +163,6 @@ public class Spikes extends Hazard {
 
 		bodypos = body.getPosition( ).mul( Util.BOX_TO_PIXEL );
 
-		// switch (ori) {
-		// case DOWN:
-		// body.setTransform( body.getPosition( ), ( float ) Math.PI );
-		// break;
-		// case LEFT:
-		// body.setTransform( body.getPosition( ), ( float ) Math.PI / 2 );
-		// break;
-		// case RIGHT:
-		// body.setTransform( new Vector2(), ( float ) -Math.PI / 2 );
-		// break;
-		// case UP:
-		// break;
-		// default:
-		// break;
-		// }
 	}
 
 	private void constructTile( Vector2 position, float height, float width ) {
@@ -243,46 +220,6 @@ public class Spikes extends Hazard {
 		Iterator< Tile > v = tiles.listIterator( );
 		while ( v.hasNext( ) ) {
 			d = v.next( );
-			// switch ( ori ) {
-			// case RIGHT:
-			// // d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2,
-			// // d.tileSprite.getHeight( ) / 2 );
-			// d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-			// - d.yOffset );
-			// d.tileSprite.setRotation( MathUtils.radiansToDegrees
-			// * body.getAngle( ) );
-			//
-			// break;
-			// case LEFT:
-			// // d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2,
-			// // d.tileSprite.getHeight( ) / 2 );
-			// d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-			// - d.yOffset );
-			// d.tileSprite.setRotation( MathUtils.radiansToDegrees
-			// * body.getAngle( ) + 90 );
-			// break;
-			// case UP:
-			// // d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2,
-			// // d.tileSprite.getHeight( ) / 2 );
-			// d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-			// - d.yOffset );
-			// d.tileSprite.setRotation( MathUtils.radiansToDegrees
-			// * body.getAngle( ) );
-			// break;
-			// case DOWN:
-			// // d.tileSprite.setOrigin( d.tileSprite.getWidth( ) / 2,
-			// // d.tileSprite.getHeight( ) / 2 );
-			// d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-			// - d.yOffset );
-			// d.tileSprite.setRotation( MathUtils.radiansToDegrees
-			// * body.getAngle( ) + 180 );
-			// break;
-			// default:
-			// d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
-			// - d.yOffset );
-			// d.tileSprite.setRotation( MathUtils.radiansToDegrees
-			// * body.getAngle( ) );
-			// }
 			d.tileSprite.setPosition( bodypos.x - d.xOffset, bodypos.y
 					- d.yOffset );
 			d.tileSprite.setRotation( MathUtils.radiansToDegrees

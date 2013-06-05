@@ -37,9 +37,9 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	HashMap< String, ParticleEffect > particleEffects;
 	HashMap< String, SkeletonData > spineSkeletons;
 	HashMap< Class< ? >, String > dummyAssets;
-	Texture robotTexBG;// = "/levels/alphabot/alphabot-interior.png";
-	Texture robotOutlineTex;// = "/levels/alphabot/alphabot-outline.png";
-	Texture robotTexFG;// = "/levels/alphabot/alphabot-outline.png";
+	Texture robotTexBG;
+	Texture robotOutlineTex;
+	Texture robotTexFG;
 	private int particleEffectCt = 0;
 	private static Color tileColor;
 
@@ -53,6 +53,9 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		particleEffects = new HashMap< String, ParticleEffect >( );
 		dummyAssets = new HashMap< Class< ? >, String >( );
 		tileColor = new Color(1f,1f,1f,1f);
+		robotTexBG=null;
+		robotOutlineTex=null;
+		robotTexFG=null;
 	}
 
 	/**

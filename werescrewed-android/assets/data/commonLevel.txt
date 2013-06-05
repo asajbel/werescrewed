@@ -88,6 +88,7 @@
 /common/autumn.pack
 /common/gears.pack
 /common/tileset/alphabot.pack
+/common/tileset/white.pack
 /common/spine/red_female_atlas.pack
 /common/spine/red_male_atlas.pack
 /common/spine/rez_chamber_atlas.pack

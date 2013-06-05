@@ -24,7 +24,6 @@ public class TileSet {
 		this.atlas = atlas;
 		this.bleedAtlas = bleedAtlas;
 		this.bleedAtlas = WereScrewedGame.manager.getAtlas( "common-textures" );
-
 	}
 
 	public boolean canBleed( ) {
