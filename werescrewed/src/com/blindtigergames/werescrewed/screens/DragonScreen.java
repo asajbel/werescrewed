@@ -104,8 +104,8 @@ public class DragonScreen extends Screen {
 
 		
 		
-		mouthFire = new MouthFire( "mouth-fire", new Vector2(25000, 900), new Vector2(32000, 500),
-				5f, 100f, 1000f, level.world);
+		mouthFire = new MouthFire( "mouth-fire", new Vector2(25000, 900), new Vector2(32000, 75),
+				4f, 100f, 800f, level.world);
 		Skeleton head_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
 		head_skeleton.addHazard( mouthFire );
