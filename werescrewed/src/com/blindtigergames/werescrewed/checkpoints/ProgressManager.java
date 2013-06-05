@@ -391,7 +391,6 @@ public class ProgressManager {
 	private void wait( Player player ) {
 		currentCheckPoint.getSpinemator( ).changeAnimation( "birth", false );
 		rezDelay = currentCheckPoint.getSpinemator( ).getAnimationDuration( ) / 10f;
-		player.setVisible( true );
 		player.setRezzing( true );
 		player.setMoverAtCurrentState( null );
 		player.body.setLinearVelocity( Vector2.Zero );
