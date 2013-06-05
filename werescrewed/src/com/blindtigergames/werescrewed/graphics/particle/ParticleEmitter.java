@@ -241,7 +241,7 @@ public class ParticleEmitter {
 		int activeCount = this.activeCount;
 
 		for ( int i = 0, n = active.length; i < n; i++ ) {
-			if ( active[ i ] )//&& particles[i].getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) 
+			if ( active[ i ] )//&& particles[i].getBoundingRectangle( ).overlaps( camera.getBounds( ) ) )
 			{
 				particles[ i ].draw( spriteBatch );
 			}
@@ -275,7 +275,8 @@ public class ParticleEmitter {
 		for ( int i = 0, n = active.length; i < n; i++ ) {
 			if ( active[ i ] ) {
 				Particle particle = particles[ i ];
-				if ( particle.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
+				//if ( particle.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) 
+				{
 					if ( updateParticle( particle, delta, deltaMillis ) )
 					{ 
 						particle.draw( spriteBatch );

@@ -106,9 +106,9 @@ public class DragonScreen extends Screen {
 		
 		mouthFire = new MouthFire( "mouth-fire", new Vector2(25000, 900), new Vector2(32000, 500),
 				5f, 100f, 1000f, level.world);
-		Skeleton head_skeleton = ( Skeleton ) LevelFactory.entities
-				.get( "head_skeleton" );
-		head_skeleton.addHazard( mouthFire );
+		Skeleton headSubSkeleton1 = ( Skeleton ) LevelFactory.entities
+				.get( "head_sub_skeleton1" );
+		headSubSkeleton1.addHazard( mouthFire );
 		
 		jawStructureScrew = ( StructureScrew ) LevelFactory.entities
 		.get( "jaw_structure_screw" );
@@ -1027,7 +1027,7 @@ public class DragonScreen extends Screen {
 		//UPPER HEAD
 		Sprite s;
 		
-		Vector2 headPos = new Vector2(-3500,-1460 );
+		Vector2 headPos = new Vector2(-3500,-1455 );
 		s = head_left.createSprite( "head_left" );
 		head_skeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
 		head_skeleton.addFGDecal( 

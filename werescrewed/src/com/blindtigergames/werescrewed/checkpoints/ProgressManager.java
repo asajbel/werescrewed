@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
+import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -50,6 +51,7 @@ public class ProgressManager {
 	private float animTime = 0f;
 	private float rezDelay = Float.MAX_VALUE;
 	boolean noPlayersDead = false;
+	private Anchor chkptAnchor;
 
 	/**
 	 * 
@@ -77,6 +79,9 @@ public class ProgressManager {
 			// .put( p2.name, atlas.findRegion( "player_female_idle_ghost" ) );
 		}
 		this.world = world;
+		chkptAnchor = new Anchor( Vector2.Zero, new Vector2( 0,
+				0 ), Player.ANCHOR_BUFFER_SIZE );
+		AnchorList.getInstance( ).addAnchor( chkptAnchor );
 	}
 
 	/**
@@ -154,6 +159,7 @@ public class ProgressManager {
 			}
 			index++;
 		}
+		chkptAnchor.setPosition( currentCheckPoint.getPositionPixel( ) );
 		for ( Player player : players.values( ) ) {
 			if ( player.isAutoRezzing( ) ) {
 				player.body.setLinearVelocity( Vector2.Zero );
@@ -276,6 +282,7 @@ public class ProgressManager {
 
 		ghost = new Entity( player.name + "Ghost", player.getPositionPixel( )
 				.cpy( ).add( -64f, 64f ), false, spine, null );
+		ghost.addBehindParticleEffect( "ghost_fount", false, true ).start( );
 		// build ghost mover
 		LerpMover ghostMover = new LerpMover( player.getPositionPixel( ).cpy( )
 				.add( hoverOffset ), currentCheckPoint.getPositionPixel( ).sub(
@@ -365,14 +372,12 @@ public class ProgressManager {
 		removeRezScrew( );
 		player.setRezTime( 0f );
 		player.respawnPlayer( );
-
 		
 		player.setMoverAtCurrentState( new FollowEntityWithVelocity( player
 				.getPositionPixel( ), currentCheckPoint ) );
-		// player.deactivateAnchors( );
-		// player.body.setLinearVelocity( diff );
+		chkptAnchor.setPosition( currentCheckPoint.getPositionPixel( ) );
+		chkptAnchor.activate( );
 		player.setVisible( false, true );
-
 		player.activateAnchors( );
 
 		if ( rezScrewMap.containsKey( player.name ) ) {
@@ -387,7 +392,6 @@ public class ProgressManager {
 	private void wait( Player player ) {
 		currentCheckPoint.getSpinemator( ).changeAnimation( "birth", false );
 		rezDelay = currentCheckPoint.getSpinemator( ).getAnimationDuration( ) / 10f;
-		player.setVisible( true );
 		player.setRezzing( true );
 		player.setMoverAtCurrentState( null );
 		player.body.setLinearVelocity( Vector2.Zero );
@@ -402,6 +406,7 @@ public class ProgressManager {
 	private void spawnAtCheckPoint( Player player ) {
 		player.setRezzing( false );
 		
+		chkptAnchor.deactivate( );
 		Vector2 rezPoint = new Vector2( currentCheckPoint.body.getPosition( ) );
 		rezPoint.add( -60 * Util.PIXEL_TO_BOX, 36f * Util.PIXEL_TO_BOX );
 		//player.activateAnchors( );
