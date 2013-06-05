@@ -22,7 +22,6 @@ public class Button {
 
 	protected String caption = null;
 	protected BitmapFont font = null;
-	protected BitmapFont smallFont = null;
 	protected int x = 0;
 	protected int y = 0;
 	protected int width = 287; // width of button image
@@ -62,7 +61,6 @@ public class Button {
 		this.font = font;
 		this.x = x;
 		this.y = y;
-		smallFont = WereScrewedGame.manager.getFont( "longdon-small" );
 		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/menu/button.png", Texture.class );
 		box = new Sprite( back );
@@ -187,14 +185,13 @@ public class Button {
 			font.setColor( HOVER_COLOR );
 			font.draw( batch, caption, x - capWidth / 2 + width / 2 + 5, y - height
 					- capHeight / 2 );
-			font.setColor( originalColor );
 		}
 		else {
-			smallFont.setColor( NORMAL_COLOR );
-			smallFont.draw( batch, caption, x - smallCapWidth / 2 + width / 2 + 5, 
+			font.setColor( NORMAL_COLOR );
+			font.draw( batch, caption, x - smallCapWidth / 2 + width / 2 + 5, 
 					y - height - smallCapHeight * 2 + 5 );
-			smallFont.setColor( originalColor );
 		}
+		font.setColor( originalColor );
 
 	}
 
@@ -231,8 +228,7 @@ public class Button {
 		capWidth = Math.round( dimensions.width );
 		capHeight = Math.round( dimensions.height );
 		
-		TextBounds smallDim = smallFont.getBounds( caption );
-		smallCapWidth = Math.round( smallDim.width );
-		smallCapHeight = Math.round( smallDim.height );
+		smallCapWidth = Math.round( capWidth / 2 );
+		smallCapHeight = Math.round( capHeight / 2 );
 	}
 }
