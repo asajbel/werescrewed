@@ -72,6 +72,21 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	}
 
 	/**
+	 * gets the atlas map as an Array
+	 */
+	public Object[] getAtlases( ) {
+		return atlasMap.keySet( ).toArray( );
+	}
+	
+	/**
+	 * unloads a texture atlas
+	 */
+	public void unloadAtlas( String name ) {
+		if ( atlasMap.containsKey( name ) )
+			atlasMap.remove( name ).dispose( );
+	}
+	
+	/**
 	 * in the level file do <colorName>.palette for each color of a level's
 	 * palette These colors will be used to select bleeding effects on tiles.
 	 * 
