@@ -359,7 +359,7 @@ public class AlphaScreen extends Screen {
 						&& headEyebrow2.isTimeLineMoverFinished( ) ) {
 					
 					// You win and goto next screen!!!
-					ScreenManager.getInstance( ).show( ScreenType.TROPHY_1 );
+					ScreenManager.getInstance( ).show( ScreenType.LOADING_TROPHY_2 );
 				}
 			}
 		}

@@ -103,6 +103,14 @@ public enum ScreenType {
 			return loading;
 		}
 	},
+	LOADING_TROPHY_2 {
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance( ) {
+			LoadingScreen loading = new LoadingScreen( "trophy level2" );
+			loading.screenType = ScreenType.LOADING;
+			return loading;
+		}
+	},
 	LOADING_TEST {
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {

@@ -25,21 +25,17 @@ public class LoadingScreen extends Screen {
 	private int scaleSize = 7;
 	private Label loadingLabel = null;
 	private Label loadingCompleteLabel = null;
-	private Label pressStart = null, pressToConfirm = null;
-	private Label player1 = null, player2 = null;
+	private Label pressStart = null;
 	private SpriteBatch batch = null;
 	private String screenTag = null;
 	private Entity loadingBar;
+	private ScreenType sT_trophy;
 
 	private int timer = 0;
 	private int currIndex = 0;
 	private ArrayList< Texture > storyBoardArray = new ArrayList< Texture >( );
 	private int currLevel = 0;
-	private boolean characterSelect = false, playersHaveBeenSelected = false;
-	private boolean player1Volunteer = false, player2Volunteer = false;
-	private boolean player1Confirm = false, player2Confirm = false;
-	private boolean p1SelectFemale = false;
-	private int p1LabelPositionX, p2LabelPositionX;
+	
 	private OrthographicCamera camera = null;
 	
 	private boolean initialLoadFinished = false;
@@ -61,6 +57,14 @@ public class LoadingScreen extends Screen {
 				currLevel = 1;
 			} else if ( screenTag.equals( "level2" ) ) {
 				currLevel = 2;
+			} else{
+				String[] parts = screenTag.split( " " );
+				if(parts[0].equals( "trophy" )){
+					screenTag = "menu";
+					if ( parts[1].equals( "level2" ) ) {
+						sT_trophy = ScreenType.TROPHY_1;
+					}
+				}
 			}
 		} else {
 			screenTag = "commonLevel";
@@ -100,7 +104,7 @@ public class LoadingScreen extends Screen {
 		
 		if(!initialLoadFinished){
 			// check for level1
-			if ( currLevel != 0 ) {
+			if ( currLevel > 0 ) {
 				if( currLevel == 1 ) {
 					WereScrewedGame.manager.load(
 							"data/common/slides/slide1_intro.png", Texture.class );
@@ -151,43 +155,13 @@ public class LoadingScreen extends Screen {
 //							"data/common/slides/slide6_dragon.png", Texture.class ) );
 				}
 							
-				if ( WereScrewedGame.p1Controller != null
-						&& WereScrewedGame.p2Controller != null ) {
-					characterSelect = true;
-
-					pressStart = new Label( "Press Start To Volunteer!",
+				pressStart = new Label( "Press Start To Volunteer!",
 							WereScrewedGame.manager.getFont( "longdon" ) );
-					pressToConfirm = new Label(
-							"Left/Right to switch, Start to confirm",
-							WereScrewedGame.manager.getFont( "longdon" ) );
-
-					player1 = new Label( "Player1",
-							WereScrewedGame.manager.getFont( "longdon" ) );
-					player2 = new Label( "Player2",
-							WereScrewedGame.manager.getFont( "longdon" ) );
-
-					pressToConfirm.setX( width / 2
-							- pressToConfirm.getWidth( ) / 2 );
-					pressToConfirm.setY( height / 4 );
-
-					pressStart.setX( width / 2 - pressStart.getWidth( ) / 2 );
-					pressStart.setY( height / 4 );
-
-					p1LabelPositionX = ( width / 2 );// - player1.getWidth( )
-															// / 2;
-					player1.setX( p1LabelPositionX );
-					player1.setY( height / 4 - 100 );
-
-					p2LabelPositionX = ( width / 2 );// + player2.getWidth( )
-															// / 2 + 100;
-					player2.setX( p2LabelPositionX );
-					player2.setY( height / 4 - 50 );
-				}
+				pressStart.setX( width / 2 - pressStart.getWidth( ) / 2 );
+				pressStart.setY( height / 4 );
 
 				// debug turning character select off until someone else can finish
 				// it
-
-				playersHaveBeenSelected = true;
 			}
 			initialLoadFinished=true;
 		}
@@ -219,7 +193,7 @@ public class LoadingScreen extends Screen {
 //			if ( Gdx.app.getInput( ).isTouched( ) ) {
 //				ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
 //			}
-			if ( currLevel == 0 ) {
+			if ( currLevel < 0 ) {
 				// assets have been loaded!
 				loadingLabel.setCaption( "Loading Complete!!" );
 				loadingCompleteLabel.draw( batch );
@@ -227,29 +201,16 @@ public class LoadingScreen extends Screen {
 
 			if ( storyBoardArray.size( ) == 0
 					|| currIndex == storyBoardArray.size( ) - 1 ) {
-				if ( characterSelect ) {
-					if ( playersHaveBeenSelected ) {
-						WereScrewedGame.player1Female = p1SelectFemale;
-						if ( screenTag != null && screenTag.equals( "level1" ) ) {
-							ScreenManager.getInstance( ).show(
-									ScreenType.LEVEL_1 );
-						}
-					}
+				if ( screenTag != null && screenTag.equals( "level1" ) ) {
+					ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
+				} else if ( screenTag != null && screenTag.equals( "level2" ) ) {
+					ScreenManager.getInstance( ).show( ScreenType.DRAGON );
+				} else if ( screenTag != null && currLevel < 0){
+					ScreenManager.getInstance( ).show( sT_trophy );
 				} else {
-
-					if ( screenTag != null && screenTag.equals( "level1" ) ) {
-						ScreenManager.getInstance( ).show( ScreenType.LEVEL_1 );
-					} else if ( screenTag != null
-							&& screenTag.equals( "level2" ) ) {
-						ScreenManager.getInstance( ).show( ScreenType.DRAGON );
-					} else {
-						ScreenManager.getInstance( )
-								.show( ScreenType.MAIN_MENU );
-					}
-
+					ScreenManager.getInstance( ).show( ScreenType.MAIN_MENU );
 				}
 			}
-
 		}
 
 		timer++;
@@ -258,76 +219,6 @@ public class LoadingScreen extends Screen {
 			timer = 0;
 			if ( !( currIndex == storyBoardArray.size( ) - 1 ) ) {
 				currIndex++;
-			}
-
-		}
-
-		if ( characterSelect ) {
-			if ( ( currIndex == storyBoardArray.size( ) - 1 ) ) {
-
-				if ( WereScrewedGame.p1ControllerListener.jumpPressed( )
-						|| WereScrewedGame.p1ControllerListener.pausePressed( ) ) {
-					player1Volunteer = true;
-
-				}
-				if ( WereScrewedGame.p2ControllerListener.jumpPressed( )
-						|| WereScrewedGame.p2ControllerListener.pausePressed( ) ) {
-					player2Volunteer = true;
-
-				}
-				if ( !( player1Volunteer || player2Volunteer ) )
-					pressStart.draw( batch );
-				else {
-					pressToConfirm.draw( batch );
-				}
-				if ( player1Volunteer )
-					player1.draw( batch );
-				if ( player2Volunteer )
-					player2.draw( batch );
-
-				if ( player1Volunteer && player2Volunteer ) {
-
-					if ( WereScrewedGame.p1ControllerListener.rightPressed( )
-							|| WereScrewedGame.p1ControllerListener
-									.leftPressed( )
-							|| WereScrewedGame.p2ControllerListener
-									.rightPressed( )
-							|| WereScrewedGame.p2ControllerListener
-									.leftPressed( ) ) {
-
-						// Swap positions;
-						int temp = p1LabelPositionX;
-						p1LabelPositionX = p2LabelPositionX;
-						p2LabelPositionX = temp;
-
-						player1.setX( p1LabelPositionX );
-
-						player2.setX( p2LabelPositionX );
-
-						player1.unselect( );
-						player2.unselect( );
-						p1SelectFemale = !p1SelectFemale;
-
-					}
-
-					if ( WereScrewedGame.p1ControllerListener.jumpPressed( )
-							|| WereScrewedGame.p1ControllerListener
-									.pausePressed( ) ) {
-						player1Confirm = true;
-						player1.select( );
-
-					}
-					if ( WereScrewedGame.p2ControllerListener.jumpPressed( )
-							|| WereScrewedGame.p2ControllerListener
-									.pausePressed( ) ) {
-						player2Confirm = true;
-						player2.select( );
-
-					}
-					if ( player1Confirm && player2Confirm )
-						playersHaveBeenSelected = true;
-
-				}
 			}
 
 		}
@@ -351,20 +242,9 @@ public class LoadingScreen extends Screen {
 		camera = new OrthographicCamera( );
 		camera.setToOrtho( false, WereScrewedGame.getWidth(), WereScrewedGame.getHeight() );
 		batch.setProjectionMatrix( camera.combined );
-		if ( currLevel > 0 && characterSelect ) {
-
-			pressStart.setX( width / 2 - pressStart.getWidth( ) / 2 );
-			pressStart.setY( height / 4 );
-
-			player1.setX( p1LabelPositionX );
-			player1.setY( height / 4 - 100 );
-
-			player2.setX( p2LabelPositionX );
-			player2.setY( height / 4 - 100 );
-
-			pressToConfirm.setX( width / 2 - pressToConfirm.getWidth( )
-					/ 2 );
-			pressToConfirm.setY( height / 4 );
+		if ( currLevel > 0 ) {
+//			pressStart.setX( width / 2 - pressStart.getWidth( ) / 2 );
+//			pressStart.setY( height / 4 );
 		}
 		// set position of the loading label
 		// TODO: Figure out a way to keep it in the center of the screen without
