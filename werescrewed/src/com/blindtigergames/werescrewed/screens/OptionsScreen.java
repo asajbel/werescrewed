@@ -111,6 +111,8 @@ class OptionsScreen extends MenuScreen {
 		
 		if ( !transOutEnd ) {
 			drawTransOut( batch );
+			if ( transOutEnd )
+				buttonIndex = 0;
 		}
 		
 		//if ( !alphaFinish )

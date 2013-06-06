@@ -455,7 +455,7 @@ public class Player extends Entity {
 			break;
 		}
 		// if the player is falling
-		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
+		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 7f
 				&& playerState != PlayerState.Screwing
 				&& !hitSolidObject && !isDead ) {
 			switch ( playerState ) {
@@ -585,7 +585,7 @@ public class Player extends Entity {
 						f.setSensor( true );
 					}
 					filter.categoryBits = Util.CATEGORY_SUBPLAYER;
-					filter.maskBits = Util.CATEGORY_CHECKPOINTS;
+					filter.maskBits = Util.CATEGORY_CHECKPOINTS | Util.CATEGORY_SCREWS;
 					f.setFilterData( filter );
 				}
 				playerState = PlayerState.Dead;
@@ -1686,11 +1686,6 @@ public class Player extends Entity {
 			world.destroyJoint( playerJoint );
 			playerJoint = null;
 		}
-		// for ( Fixture f : body.getFixtureList( ) ) {
-		// if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-		// f.setSensor( false );
-		// }
-		// }
 		this.setMoverAtCurrentState( null );
 		if ( currentScrew != null ) {
 			currentScrew.setPlayerAttached( false );

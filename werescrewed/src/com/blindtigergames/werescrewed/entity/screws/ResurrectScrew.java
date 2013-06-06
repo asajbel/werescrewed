@@ -24,6 +24,7 @@ import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.player.Player;
+import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.Metrics.TrophyMetric;
 import com.blindtigergames.werescrewed.util.Util;
@@ -89,55 +90,26 @@ public class ResurrectScrew extends Screw {
 		connectScrewToEntity( entity );
 		addBehindParticleEffect( "ghost_spark", false, true ).start( ); 
 	}
-
+	
+	@Override
+	public void loadSounds(){
+		sounds = new SoundManager( );
+		sounds.getSound( "screwing", WereScrewedGame.dirHandle
+				+ "/common/sounds/rezzScrew.ogg" );
+		sounds.getSound( "attach", WereScrewedGame.dirHandle
+				+ "/common/sounds/screwAtt.ogg" );
+		sounds.getSound( "detach", WereScrewedGame.dirHandle
+				+ "/common/sounds/screwDet.ogg" );	}
+	
 	/**
 	 * if the pulley weight goes to the left use left to draw dead player closer
 	 */
 	@Override
 	public void screwLeft( ) {
-		if ( depth > 0 ) {
-			depth -= 1;
-			body.setAngularVelocity( 15 );
-			rotation += 10;
-			screwStep = depth + 5;
-			if ( deadPlayer.isPlayerDead( ) ) {
-				playerMover.moveAnalog( this, ( float ) depth
-						/ ( ( float ) maxDepth ), deadPlayer.body );
-			}
-		}
 	}
 
 	@Override
 	public void screwLeft( int region, boolean switchedDirections ) {
-		if ( switchedDirections ) {
-			startRegion = region;
-			prevDiff = 0;
-		}
-
-		if ( depth > 0 ) {
-			diff = startRegion - region;
-			newDiff = diff - prevDiff;
-			if ( newDiff > 10 ) {
-				newDiff = 0;
-			}
-			prevDiff = diff;
-
-			body.setAngularVelocity( 1 );
-			if ( newDiff != 0 )
-				newDiff /= newDiff;
-			newDiff *= -1;
-			depth += newDiff;
-			spriteRegion += region;
-			if ( diff != 0 ) {
-				rotation += ( -newDiff * 5 );
-			}
-			screwStep = depth + 5;
-			if ( deadPlayer.isPlayerDead( ) ) {
-				playerMover.moveAnalog( this, ( float ) depth
-						/ ( ( float ) maxDepth ), deadPlayer.body );
-			}
-		}
-
 	}
 
 	/**
@@ -146,10 +118,15 @@ public class ResurrectScrew extends Screw {
 	 */
 	@Override
 	public void screwRight( ) {
+		super.screwRight( );
 		if ( depth < maxDepth ) {
 			depth++;
 			body.setAngularVelocity( -15 );
-			rotation -= 10;
+			int rotAfter = rotation - 10;
+			if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
+				screwSound( diff, 5 );
+			}
+			rotation = rotAfter;
 			screwStep = depth + 5;
 			if ( deadPlayer.isPlayerDead( ) ) {
 				playerMover.moveAnalog( this, ( float ) depth
@@ -160,6 +137,7 @@ public class ResurrectScrew extends Screw {
 
 	@Override
 	public void screwRight( int region, boolean switchedDirections ) {
+		super.screwRight( region, switchedDirections );
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;

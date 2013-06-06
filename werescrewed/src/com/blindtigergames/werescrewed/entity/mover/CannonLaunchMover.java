@@ -57,7 +57,7 @@ public class CannonLaunchMover implements IMover {
 
 	public void loadSounds(){
 		sounds = new SoundManager();
-		sounds.getSound( "launch" , WereScrewedGame.dirHandle + "/levels/dragon/cannon.ogg");
+		sounds.getSound( "launch" , WereScrewedGame.dirHandle + "/levels/dragon/sounds/cannon.ogg");
 		
 	}
 }

@@ -3,8 +3,8 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -80,7 +80,10 @@ public class Skeleton extends Platform {
 	protected boolean removed = false;
 
 	public boolean respawningDontPutToSleep = false;
-	//private ShapeRenderer shapeRender;
+	
+	private final float MAX_FALL_POS = -5000.0f;
+
+	// private ShapeRenderer shapeRender;
 
 	/**
 	 * Constructor used by SkeletonBuilder
@@ -100,7 +103,7 @@ public class Skeleton extends Platform {
 		entityType = EntityType.SKELETON;
 		alphaFadeAnimator = new SimpleFrameAnimator( ).speed( 0 )
 				.loop( LoopBehavior.STOP ).time( 1 );
-		//shapeRender = new ShapeRenderer( );
+		// shapeRender = new ShapeRenderer( );
 	}
 
 	/**
@@ -415,215 +418,220 @@ public class Skeleton extends Platform {
 	 */
 	@Override
 	public void update( float deltaTime ) {
-		//if ( this.getPositionPixel( ).y < -5000){
-		//	this.remove( );
-		//}
-		if ( !removed ) {
-			if ( this.removeNextStep ) {
-				this.remove( );
-			} else {
-				super.update( deltaTime );
-				float frameRate = 1 / deltaTime;
-				isUpdatable = ( !this.isFadingSkel( ) || this.isFGFaded( ) );
-				if ( useBoundingRect && updatedOnce ) {
-					boundingRect.x = this.getPositionPixel( ).x
-							- ( boundingRect.width / 2.0f );
-					boundingRect.y = this.getPositionPixel( ).y
-							- ( boundingRect.height / 2.0f );
-					if ( !boundingRect.overlaps( lastCameraRect ) ) {
-						isUpdatable = false;
-						if ( !wasInactive )
-							setSkeletonEntitiesToSleepRecursively( );
+		if ( this.getPositionPixel( ).y < MAX_FALL_POS && !this.removed ) {
+			this.remove( );
+		} else {
+			if ( !removed ) {
+				if ( this.removeNextStep ) {
+					this.remove( );
+				} else {
+					super.update( deltaTime );
+					float frameRate = 1 / deltaTime;
+					isUpdatable = ( !this.isFadingSkel( ) || this.isFGFaded( ) );
+					if ( useBoundingRect && updatedOnce ) {
+						boundingRect.x = this.getPositionPixel( ).x
+								- ( boundingRect.width / 2.0f );
+						boundingRect.y = this.getPositionPixel( ).y
+								- ( boundingRect.height / 2.0f );
+						if ( !boundingRect.overlaps( lastCameraRect ) ) {
+							isUpdatable = false;
+							if ( !wasInactive )
+								setSkeletonEntitiesToSleepRecursively( );
+						}
+					} else if ( !useBoundingRect && !isUpdatable
+							&& this.setChildSkeletonsToSleep && !wasInactive ) {
+						setSkeletonEntitiesToSleepRecursively( );
 					}
-				} else if ( !useBoundingRect && !isUpdatable
-						&& this.setChildSkeletonsToSleep && !wasInactive ) {
-					setSkeletonEntitiesToSleepRecursively( );
-				}
-				updatedOnce = true;
-				if ( isUpdatable || isMacroSkeleton ) {
-					updateMover( deltaTime );
-					if ( entityType != EntityType.ROOTSKELETON && isKinematic( ) ) {
-						super.setTargetPosRotFromSkeleton( frameRate,
-								parentSkeleton );
+					updatedOnce = true;
+					if ( isUpdatable || isMacroSkeleton ) {
+						updateMover( deltaTime );
+						if ( entityType != EntityType.ROOTSKELETON
+								&& isKinematic( ) ) {
+							super.setTargetPosRotFromSkeleton( frameRate,
+									parentSkeleton );
+						}
 					}
-				}
-				for ( EventTrigger event : eventMap.values( ) ) {
-					event.translatePosRotFromSKeleton( this );
-					// event.setTargetPosRotFromSkeleton( frameRate, this );
-				}
+					for ( EventTrigger event : eventMap.values( ) ) {
+						event.translatePosRotFromSKeleton( this );
+						// event.setTargetPosRotFromSkeleton( frameRate, this );
+					}
 
-				if ( isUpdatable ) {
-					for ( Platform platform : kinematicPlatformMap.values( ) ) {
-						if ( platform.removeNextStep ) {
-							entitiesToRemove.add( platform );
-						} else {
-							if ( wasInactive ) {
-								platform.body.setAwake( false );
-								platform.body.setActive( true );
-								platform.translatePosRotFromSKeleton( this );
-								platform.update( deltaTime );
+					if ( isUpdatable ) {
+						for ( Platform platform : kinematicPlatformMap.values( ) ) {
+							if ( platform.removeNextStep ) {
+								entitiesToRemove.add( platform );
 							} else {
-								platform.updateMover( deltaTime );
-								if ( !platform.body.isActive( ) ) {
+								if ( wasInactive ) {
+									platform.body.setAwake( false );
 									platform.body.setActive( true );
+									platform.translatePosRotFromSKeleton( this );
+									platform.update( deltaTime );
+								} else {
+									platform.updateMover( deltaTime );
+									if ( !platform.body.isActive( ) ) {
+										platform.body.setActive( true );
+									}
+									if ( !platform.body.isAwake( ) ) {
+										platform.body.setAwake( false );
+									}
+									if ( platform.hasMoved( )
+											|| platform.hasRotated( )
+											|| hasMoved( ) || hasRotated( ) ) {
+										platform.setTargetPosRotFromSkeleton(
+												frameRate, this );
+										platform.setPreviousTransformation( );
+									} else {
+										platform.body
+												.setLinearVelocity( Vector2.Zero );
+										platform.body.setAngularVelocity( 0.0f );
+									}
+									platform.update( deltaTime );
 								}
-								if ( !platform.body.isAwake( ) ) {
+							}
+						}
+						for ( Platform platform : dynamicPlatformMap.values( ) ) {
+							if ( platform.removeNextStep ) {
+								entitiesToRemove.add( platform );
+							} else {
+								if ( wasInactive ) {
+									platform.body.setActive( true );
 									platform.body.setAwake( false );
 								}
-								if ( platform.hasMoved( )
-										|| platform.hasRotated( ) || hasMoved( )
-										|| hasRotated( ) ) {
-									platform.setTargetPosRotFromSkeleton(
-											frameRate, this );
-									platform.setPreviousTransformation( );
-								} else {
-									platform.body
-											.setLinearVelocity( Vector2.Zero );
-									platform.body.setAngularVelocity( 0.0f );
-								}
+								platform.updateMover( deltaTime );
 								platform.update( deltaTime );
 							}
 						}
-					}
-					for ( Platform platform : dynamicPlatformMap.values( ) ) {
-						if ( platform.removeNextStep ) {
-							entitiesToRemove.add( platform );
-						} else {
-							if ( wasInactive ) {
-								platform.body.setActive( true );
-								platform.body.setAwake( false );
-							}
-							platform.updateMover( deltaTime );
-							platform.update( deltaTime );
-						}
-					}
-					for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-						if ( chkpt.removeNextStep ) {
-							entitiesToRemove.add( chkpt );
-						} else {
-							if ( wasInactive ) {
-								chkpt.body.setActive( true );
-								chkpt.body.setAwake( false );
-							}
-							chkpt.update( deltaTime );
-						}
-					}
-					for ( Screw screw : screwMap.values( ) ) {
-						if ( screw.removeNextStep ) {
-							entitiesToRemove.add( screw );
-						} else {
-							if ( wasInactive ) {
-								screw.body.setActive( true );
-								screw.body.setAwake( false );
-							}
-							screw.update( deltaTime );
-						}
-					}
-					for ( Rope rope : ropeMap.values( ) ) {
-						// TODO: ropes need to be able to be deleted
-						if ( wasInactive ) {
-							boolean nextLink = true;
-							int index = 0;
-							if ( rope.getEndAttachment( ) != null ) {
-								rope.getEndAttachment( ).body.setAwake( false );
-								rope.getEndAttachment( ).body.setActive( true );
-							}
-							while ( nextLink ) {
-								rope.getLink( index ).body.setActive( true );
-								rope.getLink( index ).body.setAwake( false );
-								if ( rope.getLastLink( ) == rope
-										.getLink( index ) ) {
-									nextLink = false;
-								}
-								index++;
-							}
-						}
-						rope.update( deltaTime );
-					}
-					if ( wasInactive ) {
-						this.body.setActive( true );
-						this.body.setAwake( false );
-						for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-							skeleton.body.setActive( true );
-							skeleton.body.setAwake( false );
-						}
-						wasInactive = false;
-					}
-				} else {
-					if ( !wasInactive ) {
-						setEntitiesToSleepOnUpdate( );
-						wasInactive = true;
-					}
-				}
-
-				setPreviousTransformation( );
-
-				alphaFadeAnimator.update( deltaTime );
-				Vector2 pixelPos = null;
-				if ( fgSprite != null ) {
-					pixelPos = getPosition( ).mul( Util.BOX_TO_PIXEL );
-					fgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y
-							- offset.y );
-					fgSprite.setRotation( MathUtils.radiansToDegrees
-							* getAngle( ) );
-				}
-				if ( bgSprite != null ) {
-					if ( pixelPos == null )
-						pixelPos = getPosition( ).mul( Util.BOX_TO_PIXEL );
-					bgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y
-							- offset.y );
-					bgSprite.setRotation( MathUtils.radiansToDegrees
-							* getAngle( ) );
-				}
-				updateDecals( deltaTime );
-
-				// }
-				// recursively update child skeletons
-
-				if ( !setChildSkeletonsToSleep || isUpdatable ) {
-					for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-						if ( skeleton.removeNextStep ) {
-							entitiesToRemove.add( skeleton );
-						} else {
-							skeleton.update( deltaTime );
-						}
-					}
-				}
-
-				// remove stuff
-				if ( entitiesToRemove.size( ) > 0 ) {
-					for ( Entity e : entitiesToRemove ) {
-						switch ( e.entityType ) {
-						case SKELETON:
-							Skeleton s = childSkeletonMap.remove( e.name );
-							s.remove( );
-							break;
-						case PLATFORM:
-							Platform p;
-							if ( e.isKinematic( ) ) {
-								p = kinematicPlatformMap.remove( e.name );
+						for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+							if ( chkpt.removeNextStep ) {
+								entitiesToRemove.add( chkpt );
 							} else {
-								p = dynamicPlatformMap.remove( e.name );
+								if ( wasInactive ) {
+									chkpt.body.setActive( true );
+									chkpt.body.setAwake( false );
+								}
+								chkpt.update( deltaTime );
 							}
-							p.remove( );
-							break;
-						case SCREW:
-							Screw sc = screwMap.remove( e.name );
-							sc.remove( );
-							break;
-						case CHECKPOINT:
-							CheckPoint chkpt = checkpointMap.remove( e.name );
-							chkpt.remove( );
-						default:
-							throw new RuntimeException(
-									"You are trying to remove enity '"
-											+ e.name
-											+ "' but skeleton '"
-											+ this.name
-											+ "' can't determine it's type. This may be my fault for not adding a case. -stew" );
+						}
+						for ( Screw screw : screwMap.values( ) ) {
+							if ( screw.removeNextStep ) {
+								entitiesToRemove.add( screw );
+							} else {
+								if ( wasInactive ) {
+									screw.body.setActive( true );
+									screw.body.setAwake( false );
+								}
+								screw.update( deltaTime );
+							}
+						}
+						for ( Rope rope : ropeMap.values( ) ) {
+							// TODO: ropes need to be able to be deleted
+							if ( wasInactive ) {
+								boolean nextLink = true;
+								int index = 0;
+								if ( rope.getEndAttachment( ) != null ) {
+									rope.getEndAttachment( ).body
+											.setAwake( false );
+									rope.getEndAttachment( ).body
+											.setActive( true );
+								}
+								while ( nextLink ) {
+									rope.getLink( index ).body.setActive( true );
+									rope.getLink( index ).body.setAwake( false );
+									if ( rope.getLastLink( ) == rope
+											.getLink( index ) ) {
+										nextLink = false;
+									}
+									index++;
+								}
+							}
+							rope.update( deltaTime );
+						}
+						if ( wasInactive ) {
+							this.body.setActive( true );
+							this.body.setAwake( false );
+							for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+								skeleton.body.setActive( true );
+								skeleton.body.setAwake( false );
+							}
+							wasInactive = false;
+						}
+					} else {
+						if ( !wasInactive ) {
+							setEntitiesToSleepOnUpdate( );
+							wasInactive = true;
 						}
 					}
-					entitiesToRemove.clear( );
+
+					setPreviousTransformation( );
+
+					alphaFadeAnimator.update( deltaTime );
+					Vector2 pixelPos = null;
+					if ( fgSprite != null ) {
+						pixelPos = getPosition( ).mul( Util.BOX_TO_PIXEL );
+						fgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y
+								- offset.y );
+						fgSprite.setRotation( MathUtils.radiansToDegrees
+								* getAngle( ) );
+					}
+					if ( bgSprite != null ) {
+						if ( pixelPos == null )
+							pixelPos = getPosition( ).mul( Util.BOX_TO_PIXEL );
+						bgSprite.setPosition( pixelPos.x - offset.x, pixelPos.y
+								- offset.y );
+						bgSprite.setRotation( MathUtils.radiansToDegrees
+								* getAngle( ) );
+					}
+					updateDecals( deltaTime );
+
+					// }
+					// recursively update child skeletons
+
+					if ( !setChildSkeletonsToSleep || isUpdatable ) {
+						for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+							if ( skeleton.removeNextStep ) {
+								entitiesToRemove.add( skeleton );
+							} else {
+								skeleton.update( deltaTime );
+							}
+						}
+					}
+
+					// remove stuff
+					if ( entitiesToRemove.size( ) > 0 ) {
+						for ( Entity e : entitiesToRemove ) {
+							switch ( e.entityType ) {
+							case SKELETON:
+								Skeleton s = childSkeletonMap.remove( e.name );
+								s.remove( );
+								break;
+							case PLATFORM:
+								Platform p;
+								if ( e.isKinematic( ) ) {
+									p = kinematicPlatformMap.remove( e.name );
+								} else {
+									p = dynamicPlatformMap.remove( e.name );
+								}
+								p.remove( );
+								break;
+							case SCREW:
+								Screw sc = screwMap.remove( e.name );
+								sc.remove( );
+								break;
+							case CHECKPOINT:
+								CheckPoint chkpt = checkpointMap
+										.remove( e.name );
+								chkpt.remove( );
+							default:
+								throw new RuntimeException(
+										"You are trying to remove enity '"
+												+ e.name
+												+ "' but skeleton '"
+												+ this.name
+												+ "' can't determine it's type. This may be my fault for not adding a case. -stew" );
+							}
+						}
+						entitiesToRemove.clear( );
+					}
 				}
 			}
 		}
@@ -649,28 +657,26 @@ public class Skeleton extends Platform {
 		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
 			chkpt.remove( );
 		}
-
 		for ( EventTrigger event : eventMap.values( ) ) {
 			event.remove( );
-			// event.setTargetPosRotFromSkeleton( frameRate, this );
 		}
-		for ( Rope rope : ropeMap.values( ) ) {
-			// TODO: ropes need to be able to be deleted
-			if ( wasInactive ) {
-				boolean nextLink = true;
-				int index = 0;
-				if ( rope.getEndAttachment( ) != null ) {
-					world.destroyBody( rope.getEndAttachment( ).body );
-				}
-				while ( nextLink ) {
-					world.destroyBody( rope.getLink( index ).body );
-					if ( rope.getLastLink( ) == rope.getLink( index ) ) {
-						nextLink = false;
-					}
-					index++;
-				}
-			}
-		}
+//		for ( Rope rope : ropeMap.values( ) ) {
+//			boolean nextLink = true;
+//			int index = 0;
+//			if ( rope.getEndAttachment( ) != null ) {
+//				while ( rope.getEndAttachment( ).body.getJointList( ).iterator( ).hasNext( ) ) {
+//					world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+//				}
+//				world.destroyBody( rope.getEndAttachment( ).body );
+//			}
+//			while ( nextLink ) {
+//				world.destroyBody( rope.getLink( index ).body );
+//				if ( rope.getLastLink( ) == rope.getLink( index ) ) {
+//					nextLink = false;
+//				}
+//				index++;
+//			}
+//		}
 		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
 			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
 		}
@@ -885,7 +891,7 @@ public class Skeleton extends Platform {
 	public void setUseBoundingRect( boolean setting ) {
 		useBoundingRect = setting;
 	}
-	
+
 	public boolean getIsUsingBoundingBox( ) {
 		return useBoundingRect;
 	}
