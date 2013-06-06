@@ -106,7 +106,9 @@ public class MyContactListener implements ContactListener {
 							// also make sure its not the player
 							Platform plat = ( Platform ) object;
 
-							if ( player.getState( ) != PlayerState.Screwing ) {
+							if ( player.getState( ) == PlayerState.Screwing ) {
+								player.knockedOff = true;
+							}else {
 								if ( x1 == player.feet || x2 == player.feet ) {
 									Vector2 contactPos = contact.getWorldManifold( ).getPoints( )[ 0 ];
 									if ( contactPos.y <= ( player.getPosition( ).y + 0.01 ) ) {
@@ -119,8 +121,6 @@ public class MyContactListener implements ContactListener {
 										player.setGrounded( true );
 									} 
 								} 
-							} else {
-								player.knockedOff = true;
 							}
 							if ( object.isSolid( ) ) {
 								if ( playerFix.getShape( ) instanceof CircleShape ) {
