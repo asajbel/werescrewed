@@ -44,11 +44,10 @@ class PauseScreen extends MenuScreen {
 	@Override
 	public void load( ){
 		super.load( );
-		Gdx.app.log( "Pause Screen", "Load Function Reached" );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
 //		logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 //		+ "/common/title_background.png", Texture.class );
-
+		
 		fancyFont.setScale( 1.0f );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		screenLabel = new Label( "Pause Screen", fancyFont );
@@ -56,6 +55,8 @@ class PauseScreen extends MenuScreen {
 		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/transitions/trans-gear.png", Texture.class );
 		trans = new Sprite( transition );
+		
+		WereScrewedGame.manager.loadAtlas( "data/menu/menu-textures.pack" );
 		
 		loadButtons( );
 		setClearColor( 40, 40, 40, 255 );

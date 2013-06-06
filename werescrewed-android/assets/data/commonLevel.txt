@@ -51,11 +51,11 @@
 /common/sounds/backswing.ogg
 /common/sounds/switchOn.ogg
 /common/sounds/switchOff.ogg
-/menu/move.ogg
-/menu/select.ogg
 #/common/sounds/TrainJob.mp3
 #/common/sounds/loopTrain.mp3
 #/common/sounds/introTrain.mp3
+/menu/move.ogg
+/menu/select.ogg
 #/levels/alphabot/sounds/Engine.ogg
 
 /common/tileset/TilesetTest.png
