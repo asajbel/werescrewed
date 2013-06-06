@@ -154,8 +154,14 @@ public class DragonScreen extends Screen {
 	public void load(){
 		super.load( );
 		if (bgm == null){
-			bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
-					+ "/levels/dragon/riding.mp3", Music.class );
+			bgm = Gdx.audio.newMusic(Gdx.files.internal("data/common/music/waltz.mp3"));
+		}
+		if (sounds == null){
+			sounds = new SoundManager();
+			sounds.getSound( "roar_calm",  WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_calm.ogg");
+			sounds.getSound( "roar_angry", WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_angry.ogg");
+			sounds.getSound( "jaw_close", WereScrewedGame.dirHandle + "/levels/dragon/sounds/jawClose.ogg" );
+			//sounds.getSound( "jaw_open",WereScrewedGame.dirHandle + "/levels/dragon/sounds/cannon.ogg" );
 		}
 	}
 	void buildBalloon( ) {

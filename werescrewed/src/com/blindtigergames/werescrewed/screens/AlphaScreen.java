@@ -239,8 +239,10 @@ public class AlphaScreen extends Screen {
 	@Override
 	public void load(){
 		if (bgm == null){
-			bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
-					+ "/common/music/waltz.mp3", Music.class );
+			/*
+			 * bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/common/music/waltz.mp3", Music.class );
+			 */
+			bgm = Gdx.audio.newMusic(Gdx.files.internal("data/common/music/waltz.mp3"));
 		}
 		if (sounds == null){
 			sounds = new SoundManager( );
@@ -359,7 +361,7 @@ public class AlphaScreen extends Screen {
 						&& headEyebrow2.isTimeLineMoverFinished( ) ) {
 					
 					// You win and goto next screen!!!
-					ScreenManager.getInstance( ).show( ScreenType.TROPHY_1 );
+					ScreenManager.getInstance( ).show( ScreenType.LOADING_TROPHY_2 );
 				}
 			}
 		}

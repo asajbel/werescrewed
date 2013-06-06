@@ -40,8 +40,7 @@ public class PuzzleScrew extends Screw {
 	private final int animeSteps = 12;
 	@SuppressWarnings( "unused" )
 	private int soundCounter = 0;
-
-
+	
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, int startDepth, boolean resetable,
 			Vector2 detachDirection ) {
