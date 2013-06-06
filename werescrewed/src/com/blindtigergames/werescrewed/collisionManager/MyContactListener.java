@@ -37,6 +37,8 @@ public class MyContactListener implements ContactListener {
 
 	private static int NUM_PLAYER1_CONTACTS = 0;
 	private static int NUM_PLAYER2_CONTACTS = 0;
+	private Platform player1Plat;
+	private Platform player2Plat;
 	private static final float LAND_DELAY = 0;
 	private static final float LAND_VOLUME = 0.15f;
 	private static final float COLLISION_VOLUME = 5.0f;
@@ -104,7 +106,23 @@ public class MyContactListener implements ContactListener {
 							// feet
 							// also make sure its not the player
 							Platform plat = ( Platform ) object;
-							player.hitSolidObject( plat );
+
+							if ( player.getState( ) != PlayerState.Screwing ) {
+								if ( x1 == player.feet || x2 == player.feet ) {
+									Vector2 contactPos = contact.getWorldManifold( ).getPoints( )[ 0 ];
+									if ( contactPos.y <= ( player.getPosition( ).y + 0.01 ) ) {
+										if ( player.name.equals( "player1" ) && player1Plat == null ) {
+											player1Plat = plat;
+										} else if ( player.name.equals( "player2" ) && player1Plat == null ) {
+											player2Plat = plat;
+										}
+										player.hitSolidObject( plat, contact );
+										player.setGrounded( true );
+									} 
+								} 
+							} else {
+								player.knockedOff = true;
+							}
 							if ( object.isSolid( ) ) {
 								if ( playerFix.getShape( ) instanceof CircleShape ) {
 									if ( player.name.equals( "player1" ) ) {
@@ -112,8 +130,6 @@ public class MyContactListener implements ContactListener {
 									} else if ( player.name.equals( "player2" ) ) {
 										NUM_PLAYER2_CONTACTS++;
 									}
-									// Platform plat = ( Platform ) object;
-									// player.hitSolidObject( plat );
 									if ( player.getState( ) != PlayerState.Screwing ) {
 										if ( !player.isGrounded( ) ) {
 											player.sounds
@@ -282,6 +298,7 @@ public class MyContactListener implements ContactListener {
 							// player's
 							// feet
 							// also make sure its not the player
+							Platform plat = ( Platform ) object;
 							if ( object.isSolid( )
 									&& playerFix.getShape( ) instanceof CircleShape ) {
 								if ( player.name.equals( "player1" ) ) {
@@ -301,7 +318,15 @@ public class MyContactListener implements ContactListener {
 								}
 								contact.setEnabled( true );
 							}
-							player.hitSolidObject( null );
+							if ( player.name.equals( "player1" ) ) {
+								if ( plat == player1Plat ) 
+									plat = null;
+									player.hitSolidObject( null, contact );
+							} else if ( player.name.equals( "player2" ) ) {
+								if ( plat == player2Plat ) 
+									plat = null;
+									player.hitSolidObject( null, contact );
+							}
 							break;
 						case SCREW:
 							if ( player.getState( ) != PlayerState.Screwing ) {
