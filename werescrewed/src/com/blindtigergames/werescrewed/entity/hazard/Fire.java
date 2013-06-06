@@ -149,7 +149,7 @@ public class Fire extends Hazard {
 	public void update( float deltaTime){
 		sounds.setSoundVolume(
 				"idle",
-				isActive( ) ? sounds.calculatePositionalVolume( "idle",
+				this.activeHazard ? sounds.calculatePositionalVolume( "idle",
 						getPositionPixel( ), Camera.CAMERA_RECT ) : 0f );
 		sounds.update( deltaTime );
 	}

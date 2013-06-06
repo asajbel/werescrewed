@@ -13,7 +13,10 @@
 ##sounds
 /common/sounds/inceptionbutton.mp3
 /common/sounds/jump.ogg
-/levels/dragon/cannon.ogg
+/levels/dragon/sounds/cannon.ogg
+/levels/dragon/sounds/dragon_roar_calm.ogg
+/levels/dragon/sounds/dragon_roar_angry.ogg
+/levels/dragon/sounds/jawClose.ogg
 
 ##common tilesets
 ##/levels/level1/TilesetTest.png
