@@ -773,6 +773,8 @@ public class Skeleton extends Platform {
 					// batch.setColor( c.r, c.g, c.b, oldAlpha );
 				}
 				if ( applyFadeToFGDecals ) {
+					if(name.equals("head_skeleton"))
+						getAngle( );
 					fadeFGDecals( );
 				}
 			}

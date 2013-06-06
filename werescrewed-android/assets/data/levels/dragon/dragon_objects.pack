@@ -5,14 +5,14 @@ repeat: none
 offset: 0, 0
 rotation_machine_decal_middle
   rotate: false
-  xy: 324, 1719
+  xy: 4, 1655
   size: 110, 290
   orig: 110, 290
   offset: 0, 0
   index: -1
 burner-small
   rotate: false
-  xy: 636, 1038
+  xy: 4, 1951
   size: 297, 84
   orig: 297, 84
   offset: 0, 0
@@ -24,93 +24,100 @@ turbine
   orig: 1028, 1028
   offset: 0, 0
   index: -1
+mesh
+  rotate: false
+  xy: 120, 1655
+  size: 430, 266
+  orig: 430, 266
+  offset: 0, 0
+  index: -1
 bridge
   rotate: false
   xy: 1038, 4
-  size: 633, 416
-  orig: 633, 416
+  size: 897, 464
+  orig: 897, 464
   offset: 0, 0
   index: -1
 cannonstand-small
   rotate: false
-  xy: 4, 1858
+  xy: 1670, 704
   size: 314, 156
   orig: 314, 156
   offset: 0, 0
   index: -1
 cannon-large
   rotate: false
-  xy: 1677, 4
+  xy: 4, 1038
   size: 314, 611
   orig: 314, 611
   offset: 0, 0
   index: -1
 cannonstand-large
   rotate: false
-  xy: 254, 1107
+  xy: 1288, 647
   size: 376, 187
   orig: 376, 187
   offset: 0, 0
   index: -1
 rotation_machine_decal_right
   rotate: false
-  xy: 118, 1322
+  xy: 438, 1038
   size: 104, 528
   orig: 104, 528
   offset: 0, 0
   index: -1
 rotation_machine_wheel
   rotate: false
-  xy: 1675, 621
+  xy: 1816, 474
   size: 225, 224
   orig: 225, 224
   offset: 0, 0
   index: -1
 turbine_blade
   rotate: false
-  xy: 4, 1038
+  xy: 1038, 739
   size: 244, 261
   orig: 244, 261
   offset: 0, 0
   index: -1
 turbine-outside
   rotate: false
-  xy: 1546, 864
+  xy: 556, 1546
   size: 452, 452
   orig: 452, 452
   offset: 0, 0
   index: -1
 rotation_machine_decal_left
   rotate: false
-  xy: 4, 1322
+  xy: 324, 1038
   size: 108, 530
   orig: 108, 530
   offset: 0, 0
   index: -1
 rotation_machine_rotate_plate
   rotate: false
-  xy: 1546, 599
+  xy: 1056, 474
   size: 123, 259
   orig: 123, 259
   offset: 0, 0
   index: -1
 burner-med
   rotate: false
-  xy: 1038, 426
+  xy: 1223, 474
   size: 587, 167
   orig: 587, 167
   offset: 0, 0
   index: -1
 cannon-small
   rotate: false
-  xy: 228, 1322
+  xy: 1014, 1546
   size: 203, 391
   orig: 203, 391
   offset: 0, 0
   index: -1
 wheel
   rotate: false
-  xy: 1038, 599
+  xy: 548, 1038
   size: 502, 502
   orig: 502, 502
   offset: 0, 0

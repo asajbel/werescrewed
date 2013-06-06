@@ -74,6 +74,10 @@ public class DragonScreen extends Screen {
 	boolean headEvent = false;
 	int headEventTimer = 180;
 	
+	float mouthFireTimer=0;
+	final float mouthFireDelay=23f, mouthFireTotalTime=36f;
+	boolean mouthFireTriggered=false;
+	
 	// the numbers here correspond to gleed numbers
 	Fire tail3Fire2, tail3Fire3, tail3Fire4, tail3Fire5, tail3Fire6;
 
@@ -132,18 +136,12 @@ public class DragonScreen extends Screen {
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
 				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
 				.start( ).delay( 2f ) );
+		//pizza3
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
-				.ease( TweenEquations.easeNone ).target( 0 ).delay( 2f )
+				.ease( TweenEquations.easeNone ).target( 0 ).delay( 8f )//delay longer for shooting fire!
 				.start( ) );
 
-		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 8f )
-				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
-				.start( ).delay( 4f ) );
-
-		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 5f )
-				.ease( TweenEquations.easeNone ).target( 0 ).delay( 2f )
-				.start( ) );
 		t.repeat( Tween.INFINITY, 0f );
 		jaw_skeleton.addMover( new TimelineTweenMover( t.start( ) ) );
 		
@@ -267,8 +265,18 @@ public class DragonScreen extends Screen {
 				headEvent = true;
 			}
 		}
-		if ( Gdx.input.isKeyPressed( Input.Keys.SHIFT_LEFT ) && Gdx.input.isKeyPressed( Input.Keys.M ) ) {
+//		if ( Gdx.input.isKeyPressed( Input.Keys.SHIFT_LEFT ) && Gdx.input.isKeyPressed( Input.Keys.M ) ) {
+//			mouthFire.setActiveHazard( true );
+//		}
+		
+		mouthFireTimer+=deltaTime;
+		if(mouthFireTimer>=mouthFireDelay && !mouthFireTriggered){
 			mouthFire.setActiveHazard( true );
+			mouthFireTriggered=true;
+		}
+		if(mouthFireTimer>=mouthFireTotalTime){
+			mouthFireTimer=0;
+			mouthFireTriggered=false;
 		}
 		
 		// Zoom out and fade the head skeleton back in so you can see the jaw
@@ -278,12 +286,12 @@ public class DragonScreen extends Screen {
 			
 			headEventTimer--;
 			if(headEventTimer == 0){
-				headSkeleton.setFgFade( true );
+				headSkeleton.setFade( false );
 				headEvent = false;
 			
 			}else{
 				
-				headSkeleton.setFgFade( false );
+				headSkeleton.setFade( true );
 			}
 		}
 //		if(tail1Left.body == null && tail2.body == null){
@@ -1248,7 +1256,9 @@ public class DragonScreen extends Screen {
 		TextureAtlas interiorAtlas = WereScrewedGame.manager.getAtlas( "interior_tail3_bodyleft" );
 		
 		//fg
-		tail3_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail3" ), 2.6f), new Vector2(-820,-580) );//227,17
+		Sprite s = tailAtlas.createSprite( "tail3" );
+		s.setOrigin( 0, 0 );
+		tail3_skeleton.addFGDecal( Sprite.scale( s, 2.6f), new Vector2(-820,-580) );//227,17
 		tail3_skeleton.fgSprite=null;//237,98
 		//tail3_skeleton.setFgFade( true );
 		addFGSkeleton( tail3_skeleton );
@@ -1361,7 +1371,7 @@ public class DragonScreen extends Screen {
 		//ground1
 		TiledPlatform ground = (TiledPlatform)LevelFactory.entities.get( "ground1" );
 		TextureAtlas objects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
-		ground.addFGDecal( Sprite.scale(objects.createSprite( "bridge" ),3,2), new Vector2(-1370,-277*2));
+		ground.addFGDecal( Sprite.scale(objects.createSprite( "bridge" ),3), new Vector2(-2100,-277*3-26));
 		ground.setVisible( false );
 		addFGEntity( ground );
 	}
