@@ -101,6 +101,7 @@
 #/fonts/ArmenianCircus.fnt
 #/fonts/Screwball.fnt
 /fonts/longdon.fnt
+/fonts/longdon-small.fnt
 
 #slides
 ## TODO: unload these during the level
