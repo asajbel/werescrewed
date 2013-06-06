@@ -1184,7 +1184,6 @@ public class Player extends Entity {
 		this.currentPlatform = platform;
 		if ( platform == null ) {
 			hitSolidObject = false;
-			Gdx.app.log(  "ended hitting a platform ", "");
 		} else {
 			if ( playerState == PlayerState.Falling ) {
 				playerState = PlayerState.Standing;
@@ -1192,7 +1191,6 @@ public class Player extends Entity {
 			if ( platform.isKinematic( ) && platform.currentMover( ) == null ) {
 				lastPlatformHit = platform;
 			}
-			Gdx.app.log(  "starteg hitting a platform ", "");
 			hitSolidObject = true;
 		}
 	}
