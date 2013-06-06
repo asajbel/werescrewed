@@ -33,7 +33,6 @@ public class Pipe extends Platform {
 	protected Direction currentDirection;
 	protected Direction nextDirection;
 	protected Direction previousDirection;
-	protected Texture texture;
 	protected boolean open;
 
 	public static final float TILE_SIZE = 32.0f;
@@ -46,8 +45,6 @@ public class Pipe extends Platform {
 		this.currentPos = new Vector2( );
 		start = new Vector2( );
 		tiles = new ArrayList< Tile >( );
-		texture = null; //WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				//+ "/common/pipe/pipeLR.png", Texture.class );
 		Vector2 currentPair;
 		int numberOfSegments;
 		previousDirection = null;

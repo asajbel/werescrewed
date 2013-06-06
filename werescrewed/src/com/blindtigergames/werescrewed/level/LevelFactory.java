@@ -861,7 +861,7 @@ public class LevelFactory {
 
 		pb.name( item.name ).position( new Vector2( xPos, yPos ) )
 				.dimensions( new Vector2( tileWidth, tileHeight ) )
-				.tileSet( "alphabot" ).properties( item.props );
+				.tileSet( "white" ).properties( item.props );
 
 		if ( item.props.containsKey( "gravscale" ) ) {
 			float gravScale = Float.parseFloat( item.props.get( "gravscale" ) );
@@ -966,7 +966,7 @@ public class LevelFactory {
 			isCrushable = true;
 		}
 
-		pb.name( item.name ).position( item.pos ).tileSet( "alphabot32" )
+		pb.name( item.name ).position( item.pos ).tileSet( "white" )
 				.properties( item.props );
 		if ( item.props.containsKey( "tux" ) ) {
 			pb.texture( WereScrewedGame.manager.get( WereScrewedGame.dirHandle

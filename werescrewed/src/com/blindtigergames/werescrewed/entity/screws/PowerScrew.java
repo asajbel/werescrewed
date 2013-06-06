@@ -27,8 +27,6 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class PowerScrew extends Screw {
 	private SimpleFrameAnimator powerAnimator;
-	private static TextureRegion powerTexRegion = WereScrewedGame.manager
-			.getAtlas( "pushButton" ).findRegion( "0" );
 
 	public PowerScrew( String name, Vector2 pos, Entity entity, World world ) {
 		super( name, pos, null );
@@ -40,14 +38,8 @@ public class PowerScrew extends Screw {
 		extraJoints = new ArrayList< Joint >( );
 		screwType = ScrewType.SCREW_STRUCTURAL;
 		entityType = EntityType.SCREW;
-		sprite = this.constructSprite( powerTexRegion );
-		// TextureAtlas atlas = WereScrewedGame.manager.getTextureAtlas(
-		// "pushButton" );
-		// powerAnimator = new SimpleFrameAnimator( ).speed( 1f )
-		// .loop( LoopBehavior.STOP ).time( 0.0f ).startFrame( 1 )
-		// .maxFrames( 2 );
-		// Sprite spr = new Sprite( atlas, powerAnimator);
-		// this.changeSprite( spr );
+		sprite = this.constructSprite( WereScrewedGame.manager
+				.getAtlas( "pushButton" ).findRegion( "0" ) );
 		constuctBody( pos );
 		addStructureJoint( entity );
 	}
@@ -61,14 +53,8 @@ public class PowerScrew extends Screw {
 		extraJoints = new ArrayList< Joint >( );
 		screwType = ScrewType.SCREW_STRUCTURAL;
 		entityType = EntityType.SCREW;
-		sprite = this.constructSprite( powerTexRegion );
-		// TextureAtlas atlas = WereScrewedGame.manager
-		// .getTextureAtlas( "pushButton" );
-		// powerAnimator = new SimpleFrameAnimator( ).speed( 0f )
-		// .loop( LoopBehavior.STOP ).time( 0.0f ).startFrame( 1 )
-		// .maxFrames( 2 );
-		// Sprite spr = new Sprite( atlas, powerAnimator);
-		// this.changeSprite( spr );
+		sprite = this.constructSprite( WereScrewedGame.manager
+				.getAtlas( "pushButton" ).findRegion( "0" ) );
 	}
 
 	public void hitPlayer( Player player ) {
@@ -99,19 +85,5 @@ public class PowerScrew extends Screw {
 		body.createFixture( screwFixture );
 		screwShape.dispose( );
 		body.setUserData( this );
-
-		// we may want a radar depending on the size of the sprite...
-		// add radar sensor to screw
-		// CircleShape radarShape = new CircleShape( );
-		// radarShape.setRadius( sprite.getWidth( ) * 1.1f * Util.PIXEL_TO_BOX
-		// );
-		// FixtureDef radarFixture = new FixtureDef( );
-		// radarFixture.shape = radarShape;
-		// radarFixture.isSensor = true;
-		// radarFixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-		// radarFixture.filter.maskBits = Util.CATEGORY_PLAYER
-		// | Util.CATEGORY_SUBPLAYER;
-		// body.createFixture( radarFixture );
-		// radarShape.dispose( );
 	}
 }

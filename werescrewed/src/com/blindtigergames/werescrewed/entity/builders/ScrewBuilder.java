@@ -191,9 +191,6 @@ public class ScrewBuilder extends GenericEntityBuilder< ScrewBuilder > {
 	public StrippedScrew buildStrippedScrew( ) {
 		StrippedScrew out = null;
 		if ( canBuild( ) && skeleton != null ) {
-
-			// out = new StrippedScrew(name, pos, skeleton, world,
-			// detachDirection);
 			out = new StrippedScrew( name, pos, world );
 			if ( skeleton != null ) {
 

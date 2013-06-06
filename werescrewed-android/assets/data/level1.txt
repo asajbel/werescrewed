@@ -5,6 +5,7 @@
 ## uncomment line below to do only black outlines for alphabot
 @ outline /common/black.png
 @ fg /levels/alphabot/alphabot-fg.png
+@ tilecolor 237 123 0
 
 ##music
 /common/music/waltz.mp3

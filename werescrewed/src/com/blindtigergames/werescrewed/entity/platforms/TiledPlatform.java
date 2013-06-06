@@ -72,7 +72,6 @@ public class TiledPlatform extends Platform {
 		setOneSided( isOneSided );
 		this.moveable = isMoveable;
 		tileBody( tileSet );
-
 	}
 
 	private void constructTileBody( float x, float y, float width, float height ) {
@@ -300,7 +299,7 @@ public class TiledPlatform extends Platform {
 		temp.setOrigin( offset_x, offset_y );
 		temp.setPosition( bodypos.x - offset_x, bodypos.y - offset_y );
 		temp.setRotation( MathUtils.radiansToDegrees * body.getAngle( ) );
-		temp.setColor( tileColor );
+		if(!oneSided) temp.setColor( tileColor );
 		return ( new Tile( offset_x, offset_y, temp ) );
 	}
 
