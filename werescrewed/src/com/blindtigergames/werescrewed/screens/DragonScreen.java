@@ -61,14 +61,18 @@ public class DragonScreen extends Screen {
 
 	PuzzleScrew puzzleScrewBalloon1;
 	Platform balloon1;
-	Skeleton balloon1_super, bodyRoomRotateSkeleton;
-	PowerSwitch tail3Switch1, tail3Switch2, tail3Switch3, bodyPowerSwitch1, bodyPowerSwitch3;
+	Skeleton balloon1_super, bodyRoomRotateSkeleton, headSkeleton;
+	PowerSwitch tail3Switch1, tail3Switch2, tail3Switch3, bodyPowerSwitch1, bodyPowerSwitch3,
+	dragonBrainSwitch, dragonBrainSwitch2;
+	Platform dragonBrain;
 	RevoluteJoint bodyRoomJoint;
-	EntityParticleEmitter fireballEmitter;
+	EntityParticleEmitter fireballEmitter, brainEmitter1, brainEmitter2, brainEmitter3, brainEmitter4 ;
 	StructureScrew tail1Left, tail1Right, tail2Left, tail2Right, tail3Left, tail3Right;
 	StructureScrew jawStructureScrew;
 	Skeleton jaw_skeleton;
 	MouthFire mouthFire;  
+	boolean headEvent = false;
+	int headEventTimer = 180;
 	
 	// the numbers here correspond to gleed numbers
 	Fire tail3Fire2, tail3Fire3, tail3Fire4, tail3Fire5, tail3Fire6;
@@ -100,12 +104,12 @@ public class DragonScreen extends Screen {
 		tail2Decals();
 		tail3Decals();
 		getTailStructureScrews();
-		initFireballEnemy(new Vector2(13750, 300));
+		initFireballEnemy();
 
 		
 		
-		mouthFire = new MouthFire( "mouth-fire", new Vector2(25000, 900), new Vector2(32000, 500),
-				5f, 100f, 1000f, level.world);
+		mouthFire = new MouthFire( "mouth-fire", new Vector2(25000, 900), new Vector2(32000, 75),
+				4f, 100f, 800f, level.world);
 		Skeleton head_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
 		head_skeleton.addHazard( mouthFire );
@@ -114,7 +118,7 @@ public class DragonScreen extends Screen {
 		.get( "jaw_structure_screw" );
 		
 		jaw_skeleton = ( Skeleton ) LevelFactory.entities
-				.get( "fuck_jaw_skeleton" );
+				.get( "jaw_skeleton" );
 		Timeline t = Timeline.createSequence( );
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
@@ -266,16 +270,80 @@ public class DragonScreen extends Screen {
 			
 			if(jawStructureScrew.getDepth() == 0){
 				jaw_skeleton.body.setType( BodyType.DynamicBody );
+				headEvent = true;
 			}
 		}
 		if ( Gdx.input.isKeyPressed( Input.Keys.SHIFT_LEFT ) && Gdx.input.isKeyPressed( Input.Keys.M ) ) {
 			mouthFire.setActiveHazard( true );
+		}
+		
+		// Zoom out and fade the head skeleton back in so you can see the jaw
+		// fall off
+		if(headEvent){
+			//System.out.println( headEventTimer );
+			
+			headEventTimer--;
+			if(headEventTimer == 0){
+				headSkeleton.setFgFade( true );
+				headEvent = false;
+			
+			}else{
+				
+				headSkeleton.setFgFade( false );
+			}
 		}
 //		if(tail1Left.body == null && tail2.body == null){
 //			
 //			
 //		}
 		
+		
+		if(dragonBrainSwitch.isTurnedOn( ) && dragonBrainSwitch2.isTurnedOn( )){
+			
+			if(dragonBrain.currentMover( ) == null){
+				Timeline t = Timeline.createSequence( );
+	
+	
+				t.push( Tween
+						.to( dragonBrain, PlatformAccessor.LOCAL_ROT, 1f )
+						.ease( TweenEquations.easeNone ).target( Util.PI / 32 )
+						.delay( 0f ).start( ) );
+	
+			
+	
+				t.push( Tween
+						.to( dragonBrain, PlatformAccessor.LOCAL_ROT, 1f )
+						.ease( TweenEquations.easeNone ).target( -Util.PI / 32 )
+						.delay( 0f ).start( ) );
+				
+				t.push( Tween
+						.to( dragonBrain, PlatformAccessor.LOCAL_ROT, 1f )
+						.ease( TweenEquations.easeNone ).target( Util.PI / 32 )
+						.delay( 0f ).start( ) );
+	
+			
+	
+				t.push( Tween
+						.to( dragonBrain, PlatformAccessor.LOCAL_ROT, 1f )
+						.ease( TweenEquations.easeNone ).target( -Util.PI / 32 )
+						.delay( 0f ).start( ) );
+	
+				t.push( Tween
+						.to( dragonBrain, PlatformAccessor.LOCAL_ROT, 1f )
+						.ease( TweenEquations.easeNone ).target( 0 )
+						.delay( 0f ).start( ) );
+				
+				dragonBrain.addMover( new TimelineTweenMover( t.start( ) ) );
+			}else{
+				if(dragonBrain.isTimeLineMoverFinished( )){
+					
+
+					// You win and goto next screen!!!
+					// this currently doesn't work
+					ScreenManager.getInstance( ).show( ScreenType.TROPHY_2 );
+				}
+			}
+		}
 		if ( puzzleScrewBalloon1.getDepth( ) == puzzleScrewBalloon1
 				.getMaxDepth( ) ) {
 			if ( balloon1_super.currentMover( ) == null ) {
@@ -534,6 +602,13 @@ public class DragonScreen extends Screen {
 		bodyPowerSwitch1 = ( PowerSwitch ) LevelFactory.entities
 				.get( "body_power_switch1" );
 		
+		dragonBrainSwitch = ( PowerSwitch ) LevelFactory.entities
+				.get( "dragon_brain_switch" );
+		
+		dragonBrainSwitch2 = ( PowerSwitch ) LevelFactory.entities
+				.get( "dragon_brain_switch2" );
+		dragonBrain = ( Platform ) LevelFactory.entities
+				.get( "dragon_brain" );
 		
 		tail3Switch1.actOnEntity = true;
 		tail3Switch1.addEntityToTrigger( tail3MiddlePipe1 );
@@ -1022,8 +1097,9 @@ public class DragonScreen extends Screen {
 	void headDecals(){
 		//head_skeleton
 		Skeleton jaw_skeleton = ( Skeleton ) LevelFactory.entities
-				.get( "fuck_jaw_skeleton" ),
-				head_skeleton = ( Skeleton ) LevelFactory.entities
+				.get( "jaw_skeleton" );
+		
+		headSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
 		TextureAtlas head_left = WereScrewedGame.manager.getAtlas( "head_left" );
 		TextureAtlas head_right = WereScrewedGame.manager.getAtlas( "head_top_right" );
@@ -1033,16 +1109,16 @@ public class DragonScreen extends Screen {
 		//UPPER HEAD
 		Sprite s;
 		
-		Vector2 headPos = new Vector2(-3500,-1460 );
+		Vector2 headPos = new Vector2(-3500,-1455 );
 		s = head_left.createSprite( "head_left" );
-		head_skeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
-		head_skeleton.addFGDecal( 
+		headSkeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
+		headSkeleton.addFGDecal( 
 				Sprite.scale( head_right.createSprite( "head_right" ), scale ), 
 				new Vector2(4946,1029).add( headPos ) );
-		head_skeleton.addFGDecal( 
+		headSkeleton.addFGDecal( 
 				Sprite.scale( head_right.createSprite( "head_middle" ), scale ), 
 				new Vector2(2982,30).add( headPos ) );
-		addFGSkeleton( head_skeleton );
+		addFGSkeleton( headSkeleton );
 		
 		//LOW HEAD/ JAW
 		Vector2 pos = new Vector2(-1375,-615);
@@ -1053,10 +1129,10 @@ public class DragonScreen extends Screen {
 		addFGSkeleton( jaw_skeleton );
 		
 		//inside of head.
-		head_skeleton.addBGDecal( 
+		headSkeleton.addBGDecal( 
 				Sprite.scale(head_interior.createSprite( "head-interior" ),1f/.4f), 
 				new Vector2(-1300,-720) );
-		addBGSkeleton( head_skeleton );
+		addBGSkeleton( headSkeleton );
 	}
 	
 	void initEyebrow(){
@@ -1297,21 +1373,29 @@ public class DragonScreen extends Screen {
 	}
 
 	
-	private void initFireballEnemy(Vector2 pos){
+	private void initFireballEnemy( ){
 		
 		int w = 15, n= 10, h = 140;
 		
-		//build a little cage for the fireball
-	
-		
 		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
-				new Vector2( pos.cpy( ).add(0,n*h) ),
+				new Vector2( new Vector2(13750, 300).add(0,n*h) ),
 				new Vector2(),
 				 level.world, true );
 		for(int i =0; i < 5; ++i ){
-			fireballEmitter.addParticle( createBoltEnemy( pos.cpy( ).add(0,n*h), i ), 10, 0, i*5 );
+			fireballEmitter.addParticle( createBoltEnemy( new Vector2(13750, 300).add(0,n*h), i ), 10, 0, i*5 );
 		}
 		level.root.addLooseEntity( fireballEmitter );
+		
+		Vector2 pos = new Vector2(23850, 400);
+		brainEmitter1 = new EntityParticleEmitter( "bolt emitter",
+				new Vector2( pos.cpy().add(0,n*h) ),
+				new Vector2(),
+				 level.world, true );
+		
+		for(int i =0; i < 2; ++i ){
+			brainEmitter1.addParticle( createBoltEnemy( pos.cpy().add(0,n*h), i ), 5, 0, i*2 );
+		}
+		level.root.addLooseEntity( brainEmitter1 );
 	}
 	
 	Enemy createBoltEnemy(Vector2 pos, int index){

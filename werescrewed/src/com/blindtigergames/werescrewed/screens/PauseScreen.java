@@ -12,10 +12,14 @@ import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
+import com.blindtigergames.werescrewed.gui.CheckBox;
 import com.blindtigergames.werescrewed.gui.Label;
+import com.blindtigergames.werescrewed.gui.OptionButton;
+import com.blindtigergames.werescrewed.gui.Slider;
 import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundType;
 
 class PauseScreen extends MenuScreen {
 
@@ -27,31 +31,37 @@ class PauseScreen extends MenuScreen {
 	private BitmapFont fancyFont = null;
 	private Label screenLabel = null;
 	private TextButton mainMenuButton = null;
+	private TextButton optionsButton = null;
 	private TextButton returnButton = null;
 	private int lineHeight = 0;
 
 	public PauseScreen( ) {
+		super( );
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
-
-		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
-
-//		logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-//				+ "/common/title_background.png", Texture.class );
-		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
-		screenLabel = new Label( "Pause Screen", fancyFont );
-		
-		returnButton = new TextButton( "Return to Game", fancyFont, 
-				new ScreenSwitchHandler( ScreenManager.getPrevScreen( ) ) );
-		mainMenuButton = new TextButton( "Main Menu", fancyFont,
-				new ScreenSwitchHandler( ScreenType.LOADING_MENU ) );
-		Buttons = new ArrayList< Button >( );
-		Buttons.add( returnButton );
-		Buttons.add( mainMenuButton );
-		returnButton.setColored( true );
-		setClearColor( 40, 40, 40, 255 );
 	}
 
+	@Override
+	public void load( ){
+		super.load( );
+		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
+//		logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+//		+ "/common/title_background.png", Texture.class );
+		
+		fancyFont.setScale( 1.0f );
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
+		screenLabel = new Label( "Pause Screen", fancyFont );
+
+		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/transitions/trans-gear.png", Texture.class );
+		trans = new Sprite( transition );
+		
+		WereScrewedGame.manager.loadAtlas( "data/menu/menu-textures.pack" );
+		
+		loadButtons( );
+		setClearColor( 40, 40, 40, 255 );
+	}
+	
 	public void disposeAll( ) {
 		// ScreenManager.getInstance( ).dispose(ScreenType.PHYSICS );
 		// ScreenManager.getInstance( ).dispose(ScreenType.PLAYTEST );
@@ -71,8 +81,10 @@ class PauseScreen extends MenuScreen {
 
 		batch.begin( );
 //		batch.draw( logo, 0, 0 );
+		fancyFont.setScale( 1.0f );
 		screenLabel.draw( batch );
 		returnButton.draw( batch, camera );
+		optionsButton.draw( batch, camera );
 		mainMenuButton.draw( batch, camera );
 
 		if ( !transInEnd ) {
@@ -125,16 +137,38 @@ class PauseScreen extends MenuScreen {
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int centerY = height / 2;
+		
 		screenLabel.setX( centerX - screenLabel.getWidth( ) / 2 );
 		screenLabel.setY( centerY + 6 * lineHeight );
 		returnButton.setX( centerX - returnButton.getWidth( ) / 2 );
-		returnButton.setY( 170 + returnButton.getHeight( ) );
+		returnButton.setY( 240 + returnButton.getHeight( ) );
+		optionsButton.setX( centerX - optionsButton.getWidth( ) / 2 );
+		optionsButton.setY( 170 + optionsButton.getHeight( ) );
 		mainMenuButton.setX( centerX - mainMenuButton.getWidth( ) / 2 );
 		mainMenuButton.setY( 100 + mainMenuButton.getHeight( ) );
 	}
-
+	
+	private void loadButtons( ) {
+		buttonTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "button" );
+		
+		returnButton = new TextButton( "Return to Game", fancyFont, buttonTex,
+				new ScreenSwitchHandler( ScreenManager.getPrevScreen( ) ) );
+		optionsButton = new TextButton( "Options", fancyFont, buttonTex,
+				new ScreenSwitchHandler( ScreenType.OPTIONS_PAUSE ) );
+		mainMenuButton = new TextButton( "Main Menu", fancyFont, buttonTex,
+				new ScreenSwitchHandler( ScreenType.LOADING_MENU ) );
+		Buttons = new ArrayList< Button >( );
+		Buttons.add( returnButton );
+		Buttons.add( optionsButton );
+		Buttons.add( mainMenuButton );
+		returnButton.setColored( true );
+	}
+	
 	@Override
 	public void show( ) {
+		if (!assetsLoaded){
+			load();
+		}
 		SoundManager.setEnableLoops( false );
 	}
 
@@ -142,17 +176,4 @@ class PauseScreen extends MenuScreen {
 	public void hide( ) {
 		SoundManager.setEnableLoops( true );
 	}
-
-	@Override
-	public void pause( ) {
-	}
-
-	@Override
-	public void resume( ) {
-	}
-
-	@Override
-	public void dispose( ) {
-	}
-
 }

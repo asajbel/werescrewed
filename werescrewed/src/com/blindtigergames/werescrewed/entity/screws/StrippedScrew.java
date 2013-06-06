@@ -36,8 +36,6 @@ public class StrippedScrew extends Screw {
 	 * @param entity
 	 * @param world
 	 */
-	private static TextureRegion screwTex = WereScrewedGame.manager.getAtlas(
-			"common-textures" ).findRegion( "flat_head_circular2" );
 
 	public StrippedScrew( String name, Vector2 pos, Entity entity, World world,
 			Vector2 detachDirection ) {

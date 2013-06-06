@@ -9,13 +9,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.blindtigergames.werescrewed.WereScrewedGame;
@@ -34,7 +34,6 @@ import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
-import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.sound.SoundManager;
@@ -145,7 +144,7 @@ public class Player extends Entity {
 	private boolean topPlayer = false;
 	private boolean isDead = false;
 	private boolean hitSolidObject;
-	private boolean knockedOff = false;
+	public boolean knockedOff = false;
 	private int screwAttachTimeout = 0;
 	private int headStandTimeout = 0;
 	private int runTimeout = 0;
@@ -458,7 +457,7 @@ public class Player extends Entity {
 		// if the player is falling
 		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
 				&& playerState != PlayerState.Screwing
-				&& currentPlatform == null && !isDead ) {
+				&& !hitSolidObject && !isDead ) {
 			switch ( playerState ) {
 			case HeadStand:
 				// don't set the player state use the extra state
@@ -468,15 +467,11 @@ public class Player extends Entity {
 				runTimeout = 0;
 				break;
 			default:
-				if ( !hitSolidObject ) 
-					playerState = PlayerState.Falling;
-				else 
-					playerState = PlayerState.Standing;
+				playerState = PlayerState.Falling;
 				runTimeout = 0;
 				break;
 			}
-			if ( !hitSolidObject ) 
-				setGrounded( false );
+			setGrounded( false );
 		} else if ( playerState == PlayerState.Falling
 				&& !isHeadStandPossible( ) ) {
 			// if the player is falling but y velocity is too slow
@@ -892,6 +887,7 @@ public class Player extends Entity {
 			// reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
+
 		// Trophy check for player movement, checks which player and increments
 		// time running
 		if ( this.name == Metrics.player1( )
@@ -917,6 +913,7 @@ public class Player extends Entity {
 			body.applyLinearImpulse( new Vector2( -MOVEMENT_IMPULSE, 0.0f ),
 					body.getWorldCenter( ) );
 		}
+
 		if ( playerState != PlayerState.Screwing ) {
 			playerDirection = PlayerDirection.Left;
 		}
@@ -926,6 +923,7 @@ public class Player extends Entity {
 			// reachedMaxSpeed = false;
 		}
 		runTimeout = RUN_STEPS;
+
 		// Trophy check for player movement, checks which player and increments
 		// time running
 		if ( this.name == Metrics.player1( )
@@ -988,6 +986,7 @@ public class Player extends Entity {
 	 * Causes the player to jump
 	 */
 	public void jump( ) {
+
 		if ( Metrics.activated
 				&& ( grounded || playerState == PlayerState.Screwing ) ) {
 			Metrics.addPlayerJumpPosition( this.getPositionPixel( ) );
@@ -1167,6 +1166,7 @@ public class Player extends Entity {
 				frictionCounter = PLAYER_FRICTION;
 			}
 			if ( feet.getFriction( ) > 0 ) {
+
 				frictionCounter -= FRICTION_INCREMENT;
 				if ( frictionCounter < 0 ) {
 					frictionCounter = 0;
@@ -1179,20 +1179,11 @@ public class Player extends Entity {
 	/**
 	 * sets the body of some body that the player is hitting
 	 */
-	public void hitSolidObject( Platform platform ) {
-		if ( currentPlatform == null && platform != null
-				&& playerState == PlayerState.Screwing ) {
-			// if on a screw that isn't already over a platform and a platform
-			// hits you
-			// you get knocked off
-			knockedOff = true;
-		} 
+	public void hitSolidObject( Platform platform, Contact contact ) {
+		this.currentPlatform = platform;
 		if ( platform == null ) {
-			currentPlatform = platform;
 			hitSolidObject = false;
 		} else {
-			currentPlatform = platform;
-			setGrounded( true );
 			if ( playerState == PlayerState.Falling ) {
 				playerState = PlayerState.Standing;
 			}
@@ -1793,7 +1784,9 @@ public class Player extends Entity {
 		}
 		if ( !controllerListener.jumpPressed( ) ) {
 			canJumpOffScrew = true;
-			if ( isGrounded( ) || topPlayer || hitSolidObject || playerState == PlayerState.Screwing ) {
+			if ( isGrounded( ) || topPlayer ) {
+				jumpPressedController = false;
+			} else if ( playerState == PlayerState.Screwing ) {
 				jumpPressedController = false;
 			} else {
 				jumpPressedController = true;
@@ -1816,7 +1809,9 @@ public class Player extends Entity {
 		}
 		if ( !inputHandler.jumpPressed( ) ) {
 			canJumpOffScrew = true;
-			if ( isGrounded( ) || topPlayer || hitSolidObject || playerState == PlayerState.Screwing ) {
+			if ( isGrounded( ) || topPlayer ) {
+				jumpPressedKeyboard = false;
+			} else if ( playerState == PlayerState.Screwing ) {
 				jumpPressedKeyboard = false;
 			} else {
 				jumpPressedKeyboard = true;
@@ -2275,15 +2270,18 @@ public class Player extends Entity {
 		// feet
 		// also make sure its not the player
 		Fixture playerFix;
+		Fixture otherFix;
 		if ( contact.getFixtureB( ).getUserData( ).equals( this ) ) {
 			playerFix = contact.getFixtureB( );
+			otherFix = contact.getFixtureA( );
 		} else {
 			playerFix = contact.getFixtureA( );
+			otherFix = contact.getFixtureB( );
 		}
 		if ( that.isSolid( ) ) {
 			if ( playerFix.getShape( ) instanceof CircleShape ) {
 				// this.contacts++;
-				hitSolidObject( that );
+				hitSolidObject( that, contact );
 				if ( getState( ) != PlayerState.Screwing ) {
 					setGrounded( true );
 				}

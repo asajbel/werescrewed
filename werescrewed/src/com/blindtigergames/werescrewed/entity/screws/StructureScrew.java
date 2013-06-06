@@ -44,6 +44,7 @@ public class StructureScrew extends Screw {
 			World world, Vector2 detachDirection ) {
 		super( name, pos, WereScrewedGame.manager.getAtlas(
 				"common-textures" ).findRegion( "flat_head_circular" ) );
+		loadSounds( );
 		this.world = world;
 		this.detachDirection = detachDirection;
 		this.entity = entity;
@@ -87,6 +88,7 @@ public class StructureScrew extends Screw {
 			Vector2 detachDirection ) {
 		super( name, pos, WereScrewedGame.manager.getAtlas(
 				"common-textures" ).findRegion( "flat_head_circular" ) );
+		loadSounds( );
 		this.world = world;
 		this.detachDirection = detachDirection;
 		if ( detachDirection != null

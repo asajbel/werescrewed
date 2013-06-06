@@ -37,9 +37,9 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 	HashMap< String, ParticleEffect > particleEffects;
 	HashMap< String, SkeletonData > spineSkeletons;
 	HashMap< Class< ? >, String > dummyAssets;
-	Texture robotTexBG;// = "/levels/alphabot/alphabot-interior.png";
-	Texture robotOutlineTex;// = "/levels/alphabot/alphabot-outline.png";
-	Texture robotTexFG;// = "/levels/alphabot/alphabot-outline.png";
+	Texture robotTexBG;
+	Texture robotOutlineTex;
+	Texture robotTexFG;
 	private int particleEffectCt = 0;
 	private static Color tileColor;
 
@@ -53,6 +53,9 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 		particleEffects = new HashMap< String, ParticleEffect >( );
 		dummyAssets = new HashMap< Class< ? >, String >( );
 		tileColor = new Color(1f,1f,1f,1f);
+		robotTexBG=null;
+		robotOutlineTex=null;
+		robotTexFG=null;
 	}
 
 	/**
@@ -68,6 +71,21 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 				atlasMap.get( name + "-bleed" ) );
 	}
 
+	/**
+	 * gets the atlas map as an Array
+	 */
+	public Object[] getAtlases( ) {
+		return atlasMap.keySet( ).toArray( );
+	}
+	
+	/**
+	 * unloads a texture atlas
+	 */
+	public void unloadAtlas( String name ) {
+		if ( atlasMap.containsKey( name ) )
+			atlasMap.remove( name ).dispose( );
+	}
+	
 	/**
 	 * in the level file do <colorName>.palette for each color of a level's
 	 * palette These colors will be used to select bleeding effects on tiles.

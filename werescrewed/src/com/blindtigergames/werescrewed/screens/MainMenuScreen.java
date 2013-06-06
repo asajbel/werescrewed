@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Falling;
@@ -24,17 +25,19 @@ class MainMenuScreen extends MenuScreen {
 	public ScreenType screenType;
 	private SpriteBatch batch = null;
 	private Sprite menuBG = null;
-	private Sprite fade = null;
+	//private Sprite fade = null;
 	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
 	private BitmapFont fancyFont;
 	// private Label headingLabel = null;
-	private TextButton exitButton = null;
 	private int lineHeight = 0;
 
 	private TextButton storyButton = null;
 	private TextButton levelSelectButton = null;
 	private TextButton optionsButton = null;
+	private TextButton creditsButton = null;
+	private TextButton exitButton = null;
+	
 	private SimpleSpinemator man = null;
 	private SimpleSpinemator lady = null;
 	private Array< Falling > debris = null;
@@ -46,9 +49,27 @@ class MainMenuScreen extends MenuScreen {
 	TweenManager manager = new TweenManager( );
 
 	public MainMenuScreen( ) {
+		super( );
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+	}
+
+	@Override
+	public void load( ){
+		super.load( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
+		TextureRegion back = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "menu" );
+		menuBG = new Sprite( back );
+		//Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		//		+ "/menu/transition.png", Texture.class );
+		//fade = new Sprite( fadeScreen );
+				
+		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/transitions/trans-gear.png", Texture.class );
+		trans = new Sprite( transition );
+		scale = trans.getHeight( ) * SCALE_MAX;
+		scaleMax = scale;
+		transInEnd = false;
 		
 		man = new SimpleSpinemator( "red_male_atlas", "male", "fall_idle", true );
 		lady = new SimpleSpinemator( "red_female_atlas", "female", "fall_idle", true );
@@ -58,22 +79,13 @@ class MainMenuScreen extends MenuScreen {
 		TextureAtlas common = WereScrewedGame.manager
 				.getAtlas( "common-textures" );
 		
-		Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/transition.png", Texture.class );
-		fade = new Sprite( fadeScreen );
-		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/transitions/trans-gear.png", Texture.class );
-		trans = new Sprite( transition );
-		scale = trans.getHeight( ) * SCALE_MAX;
-		scaleMax = scale;
-		transInEnd = false;
-		
 		for ( int i = 0; i < 5; i++ )
 			createDebris( gearsAtlas, common );
+		
 		loadButtons( );
 		setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f );
 	}
-
+	
 	@Override
 	public void render( float delta ) {
 		super.render( delta );
@@ -92,7 +104,7 @@ class MainMenuScreen extends MenuScreen {
 		storyButton.draw( batch, camera );
 		levelSelectButton.draw( batch, camera );
 		optionsButton.draw( batch, camera );
-
+		creditsButton.draw( batch, camera );
 		exitButton.draw( batch, camera );
 
 		//if ( !alphaFinish )
@@ -112,10 +124,11 @@ class MainMenuScreen extends MenuScreen {
 		
 		batch.end( );
 
+		//******************* REMEMBER TO REMOVE THESE LINES FOR RELEASE *******************//
 		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 1 );
 		}
-
+		
 		if ( Gdx.input.isKeyPressed( Keys.Z ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
 		}
@@ -130,6 +143,7 @@ class MainMenuScreen extends MenuScreen {
 		if ( Gdx.input.isKeyPressed( Keys.H ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.HAZARD );
 		}
+		//**********************************************************************************//
 	}
 
 	@Override
@@ -142,10 +156,10 @@ class MainMenuScreen extends MenuScreen {
 		int leftX = ( int ) menuBG.getWidth( ) / 2;
 		int centerY = height / 2;
 
-		fade.setPosition( width / 2 - fade.getWidth( ) / 2, height
-				/ 2 - fade.getHeight( ) / 2 );
-		fade.setScale( width / fade.getWidth( ), height
-				/ fade.getHeight( ) );
+		//fade.setPosition( width / 2 - fade.getWidth( ) / 2, height
+		//		/ 2 - fade.getHeight( ) / 2 );
+		//fade.setScale( width / fade.getWidth( ), height
+		//		/ fade.getHeight( ) );
 		// menuBG.setScale( width / menuBG.getWidth( ), width / menuBG.getWidth(
 		// ) );
 		menuBG.setPosition( 0, WereScrewedGame.getHeight() / 2 - menuBG.getHeight( ) / 2 );
@@ -154,11 +168,13 @@ class MainMenuScreen extends MenuScreen {
 		// headingLabel.setX( leftX - headingLabel.getWidth( ) / 2 );
 		// headingLabel.setY( centerY - 0 * lineHeight );
 		storyButton.setX( leftX - storyButton.getWidth( ) / 2 );
-		storyButton.setY( height / 2 + 2 * lineHeight );
+		storyButton.setY( height / 2 + 3 * lineHeight );
 		levelSelectButton.setX( leftX - levelSelectButton.getWidth( ) / 2 );
-		levelSelectButton.setY( centerY + 1 * lineHeight );
+		levelSelectButton.setY( centerY + 2 * lineHeight );
 		optionsButton.setX( leftX - optionsButton.getWidth( ) / 2 );
-		optionsButton.setY( centerY + 0 * lineHeight );
+		optionsButton.setY( centerY + 1 * lineHeight );
+		creditsButton.setX( leftX - creditsButton.getWidth( ) / 2 );
+		creditsButton.setY( centerY + 0 * lineHeight);
 		// imoverButton.setX( centerX - imoverButton.getWidth( )/2 );
 		// imoverButton.setY( centerY - lineHeight );
 		exitButton.setX( leftX - exitButton.getWidth( ) / 2 );
@@ -181,20 +197,20 @@ class MainMenuScreen extends MenuScreen {
 	 * loads all button related content appropriately
 	 */
 	private void loadButtons( ) {
-		// font = WereScrewedGame.manager.getFont( "ornatique" );
-		Texture back = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/menu/menu.png", Texture.class );
-		menuBG = new Sprite( back );
-		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 50 );
+		buttonTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "button" );
+		
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 30 );
 		// headingLabel = new Label( "We're Screwed!!", fancyFont );
 
-		storyButton = new TextButton( "Start", fancyFont,
+		storyButton = new TextButton( "Start", fancyFont, buttonTex, 
 				new ScreenSwitchHandler( ScreenType.LOADING_1 ) );
-		levelSelectButton = new TextButton( "Level Select", fancyFont,
+		levelSelectButton = new TextButton( "Level Select", fancyFont, buttonTex, 
 				new ScreenSwitchHandler( ScreenType.LEVEL_SELECT ) );
-		optionsButton = new TextButton( "Options", fancyFont,
-				new ScreenSwitchHandler( ScreenType.OPTIONS ) );
-		exitButton = new TextButton( "Exit", fancyFont, new ButtonHandler( ) {
+		optionsButton = new TextButton( "Options", fancyFont, buttonTex, 
+				new ScreenSwitchHandler( ScreenType.OPTIONS_MENU ) );
+		creditsButton = new TextButton( "Credits", fancyFont, buttonTex,
+				new ScreenSwitchHandler( ScreenType.CREDITS ) );
+		exitButton = new TextButton( "Exit", fancyFont, buttonTex, new ButtonHandler( ) {
 			@Override
 			public void onClick( ) {
 				Gdx.app.exit( );
@@ -204,6 +220,7 @@ class MainMenuScreen extends MenuScreen {
 		Buttons.add( storyButton );
 		Buttons.add( levelSelectButton );
 		Buttons.add( optionsButton );
+		Buttons.add( creditsButton );
 		Buttons.add( exitButton );
 	}
 
@@ -211,26 +228,6 @@ class MainMenuScreen extends MenuScreen {
 	public void show( ) {
 		super.show( );
 		SoundManager.clearLoops( );
-	}
-
-	@Override
-	public void hide( ) {
-		super.hide( );
-	}
-
-	@Override
-	public void pause( ) {
-		super.pause( );
-	}
-
-	@Override
-	public void resume( ) {
-		super.resume( );
-	}
-
-	@Override
-	public void dispose( ) {
-		super.dispose( );
 	}
 
 	/*

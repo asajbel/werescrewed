@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityDef;
@@ -123,31 +124,31 @@ public class LoadingScreen extends Screen {
 				} if (currLevel == 2 ){
 					WereScrewedGame.manager.load(
 							"data/common/slides/slide1_dragon.png", Texture.class );
-					WereScrewedGame.manager.load(
-							"data/common/slides/slide2_dragon.png", Texture.class );
-					WereScrewedGame.manager.load(
-							"data/common/slides/slide3_dragon.png", Texture.class );
-					WereScrewedGame.manager.load(
-							"data/common/slides/slide4_dragon.png", Texture.class );
-					WereScrewedGame.manager.load(
-							"data/common/slides/slide5_dragon.png", Texture.class );
-					WereScrewedGame.manager.load(
-							"data/common/slides/slide6_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide2_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide3_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide4_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide5_dragon.png", Texture.class );
+//					WereScrewedGame.manager.load(
+//							"data/common/slides/slide6_dragon.png", Texture.class );
 		
 					WereScrewedGame.manager.finishLoading( );
 		
 					storyBoardArray.add( WereScrewedGame.manager.get(
 							"data/common/slides/slide1_dragon.png", Texture.class ) );
-					storyBoardArray.add( WereScrewedGame.manager.get(
-							"data/common/slides/slide2_dragon.png", Texture.class ) );
-					storyBoardArray.add( WereScrewedGame.manager.get(
-							"data/common/slides/slide3_dragon.png", Texture.class ) );
-					storyBoardArray.add( WereScrewedGame.manager.get(
-							"data/common/slides/slide4_dragon.png", Texture.class ) );
-					storyBoardArray.add( WereScrewedGame.manager.get(
-							"data/common/slides/slide5_dragon.png", Texture.class ) );
-					storyBoardArray.add( WereScrewedGame.manager.get(
-							"data/common/slides/slide6_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide2_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide3_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide4_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide5_dragon.png", Texture.class ) );
+//					storyBoardArray.add( WereScrewedGame.manager.get(
+//							"data/common/slides/slide6_dragon.png", Texture.class ) );
 				}
 							
 				if ( WereScrewedGame.p1Controller != null
@@ -384,7 +385,7 @@ public class LoadingScreen extends Screen {
 
 	@Override
 	public void dispose( ) {
-		// WereScrewedGame.manager.dispose( );
+		//WereScrewedGame.manager.dispose( );
 	}
 
 	@Override
@@ -403,6 +404,17 @@ public class LoadingScreen extends Screen {
 
 		loadingBar = new Entity( "loadingScrew", null, null, null, false );
 
+		//unloads textures and texture atlases
+		Array<String> assets = WereScrewedGame.manager.getAssetNames( );
+		for( int i=0; i<assets.size; i++ ) {
+			if ( WereScrewedGame.manager.getAssetType( assets.get( i ) ) == Texture.class ) {
+				WereScrewedGame.manager.unload( assets.get( i ) );
+			}
+		}
+		Object[] atlases = WereScrewedGame.manager.getAtlases( );
+		for( int i=0; i<WereScrewedGame.manager.getAtlases( ).length; i++ ) {
+			WereScrewedGame.manager.unloadAtlas( (String)atlases[i] );
+		}
 		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
 		readLoadFiles( "commonLevel" );
 		if ( !screenTag.equals( "commonLevel" ) ) {

@@ -130,7 +130,7 @@ public class Skeleton extends Platform {
 		dynFixtureDef.shape = polygon;
 		dynFixtureDef.density = 5f;
 		dynFixtureDef.isSensor = true;
-		dynFixtureDef.filter.categoryBits = Util.CATEGORY_SCREWS;
+		dynFixtureDef.filter.categoryBits = Util.CATEGORY_SKELS;
 		dynFixtureDef.filter.maskBits = Util.CATEGORY_SCREWS;
 		body.createFixture( dynFixtureDef );
 		polygon.dispose( );
@@ -415,6 +415,9 @@ public class Skeleton extends Platform {
 	 */
 	@Override
 	public void update( float deltaTime ) {
+		//if ( this.getPositionPixel( ).y < -5000){
+		//	this.remove( );
+		//}
 		if ( !removed ) {
 			if ( this.removeNextStep ) {
 				this.remove( );
