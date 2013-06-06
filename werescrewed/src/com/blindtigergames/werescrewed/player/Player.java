@@ -145,7 +145,7 @@ public class Player extends Entity {
 	private boolean topPlayer = false;
 	private boolean isDead = false;
 	private boolean hitSolidObject;
-	private boolean knockedOff = false;
+	public boolean knockedOff = false;
 	private int screwAttachTimeout = 0;
 	private int headStandTimeout = 0;
 	private int runTimeout = 0;
@@ -458,7 +458,7 @@ public class Player extends Entity {
 		// if the player is falling
 		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 4f
 				&& playerState != PlayerState.Screwing
-				&& currentPlatform == null && !isDead ) {
+				&& !hitSolidObject && !isDead ) {
 			switch ( playerState ) {
 			case HeadStand:
 				// don't set the player state use the extra state
@@ -1024,7 +1024,6 @@ public class Player extends Entity {
 	public void hitScrew( Screw screw ) {
 		if ( playerState != PlayerState.Screwing && !isDead && currentMover( )  == null ) {
 			currentScrew = screw;
-
 			// Trophy check for if player attaches to a stripped screw
 			if ( screw != null ) {
 				if ( currentScrew.getScrewType( ) == ScrewType.SCREW_STRIPPED ) {
@@ -1144,55 +1143,7 @@ public class Player extends Entity {
 	 * slowly increases friction to avoid that silly stopping bug. Call this
 	 * every player.update()
 	 */
-	@SuppressWarnings( "unused" )
-	private void updateFootFriction( ) {
-
-		if ( isGrounded( ) ) {
-			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
-				// if ( playerState != PlayerState.Screwing && otherPlayer ==
-				// null ) {
-				// playerState = PlayerState.Landing;
-				// }
-				frictionCounter += FRICTION_INCREMENT;
-
-				CircleShape ps = new CircleShape( );
-				ps.setRadius( feet.getShape( ).getRadius( ) );
-
-				ps.setPosition( ps.getPosition( ).add( FEET_OFFSET_X,
-						FEET_OFFSET_Y ) );
-				FixtureDef fd = new FixtureDef( );
-
-				fd.shape = ps;
-				fd.density = 1f;
-				fd.restitution = 0.001f;
-				fd.friction = frictionCounter;
-
-				if ( playerState == PlayerState.Screwing ) {
-					fd.isSensor = true;
-				}
-
-				fd.filter.categoryBits = Util.CATEGORY_PLAYER;
-				fd.filter.maskBits = Util.CATEGORY_EVERYTHING;
-
-				body.destroyFixture( feet );
-
-				feet = body.createFixture( fd );
-
-				if ( feet.getFriction( ) > PLAYER_FRICTION ) {
-					feet.setFriction( PLAYER_FRICTION );
-
-				}
-				// currentScrew = null;
-			}
-		} else {
-			frictionCounter = 0f;
-			feet.setFriction( frictionCounter );
-		}
-
-	}
-
 	private void updateFootFrictionNew( ) {
-
 		if ( prevButton != null ) {
 			if ( body.getType( ) != BodyType.KinematicBody && body.getLinearVelocity( ).x > MAX_VELOCITY ) {
 				body.setLinearVelocity( MAX_VELOCITY,
@@ -1202,28 +1153,19 @@ public class Player extends Entity {
 						body.getLinearVelocity( ).y );
 			}
 		}
-
 		if ( prevButton == null ) {
-
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
-
 				frictionCounter += FRICTION_INCREMENT;
-
 				if ( frictionCounter > PLAYER_FRICTION ) {
 					frictionCounter = PLAYER_FRICTION;
-
 				}
-
 				createCircle( frictionCounter );
-
 			}
 		} else {
-
 			if ( grounded && ( prevPlayerDir != playerDirection ) ) {
 				createCircle( PLAYER_FRICTION );
 				frictionCounter = PLAYER_FRICTION;
 			}
-
 			if ( feet.getFriction( ) > 0 ) {
 
 				frictionCounter -= FRICTION_INCREMENT;
@@ -1231,35 +1173,26 @@ public class Player extends Entity {
 					frictionCounter = 0;
 				}
 				createCircle( frictionCounter );
-
 			}
 		}
-
 	}
 
 	/**
 	 * sets the body of some body that the player is hitting
 	 */
-	public void hitSolidObject( Platform platform ) {
-		if ( currentPlatform == null && platform != null
-				&& playerState == PlayerState.Screwing ) {
-			// if on a screw that isn't already over a platform and a platform
-			// hits you
-			// you get knocked off
-			knockedOff = true;
+	public void hitSolidObject( Platform platform, Contact contact ) {
+		this.currentPlatform = platform;
+		if ( platform == null ) {
+			hitSolidObject = false;
+			Gdx.app.log(  "ended hitting a platform ", "");
 		} else {
-			currentPlatform = platform;
 			if ( playerState == PlayerState.Falling ) {
 				playerState = PlayerState.Standing;
 			}
-		}
-		if ( platform == null ) {
-			// knockedOff = false;
-			hitSolidObject = false;
-		} else {
 			if ( platform.isKinematic( ) && platform.currentMover( ) == null ) {
 				lastPlatformHit = platform;
 			}
+			Gdx.app.log(  "starteg hitting a platform ", "");
 			hitSolidObject = true;
 		}
 	}
@@ -1890,19 +1823,6 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * Transforms player position by offset
-	 * 
-	 * @param posOffset
-	 *            is the offset you want to apply to player
-	 */
-	@SuppressWarnings( "unused" )
-	private void setPlatformTransform( Vector2 posOffset ) {
-		// Gdx.app.log( name + "old:", " " + body.getPosition( ) );
-		body.setTransform( body.getPosition( ).cpy( ).add( posOffset ), 0 );
-		// Gdx.app.log( name + "new:", " " + body.getPosition( ) );
-	}
-
-	/**
 	 * This function updates the keyboard state which the player checks to do
 	 * stuff
 	 * 
@@ -2353,15 +2273,18 @@ public class Player extends Entity {
 		// feet
 		// also make sure its not the player
 		Fixture playerFix;
+		Fixture otherFix;
 		if ( contact.getFixtureB( ).getUserData( ).equals( this ) ) {
 			playerFix = contact.getFixtureB( );
+			otherFix = contact.getFixtureA( );
 		} else {
 			playerFix = contact.getFixtureA( );
+			otherFix = contact.getFixtureB( );
 		}
 		if ( that.isSolid( ) ) {
 			if ( playerFix.getShape( ) instanceof CircleShape ) {
 				// this.contacts++;
-				hitSolidObject( that );
+				hitSolidObject( that, contact );
 				if ( getState( ) != PlayerState.Screwing ) {
 					setGrounded( true );
 				}
