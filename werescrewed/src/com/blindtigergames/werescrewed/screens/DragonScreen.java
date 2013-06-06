@@ -158,7 +158,8 @@ public class DragonScreen extends Screen {
 			sounds = new SoundManager();
 			//sounds.getSound( "roar_calm" );
 			//sounds.getSound( "roar_angry" );
-			//sounds.getSound( "jaw_close" );			
+			//sounds.getSound( "jaw_close" );
+			//sounds.getSound( "jaw_open" );
 		}
 	}
 	void buildBalloon( ) {

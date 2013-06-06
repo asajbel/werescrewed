@@ -7,7 +7,7 @@
 @ fg /levels/alphabot/alphabot-fg.png
 
 ##music
-/common/music/waltz.mp3
+##/common/music/waltz.mp3
 
 ##sounds
 /common/sounds/inceptionbutton.mp3
