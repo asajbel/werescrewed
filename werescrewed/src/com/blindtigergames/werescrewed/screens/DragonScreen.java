@@ -160,10 +160,10 @@ public class DragonScreen extends Screen {
 		}
 		if (sounds == null){
 			sounds = new SoundManager();
-			//sounds.getSound( "roar_calm" );
-			//sounds.getSound( "roar_angry" );
-			//sounds.getSound( "jaw_close" );
-			//sounds.getSound( "jaw_open" );
+			sounds.getSound( "roar_calm",  WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_calm.ogg");
+			sounds.getSound( "roar_angry", WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_angry.ogg");
+			sounds.getSound( "jaw_close", WereScrewedGame.dirHandle + "/levels/dragon/sounds/jawClose.ogg" );
+			//sounds.getSound( "jaw_open",WereScrewedGame.dirHandle + "/levels/dragon/sounds/cannon.ogg" );
 		}
 	}
 	void buildBalloon( ) {
