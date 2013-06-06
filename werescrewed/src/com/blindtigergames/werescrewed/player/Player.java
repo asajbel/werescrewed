@@ -585,7 +585,7 @@ public class Player extends Entity {
 						f.setSensor( true );
 					}
 					filter.categoryBits = Util.CATEGORY_SUBPLAYER;
-					filter.maskBits = Util.CATEGORY_CHECKPOINTS;
+					filter.maskBits = Util.CATEGORY_CHECKPOINTS | Util.CATEGORY_SCREWS;
 					f.setFilterData( filter );
 				}
 				playerState = PlayerState.Dead;

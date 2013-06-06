@@ -409,7 +409,10 @@ public class LoadingScreen extends Screen {
 		for( int i=0; i<assets.size; i++ ) {
 			if ( WereScrewedGame.manager.getAssetType( assets.get( i ) ) == Texture.class ) {
 				WereScrewedGame.manager.unload( assets.get( i ) );
+			} else if ( WereScrewedGame.manager.getAssetType( assets.get( i ) ) == Sound.class ) {
+				WereScrewedGame.manager.unload(  assets.get( i ) );
 			}
+			
 		}
 		Object[] atlases = WereScrewedGame.manager.getAtlases( );
 		for( int i=0; i<WereScrewedGame.manager.getAtlases( ).length; i++ ) {
