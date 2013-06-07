@@ -384,5 +384,15 @@ public class TiledPlatform extends Platform {
 	public float getMeterHeight( ) {
 		return height * 2 * Util.PIXEL_TO_BOX;
 	}
+	
+	public void setTileColor(int r, int g, int b){
+		for(Tile t:tiles){
+			t.tileSprite.setColor( r/255f, g/255f, b/255f, 1.0f );
+		}
+	}
+	
+	public void setTilesBlack(){
+		this.setTileColor(0,0,0);
+	}
 
 }
