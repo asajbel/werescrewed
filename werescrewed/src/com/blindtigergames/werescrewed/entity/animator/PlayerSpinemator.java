@@ -230,8 +230,8 @@ public class PlayerSpinemator implements ISpinemator {
 			root.setX( position.x );
 			root.setY( position.y );
 		} else {
-			root.setX( player.body.getWorldCenter( ).x * Util.BOX_TO_PIXEL );
-			root.setY( player.body.getWorldCenter( ).y * Util.BOX_TO_PIXEL - 39 );
+			root.setX( player.body.getPosition( ).x * Util.BOX_TO_PIXEL + 60 );
+			root.setY( player.body.getPosition( ).y * Util.BOX_TO_PIXEL + 1 );
 		}
 		if ( scale != null ) {
 			root.setScaleX( scale.x );
@@ -396,7 +396,7 @@ public class PlayerSpinemator implements ISpinemator {
 
 	@Override
 	public void setPosition( Vector2 pos ) {
-		position = pos; 
+		position = pos.cpy(); 
 	}
 
 	@Override

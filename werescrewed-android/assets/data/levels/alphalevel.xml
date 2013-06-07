@@ -5608,7 +5608,7 @@
                             <string>0.1f</string>
                         </Property>
                         <Property Name="sound" Type="string" Description="">
-                            <string>platformcollision: /common/sounds/land.ogg : range 800 : falloff 1.5f</string>
+                            <string>platformcollision: /common/sounds/fallingObject.ogg : range 800 : falloff 1.5f</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -5660,7 +5660,7 @@
                             <string>falling_pipe</string>
                         </Property>
                         <Property Name="skeltargetrev" Type="string" Description="">
-                            <string>chestSkeleton</string>
+                            <string>chest_sub_skeleton2</string>
                         </Property>
                         <Property Name="degreelimit" Type="string" Description="">
                             <string>0f</string>
@@ -13355,7 +13355,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_0781" Visible="true">
                     <Position>
                         <X>3504</X>
-                        <Y>-5728</Y>
+                        <Y>-5744</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Screwtype" Type="string" Description="">
@@ -13398,7 +13398,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_0782" Visible="true">
                     <Position>
                         <X>3648</X>
-                        <Y>-5732</Y>
+                        <Y>-5744</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Screwtype" Type="string" Description="">
@@ -23755,7 +23755,7 @@
                             <string>eventtrigger</string>
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>kneetSkeleton</string>
+                            <string>kneeSkeleton</string>
                         </Property>
                         <Property Name="beginaction" Type="string" Description="">
                             <string>set_tutorial</string>
@@ -25263,8 +25263,8 @@
         <NextItemNumber>976</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>857.3458</X>
-            <Y>-642.7109</Y>
+            <X>1857.3501</X>
+            <Y>-2892.72046</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

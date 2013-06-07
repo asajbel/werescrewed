@@ -111,7 +111,7 @@ public class MyContactListener implements ContactListener {
 							}else {
 								if ( x1 == player.feet || x2 == player.feet ) {
 									Vector2 contactPos = contact.getWorldManifold( ).getPoints( )[ 0 ];
-									if ( contactPos.y <= ( player.getPosition( ).y + 0.01 ) ) {
+									if ( contactPos.y <= ( player.getPosition( ).y + 0.1 ) ) {
 										if ( player.name.equals( "player1" ) && player1Plat == null ) {
 											player1Plat = plat;
 										} else if ( player.name.equals( "player2" ) && player1Plat == null ) {
@@ -303,14 +303,14 @@ public class MyContactListener implements ContactListener {
 								if ( player.name.equals( "player1" ) ) {
 									NUM_PLAYER1_CONTACTS--;
 									if ( NUM_PLAYER1_CONTACTS <= 0 ) {
-										if ( player.getState( ) != PlayerState.HeadStand ) {
+										if ( player.getState( ) != PlayerState.HeadStand && plat == player1Plat ) {
 											player.setGrounded( false );
 										}
 									}
 								} else if ( player.name.equals( "player2" ) ) {
 									NUM_PLAYER2_CONTACTS--;
 									if ( NUM_PLAYER2_CONTACTS <= 0 ) {
-										if ( player.getState( ) != PlayerState.HeadStand ) {
+										if ( player.getState( ) != PlayerState.HeadStand && plat == player2Plat) {
 											player.setGrounded( false );
 										}
 									}

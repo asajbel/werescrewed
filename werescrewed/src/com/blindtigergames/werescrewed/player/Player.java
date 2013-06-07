@@ -455,7 +455,7 @@ public class Player extends Entity {
 			break;
 		}
 		// if the player is falling
-		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 7f
+		if ( body.getLinearVelocity( ).y < -MIN_VELOCITY * 14f
 				&& playerState != PlayerState.Screwing
 				&& !hitSolidObject && !isDead ) {
 			switch ( playerState ) {
@@ -473,7 +473,7 @@ public class Player extends Entity {
 			}
 			setGrounded( false );
 		} else if ( playerState == PlayerState.Falling
-				&& !isHeadStandPossible( ) ) {
+				&& ( !isHeadStandPossible( ) || hitSolidObject) ) {
 			// if the player is falling but y velocity is too slow
 			// the the player hit something
 			playerState = PlayerState.Standing;
