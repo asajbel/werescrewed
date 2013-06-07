@@ -1268,7 +1268,7 @@ public class DragonScreen extends Screen {
 		//fg
 		Sprite s = tailAtlas.createSprite( "tail3" );
 		s.setOrigin( 0, 0 );
-		tail3_skeleton.addFGDecal( Sprite.scale( s, 2.6f), new Vector2(-820,-580) );//227,17
+		tail3_skeleton.addFGDecal( Sprite.scale( s, 2.6f), new Vector2(-820-330,-580-134-28) );//227,17
 		tail3_skeleton.fgSprite=null;//237,98
 		//tail3_skeleton.setFgFade( true );
 		addFGSkeleton( tail3_skeleton );
@@ -1358,6 +1358,12 @@ public class DragonScreen extends Screen {
 		}
 		
 		Skeleton mesh_skeleton1 = (Skeleton)LevelFactory.entities.get( "mesh_skeleton1" );
+		for(int i=0; i<9;++i){
+			//dragon_objects
+			s = dragon_objects.createSprite( "mesh" );
+			mesh_skeleton1.addBGDecal( s, new Vector2(0,-s.getHeight()*i));
+		}
+		addBGSkeleton( mesh_skeleton1 );
 		Skeleton body_lower_skeleton = (Skeleton)LevelFactory.entities.get( "body_lower_skeleton" );
 	}
 
