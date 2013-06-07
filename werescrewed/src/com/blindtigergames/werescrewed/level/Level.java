@@ -62,6 +62,8 @@ public class Level {
 	public SpriteBatch backgroundBatch;
 	public float bgCamZoomScale = 0f, bgCamZoomMax = 1f, bgCamZoomMin = 1f;
 
+	private final float MAX_FALL_POS = -4000.f;
+
 	public Level( ) {
 
 		world = new World( new Vector2( 0, GRAVITY ), true );
@@ -215,7 +217,7 @@ public class Level {
 		ArrayList< Skeleton > skelsToRemove = new ArrayList< Skeleton >( );
 		ArrayList< Entity > entitiesToRemove = new ArrayList< Entity >( );
 		for ( Skeleton skel : skelBGList ) {
-			if ( skel.getPositionPixel( ).y < -4000 ) {
+			if ( skel.getPositionPixel( ).y < MAX_FALL_POS ) {
 				skelsToRemove.add( skel );
 			} else {
 				if ( skel.isActive( ) ) {
@@ -230,7 +232,7 @@ public class Level {
 			}
 		}
 		for ( Entity e : entityBGList ) {
-			if ( e.getPositionPixel( ).y < -4000 ) {
+			if ( e.getPositionPixel( ).y < MAX_FALL_POS ) {
 				entitiesToRemove.add( e );
 			} else {
 				if ( e.isActive( )
@@ -255,7 +257,7 @@ public class Level {
 		ArrayList< Skeleton > skelsToRemove = new ArrayList< Skeleton >( );
 		ArrayList< Entity > entitiesToRemove = new ArrayList< Entity >( );
 		for ( Entity e : entityFGList ) {
-			if ( e.getPositionPixel( ).y < -4000 ) {
+			if ( e.getPositionPixel( ).y < MAX_FALL_POS ) {
 				entitiesToRemove.add( e );
 			} else {
 				if ( e.getParentSkeleton( ) == null
@@ -266,7 +268,7 @@ public class Level {
 			}
 		}
 		for ( Skeleton skel : skelFGList ) {
-			if ( skel.getPositionPixel( ).y < -4000 ) {
+			if ( skel.getPositionPixel( ).y < MAX_FALL_POS ) {
 				skelsToRemove.add( skel );
 			} else {
 				if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {

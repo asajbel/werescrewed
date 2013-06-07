@@ -140,6 +140,11 @@ class MainMenuScreen extends MenuScreen {
 		if ( Gdx.input.isKeyPressed( Keys.A ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.LOADING_1 );
 		}
+		
+		if ( Gdx.input.isKeyPressed( Keys.NUM_8 ) ) {
+			ScreenManager.getInstance( ).show( ScreenType.LOADING_TROPHY_2 );
+		}
+		
 		if ( Gdx.input.isKeyPressed( Keys.H ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.HAZARD );
 		}

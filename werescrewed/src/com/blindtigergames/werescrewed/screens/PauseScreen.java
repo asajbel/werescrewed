@@ -94,6 +94,7 @@ class PauseScreen extends MenuScreen {
 		if ( !transOutEnd ) {
 			transOutEnd = true;
 			Buttons.get( buttonIndex ).setSelected( true );
+			buttonIndex = 0;
 		}
 		
 		batch.end( );

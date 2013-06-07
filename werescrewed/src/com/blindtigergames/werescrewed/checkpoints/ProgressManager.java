@@ -13,7 +13,6 @@ import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.animator.SimpleSpinemator;
 import com.blindtigergames.werescrewed.entity.builders.ScrewBuilder;
 import com.blindtigergames.werescrewed.entity.mover.FollowEntityWithVelocity;
@@ -52,6 +51,7 @@ public class ProgressManager {
 	private float rezDelay = Float.MAX_VALUE;
 	boolean noPlayersDead = false;
 	private Anchor chkptAnchor;
+	private final float MAX_FALL_POS = -5000;
 
 	/**
 	 * 
@@ -161,6 +161,9 @@ public class ProgressManager {
 		}
 		chkptAnchor.setPosition( currentCheckPoint.getPositionPixel( ) );
 		for ( Player player : players.values( ) ) {
+			if ( player.isPlayerDead( ) && player.getPositionPixel( ).y < MAX_FALL_POS ) {
+				player.setAutoRezzing( );
+			}
 			if ( player.isAutoRezzing( ) ) {
 				player.body.setLinearVelocity( Vector2.Zero );
 				player.body.setType( BodyType.KinematicBody );
@@ -386,7 +389,6 @@ public class ProgressManager {
 				rezScrewMap.remove( player.name );
 			}
 		}
-
 	}
 
 	private void wait( Player player ) {

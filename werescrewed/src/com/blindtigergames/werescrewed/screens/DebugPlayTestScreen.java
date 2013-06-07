@@ -1065,7 +1065,7 @@ public class DebugPlayTestScreen implements com.badlogic.gdx.Screen {
 				plat.body.getPosition( ).y * Util.BOX_TO_PIXEL ), 50, plat,
 				world, Vector2.Zero );
 		bossBolt.addStructureJoint( skel9 );
-		plat.addScrew( bossBolt );
+		skel9.addScrewForDraw( bossBolt );
 		// specialPlat = platBuilder.position( 175f * TILE, 84 * TILE ).name(
 		// "plat12" )
 		// .dimensions( 6, 1 ).texture( testTexture ).kinematic( )

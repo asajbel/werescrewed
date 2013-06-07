@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.entity.platforms;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -17,7 +15,6 @@ import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
-import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -39,7 +36,6 @@ public class Platform extends Entity {
 	protected boolean rotate = false;
 	public boolean oneSided = false;
 	public boolean moveable = false;
-	protected ArrayList< Screw > screws;
 	// tileConstant is 16 for setasbox function which uses half width/height
 	// creates 32x32 objects
 	protected static final int tileConstant = 16;
@@ -132,7 +128,6 @@ public class Platform extends Entity {
 	 * @param pos
 	 */
 	void init( Vector2 pos ) {
-		screws = new ArrayList< Screw >( );
 		localPosition = new Vector2( 0, 0 );
 		previousPosition = new Vector2( localPosition.x, localPosition.y );
 		prevBodyPos = new Vector2( 0, 0 );
@@ -309,37 +304,17 @@ public class Platform extends Entity {
 		localAngularVelocity = angVelMeter;
 	}
 
-	public void addScrew( Screw s ) {
-		screws.add( s );
-	}
-
 	@Override
 	public void setAwake( ) {
 		body.setAwake( true );
-		for ( Screw s : screws )
-			s.body.setAwake( true );
 	}
 
 	@Override
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-		for ( Screw s : screws ) {
-			s.update( deltaTime );
-		}
 		if ( removeNextStep ) {
 			remove( );
 		}
-	}
-
-	/**
-	 * removes the bodies and joints
-	 */
-	@Override
-	public void remove( ) {
-		for ( Screw s : screws ) {
-			s.remove( );
-		}
-		super.remove( );
 	}
 
 	/**
