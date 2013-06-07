@@ -68,8 +68,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>13840</X>
-                        <Y>96</Y>
+                        <X>-1424</X>
+                        <Y>1952</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -191,8 +191,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
-                        <X>13776</X>
-                        <Y>224</Y>
+                        <X>-1488</X>
+                        <Y>2080</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -222,8 +222,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
-                        <X>13888</X>
-                        <Y>192</Y>
+                        <X>-1376</X>
+                        <Y>2048</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5537,7 +5537,7 @@
                 <Item xsi:type="PathItem" Name="body_section2_skeleton" Visible="true">
                     <Position>
                         <X>16592</X>
-                        <Y>-1376</Y>
+                        <Y>-1360</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5556,50 +5556,50 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1424</X>
+                            <X>-2672</X>
+                            <Y>1360</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>4032</X>
                             <Y>1216</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1504</X>
-                            <Y>1024</Y>
+                            <X>3968</X>
+                            <Y>-928</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1408</X>
-                            <Y>-864</Y>
+                            <X>-2832</X>
+                            <Y>-752</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-1360</X>
-                            <Y>-784</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>-1424</X>
-                            <Y>1216</Y>
+                            <X>-2672</X>
+                            <Y>1360</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
                             <X>16592</X>
-                            <Y>-1376</Y>
+                            <Y>-1360</Y>
                         </Vector2>
                         <Vector2>
-                            <X>15168</X>
-                            <Y>-160</Y>
+                            <X>13920</X>
+                            <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>18096</X>
-                            <Y>-352</Y>
+                            <X>20624</X>
+                            <Y>-144</Y>
                         </Vector2>
                         <Vector2>
-                            <X>18000</X>
-                            <Y>-2240</Y>
+                            <X>20560</X>
+                            <Y>-2288</Y>
                         </Vector2>
                         <Vector2>
-                            <X>15232</X>
-                            <Y>-2160</Y>
+                            <X>13760</X>
+                            <Y>-2112</Y>
                         </Vector2>
                         <Vector2>
-                            <X>15168</X>
-                            <Y>-160</Y>
+                            <X>13920</X>
+                            <Y>0</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -17856,8 +17856,8 @@
         <NextItemNumber>1189</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>25369.3789</X>
-            <Y>-1203.32849</Y>
+            <X>19435.9219</X>
+            <Y>-1986.66333</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
