@@ -415,7 +415,7 @@ public class SoundManager implements Disposable {
 
 	public Sound getGDXSound( String id, int index ) {
 		if ( hasSound( id, index ) ) {
-			return sounds.get( id, index ).sound;
+			return sounds.get( id, index ).loop;
 		}
 		return null;
 	}
@@ -477,16 +477,18 @@ public class SoundManager implements Disposable {
 	}
 	
 	public class SoundRef implements Disposable{
-		public Sound sound;
+		protected Sound loop;
+		protected Sound start;
+		protected Sound end;
 		protected Array< Long > soundIds;
 		protected long loopId;
-		protected float volume;
-		protected float volumeRange;
-		protected float pitch;
-		protected float pitchRange;
-		protected float pan;
-		protected float delay;
-		protected float defaultDelay;
+		protected float volume = 1.0f;
+		protected float volumeRange = 0.0f;
+		protected float pitch = 1.0f;
+		protected float pitchRange = 0.0f;
+		protected float pan = 0.0f;
+		protected float delay = INITIAL_DELAY;
+		protected float endDelay;
 		protected float range;
 		protected float falloff;
 		protected Vector2 offset;
@@ -514,13 +516,15 @@ public class SoundManager implements Disposable {
 			pitchRange = 0.0f;
 			pan = 0.0f;
 			delay = INITIAL_DELAY;
-			defaultDelay = 0.0f;
+			endDelay = 0.0f;
 			soundIds = new Array< Long >( );
 			loopId = -1;
-			sound = s;
+			loop = s;
 			range = 500.0f;
 			falloff = 2.0f;
 			offset = new Vector2(0f,0f);
+			start = null;
+			end = null;
 		}
 
 		protected long play( float delayAmount, float extVol, float extPitch ) {
@@ -531,7 +535,10 @@ public class SoundManager implements Disposable {
 						0.0f );
 				finalPitch = pitch * extPitch;
 				if (finalVolume > VOLUME_MINIMUM){
-					id = sound.play( finalVolume, finalPitch, pan );
+					if (start == null)
+						id = loop.play( finalVolume, finalPitch, pan );
+					else
+						id = start.play( finalVolume, finalPitch, pan);
 				}
 				soundIds.add( id );
 				delay = delayAmount;
@@ -547,24 +554,38 @@ public class SoundManager implements Disposable {
 		
 		protected long loop( boolean override ) {
 			if ( override && loopId >= 0 ) {
-				sound.stop( loopId );
-				loopId = sound.loop( finalVolume );
+				loop.stop( loopId );
+				forceLoop();
 			} else if ( loopId < 0 ) {
-				loopId = sound.loop( finalVolume );
+				forceLoop();
 			}
 			return loopId;
 		}
 
+		protected long forceLoop(){
+			loopId = loop.loop( finalVolume );
+			if (start != null){
+				start.play();
+			}
+			return loopId;
+		}
+		
 		protected void stop( ) {
-			sound.stop( );
+			loop.stop( );
 			loopId = -1;
 			delay = 0.0f;
+			if (end != null){
+				end.play();
+			}
 		}
 		public void stop( long thatId ) {
 			if (loopId == thatId){
-				sound.stop(thatId);
+				loop.stop(thatId);
 				loopId = -1;
 				delay = 0.0f;
+				if (end != null){
+					end.play();
+				}
 			}
 		}
 		protected void update( float dT ) {
@@ -572,7 +593,7 @@ public class SoundManager implements Disposable {
 		}
 
 		public Sound getSound( ) {
-			return sound;
+			return loop;
 		}
 
 		public void setInternalVolume( float value ) {
@@ -586,7 +607,7 @@ public class SoundManager implements Disposable {
 				loopSounds.add( this );
 			}
 			if ( loopId >= 0 ) {
-				sound.setVolume( loopId, finalVolume);
+				loop.setVolume( loopId, finalVolume);
 			}
 		}
 
@@ -601,7 +622,7 @@ public class SoundManager implements Disposable {
 		public void setPitch( float extPitch ) {
 			finalPitch = pitch * extPitch;
 			if ( loopId >= 0 ) {
-				sound.setPitch( loopId,  finalPitch );
+				loop.setPitch( loopId,  finalPitch );
 			}
 		}
 
@@ -626,11 +647,11 @@ public class SoundManager implements Disposable {
 		}
 		
 		public void setDefaultDelay( float value ){
-			defaultDelay = value;
+			endDelay = value;
 		}
 		
 		public float getDefaultDelay(){
-			return defaultDelay;
+			return endDelay;
 		}
 		
 		public float getFinalVolume(){
@@ -647,7 +668,7 @@ public class SoundManager implements Disposable {
 		
 		public void dispose(){
 			stop();
-			sound.stop( );
+			loop.stop( );
 			if (SoundManager.loopSounds.contains(this)){
 				SoundManager.loopSounds.remove(this);
 			}
