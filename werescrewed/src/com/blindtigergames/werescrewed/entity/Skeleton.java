@@ -593,10 +593,12 @@ public class Skeleton extends Platform {
 							}
 						}
 					}
-
+					
 					// remove stuff
 					if ( entitiesToRemove.size( ) > 0 ) {
+						
 						for ( Entity e : entitiesToRemove ) {
+							
 							switch ( e.entityType ) {
 							case SKELETON:
 								Skeleton s = childSkeletonMap.remove( e.name );
@@ -619,6 +621,7 @@ public class Skeleton extends Platform {
 								CheckPoint chkpt = checkpointMap
 										.remove( e.name );
 								chkpt.remove( );
+								break;
 							default:
 								throw new RuntimeException(
 										"You are trying to remove enity '"

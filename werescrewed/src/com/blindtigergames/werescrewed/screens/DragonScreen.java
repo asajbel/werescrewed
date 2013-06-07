@@ -1109,6 +1109,10 @@ public class DragonScreen extends Screen {
 		
 		headSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
+		
+		Skeleton headSubSkeleton1 = ( Skeleton ) LevelFactory.entities
+				.get( "head_sub_skeleton1" );
+		
 		TextureAtlas head_left = WereScrewedGame.manager.getAtlas( "head_left" );
 		TextureAtlas head_right = WereScrewedGame.manager.getAtlas( "head_top_right" );
 		TextureAtlas head_jaw = WereScrewedGame.manager.getAtlas( "head_jaw" );
@@ -1117,17 +1121,17 @@ public class DragonScreen extends Screen {
 		//UPPER HEAD
 		Sprite s;
 		
-		Vector2 headPos = new Vector2(-3500,-1455 ).add(125,41);
-		s = head_left.createSprite( "head_left" );
+		Vector2 headPos = new Vector2(-3500,-1455 ).add(125,41);//1219,31
+		s = head_left.createSprite( "head_left" );//1219,31
 		headSkeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
-		headSkeleton.addFGDecal( 
+		headSubSkeleton1.addFGDecal( 
 				Sprite.scale( head_right.createSprite( "head_right" ), scale ), 
-				new Vector2(5146,758).add( headPos ) );//200,276
+				new Vector2(5146,758).add( headPos ).add( -1219,31 ) );//200,276
 		headSkeleton.addFGDecal( 
 				Sprite.scale( head_right.createSprite( "head_middle" ), scale ), 
 				new Vector2(2986,30).add( headPos ) );
 		addFGSkeleton( headSkeleton );
-		
+		addFGSkeleton(headSubSkeleton1);
 		//LOW HEAD/ JAW
 		Vector2 pos = new Vector2(-1420,-615);
 		s = head_jaw.createSprite( "dragonbottom_left" );
@@ -1139,7 +1143,7 @@ public class DragonScreen extends Screen {
 		//inside of head.
 		headSkeleton.addBGDecal( 
 				Sprite.scale(head_interior.createSprite( "head-interior" ),1f/.4f), 
-				new Vector2(-1300,-720) );
+				new Vector2(-1420,-720) );
 		addBGSkeleton( headSkeleton );
 	}
 	
@@ -1353,7 +1357,8 @@ public class DragonScreen extends Screen {
 			addFGEntity( entity );
 		}
 		
-		
+		Skeleton mesh_skeleton1 = (Skeleton)LevelFactory.entities.get( "mesh_skeleton1" );
+		Skeleton body_lower_skeleton = (Skeleton)LevelFactory.entities.get( "body_lower_skeleton" );
 	}
 
 	void createMotor(Skeleton rotating, Skeleton parent, float motorSpeed){
@@ -1396,16 +1401,49 @@ public class DragonScreen extends Screen {
 		}
 		level.root.addLooseEntity( fireballEmitter );
 		
-		Vector2 pos = new Vector2(23850, 400);
-		brainEmitter1 = new EntityParticleEmitter( "bolt emitter",
+		Vector2 pos = new Vector2(23950, 120);
+		brainEmitter1 = new EntityParticleEmitter( "brainEmitter1",
 				new Vector2( pos.cpy().add(0,n*h) ),
-				new Vector2(),
+				new Vector2(100, 0),
 				 level.world, true );
 		
-		for(int i =0; i < 2; ++i ){
-			brainEmitter1.addParticle( createBoltEnemy( pos.cpy().add(0,n*h), i ), 5, 0, i*2 );
+		for(int i =0; i < 1; ++i ){
+			brainEmitter1.addParticle( createBoltEnemy( pos.cpy().add(0,n*h), i ), 1, 0, i*2 );
 		}
 		level.root.addLooseEntity( brainEmitter1 );
+		
+		Vector2 pos2 = new Vector2(25250, 120);
+		brainEmitter2 = new EntityParticleEmitter( "brainEmitter2",
+				new Vector2( pos2.cpy().add(0,n*h) ),
+				new Vector2(1, 0),
+				 level.world, true );
+		
+		for(int i =0; i < 1; ++i ){
+			brainEmitter2.addParticle( createBoltEnemy( pos2.cpy().add(0,n*h), i ), 1, 0, i*2 );
+		}
+		level.root.addLooseEntity( brainEmitter2 );
+		
+		Vector2 pos3 = new Vector2(23950, -150);
+		brainEmitter3 = new EntityParticleEmitter( "brainEmitter3",
+				new Vector2( pos3.cpy().add(0,n*h) ),
+				new Vector2(100, 0),
+				 level.world, true );
+		
+		for(int i =0; i < 1; ++i ){
+			brainEmitter3.addParticle( createBoltEnemy( pos3.cpy().add(0,n*h), i ), 1, 0, i*2 );
+		}
+		level.root.addLooseEntity( brainEmitter3 );
+		
+		Vector2 pos4 = new Vector2(25250, -150);
+		brainEmitter4 = new EntityParticleEmitter( "brainEmitter4",
+				new Vector2( pos4.cpy().add(0,n*h) ),
+				new Vector2(100, 0),
+				 level.world, true );
+		
+		for(int i =0; i < 1; ++i ){
+			brainEmitter4.addParticle( createBoltEnemy( pos4.cpy().add(0,n*h), i ), 1, 0, i*2 );
+		}
+		level.root.addLooseEntity( brainEmitter4 );
 	}
 	
 	Enemy createBoltEnemy(Vector2 pos, int index){
