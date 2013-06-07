@@ -6,14 +6,14 @@ offset: 0, 0
 dragonbottom_right
   rotate: false
   xy: 2, 2
-  size: 1676, 423
-  orig: 1676, 423
+  size: 1675, 598
+  orig: 1675, 598
   offset: 0, 0
   index: -1
 dragonbottom_left
   rotate: false
-  xy: 2, 427
-  size: 1228, 1017
-  orig: 1228, 1017
+  xy: 2, 602
+  size: 1229, 1007
+  orig: 1229, 1007
   offset: 0, 0
   index: -1

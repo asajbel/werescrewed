@@ -1117,21 +1117,21 @@ public class DragonScreen extends Screen {
 		//UPPER HEAD
 		Sprite s;
 		
-		Vector2 headPos = new Vector2(-3500,-1455 );
+		Vector2 headPos = new Vector2(-3500,-1455 ).add(125,41);
 		s = head_left.createSprite( "head_left" );
 		headSkeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
 		headSkeleton.addFGDecal( 
 				Sprite.scale( head_right.createSprite( "head_right" ), scale ), 
-				new Vector2(4946,1029).add( headPos ) );
+				new Vector2(5146,758).add( headPos ) );//200,276
 		headSkeleton.addFGDecal( 
 				Sprite.scale( head_right.createSprite( "head_middle" ), scale ), 
-				new Vector2(2982,30).add( headPos ) );
+				new Vector2(2986,30).add( headPos ) );
 		addFGSkeleton( headSkeleton );
 		
 		//LOW HEAD/ JAW
-		Vector2 pos = new Vector2(-1375,-615);
+		Vector2 pos = new Vector2(-1420,-615);
 		s = head_jaw.createSprite( "dragonbottom_left" );
-		jaw_skeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( pos ) );//959,615
+		jaw_skeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( pos ).add(2,37) );//959,615
 		jaw_skeleton.addFGDecal( Sprite.scale( head_jaw.createSprite( "dragonbottom_right" ), scale ), 
 				new Vector2(s.getWidth( )*scale-8,16).add( pos ) );
 		addFGSkeleton( jaw_skeleton );
