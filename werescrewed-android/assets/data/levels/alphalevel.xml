@@ -5608,7 +5608,7 @@
                             <string>0.1f</string>
                         </Property>
                         <Property Name="sound" Type="string" Description="">
-                            <string>platformcollision: /common/sounds/land.ogg : range 800 : falloff 1.5f</string>
+                            <string>platformcollision: /common/sounds/fallingObject.ogg : range 800 : falloff 1.5f</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -25263,8 +25263,8 @@
         <NextItemNumber>976</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>857.3458</X>
-            <Y>-642.7109</Y>
+            <X>-325.98938</X>
+            <Y>-2792.72</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
