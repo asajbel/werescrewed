@@ -80,7 +80,7 @@ public class Skeleton extends Platform {
 	protected boolean removed = false;
 
 	public boolean respawningDontPutToSleep = false;
-	
+
 	private final float MAX_FALL_POS = -5000.0f;
 
 	// private ShapeRenderer shapeRender;
@@ -422,9 +422,7 @@ public class Skeleton extends Platform {
 			this.remove( );
 		} else {
 			if ( !removed ) {
-				if ( this.removeNextStep ) {
-					this.remove( );
-				} else {
+				if ( !this.removeNextStep ) {
 					super.update( deltaTime );
 					float frameRate = 1 / deltaTime;
 					isUpdatable = ( !this.isFadingSkel( ) || this.isFGFaded( ) );
@@ -657,36 +655,41 @@ public class Skeleton extends Platform {
 		for ( Screw screw : screwMap.values( ) ) {
 			screw.remove( );
 		}
-		screwMap.clear();
+		screwMap.clear( );
 		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
 			chkpt.remove( );
 		}
-		checkpointMap.clear();
+		checkpointMap.clear( );
 		for ( EventTrigger event : eventMap.values( ) ) {
 			event.remove( );
 		}
 		eventMap.clear( );
-//		for ( Rope rope : ropeMap.values( ) ) {
-//			boolean nextLink = true;
-//			int index = 0;
-//			if ( rope.getEndAttachment( ) != null ) {
-//				while ( rope.getEndAttachment( ).body.getJointList( ).iterator( ).hasNext( ) ) {
-//					world.destroyJoint( body.getJointList( ).get( 0 ).joint );
-//				}
-//				world.destroyBody( rope.getEndAttachment( ).body );
-//			}
-//			while ( nextLink ) {
-//				world.destroyBody( rope.getLink( index ).body );
-//				if ( rope.getLastLink( ) == rope.getLink( index ) ) {
-//					nextLink = false;
-//				}
-//				index++;
-//			}
-//		}
+		// for ( Rope rope : ropeMap.values( ) ) {
+		// boolean nextLink = true;
+		// int index = 0;
+		// if ( rope.getEndAttachment( ) != null ) {
+		// while ( rope.getEndAttachment( ).body.getJointList( ).iterator(
+		// ).hasNext( ) ) {
+		// world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+		// }
+		// world.destroyBody( rope.getEndAttachment( ).body );
+		// }
+		// while ( nextLink ) {
+		// world.destroyBody( rope.getLink( index ).body );
+		// if ( rope.getLastLink( ) == rope.getLink( index ) ) {
+		// nextLink = false;
+		// }
+		// index++;
+		// }
+		// }
 		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
 			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
 		}
 		world.destroyBody( body );
+		this.fgDecals.clear( );
+		this.bgDecals.clear( );
+		this.bgSprite = null;
+		this.fgSprite = null;
 		this.removed = true;
 	}
 
@@ -695,53 +698,55 @@ public class Skeleton extends Platform {
 	 * updating the entities movements and such and delete them if necessary
 	 */
 	private void setEntitiesToSleepOnUpdate( ) {
-		for ( Platform platform : kinematicPlatformMap.values( ) ) {
-			if ( platform.removeNextStep ) {
-				entitiesToRemove.add( platform );
-			} else if ( !platform.dontPutToSleep ) {
-				platform.body.setAwake( true );
-				platform.body.setActive( false );
-			}
-		}
-		for ( Platform platform : dynamicPlatformMap.values( ) ) {
-			if ( platform.removeNextStep ) {
-				entitiesToRemove.add( platform );
-			} else {
-				platform.body.setAwake( true );
-				platform.body.setActive( false );
-			}
-		}
-		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-			if ( chkpt.removeNextStep ) {
-				entitiesToRemove.add( chkpt );
-			} else {
-				chkpt.body.setActive( true );
-				chkpt.body.setAwake( false );
-			}
-		}
-		for ( Screw screw : screwMap.values( ) ) {
-			if ( screw.removeNextStep ) {
-				entitiesToRemove.add( screw );
-			} else if ( !screw.dontPutToSleep ) {
-				screw.body.setAwake( true );
-				screw.body.setActive( false );
-			}
-		}
-		for ( Rope rope : ropeMap.values( ) ) {
-			// TODO: ropes need to be able to be deleted
-			boolean nextLink = true;
-			int index = 0;
-			if ( rope.getEndAttachment( ) != null ) {
-				rope.getEndAttachment( ).body.setAwake( true );
-				rope.getEndAttachment( ).body.setActive( false );
-			}
-			while ( nextLink ) {
-				rope.getLink( index ).body.setAwake( true );
-				rope.getLink( index ).body.setActive( false );
-				if ( rope.getLastLink( ) == rope.getLink( index ) ) {
-					nextLink = false;
+		if ( !this.removeNextStep ) {
+			for ( Platform platform : kinematicPlatformMap.values( ) ) {
+				if ( platform.removeNextStep ) {
+					entitiesToRemove.add( platform );
+				} else if ( !platform.dontPutToSleep ) {
+					platform.body.setAwake( true );
+					platform.body.setActive( false );
 				}
-				index++;
+			}
+			for ( Platform platform : dynamicPlatformMap.values( ) ) {
+				if ( platform.removeNextStep ) {
+					entitiesToRemove.add( platform );
+				} else {
+					platform.body.setAwake( true );
+					platform.body.setActive( false );
+				}
+			}
+			for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+				if ( chkpt.removeNextStep ) {
+					entitiesToRemove.add( chkpt );
+				} else {
+					chkpt.body.setActive( true );
+					chkpt.body.setAwake( false );
+				}
+			}
+			for ( Screw screw : screwMap.values( ) ) {
+				if ( screw.removeNextStep ) {
+					entitiesToRemove.add( screw );
+				} else if ( !screw.dontPutToSleep ) {
+					screw.body.setAwake( true );
+					screw.body.setActive( false );
+				}
+			}
+			for ( Rope rope : ropeMap.values( ) ) {
+				// TODO: ropes need to be able to be deleted
+				boolean nextLink = true;
+				int index = 0;
+				if ( rope.getEndAttachment( ) != null ) {
+					rope.getEndAttachment( ).body.setAwake( true );
+					rope.getEndAttachment( ).body.setActive( false );
+				}
+				while ( nextLink ) {
+					rope.getLink( index ).body.setAwake( true );
+					rope.getLink( index ).body.setActive( false );
+					if ( rope.getLastLink( ) == rope.getLink( index ) ) {
+						nextLink = false;
+					}
+					index++;
+				}
 			}
 		}
 	}
@@ -753,11 +758,13 @@ public class Skeleton extends Platform {
 	 */
 	@Override
 	public void drawFGDecals( SpriteBatch batch, Camera camera ) {
-		for ( Sprite decal : fgDecals ) {
-			if ( decal.alpha >= 0.25 ) {
-				if ( decal.getBoundingRectangle( )
-						.overlaps( camera.getBounds( ) ) ) {
-					decal.draw( batch );
+		if ( !removed && !removeNextStep ) {
+			for ( Sprite decal : fgDecals ) {
+				if ( decal.alpha >= 0.25 ) {
+					if ( decal.getBoundingRectangle( ).overlaps(
+							camera.getBounds( ) ) ) {
+						decal.draw( batch );
+					}
 				}
 			}
 		}
@@ -792,39 +799,41 @@ public class Skeleton extends Platform {
 	}
 
 	private void drawChildren( SpriteBatch batch, float deltaTime, Camera camera ) {
-		lastCameraRect = camera.getBounds( );
-		if ( !wasInactive && isUpdatable ) {
-			for ( EventTrigger et : eventMap.values( ) ) {
-				et.draw( batch, deltaTime, camera );
-			}
-			for ( Screw screw : screwMap.values( ) ) {
-				if ( !screw.getRemoveNextStep( ) ) {
-					screw.draw( batch, deltaTime, camera );
+		if ( !removed && !removeNextStep ) {
+			lastCameraRect = camera.getBounds( );
+			if ( !wasInactive && isUpdatable ) {
+				for ( EventTrigger et : eventMap.values( ) ) {
+					et.draw( batch, deltaTime, camera );
+				}
+				for ( Screw screw : screwMap.values( ) ) {
+					if ( !screw.getRemoveNextStep( ) ) {
+						screw.draw( batch, deltaTime, camera );
+					}
+				}
+				for ( Platform p : dynamicPlatformMap.values( ) ) {
+					drawPlatform( p, batch, deltaTime, camera );
+				}
+				for ( Platform p : kinematicPlatformMap.values( ) ) {
+					drawPlatform( p, batch, deltaTime, camera );
+				}
+				for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+					if ( !chkpt.getRemoveNextStep( ) ) {
+						chkpt.draw( batch, deltaTime, camera );
+					}
+				}
+				for ( Rope rope : ropeMap.values( ) ) {
+					rope.draw( batch, deltaTime, camera );
 				}
 			}
-			for ( Platform p : dynamicPlatformMap.values( ) ) {
-				drawPlatform( p, batch, deltaTime, camera );
-			}
-			for ( Platform p : kinematicPlatformMap.values( ) ) {
-				drawPlatform( p, batch, deltaTime, camera );
-			}
-			for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-				if ( !chkpt.getRemoveNextStep( ) ) {
-					chkpt.draw( batch, deltaTime, camera );
-				}
-			}
-			for ( Rope rope : ropeMap.values( ) ) {
-				rope.draw( batch, deltaTime, camera );
-			}
-		}
-		// draw the entities of the parent skeleton before recursing through
-		// the
-		// child skeletons
-		// if ( isUpdatable || isMacroSkeleton )
-		{
-			if ( !setChildSkeletonsToSleep || isUpdatable ) {
-				for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-					skeleton.draw( batch, deltaTime, camera );
+			// draw the entities of the parent skeleton before recursing through
+			// the
+			// child skeletons
+			// if ( isUpdatable || isMacroSkeleton )
+			{
+				if ( !setChildSkeletonsToSleep || isUpdatable ) {
+					for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+						skeleton.draw( batch, deltaTime, camera );
+					}
 				}
 			}
 		}
@@ -837,10 +846,13 @@ public class Skeleton extends Platform {
 	 */
 	@Override
 	public void drawBGDecals( SpriteBatch batch, Camera camera ) {
-		for ( Sprite decal : bgDecals ) {
-			if ( decal.getBoundingRectangle( ).overlaps( camera.getBounds( ) ) ) {
-				if ( !invisibleBGDecal ) {
-					decal.draw( batch );
+		if ( !removed && !removeNextStep ) {
+			for ( Sprite decal : bgDecals ) {
+				if ( decal.getBoundingRectangle( )
+						.overlaps( camera.getBounds( ) ) ) {
+					if ( !invisibleBGDecal ) {
+						decal.draw( batch );
+					}
 				}
 			}
 		}

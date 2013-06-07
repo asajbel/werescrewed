@@ -290,7 +290,7 @@ public class LoadingScreen extends Screen {
 			if ( WereScrewedGame.manager.getAssetType( assets.get( i ) ) == Texture.class ) {
 				WereScrewedGame.manager.unload( assets.get( i ) );
 			} else if ( WereScrewedGame.manager.getAssetType( assets.get( i ) ) == Sound.class ) {
-				WereScrewedGame.manager.unload(  assets.get( i ) );
+				//WereScrewedGame.manager.unload(  assets.get( i ) );
 			}
 			
 		}
