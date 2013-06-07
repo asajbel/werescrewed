@@ -1347,7 +1347,8 @@ public class DragonScreen extends Screen {
 			addFGEntity( entity );
 		}
 		
-		
+		Skeleton mesh_skeleton1 = (Skeleton)LevelFactory.entities.get( "mesh_skeleton1" );
+		Skeleton body_lower_skeleton = (Skeleton)LevelFactory.entities.get( "body_lower_skeleton" );
 	}
 
 	void createMotor(Skeleton rotating, Skeleton parent, float motorSpeed){
@@ -1390,16 +1391,49 @@ public class DragonScreen extends Screen {
 		}
 		level.root.addLooseEntity( fireballEmitter );
 		
-		Vector2 pos = new Vector2(23850, 400);
-		brainEmitter1 = new EntityParticleEmitter( "bolt emitter",
+		Vector2 pos = new Vector2(23950, 120);
+		brainEmitter1 = new EntityParticleEmitter( "brainEmitter1",
 				new Vector2( pos.cpy().add(0,n*h) ),
-				new Vector2(),
+				new Vector2(100, 0),
 				 level.world, true );
 		
-		for(int i =0; i < 2; ++i ){
-			brainEmitter1.addParticle( createBoltEnemy( pos.cpy().add(0,n*h), i ), 5, 0, i*2 );
+		for(int i =0; i < 1; ++i ){
+			brainEmitter1.addParticle( createBoltEnemy( pos.cpy().add(0,n*h), i ), 1, 0, i*2 );
 		}
 		level.root.addLooseEntity( brainEmitter1 );
+		
+		Vector2 pos2 = new Vector2(25250, 120);
+		brainEmitter2 = new EntityParticleEmitter( "brainEmitter2",
+				new Vector2( pos2.cpy().add(0,n*h) ),
+				new Vector2(1, 0),
+				 level.world, true );
+		
+		for(int i =0; i < 1; ++i ){
+			brainEmitter2.addParticle( createBoltEnemy( pos2.cpy().add(0,n*h), i ), 1, 0, i*2 );
+		}
+		level.root.addLooseEntity( brainEmitter2 );
+		
+		Vector2 pos3 = new Vector2(23950, -150);
+		brainEmitter3 = new EntityParticleEmitter( "brainEmitter3",
+				new Vector2( pos3.cpy().add(0,n*h) ),
+				new Vector2(100, 0),
+				 level.world, true );
+		
+		for(int i =0; i < 1; ++i ){
+			brainEmitter3.addParticle( createBoltEnemy( pos3.cpy().add(0,n*h), i ), 1, 0, i*2 );
+		}
+		level.root.addLooseEntity( brainEmitter3 );
+		
+		Vector2 pos4 = new Vector2(25250, -150);
+		brainEmitter4 = new EntityParticleEmitter( "brainEmitter4",
+				new Vector2( pos4.cpy().add(0,n*h) ),
+				new Vector2(100, 0),
+				 level.world, true );
+		
+		for(int i =0; i < 1; ++i ){
+			brainEmitter4.addParticle( createBoltEnemy( pos4.cpy().add(0,n*h), i ), 1, 0, i*2 );
+		}
+		level.root.addLooseEntity( brainEmitter4 );
 	}
 	
 	Enemy createBoltEnemy(Vector2 pos, int index){
