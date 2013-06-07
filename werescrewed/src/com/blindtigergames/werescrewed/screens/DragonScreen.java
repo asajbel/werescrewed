@@ -1101,6 +1101,10 @@ public class DragonScreen extends Screen {
 		
 		headSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
+		
+		Skeleton headSubSkeleton1 = ( Skeleton ) LevelFactory.entities
+				.get( "head_sub_skeleton1" );
+		
 		TextureAtlas head_left = WereScrewedGame.manager.getAtlas( "head_left" );
 		TextureAtlas head_right = WereScrewedGame.manager.getAtlas( "head_top_right" );
 		TextureAtlas head_jaw = WereScrewedGame.manager.getAtlas( "head_jaw" );
@@ -1112,14 +1116,14 @@ public class DragonScreen extends Screen {
 		Vector2 headPos = new Vector2(-3500,-1455 );
 		s = head_left.createSprite( "head_left" );
 		headSkeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
-		headSkeleton.addFGDecal( 
+		headSubSkeleton1.addFGDecal( 
 				Sprite.scale( head_right.createSprite( "head_right" ), scale ), 
-				new Vector2(4946,1029).add( headPos ) );
+				new Vector2(3650,1045).add( headPos ) );
 		headSkeleton.addFGDecal( 
 				Sprite.scale( head_right.createSprite( "head_middle" ), scale ), 
 				new Vector2(2982,30).add( headPos ) );
 		addFGSkeleton( headSkeleton );
-		
+		addFGSkeleton(headSubSkeleton1);
 		//LOW HEAD/ JAW
 		Vector2 pos = new Vector2(-1375,-615);
 		s = head_jaw.createSprite( "dragonbottom_left" );
@@ -1131,7 +1135,7 @@ public class DragonScreen extends Screen {
 		//inside of head.
 		headSkeleton.addBGDecal( 
 				Sprite.scale(head_interior.createSprite( "head-interior" ),1f/.4f), 
-				new Vector2(-1300,-720) );
+				new Vector2(-1420,-720) );
 		addBGSkeleton( headSkeleton );
 	}
 	
