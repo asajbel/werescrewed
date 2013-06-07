@@ -645,21 +645,27 @@ public class Skeleton extends Platform {
 		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
 			skeleton.remove( );
 		}
+		childSkeletonMap.clear( );
 		for ( Platform p : dynamicPlatformMap.values( ) ) {
 			p.remove( );
 		}
+		dynamicPlatformMap.clear( );
 		for ( Platform p : kinematicPlatformMap.values( ) ) {
 			p.remove( );
 		}
+		kinematicPlatformMap.clear( );
 		for ( Screw screw : screwMap.values( ) ) {
 			screw.remove( );
 		}
+		screwMap.clear();
 		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
 			chkpt.remove( );
 		}
+		checkpointMap.clear();
 		for ( EventTrigger event : eventMap.values( ) ) {
 			event.remove( );
 		}
+		eventMap.clear( );
 //		for ( Rope rope : ropeMap.values( ) ) {
 //			boolean nextLink = true;
 //			int index = 0;
