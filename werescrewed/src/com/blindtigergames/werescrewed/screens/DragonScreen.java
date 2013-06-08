@@ -1117,6 +1117,7 @@ public class DragonScreen extends Screen {
 		TextureAtlas head_right = WereScrewedGame.manager.getAtlas( "head_top_right" );
 		TextureAtlas head_jaw = WereScrewedGame.manager.getAtlas( "head_jaw" );
 		TextureAtlas head_interior = WereScrewedGame.manager.getAtlas( "body_right-head_interior" );
+		TextureAtlas dragon_objects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
 		float scale = 2;//1f/.66f;
 		//UPPER HEAD
 		Sprite s;
@@ -1145,6 +1146,13 @@ public class DragonScreen extends Screen {
 				Sprite.scale(head_interior.createSprite( "head-interior" ),1f/.4f), 
 				new Vector2(-1420,-720) );
 		addBGSkeleton( headSkeleton );
+		
+		
+		scale=1f/.65f;
+		Platform brain = (Platform)LevelFactory.entities.get("dragon_brain");
+		s = dragon_objects.createSprite( "dragon_brain" );
+		brain.addFGDecal( Sprite.scale(s,1f/.65f),new Vector2(-s.getWidth( )/2*scale,-s.getHeight( )/2*scale) );
+		addFGEntity( brain );
 	}
 	
 	void initEyebrow(){

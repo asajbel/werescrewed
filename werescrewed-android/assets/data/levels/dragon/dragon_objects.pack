@@ -3,9 +3,79 @@ format: RGBA8888
 filter: Linear,Linear
 repeat: none
 offset: 0, 0
+cannonstand-small
+  rotate: false
+  xy: 1193, 919
+  size: 314, 156
+  orig: 314, 156
+  offset: 0, 0
+  index: -1
+burner-med
+  rotate: false
+  xy: 1193, 474
+  size: 587, 167
+  orig: 587, 167
+  offset: 0, 0
+  index: -1
+turbine_blade
+  rotate: false
+  xy: 1786, 474
+  size: 244, 261
+  orig: 244, 261
+  offset: 0, 0
+  index: -1
+rotation_machine_rotate_plate
+  rotate: false
+  xy: 1056, 474
+  size: 123, 259
+  orig: 123, 259
+  offset: 0, 0
+  index: -1
+wheel
+  rotate: false
+  xy: 548, 1038
+  size: 502, 502
+  orig: 502, 502
+  offset: 0, 0
+  index: -1
+rotation_machine_decal_right
+  rotate: false
+  xy: 438, 1038
+  size: 104, 528
+  orig: 104, 528
+  offset: 0, 0
+  index: -1
+turbine
+  rotate: false
+  xy: 4, 4
+  size: 1028, 1028
+  orig: 1028, 1028
+  offset: 0, 0
+  index: -1
+cannon-large
+  rotate: false
+  xy: 4, 1038
+  size: 314, 611
+  orig: 314, 611
+  offset: 0, 0
+  index: -1
+rotation_machine_wheel
+  rotate: false
+  xy: 1056, 1081
+  size: 225, 224
+  orig: 225, 224
+  offset: 0, 0
+  index: -1
+cannon-small
+  rotate: false
+  xy: 984, 1546
+  size: 203, 391
+  orig: 203, 391
+  offset: 0, 0
+  index: -1
 rotation_machine_decal_middle
   rotate: false
-  xy: 4, 1655
+  xy: 1038, 739
   size: 110, 290
   orig: 110, 290
   offset: 0, 0
@@ -17,18 +87,11 @@ burner-small
   orig: 297, 84
   offset: 0, 0
   index: -1
-turbine
+dragon_brain
   rotate: false
-  xy: 4, 4
-  size: 1028, 1028
-  orig: 1028, 1028
-  offset: 0, 0
-  index: -1
-mesh
-  rotate: false
-  xy: 120, 1655
-  size: 430, 266
-  orig: 430, 266
+  xy: 4, 1655
+  size: 516, 290
+  orig: 516, 290
   offset: 0, 0
   index: -1
 bridge
@@ -38,55 +101,6 @@ bridge
   orig: 897, 464
   offset: 0, 0
   index: -1
-cannonstand-small
-  rotate: false
-  xy: 1670, 704
-  size: 314, 156
-  orig: 314, 156
-  offset: 0, 0
-  index: -1
-cannon-large
-  rotate: false
-  xy: 4, 1038
-  size: 314, 611
-  orig: 314, 611
-  offset: 0, 0
-  index: -1
-cannonstand-large
-  rotate: false
-  xy: 1288, 647
-  size: 376, 187
-  orig: 376, 187
-  offset: 0, 0
-  index: -1
-rotation_machine_decal_right
-  rotate: false
-  xy: 438, 1038
-  size: 104, 528
-  orig: 104, 528
-  offset: 0, 0
-  index: -1
-rotation_machine_wheel
-  rotate: false
-  xy: 1816, 474
-  size: 225, 224
-  orig: 225, 224
-  offset: 0, 0
-  index: -1
-turbine_blade
-  rotate: false
-  xy: 1038, 739
-  size: 244, 261
-  orig: 244, 261
-  offset: 0, 0
-  index: -1
-turbine-outside
-  rotate: false
-  xy: 556, 1546
-  size: 452, 452
-  orig: 452, 452
-  offset: 0, 0
-  index: -1
 rotation_machine_decal_left
   rotate: false
   xy: 324, 1038
@@ -94,31 +108,24 @@ rotation_machine_decal_left
   orig: 108, 530
   offset: 0, 0
   index: -1
-rotation_machine_rotate_plate
+mesh
   rotate: false
-  xy: 1056, 474
-  size: 123, 259
-  orig: 123, 259
+  xy: 1193, 647
+  size: 430, 266
+  orig: 430, 266
   offset: 0, 0
   index: -1
-burner-med
+cannonstand-large
   rotate: false
-  xy: 1223, 474
-  size: 587, 167
-  orig: 587, 167
+  xy: 1629, 741
+  size: 376, 187
+  orig: 376, 187
   offset: 0, 0
   index: -1
-cannon-small
+turbine-outside
   rotate: false
-  xy: 1014, 1546
-  size: 203, 391
-  orig: 203, 391
-  offset: 0, 0
-  index: -1
-wheel
-  rotate: false
-  xy: 548, 1038
-  size: 502, 502
-  orig: 502, 502
+  xy: 526, 1572
+  size: 452, 452
+  orig: 452, 452
   offset: 0, 0
   index: -1
