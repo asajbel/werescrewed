@@ -1,9 +1,7 @@
 package com.blindtigergames.werescrewed.entity.hazard;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -50,7 +48,6 @@ public class MouthFire extends Hazard {
 		Vector2 destinationM = destinationPix.cpy().mul(Util.PIXEL_TO_BOX);
 		this.angle = Util.angleBetweenPoints( posMeter, destinationM );
 		this.totalSteps = 20;
-		int stepLength;
 		this.posStep = destinationM.cpy( ).sub( posMeter );
 		this.totalLength = posStep.len( );
 		this.widthMeter = totalLength/totalSteps/2; //because set as box doubles width
@@ -77,7 +74,7 @@ public class MouthFire extends Hazard {
 
 		addFrontParticleEffect( "mouth_fire", false, false ); 
 		ParticleEffect e = getEffect( "mouth_fire" ); 
-		e.setDuration( emitTime ); 
+		e.setDuration( emitTime - 175 ); 
 		e.setPosition( pos.x, pos.y );
 		e.setLifeTime( milliComplete - 300, 500 );
 		e.setVelocity( (totalLength*Util.BOX_TO_PIXEL-50)/secondsToComplete, 50 );
