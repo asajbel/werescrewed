@@ -2334,4 +2334,10 @@ public class Player extends Entity {
 	public void setDeadPlayerHitCheckpnt( boolean deadPlayerHitCheckpnt ) {
 		this.deadPlayerHitCheckpnt = deadPlayerHitCheckpnt;
 	}
+	
+	@Override
+	public void addAnchor(Anchor anchor) {
+		super.addAnchor( anchor );
+		anchor.player = true;
+	}
 }

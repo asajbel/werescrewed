@@ -64,7 +64,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected boolean alphaFinish = false;
 	protected boolean transInEnd = true;
 	protected boolean transOutEnd = true;
-	protected boolean fullscreen = false; 
+	protected static boolean fullscreen = false; 
 	protected boolean assetsLoaded = false;
 	
 	BitmapFont debug_font;
@@ -192,7 +192,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		}
 		else {
 			DisplayMode mode = Gdx.graphics.getDesktopDisplayMode( );
-			Gdx.graphics.setDisplayMode( mode.width, mode.height, true );
+			Gdx.graphics.setDisplayMode( mode.width, mode.height, false );
 			fullscreen = true; 
 		}
 		WereScrewedGame.setReconnect( true );
