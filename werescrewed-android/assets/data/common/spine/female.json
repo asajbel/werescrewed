@@ -516,60 +516,6 @@
 			}
 		},
 		"slots": {
-			"torso_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 3.3333, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 6, "color": "ffffff00" }
-				]
-			},
-			"head": {
-				"color": [
-					{ "time": 0, "color": "009effab", "curve": "stepped" },
-					{ "time": 3.3333, "color": "009effab", "curve": "stepped" },
-					{ "time": 6, "color": "009effab" }
-				]
-			},
-			"lower_skirt": {
-				"color": [
-					{ "time": 0, "color": "009effab", "curve": "stepped" },
-					{ "time": 3.3333, "color": "009effab", "curve": "stepped" },
-					{ "time": 6, "color": "009effab" }
-				]
-			},
-			"L_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 3.3333, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 6, "color": "ffffff00" }
-				]
-			},
-			"L_lower_arm_back": {
-				"attachment": [
-					{ "time": 0, "name": "back/L_lower_arm_back" },
-					{ "time": 3.3333, "name": "back/L_lower_arm_back" },
-					{ "time": 6, "name": "back/L_lower_arm_back" }
-				],
-				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 3.3333, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 6, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "009effab", "curve": "stepped" },
-					{ "time": 3.3333, "color": "009effab", "curve": "stepped" },
-					{ "time": 6, "color": "009effab" }
-				]
-			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "009effab", "curve": "stepped" },
-					{ "time": 3.3333, "color": "009effab", "curve": "stepped" },
-					{ "time": 6, "color": "009effab" }
-				]
-			},
 			"B_hat": {
 				"color": [
 					{ "time": 0, "color": "009effab", "curve": "stepped" },
@@ -577,7 +523,7 @@
 					{ "time": 6, "color": "009effab" }
 				]
 			},
-			"R_upper_arm_back": {
+			"hat_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
 					{ "time": 3.3333, "color": "ffffff00", "curve": "stepped" },
@@ -585,6 +531,14 @@
 				]
 			},
 			"R_lower_arm": {
+				"attachment": [
+					{ "time": 0, "name": "R_lower_arm" }
+				],
+				"color": [
+					{ "time": 0, "color": "acf0ff93" }
+				]
+			},
+			"upper_skirt": {
 				"color": [
 					{ "time": 0, "color": "009effab", "curve": "stepped" },
 					{ "time": 3.3333, "color": "009effab", "curve": "stepped" },
@@ -598,6 +552,13 @@
 					{ "time": 6, "color": "009effab" }
 				]
 			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 3.3333, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 6, "color": "ffffff00" }
+				]
+			},
 			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "0097ff7a", "curve": "stepped" },
@@ -605,25 +566,60 @@
 					{ "time": 6, "color": "0097ff7a" }
 				]
 			},
-			"L_lower_arm": {
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"lower_skirt": {
 				"color": [
 					{ "time": 0, "color": "009effab", "curve": "stepped" },
 					{ "time": 3.3333, "color": "009effab", "curve": "stepped" },
 					{ "time": 6, "color": "009effab" }
 				]
 			},
-			"F_hat": {
+			"L_hand": {
 				"color": [
-					{ "time": 0, "color": "009effd4", "curve": "stepped" },
-					{ "time": 3.3333, "color": "009effd4", "curve": "stepped" },
-					{ "time": 6, "color": "009effd4" }
+					{ "time": 0, "color": "acf0ff93" }
 				]
 			},
-			"hat_back": {
+			"R_upper_arm": {
 				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 3.3333, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 6, "color": "ffffff00" }
+					{ "time": 0, "color": "acf0ff93" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "acf0ff93", "curve": "stepped" },
+					{ "time": 4.4479, "color": "acf0ff93" }
+				]
+			},
+			"L_hand_back": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				],
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_arm_back": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 3.3333, "name": "back/L_lower_arm_back" },
+					{ "time": 6, "name": "back/L_lower_arm_back" }
+				],
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_hand_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"screw_driver_back": {
@@ -638,34 +634,6 @@
 					{ "time": 6, "color": "ffffff00" }
 				]
 			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 3.3333, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 6, "color": "ffffff00" }
-				]
-			},
-			"head_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 3.3333, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 6, "color": "ffffff00" }
-				]
-			},
-			"L_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 3.3333, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 6, "color": "ffffff00" }
-				]
-			},
-			"L_hand": {
-				"color": [
-					{ "time": 0, "color": "009effab", "curve": "stepped" },
-					{ "time": 3.3333, "color": "009effab", "curve": "stepped" },
-					{ "time": 6, "color": "009effab" }
-				]
-			},
 			"R_boot": {
 				"color": [
 					{ "time": 0, "color": "009effab", "curve": "stepped" },
@@ -673,25 +641,17 @@
 					{ "time": 6, "color": "009effab" }
 				]
 			},
+			"R_hand": {
+				"attachment": [
+					{ "time": 0, "name": "R_hand" }
+				],
+				"color": [
+					{ "time": 0, "color": "acf0ff93" }
+				]
+			},
 			"L_upper_arm": {
 				"color": [
-					{ "time": 0, "color": "009effab", "curve": "stepped" },
-					{ "time": 3.3333, "color": "009effab", "curve": "stepped" },
-					{ "time": 6, "color": "009effab" }
-				]
-			},
-			"upper_skirt": {
-				"color": [
-					{ "time": 0, "color": "009effab", "curve": "stepped" },
-					{ "time": 3.3333, "color": "009effab", "curve": "stepped" },
-					{ "time": 6, "color": "009effab" }
-				]
-			},
-			"R_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 3.3333, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 6, "color": "ffffff00" }
+					{ "time": 0, "color": "acf0ff93" }
 				]
 			},
 			"screw_driver_ready": {
@@ -699,6 +659,28 @@
 					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
 					{ "time": 3.3333, "color": "ffffff00", "curve": "stepped" },
 					{ "time": 6, "color": "ffffff00" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "009effd4", "curve": "stepped" },
+					{ "time": 3.3333, "color": "009effd4", "curve": "stepped" },
+					{ "time": 6, "color": "009effd4" }
+				]
+			},
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "acf0ff93" }
 				]
 			}
 		}
@@ -927,44 +909,19 @@
 			}
 		},
 		"slots": {
-			"torso_back": {
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"head": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_hand_back": {
+			"hat_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"torso": {
@@ -972,7 +929,37 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_lower_arm_back": {
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -987,7 +974,12 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"hat_back": {
+			"R_hand_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -997,29 +989,9 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffff01" }
-				]
-			},
-			"head_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_hand": {
+			"R_hand": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"B_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"L_upper_arm": {
@@ -1027,14 +999,24 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_hand_back": {
+			"screw_driver_ready": {
+				"color": [
+					{ "time": 0, "color": "ffffff01" }
+				]
+			},
+			"L_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"screw_driver_ready": {
+			"R_lower_arm_black": {
 				"color": [
 					{ "time": 0, "color": "ffffff01" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -1323,52 +1305,7 @@
 			}
 		},
 		"slots": {
-			"torso_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"B_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"head_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"torso": {
+			"L_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -1378,32 +1315,22 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"L_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"F_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
 			"hat_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"screw_driver_back": {
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"head": {
+			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -1418,6 +1345,61 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_hand_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"screw_driver_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver_ready": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
@@ -1428,9 +1410,9 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"L_upper_arm": {
+			"R_lower_arm_black": {
 				"color": [
-					{ "time": 0, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -1847,47 +1829,7 @@
 			}
 		},
 		"slots": {
-			"torso_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"head": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"torso": {
+			"L_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -1897,34 +1839,24 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"L_lower_arm": {
+			"R_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"F_hat": {
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"hat_back": {
+			"head": {
 				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"head_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
+					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"L_hand": {
@@ -1932,14 +1864,54 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_hand_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"B_hat": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_upper_arm_back": {
+			"screw_driver_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"L_upper_arm": {
@@ -1947,12 +1919,22 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
+			"screw_driver_ready": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"R_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"screw_driver_ready": {
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -2253,6 +2235,26 @@
 			}
 		},
 		"slots": {
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"torso_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
@@ -2263,72 +2265,7 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"torso": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_lower_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"F_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"hat_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"head_back": {
+			"L_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -2338,17 +2275,62 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_hand_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"B_hat": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_upper_arm_back": {
+			"screw_driver_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
+			"R_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"screw_driver_ready": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -2358,9 +2340,9 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"screw_driver_ready": {
+			"R_lower_arm_black": {
 				"color": [
-					{ "time": 0, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -2725,37 +2707,12 @@
 			}
 		},
 		"slots": {
-			"torso_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"head": {
+			"B_hat": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_upper_arm_back": {
+			"L_lower_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -2770,7 +2727,37 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_lower_arm_back": {
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -2785,17 +2772,7 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"hat_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm_black": {
+			"R_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -2805,19 +2782,14 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"L_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"B_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_upper_arm_back": {
+			"screw_driver_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"L_upper_arm": {
@@ -2825,12 +2797,22 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_hand_back": {
+			"screw_driver_ready": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"screw_driver_ready": {
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -3198,19 +3180,9 @@
 			}
 		},
 		"slots": {
-			"torso_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff01" }
-				]
-			},
-			"head": {
+			"B_hat": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"L_lower_arm_back": {
@@ -3218,22 +3190,7 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"R_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm_back": {
+			"hat_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -3248,32 +3205,17 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"hat_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"F_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm_black": {
+			"torso_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff01" }
 				]
 			},
-			"head_back": {
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -3283,17 +3225,27 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"B_hat": {
+			"R_upper_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_upper_arm_back": {
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffff01" }
+				]
+			},
+			"L_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"L_upper_arm": {
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"F_hat": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -3303,7 +3255,37 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"screw_driver_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver_ready": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -3671,19 +3653,9 @@
 			}
 		},
 		"slots": {
-			"torso_back": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"head": {
+			"B_hat": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"L_lower_arm_back": {
@@ -3693,40 +3665,9 @@
 					{ "time": 1.3333, "color": "ffffffff" }
 				]
 			},
-			"R_upper_arm": {
+			"hat_back": {
 				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 0.6666, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 1.3333, "color": "ffffff00" }
-				]
-			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"B_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 0.6666, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 1.3333, "color": "ffffffff" }
-				]
-			},
-			"R_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 0.6666, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 1.3333, "color": "ffffff00" }
-				]
-			},
-			"torso": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
+					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"screw_driver": {
@@ -3734,38 +3675,19 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"L_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 0.6666, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 1.3333, "color": "ffffff00" }
-				]
-			},
-			"F_hat": {
+			"torso": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"hat_back": {
+			"torso_back": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"screw_driver_back": {
+			"head": {
 				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 0.6666, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 1.3333, "color": "ffffffff" }
-				]
-			},
-			"head_back": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"L_upper_arm_back": {
@@ -3780,9 +3702,30 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"screw_driver_ready": {
+			"R_upper_arm": {
 				"color": [
-					{ "time": 0, "color": "ffffff00" }
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.6666, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.3333, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.6666, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.3333, "color": "ffffff00" }
+				]
+			},
+			"L_hand_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.6666, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.3333, "color": "ffffff00" }
 				]
 			},
 			"R_hand_back": {
@@ -3790,11 +3733,50 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"screw_driver_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"L_upper_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
 					{ "time": 0.6666, "color": "ffffff00", "curve": "stepped" },
 					{ "time": 1.3333, "color": "ffffff00" }
+				]
+			},
+			"screw_driver_ready": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.6666, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.3333, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.6666, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.3333, "color": "ffffffff" }
 				]
 			}
 		}
@@ -4118,9 +4100,49 @@
 			}
 		},
 		"slots": {
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"torso_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"head": {
@@ -4138,62 +4160,7 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"R_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"torso": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"F_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"hat_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm_black": {
+			"R_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -4203,12 +4170,12 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"L_upper_arm_back": {
+			"screw_driver_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"B_hat": {
+			"R_hand": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -4218,14 +4185,29 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_hand_back": {
+			"screw_driver_ready": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"screw_driver_ready": {
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm_black": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
 				]
 			}
 		}
@@ -4541,6 +4523,26 @@
 			}
 		},
 		"slots": {
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"torso_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
@@ -4549,6 +4551,26 @@
 			"head": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"L_hand_back": {
@@ -4561,27 +4583,7 @@
 					{ "time": 0, "color": "ffffff01" }
 				]
 			},
-			"R_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm": {
+			"F_hat": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -4591,19 +4593,9 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"hat_back": {
+			"head_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"F_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"screw_driver_back": {
@@ -4611,22 +4603,17 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"head_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_lower_arm": {
+			"R_hand": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"B_hat": {
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"screw_driver_ready": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -4636,19 +4623,14 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"L_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
 			"R_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"screw_driver_ready": {
+			"R_upper_arm_back": {
 				"color": [
-					{ "time": 0, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -5013,6 +4995,31 @@
 			}
 		},
 		"slots": {
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"torso_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
@@ -5023,9 +5030,14 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_hand_back": {
+			"L_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"R_upper_arm": {
@@ -5034,32 +5046,12 @@
 					{ "time": 0.4497, "color": "ffffffff" }
 				]
 			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
 			"R_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"torso": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_lower_arm_back": {
+			"L_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -5067,21 +5059,6 @@
 			"L_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"F_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"hat_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"R_lower_arm_black": {
@@ -5094,22 +5071,27 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"L_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"B_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_upper_arm_back": {
+			"screw_driver_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
+			"R_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"screw_driver_ready": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"F_hat": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -5119,7 +5101,7 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"screw_driver_ready": {
+			"R_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -5524,6 +5506,36 @@
 			}
 		},
 		"slots": {
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"torso_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
@@ -5534,19 +5546,9 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_hand_back": {
+			"L_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_lower_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"L_hand": {
@@ -5554,7 +5556,17 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"screw_driver": {
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -5564,42 +5576,7 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"R_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"torso": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"F_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"hat_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm_black": {
+			"R_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -5609,12 +5586,17 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"L_upper_arm_back": {
+			"screw_driver_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"B_hat": {
+			"R_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -5624,12 +5606,12 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_hand_back": {
+			"F_hat": {
 				"color": [
-					{ "time": 0, "color": "ffffff00" }
+					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_upper_arm": {
+			"L_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -6113,69 +6095,14 @@
 			}
 		},
 		"slots": {
-			"torso_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"head": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"head_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_lower_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"screw_driver": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
 			"B_hat": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_upper_arm_back": {
+			"L_lower_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"torso": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"F_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"hat_back": {
@@ -6188,9 +6115,19 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_lower_arm_black": {
+			"R_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"L_upper_arm_back": {
@@ -6198,9 +6135,49 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
+			"lower_skirt": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"L_hand": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_hand_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"screw_driver_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"R_boot": {
@@ -6213,14 +6190,19 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"lower_skirt": {
+			"L_boot": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_boot": {
+			"R_hand_back": {
 				"color": [
-					{ "time": 0, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"screw_driver_ready": {
@@ -6679,9 +6661,11 @@
 			}
 		},
 		"slots": {
-			"torso_back": {
+			"L_lower_arm": {
 				"color": [
-					{ "time": 0, "color": "ffffff00" }
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.2333, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.5, "color": "ffffffff" }
 				]
 			},
 			"B_hat": {
@@ -6689,47 +6673,9 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"head_back": {
+			"hat_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_lower_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" },
-					{ "time": 0.2333, "color": "ffffff01", "curve": "stepped" },
-					{ "time": 0.5, "color": "ffffff01" }
-				]
-			},
-			"R_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 0.2333, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 0.5, "color": "ffffffff" }
-				]
-			},
-			"head": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver": {
-				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 0.2333, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 0.5, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 0.2333, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 0.5, "color": "ffffff00" }
 				]
 			},
 			"R_lower_arm": {
@@ -6744,12 +6690,70 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.2333, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.5, "color": "ffffff00" }
+				]
+			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"lower_skirt": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.2333, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.5, "color": "ffffffff" }
+				]
+			},
+			"screw_driver_ready": {
+				"color": [
+					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.2333, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.5, "color": "ffffffff" }
+				]
+			},
+			"L_hand_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" },
+					{ "time": 0.2333, "color": "ffffff01", "curve": "stepped" },
+					{ "time": 0.5, "color": "ffffff01" }
+				]
+			},
 			"F_hat": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_hand_back": {
+			"upper_skirt": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"head_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -6759,45 +6763,9 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"hat_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"upper_skirt": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffff01" },
-					{ "time": 0.2333, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 0.5, "color": "ffffff00" }
-				]
-			},
 			"R_boot": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 0.2333, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 0.5, "color": "ffffffff" }
-				]
-			},
-			"L_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 0.2333, "color": "ffffff00", "curve": "stepped" },
-					{ "time": 0.5, "color": "ffffff00" }
 				]
 			},
 			"L_upper_arm": {
@@ -6807,21 +6775,35 @@
 					{ "time": 0.5, "color": "ffffffff" }
 				]
 			},
-			"lower_skirt": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
 			"L_boot": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"screw_driver_ready": {
+			"R_hand_back": {
 				"color": [
-					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 0.2333, "color": "ffffffff", "curve": "stepped" },
-					{ "time": 0.5, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffff01" },
+					{ "time": 0.2333, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.5, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.2333, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.5, "color": "ffffff00" }
+				]
+			},
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.2333, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.5, "color": "ffffff00" }
 				]
 			}
 		}
@@ -7610,6 +7592,26 @@
 			}
 		},
 		"slots": {
+			"L_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff01" }
+				]
+			},
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"torso_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
@@ -7620,9 +7622,14 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_hand_back": {
+			"L_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"R_upper_arm": {
@@ -7630,14 +7637,14 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_hand": {
+			"R_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"screw_driver": {
+			"L_hand_back": {
 				"color": [
-					{ "time": 0, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"R_upper_arm_back": {
@@ -7645,7 +7652,7 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"R_lower_arm": {
+			"F_hat": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -7656,44 +7663,9 @@
 					{ "time": 0.2919, "color": "ffffffff" }
 				]
 			},
-			"L_lower_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"F_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"hat_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff01" }
-				]
-			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
 			"head_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"B_hat": {
@@ -7701,9 +7673,14 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_upper_arm_back": {
+			"screw_driver_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"L_upper_arm": {
@@ -7711,12 +7688,17 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
+			"screw_driver_ready": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"R_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"screw_driver_ready": {
+			"R_lower_arm_black": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -8421,6 +8403,31 @@
 			}
 		},
 		"slots": {
+			"B_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"hat_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"torso_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
@@ -8431,72 +8438,7 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"torso": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_lower_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"F_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"hat_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"head_back": {
+			"L_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -8506,17 +8448,22 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"B_hat": {
+			"R_upper_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_upper_arm_back": {
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"L_upper_arm": {
+			"L_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -8526,9 +8473,44 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"screw_driver_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"screw_driver_ready": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -8658,14 +8640,9 @@
 			}
 		},
 		"slots": {
-			"L_upper_arm": {
+			"L_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"screw_driver": {
@@ -8675,17 +8652,7 @@
 					{ "time": 0.1666, "color": "ffffff00" }
 				]
 			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_lower_arm_back": {
+			"L_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -8695,19 +8662,29 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_lower_arm": {
+			"R_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_upper_arm_back": {
+			"R_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"screw_driver_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"screw_driver_ready": {
@@ -8715,6 +8692,11 @@
 					{ "time": 0, "color": "ffffff00", "curve": "stepped" },
 					{ "time": 0.1333, "color": "ffffff00" },
 					{ "time": 0.1666, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -8806,14 +8788,9 @@
 			}
 		},
 		"slots": {
-			"L_upper_arm": {
+			"L_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"screw_driver": {
@@ -8827,17 +8804,7 @@
 					{ "time": 0.2, "color": "ffffffff" }
 				]
 			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_lower_arm_back": {
+			"L_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -8847,19 +8814,29 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_lower_arm": {
+			"R_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_upper_arm_back": {
+			"R_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"screw_driver_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"screw_driver_ready": {
@@ -8867,6 +8844,11 @@
 					{ "time": 0, "color": "ffffffff", "curve": "stepped" },
 					{ "time": 0.1666, "color": "ffffffff" },
 					{ "time": 0.2, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -9229,9 +9211,9 @@
 			}
 		},
 		"slots": {
-			"torso_back": {
+			"L_lower_arm": {
 				"color": [
-					{ "time": 0, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"B_hat": {
@@ -9239,44 +9221,9 @@
 					{ "time": 0, "color": "ffffff01" }
 				]
 			},
-			"head_back": {
+			"hat_back": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_lower_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"screw_driver": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"torso": {
@@ -9284,34 +9231,14 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"F_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"hat_back": {
+			"torso_back": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_upper_arm": {
+			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"L_upper_arm_back": {
@@ -9324,14 +9251,69 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
+			"R_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_hand_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_lower_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"R_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"screw_driver_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"screw_driver_ready": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
 				]
 			}
 		}
@@ -9551,24 +9533,9 @@
 			}
 		},
 		"slots": {
-			"torso_back": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"head": {
+			"L_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"head_back": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
 				]
 			},
 			"L_lower_arm_back": {
@@ -9576,22 +9543,7 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_upper_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"screw_driver": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_upper_arm_back": {
+			"hat_back": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -9606,29 +9558,24 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"L_lower_arm": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"R_hand": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"F_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"hat_back": {
+			"torso_back": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"screw_driver_back": {
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"R_upper_arm": {
@@ -9636,12 +9583,27 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
+			"head": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_hand_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
 			"R_lower_arm_black": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_upper_arm_back": {
+			"head_back": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -9651,14 +9613,34 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"R_hand_back": {
+			"screw_driver_back": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_arm": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			},
 			"screw_driver_ready": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"F_hat": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_hand_back": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
 				]
 			}
 		}
@@ -9963,17 +9945,12 @@
 			}
 		},
 		"slots": {
-			"head": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_upper_arm_back": {
+			"R_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"R_hand": {
+			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -9983,7 +9960,27 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"torso": {
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_boot": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -9998,22 +9995,27 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
 			"L_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_hand": {
+			"B_hat": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_hand_back": {
+			"upper_skirt": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"torso_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"L_upper_arm_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -10023,27 +10025,7 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"screw_driver_ready": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"torso_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"B_hat": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"R_boot": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_hand_back": {
+			"L_hand": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -10053,22 +10035,12 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"screw_driver": {
+			"head": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_boot": {
+			"L_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -10078,7 +10050,12 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"head_back": {
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"screw_driver_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -10088,9 +10065,14 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"upper_skirt": {
+			"screw_driver_ready": {
 				"color": [
-					{ "time": 0, "color": "ffffffff" }
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -10360,17 +10342,12 @@
 			}
 		},
 		"slots": {
-			"head": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_upper_arm_back": {
+			"R_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"R_hand": {
+			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -10380,7 +10357,27 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"torso": {
+			"R_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"head_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"R_boot": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_hand": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"L_boot": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -10395,32 +10392,17 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"R_lower_arm_black": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
 			"L_lower_arm": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"L_hand": {
+			"B_hat": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_hand_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"lower_skirt": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"screw_driver_ready": {
+			"upper_skirt": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -10430,17 +10412,17 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"B_hat": {
+			"L_upper_arm_back": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
+			"lower_skirt": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_boot": {
-				"color": [
-					{ "time": 0, "color": "ffffffff" }
-				]
-			},
-			"L_hand_back": {
+			"L_hand": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -10450,22 +10432,12 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"screw_driver": {
+			"head": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"R_upper_arm_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"L_boot": {
+			"L_hand_back": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
 				]
@@ -10475,7 +10447,12 @@
 					{ "time": 0, "color": "ffffff00" }
 				]
 			},
-			"head_back": {
+			"torso": {
+				"color": [
+					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"screw_driver_back": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
@@ -10485,9 +10462,14 @@
 					{ "time": 0, "color": "ffffffff" }
 				]
 			},
-			"upper_skirt": {
+			"screw_driver_ready": {
 				"color": [
 					{ "time": 0, "color": "ffffffff" }
+				]
+			},
+			"R_lower_arm_black": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
 				]
 			}
 		}
@@ -10857,17 +10839,17 @@
 			}
 		},
 		"slots": {
+			"screw_driver": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" }
+				]
+			},
 			"head": {
 				"attachment": [
 					{ "time": 0, "name": null }
 				]
 			},
 			"screw_driver_back": {
-				"color": [
-					{ "time": 0, "color": "ffffff00" }
-				]
-			},
-			"screw_driver": {
 				"color": [
 					{ "time": 0, "color": "ffffff00" }
 				]
