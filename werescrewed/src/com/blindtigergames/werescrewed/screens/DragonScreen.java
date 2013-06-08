@@ -1337,12 +1337,12 @@ public class DragonScreen extends Screen {
 		addFGSkeleton( neck_skeleton );
 		
 		
-		float bodyScale = 1f/.375f;
+		float bodyScale = 1f/.385f;
 		Skeleton bodySkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "body_skeleton" );
 		//body exterior //32,11
 
-		Vector2 bodyPos = new Vector2(-3468,-1509);
+		Vector2 bodyPos = new Vector2(-3468,-1433);
 		Sprite s = Sprite.scale(body_neck.createSprite( "body_left" ),bodyScale);
 
 		bodySkeleton.addFGDecal( s, bodyPos );
@@ -1369,24 +1369,17 @@ public class DragonScreen extends Screen {
 		rotateScrewSkeleton.addBGDecal( s, new Vector2(-s.getWidth( )/2,-30) );//-s.getHeight( )/2
 		addBGEntity( rotateScrewSkeleton );
 		
-		//l body_rotate_puzzle2
-		//m body_rotate_puzzle3
-		//r body_rotate_puzzle4
+
 		Vector2 bodyP = bodySkeleton.getPositionPixel( );
 		screw = LevelFactory.entities.get("body_rotate_puzzle2");
 		Vector2 screwP = new Vector2(-338,-383);
 		bodySkeleton.addBGDecal( dragon_objects.createSprite( "rotation_machine_decal_left" ),new Vector2(0,8).add( screwP ));
 
-//		screw = LevelFactory.entities.get("body_rotate_puzzle3");
-//		bodySkeleton.addBGDecal( dragon_objects.createSprite( "rotation_machine_decal_middle" ),new Vector2(498,-73).add( screwP ) );
-
 		screw = LevelFactory.entities.get("body_rotate_puzzle4");
 		bodySkeleton.addBGDecal( dragon_objects.createSprite( "rotation_machine_decal_right" ),new Vector2(995,9).add( screwP ));
 		addBGSkeleton( bodySkeleton );
-		//338,383
 		
 		//balloons
-		//body_balloon_center/left/right
 		TextureAtlas balloons = WereScrewedGame.manager.getAtlas( "balloons" );
 		
 		String[] bodyBalloons = {"body_balloon_left","body_balloon_center","body_balloon_right"};
