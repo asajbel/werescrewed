@@ -899,7 +899,7 @@ public class DragonScreen extends Screen {
 		
 		TextureAtlas clouds_sun_bg = WereScrewedGame.manager.getAtlas( "clouds_sun_bg" );
 		TextureAtlas mountains_back_clouds = WereScrewedGame.manager.getAtlas( "mountains-back-clouds" );
-		float frontTopCloudsY = 2400, midOrangeCloudsY = -900, bottomFrontCloudsY = -1000;
+		float frontTopCloudsY = 2650, midOrangeCloudsY = -900, bottomFrontCloudsY = -1000;
 		float frontCloudVariation = 600;
 		float numFrontClouds = 50;
 		float xMax = 32000, xMin = -7000;
@@ -1268,9 +1268,8 @@ public class DragonScreen extends Screen {
 		//fg
 		Sprite s = tailAtlas.createSprite( "tail3" );
 		s.setOrigin( 0, 0 );
-		tail3_skeleton.addFGDecal( Sprite.scale( s, 2.6f), new Vector2(-820-330,-580-134-28) );//227,17
-		tail3_skeleton.fgSprite=null;//237,98
-		//tail3_skeleton.setFgFade( true );
+		tail3_skeleton.addFGDecal( Sprite.scale( s, 2.6f), new Vector2(-820-330,-580-134-28) );
+		tail3_skeleton.fgSprite=null;
 		addFGSkeleton( tail3_skeleton );
 		
 		//bg
@@ -1281,14 +1280,14 @@ public class DragonScreen extends Screen {
 	
 	void bodyDecals(){
 		Skeleton neck_skeleton = (Skeleton)LevelFactory.entities.get( "neck_skeleton" );
-		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "body-neck" );
+		TextureAtlas body_neck = WereScrewedGame.manager.getAtlas( "body-neck" );
 		TextureAtlas bodyRight = WereScrewedGame.manager.getAtlas( "body_right-head_interior" );
 		TextureAtlas interiorLeftAtlas = WereScrewedGame.manager.getAtlas( "interior_tail3_bodyleft" );
 		TextureAtlas interiorRightAtlas = WereScrewedGame.manager.getAtlas( "interior_tail2_bodyright" );
 		TextureAtlas dragon_objects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
 		
 		//neck
-		neck_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "neck" ), 2f), new Vector2(-1167,-914) );//4,414
+		neck_skeleton.addFGDecal( Sprite.scale( body_neck.createSprite( "neck" ), 2f), new Vector2(-1167,-914) );//4,414
 		neck_skeleton.fgSprite=null;
 		//neck_skeleton.setFgFade( false );//3497.1770
 		addFGSkeleton( neck_skeleton );
@@ -1299,7 +1298,7 @@ public class DragonScreen extends Screen {
 				.get( "body_skeleton" );
 		//body exterior //32,11
 		Vector2 bodyPos = new Vector2(-3468,-1509);
-		Sprite s = Sprite.scale(tailAtlas.createSprite( "body_left" ),bodyScale);
+		Sprite s = Sprite.scale(body_neck.createSprite( "body_left" ),bodyScale);
 		bodySkeleton.addFGDecal( s, bodyPos );
 		bodySkeleton.addFGDecal( Sprite.scale(bodyRight.createSprite( "body_right" ),bodyScale), bodyPos.cpy( ).add( s.getWidth( )*bodyScale, 0 ));
 		addFGSkeleton( bodySkeleton );
@@ -1361,10 +1360,20 @@ public class DragonScreen extends Screen {
 		for(int i=0; i<9;++i){
 			//dragon_objects
 			s = dragon_objects.createSprite( "mesh" );
-			mesh_skeleton1.addBGDecal( s, new Vector2(0,-s.getHeight()*i));
+			mesh_skeleton1.addBGDecal( s, new Vector2(-220,-s.getHeight()*i+i*7+612));
 		}
 		addBGSkeleton( mesh_skeleton1 );
+		
+		
 		Skeleton body_lower_skeleton = (Skeleton)LevelFactory.entities.get( "body_lower_skeleton" );
+		Vector2 legPos = new Vector2(-3*1280+120+34,-700+183-63);
+		body_lower_skeleton.addFGDecal(  body_neck.createSprite( "legs_left" ), legPos.cpy());
+		for(int i=0; i<9;++i){
+			//dragon_objects
+			s = body_neck.createSprite( "legs_middle" );
+			body_lower_skeleton.addFGDecal( s, new Vector2(s.getWidth()*(i+0)+377-i*7,0).add(legPos));
+		}
+		addFGSkeleton( body_lower_skeleton );
 	}
 
 	void createMotor(Skeleton rotating, Skeleton parent, float motorSpeed){
