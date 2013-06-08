@@ -1,5 +1,7 @@
 package com.blindtigergames.werescrewed.camera;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
@@ -33,8 +35,8 @@ public class Camera {
 	private Vector2 translateVelocity;
 	private Vector2 translateTarget;
 	private float targetBuffer;
-	private int prevActiveAnchors;
-	private int currActiveAnchors;
+	private ArrayList< Anchor > prevActiveAnchors;
+	private ArrayList< Anchor > currActiveAnchors;
 	private boolean steering;
 
 	// Zoom
@@ -113,11 +115,11 @@ public class Camera {
 		this.targetZoom = MIN_ZOOM;
 		this.anchorList = AnchorList.getInstance( camera );
 		this.anchorList.clear( );
-		
+
 		this.fps = 60;
 
-		this.prevActiveAnchors = 0;
-		this.currActiveAnchors = 0;
+		this.prevActiveAnchors = new ArrayList< Anchor >( );
+		this.currActiveAnchors = new ArrayList< Anchor >( );
 
 		this.distance = new Vector2( 0, 0 );
 		this.zoomChange = 0;
@@ -154,8 +156,8 @@ public class Camera {
 	 */
 	public Rectangle getBounds( ) {
 
-		//screenBounds.x = screenBounds.x - 2f;
-		//screenBounds.width = screenBounds.width - 2f;
+		// screenBounds.x = screenBounds.x - 2f;
+		// screenBounds.width = screenBounds.width - 2f;
 
 		return screenBounds;
 	}
@@ -178,7 +180,6 @@ public class Camera {
 			debugInput = true;// now camera is a toggle
 		}
 		if ( Gdx.input.isKeyPressed( Keys.N ) ) {
-			if(!debugRender)Gdx.app.log( "Camera Zoom"	, ""+camera.zoom );
 			debugRender = true;
 		}
 
@@ -227,11 +228,18 @@ public class Camera {
 						translateTarget.y );
 				prevTargZoom = targetZoom;
 				// Check anchor differences
-				currActiveAnchors = AnchorList.getInstance( )
-						.getNumActiveAnchors( );
+				currActiveAnchors.clear( );
+				for ( Anchor anchor : AnchorList.getInstance( ).anchorList ) {
+					if ( anchor.activated ) {
+						currActiveAnchors.add( anchor );
+					}
+				}
 				// Do the actual translation and zooming
 				adjustCamera( deltaTime );
-				prevActiveAnchors = currActiveAnchors;
+				prevActiveAnchors.clear( );
+				for ( Anchor anchor : currActiveAnchors ) {
+					prevActiveAnchors.add( anchor );
+				}
 			}
 
 			// render buffers areas anchors
@@ -310,7 +318,7 @@ public class Camera {
 
 		// If a buffer has left the screen
 		if ( !steering
-				&& ( ( currActiveAnchors != prevActiveAnchors && ( outside || camera.zoom > targetZoom
+				&& ( ( !currActiveAnchors.equals( prevActiveAnchors ) && ( outside || camera.zoom > targetZoom
 						+ ZOOM_SIG_DIFF ) ) || ( zoomIn && camera.zoom == STANDARD_ZOOM ) ) ) {
 			startSteering( );
 		}

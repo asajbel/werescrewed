@@ -4335,7 +4335,7 @@
                 <Item xsi:type="RectangleItem" Name="Rectangle_0320" Visible="true">
                     <Position>
                         <X>816</X>
-                        <Y>-4928</Y>
+                        <Y>-4899</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4898,8 +4898,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="chestPlat8" Visible="true">
                     <Position>
-                        <X>-256</X>
-                        <Y>-4912</Y>
+                        <X>-257</X>
+                        <Y>-4891</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5430,8 +5430,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="checkpoint2" Visible="true">
                     <Position>
-                        <X>1088</X>
-                        <Y>-4912</Y>
+                        <X>1090</X>
+                        <Y>-4899</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -25263,8 +25263,8 @@
         <NextItemNumber>976</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-259.322632</X>
-            <Y>-2226.05054</Y>
+            <X>-9.322128</X>
+            <Y>-2409.38477</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
