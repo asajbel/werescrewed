@@ -7,14 +7,10 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Joint;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -28,20 +24,16 @@ import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.action.RotateTweenAction;
-import com.blindtigergames.werescrewed.entity.action.SetRobotStateAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Enemy;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
-import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.hazard.MouthFire;
-import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.DirectionFlipMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
-import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.particles.EntityParticleEmitter;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
@@ -1150,9 +1142,9 @@ public class DragonScreen extends Screen {
 		
 		
 		scale=1f/.65f;
-		Platform brain = (Platform)LevelFactory.entities.get("dragon_brain");
+		Platform brain = dragonBrain;
 		s = dragon_objects.createSprite( "dragon_brain" );
-		brain.addFGDecal( Sprite.scale(s,1f/.65f),new Vector2(-s.getWidth( )/2*scale,-s.getHeight( )/2*scale) );
+		brain.addFGDecal( Sprite.scale(s,scale),new Vector2(-s.getWidth( )/2*scale,-s.getHeight( )/2*scale) );
 		addFGEntity( brain );
 	}
 	
@@ -1464,8 +1456,9 @@ public class DragonScreen extends Screen {
 				new Vector2(-brain_impulse, 0),
 				 level.world, true );
 		
-		for(int i =0; i < 1; ++i ){
-			brainEmitter1.addParticle( createBoltEnemy( pos.cpy().add(0,n*h), i ), 1, 0, i*2 );
+		int boltsPerEmitter = 2, boltLife = 5;
+		for(int i =0; i < boltsPerEmitter; ++i ){
+			brainEmitter1.addParticle( createBoltEnemy( pos.cpy().add(0,n*h), i ), boltLife, 0, i*boltLife/boltsPerEmitter );
 		}
 		level.root.addLooseEntity( brainEmitter1 );
 		
@@ -1475,8 +1468,8 @@ public class DragonScreen extends Screen {
 				new Vector2(brain_impulse, 0),
 				 level.world, true );
 		
-		for(int i =0; i < 1; ++i ){
-			brainEmitter2.addParticle( createBoltEnemy( pos2.cpy().add(0,n*h), i ), 1, 0, i*2 );
+		for(int i =0; i < boltsPerEmitter; ++i ){
+			brainEmitter2.addParticle( createBoltEnemy( pos2.cpy().add(0,n*h), i ), boltLife, 0, i*boltLife/boltsPerEmitter );
 		}
 		level.root.addLooseEntity( brainEmitter2 );
 		
@@ -1486,8 +1479,8 @@ public class DragonScreen extends Screen {
 				new Vector2(-brain_impulse, 0),
 				 level.world, true );
 		
-		for(int i =0; i < 1; ++i ){
-			brainEmitter3.addParticle( createBoltEnemy( pos3.cpy().add(0,n*h), i ), 1, 0, i*2 );
+		for(int i =0; i < boltsPerEmitter; ++i ){
+			brainEmitter3.addParticle( createBoltEnemy( pos3.cpy().add(0,n*h), i ), boltLife, 0, i*boltLife/boltsPerEmitter );
 		}
 		level.root.addLooseEntity( brainEmitter3 );
 		
@@ -1497,15 +1490,15 @@ public class DragonScreen extends Screen {
 				new Vector2(brain_impulse, 0),
 				 level.world, true );
 		
-		for(int i =0; i < 1; ++i ){
-			brainEmitter4.addParticle( createBoltEnemy( pos4.cpy().add(0,n*h), i ), 1, 0, i*2 );
+		for(int i =0; i < boltsPerEmitter; ++i ){
+			brainEmitter4.addParticle( createBoltEnemy( pos4.cpy().add(0,n*h), i ), boltLife, 0, i*boltLife/boltsPerEmitter );
 		}
 		level.root.addLooseEntity( brainEmitter4 );
 	}
 	
 	Enemy createBoltEnemy(Vector2 pos, int index){
 		Enemy hotbolt = new Enemy( "hot-bolt"+index, pos,25, level.world, true );
-		hotbolt.addMover( new DirectionFlipMover( false, 0.002f, hotbolt, 1f, .04f ) );
+		hotbolt.addMover( new DirectionFlipMover( false, 0.002f, hotbolt, 1.5f, .04f ) );
 		addBGEntity( hotbolt );
 		return hotbolt;
 	}
