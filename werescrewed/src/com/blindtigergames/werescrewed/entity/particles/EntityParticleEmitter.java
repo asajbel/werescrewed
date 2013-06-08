@@ -110,6 +110,7 @@ public class EntityParticleEmitter extends Entity {
 				}
 				if ( p.isDead( ) ) {
 					p.resetParticle( this.getPosition( ) );
+					p.getEntity( ).body.applyLinearImpulse( emitionImpusle, p.getEntity( ).body.getWorldCenter( ) );
 				}
 			}
 		}

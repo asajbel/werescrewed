@@ -1373,8 +1373,9 @@ public class DragonScreen extends Screen {
 			s = body_neck.createSprite( "legs_middle" );
 			body_lower_skeleton.addFGDecal( s, new Vector2(s.getWidth()*(i+0)+377-i*7,0).add(legPos));
 		}
+		body_lower_skeleton.addFGDecal( body_neck.createSprite( "legs_right" ), legPos.cpy().add(9*s.getWidth( )-7+326,-7));
 		addFGSkeleton( body_lower_skeleton );
-	}
+	}//326,7
 
 	void createMotor(Skeleton rotating, Skeleton parent, float motorSpeed){
 		
