@@ -1412,16 +1412,16 @@ public class DragonScreen extends Screen {
 		
 		
 		Skeleton body_lower_skeleton = (Skeleton)LevelFactory.entities.get( "body_lower_skeleton" );
-		Vector2 legPos = new Vector2(-3*1280+120+34,-700+183-63);
+		Vector2 legPos = new Vector2(-3*1280+120+34-21,-700+183-63+21);
 		body_lower_skeleton.addFGDecal(  body_neck.createSprite( "legs_left" ), legPos.cpy());
 		for(int i=0; i<9;++i){
 			//dragon_objects
 			s = body_neck.createSprite( "legs_middle" );
-			body_lower_skeleton.addFGDecal( s, new Vector2(s.getWidth()*(i+0)+377-i*7,0).add(legPos));
+			body_lower_skeleton.addFGDecal( s, new Vector2(s.getWidth()*(i+0)+377+3-i*7,3).add(legPos));
 		}
-		body_lower_skeleton.addFGDecal( body_neck.createSprite( "legs_right" ), legPos.cpy().add(9*s.getWidth( )-7+326,-7));
+		body_lower_skeleton.addFGDecal( body_neck.createSprite( "legs_right" ), legPos.cpy().add(9*s.getWidth( )-7+326+5,-7+9));
 		addFGSkeleton( body_lower_skeleton );
-	}//326,7
+	}
 
 	void createMotor(Skeleton rotating, Skeleton parent, float motorSpeed){
 		
