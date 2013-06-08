@@ -1664,7 +1664,7 @@ public class LevelFactory {
 				item.getAtlasName( ), "" );
 		parent.addKinematicPlatform( out );
 		entities.put( item.name, out );
-		addBackGroundEntity(out);
+		//addBackGroundEntity(out);
 		return out;
 	}
 
