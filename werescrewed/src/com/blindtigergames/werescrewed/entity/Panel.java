@@ -29,19 +29,20 @@ public class Panel extends Platform {
 		this.body = world.createBody( bodyDef );
 
 		if ( !initialPanel.equals( "" ) ) {
-			//changeSprite( panelAtlas.createSprite( initialPanel ) );
-			//this.sprite.setPosition( posPix.cpy( ) );
+			changeSprite( panelAtlas.createSprite( initialPanel ) );
+			this.sprite.setPosition( posPix.cpy( ) );
 		}
 	}
 
 	public void setPanelSprite( String spriteName ) {
-		//Vector2 oldPos = getPositionPixel( );
-		//float rotation = ( sprite == null ) ? body.getAngle( ) : sprite.getRotation( );
-		//changeSprite( panelAtlas.createSprite( spriteName ) );
-		clearAllDecals();
-		Sprite s = panelAtlas.createSprite( spriteName );
-		addBGDecal( s);//, new Vector2(-s.getWidth()/2,-s.getHeight()/2) );
-		//sprite.setPosition( oldPos );
-		//sprite.rotate( rotation );
+		Vector2 oldPos = getPositionPixel( );
+		float rotation = ( sprite == null ) ? body.getAngle( ) : sprite.getRotation( );
+		changeSprite( panelAtlas.createSprite( spriteName ) );
+		sprite.setPosition( oldPos );
+		sprite.rotate( rotation );
+		
+		//clearAllDecals();
+				//Sprite s = panelAtlas.createSprite( spriteName );
+				//addBGDecal(s);//, new Vector2(-s.getWidth()/2,-s.getHeight()/2) );
 	}
 }
