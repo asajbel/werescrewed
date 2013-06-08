@@ -33,6 +33,7 @@ import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Enemy;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
+import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.hazard.MouthFire;
 import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.DirectionFlipMover;
@@ -115,7 +116,7 @@ public class DragonScreen extends Screen {
 		mouthFire = new MouthFire( "mouth-fire", new Vector2(25000, 900), new Vector2(32000, 75),
 				4f, 100f, 800f, level.world);
 		Skeleton head_skeleton = ( Skeleton ) LevelFactory.entities
-				.get( "head_skeleton" );
+				.get( "head_sub_skeleton1" );
 		head_skeleton.addHazard( mouthFire );
 		
 		jawStructureScrew = ( StructureScrew ) LevelFactory.entities
@@ -519,23 +520,23 @@ public class DragonScreen extends Screen {
 	}
 
 	private void initPuzzleScrews( ) {
-		PuzzleScrew tail2PuzzleScrew1 = ( PuzzleScrew ) LevelFactory.entities
-				.get( "tail2_puzzle_screw1" );
-		PuzzleScrew tail2PuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
-				.get( "tail2_puzzle_screw2" );
-
-		AnalogRotateMover anlgRot = new AnalogRotateMover( 0.6f, level.world );
-
-		AnalogRotateMover anlgRot2 = new AnalogRotateMover( 0.6f, level.world );
-
-		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot );
-		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot );
-
-		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot2 );
-		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot2 );
-
-		tail2PuzzleScrew1.puzzleManager.addScrew( tail2PuzzleScrew2 );
-		tail2PuzzleScrew2.puzzleManager.addScrew( tail2PuzzleScrew1 );
+//		PuzzleScrew tail2PuzzleScrew1 = ( PuzzleScrew ) LevelFactory.entities
+//				.get( "tail2_puzzle_screw1" );
+//		PuzzleScrew tail2PuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
+//				.get( "tail2_puzzle_screw2" );
+//
+//		AnalogRotateMover anlgRot = new AnalogRotateMover( 0.6f, level.world );
+//
+//		AnalogRotateMover anlgRot2 = new AnalogRotateMover( 0.6f, level.world );
+//
+//		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot );
+//		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot );
+//
+//		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot2 );
+//		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot2 );
+//
+//		tail2PuzzleScrew1.puzzleManager.addScrew( tail2PuzzleScrew2 );
+//		tail2PuzzleScrew2.puzzleManager.addScrew( tail2PuzzleScrew1 );
 
 		PuzzleScrew tail3PuzzleScrew1 = ( PuzzleScrew ) LevelFactory.entities
 				.get( "tail3_puzzle_screw1" );
@@ -1257,6 +1258,39 @@ public class DragonScreen extends Screen {
 		tail2_skeleton.addBGDecal( Sprite.scale( tailInterior.createSprite( "tail2_interior" ), 2), new Vector2(-1137,-525) );//-1137,-525
 		tail2_skeleton.bgSprite=null;
 		addBGSkeleton( tail2_skeleton );
+		
+		PowerSwitch tail2Switch1 = ( PowerSwitch ) LevelFactory.entities
+				.get( "tail2_switch1" );
+		PowerSwitch tail2Switch2 = ( PowerSwitch ) LevelFactory.entities
+				.get( "tail2_switch2" );
+		PowerSwitch tail2Switch3 = ( PowerSwitch ) LevelFactory.entities
+				.get( "tail2_switch3" );
+		Pipe tail2Pipe1 = ( Pipe ) LevelFactory.entities.get( "tail2_pipe1" );
+		
+		Pipe tail2Pipe2 = ( Pipe ) LevelFactory.entities.get( "tail2_pipe2" );
+		
+		
+		
+		tail2Switch1.actOnEntity = true;
+		tail2Switch1.addEntityToTrigger( tail2Pipe1 );
+		tail2Switch1.addEntityToTrigger( tail2Pipe2 );
+		tail2Switch1
+				.addBeginIAction( new RotateTweenAction( -Util.PI / 2 ) );
+		tail2Switch1.addEndIAction( new RotateTweenAction( 0 ) );
+		
+		tail2Switch2.actOnEntity = true;
+		tail2Switch2.addEntityToTrigger( tail2Pipe1 );
+		tail2Switch2.addEntityToTrigger( tail2Pipe2 );
+		tail2Switch2
+				.addBeginIAction( new RotateTweenAction( -Util.PI / 2 ) );
+		tail2Switch2.addEndIAction( new RotateTweenAction( 0 ) );
+
+		tail2Switch3.actOnEntity = true;
+		tail2Switch3.addEntityToTrigger( tail2Pipe1 );
+		tail2Switch3.addEntityToTrigger( tail2Pipe2 );
+		tail2Switch3
+				.addBeginIAction( new RotateTweenAction( -Util.PI / 2 ) );
+		tail2Switch3.addEndIAction( new RotateTweenAction( 0 ) );
 	}
 	
 	void tail3Decals(){
@@ -1277,6 +1311,8 @@ public class DragonScreen extends Screen {
 		tail3_skeleton.addBGDecal( Sprite.scale( interiorAtlas.createSprite( "tail3_interior" ), 2.06f, 2.12f), new Vector2(-1100,-685) );//227,17
 		tail3_skeleton.bgSprite=null;
 		addBGSkeleton( tail3_skeleton );
+		
+		
 	}
 	
 	void bodyDecals(){
@@ -1298,7 +1334,7 @@ public class DragonScreen extends Screen {
 		Skeleton bodySkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "body_skeleton" );
 		//body exterior //32,11
-		Vector2 bodyPos = new Vector2(-3468,-1509);
+		Vector2 bodyPos = new Vector2(-3550,-1459);
 		Sprite s = Sprite.scale(tailAtlas.createSprite( "body_left" ),bodyScale);
 		bodySkeleton.addFGDecal( s, bodyPos );
 		bodySkeleton.addFGDecal( Sprite.scale(bodyRight.createSprite( "body_right" ),bodyScale), bodyPos.cpy( ).add( s.getWidth( )*bodyScale, 0 ));
@@ -1332,8 +1368,8 @@ public class DragonScreen extends Screen {
 		Vector2 screwP = new Vector2(-338,-383);
 		bodySkeleton.addBGDecal( dragon_objects.createSprite( "rotation_machine_decal_left" ),new Vector2(0,8).add( screwP ));
 
-		screw = LevelFactory.entities.get("body_rotate_puzzle3");
-		bodySkeleton.addBGDecal( dragon_objects.createSprite( "rotation_machine_decal_middle" ),new Vector2(498,-73).add( screwP ) );
+//		screw = LevelFactory.entities.get("body_rotate_puzzle3");
+//		bodySkeleton.addBGDecal( dragon_objects.createSprite( "rotation_machine_decal_middle" ),new Vector2(498,-73).add( screwP ) );
 
 		screw = LevelFactory.entities.get("body_rotate_puzzle4");
 		bodySkeleton.addBGDecal( dragon_objects.createSprite( "rotation_machine_decal_right" ),new Vector2(995,9).add( screwP ));
@@ -1396,7 +1432,7 @@ public class DragonScreen extends Screen {
 				new Vector2( new Vector2(13750, 300).add(0,n*h) ),
 				new Vector2(),
 				 level.world, true );
-		for(int i =0; i < 5; ++i ){
+		for(int i =0; i < 4; ++i ){
 			fireballEmitter.addParticle( createBoltEnemy( new Vector2(13750, 300).add(0,n*h), i ), 10, 0, i*5 );
 		}
 		level.root.addLooseEntity( fireballEmitter );

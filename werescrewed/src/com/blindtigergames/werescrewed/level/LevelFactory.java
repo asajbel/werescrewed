@@ -941,6 +941,10 @@ public class LevelFactory {
 						Util.CATEGORY_EVERYTHING );
 			}
 		}
+		
+		if(item.props.containsKey( "black" )){
+			out.setTilesBlack();
+		}
 		return out;
 	}
 
@@ -1032,6 +1036,11 @@ public class LevelFactory {
 			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
 					Util.CATEGORY_EVERYTHING );
 		}
+		
+		if(item.props.containsKey( "nopoly" )){
+			out.sprite = null;
+		}
+		
 		entities.put( item.name, out );
 		return out;
 	}
@@ -1734,7 +1743,7 @@ public class LevelFactory {
 
 		Hazard hazard = hazardBuilder.buildSpikes( );
 		parent.addKinematicPlatform( hazard );
-
+		entities.put( item.name, hazard );
 		return hazard;
 	}
 
