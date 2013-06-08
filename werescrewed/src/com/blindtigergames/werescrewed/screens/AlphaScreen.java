@@ -366,7 +366,7 @@ public class AlphaScreen extends Screen {
 			}
 		}
 
-		if ( Gdx.input.isKeyPressed( Keys.NUM_9 ) ) {
+		if ( WereScrewedGame.debug && Gdx.input.isKeyPressed( Keys.NUM_9 ) ) {
 			powerSwitch1.setState( true );
 			powerSwitch2.setState( true );
 			powerSwitch3.setState( true );

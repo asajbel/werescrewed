@@ -47,6 +47,7 @@ import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.level.LevelFactory;
+import com.blindtigergames.werescrewed.sound.PlaySoundTweenCallback;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -70,6 +71,7 @@ public class DragonScreen extends Screen {
 	float mouthFireTimer=0;
 	final float mouthFireDelay=23f, mouthFireTotalTime=36f;
 	boolean mouthFireTriggered=false;
+	boolean mouthClose1Flag=false,mouthClose2Flag=false, calmRoarFlag=false;
 	
 	// the numbers here correspond to gleed numbers
 	Fire tail3Fire2, tail3Fire3, tail3Fire4, tail3Fire5, tail3Fire6;
@@ -129,6 +131,7 @@ public class DragonScreen extends Screen {
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
 				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
 				.start( ).delay( 2f ) );
+		
 		//pizza3
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
@@ -269,13 +272,29 @@ public class DragonScreen extends Screen {
 //		}
 		
 		mouthFireTimer+=deltaTime;
+		if(mouthFireTimer>=8f&&!calmRoarFlag){
+			calmRoarFlag=true;
+			sounds.playSound( "roar_calm", 0.0f );
+		}
+		if(mouthFireTimer>=15f&&!mouthClose1Flag){
+			mouthClose1Flag=true;
+			sounds.playSound( "jaw_close", 0.0f );
+		}
+		if(mouthFireTimer>=36&&!mouthClose2Flag){
+			mouthClose2Flag=true;
+			sounds.playSound( "jaw_close", 0.0f );
+		}
 		if(mouthFireTimer>=mouthFireDelay && !mouthFireTriggered){
+			sounds.playSound( "roar_angry", 0.0f );
 			mouthFire.setActiveHazard( true );
 			mouthFireTriggered=true;
 		}
 		if(mouthFireTimer>=mouthFireTotalTime){
 			mouthFireTimer=0;
 			mouthFireTriggered=false;
+			calmRoarFlag=false;
+			mouthClose1Flag=false;
+			mouthClose2Flag=false;
 		}
 		
 		// Zoom out and fade the head skeleton back in so you can see the jaw
