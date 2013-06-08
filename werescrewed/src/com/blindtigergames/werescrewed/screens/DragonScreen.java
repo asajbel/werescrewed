@@ -47,7 +47,6 @@ import com.blindtigergames.werescrewed.eventTrigger.EventTrigger;
 import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.level.LevelFactory;
-import com.blindtigergames.werescrewed.sound.PlaySoundTweenCallback;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
 
