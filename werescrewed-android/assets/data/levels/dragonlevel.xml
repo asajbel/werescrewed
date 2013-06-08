@@ -34,7 +34,7 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="tail_skeleton_super" Visible="false">
+                <Item xsi:type="RectangleItem" Name="tail_skeleton_super" Visible="true">
                     <Position>
                         <X>5104</X>
                         <Y>-3328</Y>
@@ -68,8 +68,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>24688</X>
-                        <Y>-2976</Y>
+                        <X>19232</X>
+                        <Y>-3088</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -191,8 +191,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
-                        <X>24592</X>
-                        <Y>-2912</Y>
+                        <X>19136</X>
+                        <Y>-3024</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -222,8 +222,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
-                        <X>24720</X>
-                        <Y>-2880</Y>
+                        <X>19264</X>
+                        <Y>-2992</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -896,8 +896,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>64</Y>
@@ -1878,8 +1878,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>64</Y>
@@ -3366,8 +3366,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -4805,8 +4805,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -4842,8 +4842,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -4879,8 +4879,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -4968,8 +4968,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -5011,8 +5011,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -5189,8 +5189,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -5267,8 +5267,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -6585,8 +6585,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>64</Y>
@@ -6678,7 +6678,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="head_sub_skeleton1" Visible="false">
+                <Item xsi:type="RectangleItem" Name="head_sub_skeleton1" Visible="true">
                     <Position>
                         <X>23408</X>
                         <Y>-2384</Y>
@@ -8017,8 +8017,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -8652,8 +8652,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -9287,8 +9287,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -9327,8 +9327,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -9537,8 +9537,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -9658,8 +9658,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -9695,8 +9695,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -9732,8 +9732,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -9769,8 +9769,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -9881,8 +9881,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>64</Y>
@@ -9915,8 +9915,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>64</Y>
@@ -9955,8 +9955,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -10073,8 +10073,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -10376,8 +10376,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -10675,8 +10675,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -10715,8 +10715,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -10755,8 +10755,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -10876,8 +10876,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -10913,8 +10913,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -10950,8 +10950,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -10987,8 +10987,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -11108,8 +11108,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -11145,8 +11145,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -11182,8 +11182,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -11219,8 +11219,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -11349,8 +11349,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -11386,8 +11386,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -11455,8 +11455,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -11547,8 +11547,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -11593,8 +11593,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -12544,8 +12544,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -12584,8 +12584,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -12722,8 +12722,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -12762,8 +12762,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -12802,8 +12802,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -12811,8 +12811,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="body_room_rotate_screw3" Visible="true">
                     <Position>
-                        <X>19008</X>
-                        <Y>-640</Y>
+                        <X>19152</X>
+                        <Y>-560</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -12842,8 +12842,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -12851,8 +12851,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="body_room_rotate_screw4" Visible="true">
                     <Position>
-                        <X>19968</X>
-                        <Y>-640</Y>
+                        <X>19856</X>
+                        <Y>-544</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -12882,8 +12882,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -12922,8 +12922,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -12931,8 +12931,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="body_room_rotate_screw6" Visible="true">
                     <Position>
-                        <X>19008</X>
-                        <Y>-1664</Y>
+                        <X>19104</X>
+                        <Y>-1808</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -12962,8 +12962,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -13002,8 +13002,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -13011,8 +13011,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="body_room_rotate_screw8" Visible="true">
                     <Position>
-                        <X>19984</X>
-                        <Y>-1664</Y>
+                        <X>19888</X>
+                        <Y>-1808</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -13042,8 +13042,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -13082,8 +13082,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -13122,8 +13122,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -13280,8 +13280,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>64</Y>
@@ -13314,8 +13314,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>64</Y>
@@ -13323,8 +13323,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="body_room_rotate_screw13" Visible="true">
                     <Position>
-                        <X>19200</X>
-                        <Y>-784</Y>
+                        <X>19264</X>
+                        <Y>-768</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -13354,8 +13354,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -13363,8 +13363,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="body_room_rotate_screw14" Visible="true">
                     <Position>
-                        <X>19792</X>
-                        <Y>-784</Y>
+                        <X>19712</X>
+                        <Y>-752</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -13394,8 +13394,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -13403,8 +13403,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="body_room_rotate_screw11" Visible="true">
                     <Position>
-                        <X>19200</X>
-                        <Y>-1536</Y>
+                        <X>19280</X>
+                        <Y>-1552</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -13434,8 +13434,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -13443,8 +13443,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="body_room_rotate_screw12" Visible="true">
                     <Position>
-                        <X>19792</X>
-                        <Y>-1536</Y>
+                        <X>19696</X>
+                        <Y>-1552</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -13474,8 +13474,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -13589,8 +13589,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -13629,8 +13629,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -13669,8 +13669,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -14120,8 +14120,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -14157,8 +14157,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -14194,8 +14194,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -14231,8 +14231,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -14268,8 +14268,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -14305,8 +14305,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -14394,8 +14394,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -14434,8 +14434,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -15290,8 +15290,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -15330,8 +15330,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -15838,8 +15838,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -15878,8 +15878,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -16044,8 +16044,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -16168,8 +16168,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -16234,8 +16234,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -16274,8 +16274,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -16340,8 +16340,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -16406,8 +16406,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -16446,8 +16446,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -16909,8 +16909,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>64</Y>
@@ -17013,8 +17013,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -17211,8 +17211,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -17248,8 +17248,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -17348,8 +17348,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -17385,8 +17385,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -17422,8 +17422,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -17459,8 +17459,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -17496,8 +17496,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -17533,8 +17533,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -17570,8 +17570,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -17619,8 +17619,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\puzzlescrew</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -17780,8 +17780,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>64</Y>
@@ -17814,8 +17814,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\cletter</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>64</Y>
@@ -17851,8 +17851,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -17888,8 +17888,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -17928,8 +17928,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>false</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -17968,8 +17968,8 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -18005,8 +18005,328 @@
                     </TintColor>
                     <FlipHorizontally>false</FlipHorizontally>
                     <FlipVertically>true</FlipVertically>
-                    <texture_filename>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
-                    <asset_name>C:\Users\Ranveer\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\powerswitch</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_1199" Visible="true">
+                    <Position>
+                        <X>19168</X>
+                        <Y>-1392</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>body_room_rotate_skeleton</string>
+                        </Property>
+                        <Property Name="jointto" Type="string" Description="">
+                            <string>body_room_rotate_plat1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_1200" Visible="true">
+                    <Position>
+                        <X>18880</X>
+                        <Y>-1536</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>body_room_rotate_skeleton</string>
+                        </Property>
+                        <Property Name="jointto" Type="string" Description="">
+                            <string>body_room_rotate_plat1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_1201" Visible="true">
+                    <Position>
+                        <X>19168</X>
+                        <Y>-944</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>body_room_rotate_skeleton</string>
+                        </Property>
+                        <Property Name="jointto" Type="string" Description="">
+                            <string>body_room_rotate_plat1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_1202" Visible="true">
+                    <Position>
+                        <X>18912</X>
+                        <Y>-848</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>body_room_rotate_skeleton</string>
+                        </Property>
+                        <Property Name="jointto" Type="string" Description="">
+                            <string>body_room_rotate_plat1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_1203" Visible="true">
+                    <Position>
+                        <X>19824</X>
+                        <Y>-944</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>body_room_rotate_skeleton</string>
+                        </Property>
+                        <Property Name="jointto" Type="string" Description="">
+                            <string>body_room_rotate_plat1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_1204" Visible="true">
+                    <Position>
+                        <X>20064</X>
+                        <Y>-816</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>body_room_rotate_skeleton</string>
+                        </Property>
+                        <Property Name="jointto" Type="string" Description="">
+                            <string>body_room_rotate_plat1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_1205" Visible="true">
+                    <Position>
+                        <X>19840</X>
+                        <Y>-1392</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>body_room_rotate_skeleton</string>
+                        </Property>
+                        <Property Name="jointto" Type="string" Description="">
+                            <string>body_room_rotate_plat1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>32</Y>
+                    </Origin>
+                </Item>
+                <Item xsi:type="TextureItem" Name="Texture_1206" Visible="true">
+                    <Position>
+                        <X>20048</X>
+                        <Y>-1504</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>screw</string>
+                        </Property>
+                        <Property Name="ScrewType" Type="string" Description="">
+                            <string>ScrewStripped</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>body_room_rotate_skeleton</string>
+                        </Property>
+                        <Property Name="jointto" Type="string" Description="">
+                            <string>body_room_rotate_plat1</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews.png</texture_filename>
+                    <asset_name>C:\Users\f00lish\Documents\GitHub\werescrewed\gleed-textures\strippedscrews</asset_name>
                     <Origin>
                         <X>32</X>
                         <Y>32</Y>
@@ -18021,11 +18341,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>1198</NextItemNumber>
+        <NextItemNumber>1206</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>28786.1055</X>
-            <Y>-1736.658</Y>
+            <X>19519.3574</X>
+            <Y>-1053.32129</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
