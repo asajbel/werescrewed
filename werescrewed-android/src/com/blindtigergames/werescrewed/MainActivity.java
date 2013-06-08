@@ -17,6 +17,8 @@ public class MainActivity extends AndroidApplication {
         cfg.useCompass = false;
         cfg.resolutionStrategy = new RatioResolutionStrategy(1280,720); 
         
+        WereScrewedGame.debug = false; 
+        
         initialize(new WereScrewedGame(), cfg);
     }
 }

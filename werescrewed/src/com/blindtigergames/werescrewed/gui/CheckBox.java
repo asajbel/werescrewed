@@ -1,30 +1,32 @@
 package com.blindtigergames.werescrewed.gui;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 
 public class CheckBox extends OptionControl {
 
-	@SuppressWarnings( "unused" )
-	private static Texture onTex = WereScrewedGame.manager
-			.get( WereScrewedGame.dirHandle + "/common/powerswitches/on.png" );
-	@SuppressWarnings( "unused" )
-	private static Texture offTex = WereScrewedGame.manager
-			.get( WereScrewedGame.dirHandle + "/common/powerswitches/off.png" );
-
-	/************************************
-	 * To whoever reads this: please delete powerswitches on/off for the assets
-	 * folder when you rplace these textures for finals ones. -stew
-	 ************************************/
-	//
-
+	Sprite on, off;
+	
 	public CheckBox( int min, int max, int current ) {
 		super( min, max, current );
-
+		on = WereScrewedGame.manager.getAtlas( "common-textures" ).createSprite( "switch_on" );
+		off = WereScrewedGame.manager.getAtlas( "common-textures" ).createSprite( "switch_off" ); ;
+		on.setRotation( -90 ); 
+		on.setOrigin( on.getWidth( ), 0 );
+		on.setScale( 0.7f ); 
+		off.setRotation( -90 ); 
+		off.setScale( 0.7f );
+		off.setOrigin( off.getWidth( ), 0 );
 	}
 
 	public void draw( SpriteBatch batch ) {
-
+		if (curValue == maxValue) {
+			on.setPosition( x, y );
+			on.draw( batch ); 
+		} else {
+			off.setPosition( x, y );
+			off.draw( batch ); 
+		}
 	}
 }

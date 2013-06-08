@@ -48,6 +48,8 @@ public class WereScrewedGame extends Game {
 	public static Controller p1Controller, p2Controller;
 	public static MyControllerListener p1ControllerListener,
 			p2ControllerListener;
+	
+	public static boolean debug; 
 
 	// used to decide which player is which character, if player1female is false
 	// then
