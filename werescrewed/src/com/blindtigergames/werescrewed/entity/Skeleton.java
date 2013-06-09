@@ -3,7 +3,6 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -350,44 +349,6 @@ public class Skeleton extends Platform {
 		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
 			chkpt.body.setAwake( isAwake );
 		}
-	}
-
-	/**
-	 * setSkeletonActive() recursively sets all child skeletons active state to
-	 * isActive\
-	 * 
-	 * @author stew
-	 */
-	public void setSkeletonActiveRec( boolean isActive ) {
-		setSkeletonActive( isActive );
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			skeleton.setSkeletonActiveRec( isActive );
-		}
-	}
-
-	/**
-	 * Sets this skeleton & all associated entity's active state to isActive
-	 * Don't use this, instead add all of the entity to root skeleton list
-	 * 
-	 * @param isActive
-	 * @author stew
-	 */
-	public void setSkeletonActive( boolean isActive ) {
-		/*
-		 * if ( body.isActive( ) != isActive ) body.setActive( isActive );
-		 * setActive( isActive ); for ( Platform platform :
-		 * dynamicPlatformMap.values( ) ) { platform.body.setActive( isActive );
-		 * platform.setActive( isActive ); } for ( Platform platform :
-		 * kinematicPlatformMap.values( ) ) { platform.body.setActive( isActive
-		 * ); platform.setActive( isActive ); } for ( Screw screw :
-		 * screwMap.values( ) ) { screw.body.setActive( isActive );
-		 * screw.setActive( isActive ); } for ( CheckPoint chkpt :
-		 * checkpointMap.values( ) ) { chkpt.body.setActive( isActive );
-		 * chkpt.setActive( isActive ); } // for ( Rope rope : ropeMap.values( )
-		 * ){
-		 * 
-		 * // } /* TODO: add ropes
-		 */
 	}
 
 	/**

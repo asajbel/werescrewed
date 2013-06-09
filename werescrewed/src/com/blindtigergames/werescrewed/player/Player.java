@@ -99,8 +99,6 @@ public class Player extends Entity {
 	boolean botCrush;
 
 	int check = 0;
-	private boolean have_control = true;
-	private boolean control_counter = false;
 
 	private PovDirection prevButton = null;
 	public PlayerInputHandler inputHandler;
@@ -159,11 +157,7 @@ public class Player extends Entity {
 	private boolean autoRezzing = false;
 	public boolean waitingOnInactiveSkelToRespwan = false;
 
-	@SuppressWarnings( "unused" )
-	private boolean changeDirections = false;
 	private boolean steamCollide = false;
-	@SuppressWarnings( "unused" )
-	private boolean steamDone = false;
 
 	//private IMover mover;
 
@@ -517,10 +511,8 @@ public class Player extends Entity {
 		} else if ( steamCollide ) {
 			// if ( !steamDone ) {
 			steamResolution( );
-			steamDone = true;
 			// }
-		} else
-			steamDone = false;
+		}
 		terminalVelocityCheck( 15.0f );
 		// the jump doesn't work the first time on dynamic bodies so do it
 		// twice
@@ -1645,24 +1637,6 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * handles what happens when player pressed the grab button
-	 */
-	private void processGrabPressed( ) {
-		// old grab functionality
-		// if ( otherPlayer != null
-		// && otherPlayer.getState( ) == PlayerState.Standing
-		// && !isGrounded( ) ) {
-		// if this player is jumping or falling and the other player is
-		// standing
-		// topPlayer = true;
-		// setHeadStand( );
-		// otherPlayer.setHeadStand( );
-		// } else if ( playerState == PlayerState.Standing ) {
-		// playerState = PlayerState.GrabMode;
-		// }
-	}
-
-	/**
 	 * removes the player to player joint used for double jumping
 	 */
 	private void removePlayerToPlayer( ) {
@@ -1855,11 +1829,6 @@ public class Player extends Entity {
 		}
 		// grab another player, if your colliding, - for double jump
 		// functionality
-		if ( inputHandler.isGrabPressed( )
-				&& playerState != PlayerState.Screwing
-				&& playerState != PlayerState.HeadStand ) {
-			processGrabPressed( );
-		}
 		if ( playerState == PlayerState.GrabMode
 				&& !inputHandler.isGrabPressed( ) ) {
 			processReleaseGrab( );
@@ -1968,13 +1937,7 @@ public class Player extends Entity {
 				prevButton = null;
 			}
 		}
-		// grab another player, if your colliding
-		// with another player, for double jump
-		if ( controllerListener.isGrabPressed( )
-				&& playerState != PlayerState.Screwing
-				&& playerState != PlayerState.HeadStand ) {
-			processGrabPressed( );
-		}
+
 		if ( playerState == PlayerState.GrabMode
 				&& !controllerListener.isGrabPressed( ) ) {
 			processReleaseGrab( );
@@ -2265,13 +2228,10 @@ public class Player extends Entity {
 		// feet
 		// also make sure its not the player
 		Fixture playerFix;
-		Fixture otherFix;
 		if ( contact.getFixtureB( ).getUserData( ).equals( this ) ) {
 			playerFix = contact.getFixtureB( );
-			otherFix = contact.getFixtureA( );
 		} else {
 			playerFix = contact.getFixtureA( );
-			otherFix = contact.getFixtureB( );
 		}
 		if ( that.isSolid( ) ) {
 			if ( playerFix.getShape( ) instanceof CircleShape ) {

@@ -23,7 +23,7 @@ public class SetActiveStateSkeleton implements IAction {
 		timesRun += 1;
 		if ( entity.getEntityType( ) == EntityType.SKELETON ) {
 			Skeleton skeleton = ( Skeleton ) entity;
-			skeleton.getRoot( ).setSkeletonActiveState( skeleton, isActive );
+			//skeleton.getRoot( ).setSkeletonActiveState( skeleton, isActive );
 			// Gdx.app.log( "SetActiveStateSkeleton:",
 			// skeleton.name+" active state is: "+isActive+", "+timesRun );
 		} else {

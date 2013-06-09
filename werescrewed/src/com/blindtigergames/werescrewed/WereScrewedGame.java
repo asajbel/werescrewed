@@ -171,7 +171,7 @@ public class WereScrewedGame extends Game {
 		Controller controller : Controllers.getControllers( ) ) {
 			// Gdx.app.log( "controllers", controller.getName( ) );
 		}
-		Gdx.app.log( "Set up controllers", Controllers.getControllers( ).size + "" );
+		//Gdx.app.log( "Set up controllers", Controllers.getControllers( ).size + "" );
 		if ( Controllers.getControllers( ).size >= 1 ) {
 
 			p1ControllerListener = new MyControllerListener( );
