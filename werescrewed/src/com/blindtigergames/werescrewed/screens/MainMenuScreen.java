@@ -125,19 +125,19 @@ class MainMenuScreen extends MenuScreen {
 		batch.end( );
 
 		//******************* REMEMBER TO REMOVE THESE LINES FOR RELEASE *******************//
-		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
+		if (  WereScrewedGame.debug && Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 1 );
 		}
 		
-		if ( Gdx.input.isKeyPressed( Keys.Z ) ) {
+		if (  WereScrewedGame.debug && Gdx.input.isKeyPressed( Keys.Z ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.PHYSICS );
 		}
 
-		if ( Gdx.input.isKeyPressed( Keys.D ) ) {
+		if (  WereScrewedGame.debug && Gdx.input.isKeyPressed( Keys.D ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.LOADING_2 );
 		}
 
-		if ( Gdx.input.isKeyPressed( Keys.A ) ) {
+		if ( WereScrewedGame.debug &&  Gdx.input.isKeyPressed( Keys.A ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.LOADING_1 );
 		}
 		
@@ -145,7 +145,7 @@ class MainMenuScreen extends MenuScreen {
 			ScreenManager.getInstance( ).show( ScreenType.LOADING_TROPHY_2 );
 		}*/
 		
-		if ( Gdx.input.isKeyPressed( Keys.H ) ) {
+		if ( WereScrewedGame.debug &&  Gdx.input.isKeyPressed( Keys.H ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.HAZARD );
 		}
 		//**********************************************************************************//

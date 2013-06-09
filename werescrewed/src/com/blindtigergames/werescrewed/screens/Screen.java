@@ -105,7 +105,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if (sounds != null){
 			sounds.update( delta );
 		}
-		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
+		if ( WereScrewedGame.debug && Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
 		/////////////////////// DON'T REMOVE FOR RELEASE ///////////////////////
@@ -180,7 +180,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 			
 		}
 		
-		if ( Gdx.input.isKeyPressed( Input.Keys.BACKSPACE ) ) {
+		if ( WereScrewedGame.debug &&  Gdx.input.isKeyPressed( Input.Keys.BACKSPACE ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.TROPHY );
 		}
 	}

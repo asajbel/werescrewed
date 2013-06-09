@@ -6,20 +6,20 @@ offset: 0, 0
 legs_middle
   rotate: false
   xy: 1299, 1007
-  size: 734, 410
-  orig: 734, 410
+  size: 732, 99
+  orig: 732, 99
   offset: 0, 0
   index: -1
 legs_right
   rotate: false
   xy: 1442, 4
-  size: 522, 413
-  orig: 522, 413
+  size: 517, 404
+  orig: 517, 404
   offset: 0, 0
   index: -1
 legs_left
   rotate: false
-  xy: 1442, 423
+  xy: 1442, 414
   size: 381, 414
   orig: 381, 414
   offset: 0, 0
