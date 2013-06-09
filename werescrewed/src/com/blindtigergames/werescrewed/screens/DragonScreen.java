@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -48,6 +49,7 @@ import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundRef;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class DragonScreen extends Screen {
@@ -68,12 +70,12 @@ public class DragonScreen extends Screen {
 	int headEventTimer = 180;
 	
 	float mouthFireTimer=0;
-	final float mouthFireDelay=23f, mouthFireTotalTime=36f;
+	final float mouthFireDelay=8f, mouthFireTotalTime=24f;
 	boolean mouthFireTriggered=false;
-	boolean mouthClose1Flag=false,mouthClose2Flag=false, calmRoarFlag=false;
 	
 	// the numbers here correspond to gleed numbers
 	Fire tail3Fire2, tail3Fire3, tail3Fire4, tail3Fire5, tail3Fire6;
+	
 
 	public DragonScreen( ) {
 		super( );
@@ -123,18 +125,8 @@ public class DragonScreen extends Screen {
 				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
 				.start( ).delay( 2f ) );
 
-		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 4f )
-				.ease( TweenEquations.easeNone ).target( 0 ).delay( 2f )
-				.start( ) );
-
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
-				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
-				.start( ).delay( 2f ) );
-		
-		//pizza3
-
-		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
-				.ease( TweenEquations.easeNone ).target( 0 ).delay( 8f )//delay longer for shooting fire!
+				.ease( TweenEquations.easeNone ).target( 0 ).delay( 8f )
 				.start( ) );
 
 		t.repeat( Tween.INFINITY, 0f );
@@ -153,9 +145,9 @@ public class DragonScreen extends Screen {
 		}
 		if (sounds == null){
 			sounds = new SoundManager();
-			sounds.getSound( "roar_calm",  WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_calm.ogg");
-			sounds.getSound( "roar_angry", WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_angry.ogg");
-			sounds.getSound( "jaw_close", WereScrewedGame.dirHandle + "/levels/dragon/sounds/jawClose.ogg" );
+			sounds.getSound( "roar_calm",  WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_calm.ogg").setRange( 8000 );
+			sounds.getSound( "roar_angry", WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_angry.ogg").setRange( 8000 );
+			sounds.getSound( "jaw_close", WereScrewedGame.dirHandle + "/levels/dragon/sounds/jawClose.ogg" ).setRange( 8000 );
 			//sounds.getSound( "jaw_open",WereScrewedGame.dirHandle + "/levels/dragon/sounds/cannon.ogg" );
 		}
 	}
@@ -266,34 +258,23 @@ public class DragonScreen extends Screen {
 				headEvent = true;
 			}
 		}
-//		if ( Gdx.input.isKeyPressed( Input.Keys.SHIFT_LEFT ) && Gdx.input.isKeyPressed( Input.Keys.M ) ) {
-//			mouthFire.setActiveHazard( true );
-//		}
 		
-		mouthFireTimer+=deltaTime;
-		if(mouthFireTimer>=8f&&!calmRoarFlag){
-			calmRoarFlag=true;
-			sounds.playSound( "roar_calm", 0.0f );
-		}
-		if(mouthFireTimer>=15f&&!mouthClose1Flag){
-			mouthClose1Flag=true;
-			sounds.playSound( "jaw_close", 0.0f );
-		}
-		if(mouthFireTimer>=36&&!mouthClose2Flag){
-			mouthClose2Flag=true;
-			sounds.playSound( "jaw_close", 0.0f );
-		}
+		
+		if(jawStructureScrew.getDepth( )>0)mouthFireTimer+=deltaTime;
+		else mouthFireTimer=0.0f;
 		if(mouthFireTimer>=mouthFireDelay && !mouthFireTriggered){
-			sounds.playSound( "roar_angry", 0.0f );
+			float volume = sounds.calculatePositionalVolume( "roar_angry", new Vector2(25000, 900), Camera.CAMERA_RECT );
+			SoundRef roarRef = sounds.getSound( "roar_angry" );
+			roarRef.play(0,volume,1);
 			mouthFire.setActiveHazard( true );
 			mouthFireTriggered=true;
 		}
 		if(mouthFireTimer>=mouthFireTotalTime){
 			mouthFireTimer=0;
 			mouthFireTriggered=false;
-			calmRoarFlag=false;
-			mouthClose1Flag=false;
-			mouthClose2Flag=false;
+			float volume = sounds.calculatePositionalVolume( "jaw_close", new Vector2(25000, 900), Camera.CAMERA_RECT );
+			SoundRef jawRef = sounds.getSound( "jaw_close" );
+			jawRef.play(0,volume,1);
 		}
 		
 		// Zoom out and fade the head skeleton back in so you can see the jaw
