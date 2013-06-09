@@ -529,12 +529,12 @@ public class TrophyScreen extends Screen {
 		case 21: // Random 1
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Best 'Stache", fancyFont );
-				player1Desc[index] = new Label("????", smallerFont);
+				player1Desc[index] = new Label("Most luxurious bristles", smallerFont);
 				trophies1[ index ] = texAtlas.createSprite("trophy21a");
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Best Dressed", fancyFont );
-				player2Desc[index] = new Label("????", smallerFont);
+				player2Desc[index] = new Label("Most lacey doodads", smallerFont);
 				trophies2[ index ] = texAtlas.createSprite("trophy21b");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -542,12 +542,12 @@ public class TrophyScreen extends Screen {
 		case 22: // Random 2
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "My Screwdriver's Bigger", fancyFont );
-				player1Desc[index] = new Label("????", smallerFont);
+				player1Desc[index] = new Label("Most well-equipped", smallerFont);
 				trophies1[ index ] = texAtlas.createSprite("trophy22");
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "My Screwdriver's Bigger", fancyFont );
-				player2Desc[index] = new Label("????", smallerFont);
+				player2Desc[index] = new Label("Most well-equipped", smallerFont);
 				trophies2[ index ] = texAtlas.createSprite("trophy22");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -555,12 +555,12 @@ public class TrophyScreen extends Screen {
 		case 23: // Random 3
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "You Unlocked \n An Achievement!!", fancyFont );
-				player1Desc[index] = new Label("????", smallerFont);
+				player1Desc[index] = new Label("Highest gamerscore", smallerFont);
 				trophies1[ index ] = texAtlas.createSprite("trophy23");
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "You Unlocked \n An Achievement!!", fancyFont );
-				player2Desc[index] = new Label("????", smallerFont);
+				player2Desc[index] = new Label("Highest gamerscore", smallerFont);
 				trophies2[ index ] = texAtlas.createSprite("trophy23");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -568,12 +568,12 @@ public class TrophyScreen extends Screen {
 		case 24: // Random 4
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Most Popular", fancyFont );
-				player1Desc[index] = new Label("????", smallerFont);
+				player1Desc[index] = new Label("Largest fanbase", smallerFont);
 				trophies1[ index ] = texAtlas.createSprite("trophy24");
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Most Popular", fancyFont );
-				player2Desc[index] = new Label("????", smallerFont);
+				player2Desc[index] = new Label("Largest fanbase", smallerFont);
 				trophies2[ index ] = texAtlas.createSprite("trophy24");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -581,12 +581,12 @@ public class TrophyScreen extends Screen {
 		case 25: // Random 5
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Gives Awesome Hugs", fancyFont );
-				player1Desc[index] = new Label("????", smallerFont);
+				player1Desc[index] = new Label("Most cuddly", smallerFont);
 				trophies1[ index ] = texAtlas.createSprite("trophy25");
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Gives Awesome Hugs", fancyFont );
-				player2Desc[index] = new Label("????", smallerFont);
+				player2Desc[index] = new Label("Most cuddly", smallerFont);
 				trophies2[ index ] = texAtlas.createSprite("trophy25");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -594,12 +594,12 @@ public class TrophyScreen extends Screen {
 		case 26: // Random 6
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Better Than \n Bacon Ice Cream", fancyFont );
-				player1Desc[index] = new Label("????", smallerFont);
+				player1Desc[index] = new Label("Most delicious", smallerFont);
 				trophies1[ index ] = texAtlas.createSprite("trophy26");
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Better Than \n Bacon Ice Cream", fancyFont );
-				player2Desc[index] = new Label("????", smallerFont);
+				player2Desc[index] = new Label("Most delicious", smallerFont);
 				trophies2[ index ] = texAtlas.createSprite("trophy26");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -608,13 +608,13 @@ public class TrophyScreen extends Screen {
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label(
 						"You Played \n The Best Game Ever!!", fancyFont );
-				player1Desc[index] = new Label("????", smallerFont);
+				player1Desc[index] = new Label("Most spectacular gameplay", smallerFont);
 				trophies1[ index ] = texAtlas.createSprite("trophy27");
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label(
 						"You Played \n The Best Game Ever!!", fancyFont );
-				player2Desc[index] = new Label("????", smallerFont);
+				player2Desc[index] = new Label("Most spectacular gameplay", smallerFont);
 				trophies2[ index ] = texAtlas.createSprite("trophy27");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -622,12 +622,12 @@ public class TrophyScreen extends Screen {
 		case 28: // Random 8
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Free Cookie", fancyFont );
-				player1Desc[index] = new Label("????", smallerFont);
+				player1Desc[index] = new Label("Most chocolatey", smallerFont);
 				trophies1[ index ] = texAtlas.createSprite("trophy28");
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Free Cookie", fancyFont );
-				player2Desc[index] = new Label("????", smallerFont);
+				player2Desc[index] = new Label("Most chocolatey", smallerFont);
 				trophies2[ index ] = texAtlas.createSprite("trophy28");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -635,12 +635,12 @@ public class TrophyScreen extends Screen {
 		case 29: // Random 9
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Supremely Screwy", fancyFont );
-				player1Desc[index] = new Label("????", smallerFont);
+				player1Desc[index] = new Label("Most threaded", smallerFont);
 				trophies1[ index ] = texAtlas.createSprite("trophy29");
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Supremely Screwy", fancyFont );
-				player2Desc[index] = new Label("????", smallerFont);
+				player2Desc[index] = new Label("Most threaded", smallerFont);
 				trophies2[ index ] = texAtlas.createSprite("trophy29");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
@@ -648,12 +648,12 @@ public class TrophyScreen extends Screen {
 		case 30: // Random 10
 			if ( playerNum == 1 ) {
 				player1[ index ] = new Label( "Antidisestablishmentarianist", fancyFont );
-				player1Desc[index] = new Label("????", smallerFont);
+				player1Desc[index] = new Label("Best vocabulary", smallerFont);
 				trophies1[ index ] = texAtlas.createSprite("trophy30");
 				trophyIndices[ index ] = trophyNum;
 			} else if ( playerNum == 2 ) {
 				player2[ index ] = new Label( "Antidisestablishmentarianist", fancyFont );
-				player2Desc[index] = new Label("????", smallerFont);
+				player2Desc[index] = new Label("Best vocabulary", smallerFont);
 				trophies2[ index ] = texAtlas.createSprite("trophy30");
 				trophyIndices[ trophyLength + index ] = trophyNum;
 			}
