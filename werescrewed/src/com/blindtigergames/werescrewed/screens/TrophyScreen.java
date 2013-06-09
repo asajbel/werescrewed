@@ -68,6 +68,7 @@ public class TrophyScreen extends Screen {
 		font = new BitmapFont( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
 		smallerFont = WereScrewedGame.manager.getFont( "longdon" );
+		fancyFont.setScale( 1.0f );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		player1Name = new Label( "Player 1", fancyFont );
 		player2Name = new Label( "Player 2", fancyFont );
@@ -679,10 +680,11 @@ public class TrophyScreen extends Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		tweenManager.update( delta );
 		batch.begin( );
-		smallerFont.setScale( 0.5f );
+		fancyFont.setScale( 1.0f );
 		bg.draw( batch );
 		player1Name.draw( batch );
 		player2Name.draw( batch );
+		smallerFont.setScale( 0.5f );
 		for ( int i = 0; i < trophyLength; i++ ) {
 			player1[ i ].draw( batch );
 			trophies1[ i ].draw( batch );
@@ -793,8 +795,8 @@ public class TrophyScreen extends Screen {
 				.start( tweenManager );
 			}
 		}
-		next.setX( centerX - next.getWidth( ) / 2 );
-		next.setY( 100 + next.getHeight( ) );
+		next.setX( centerX - next.getWidth( ) / 2 - 5 );
+		next.setY( 130 + next.getHeight( ) );
 	}
 
 	@Override
