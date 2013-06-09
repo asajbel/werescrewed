@@ -79,8 +79,8 @@ class OptionsScreen extends MenuScreen {
 		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/transitions/trans-gear.png", Texture.class );
 		trans = new Sprite( transition );
-		scale = trans.getHeight( ) * SCALE_MAX;
-		scaleMax = scale;
+		scaleMax = trans.getHeight( ) * SCALE_MAX;
+		scale = 1.0f;
 		transInEnd = false;
 		
 		fancyFont.setScale( 1.0f );
