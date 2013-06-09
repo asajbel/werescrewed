@@ -728,6 +728,7 @@ public class DragonScreen extends Screen {
 				.get( "body_fire6" );
 		bodyFire6.particleEffect.setAngle( Util.PI/2 );
 		bodyFire6.particleEffect.setRotation( -Util.PI/4 );
+		
 		Fire bodyFire5 = (Fire) LevelFactory.entities
 				.get( "body_fire5" );
 		
@@ -759,7 +760,17 @@ public class DragonScreen extends Screen {
 		bodyPowerSwitch2.actOnEntity = true;
 		bodyPowerSwitch2.addEntityToTrigger( bodyFire5 );
 		bodyPowerSwitch2.addEntityToTrigger( bodyFire6 );
-
+		
+		Fire bodyFireI;
+		for(int iter = 13; iter < 19; iter++){
+			bodyFireI = (Fire) LevelFactory.entities
+					.get( "body_fire" + iter );
+			if(iter < 15){
+				bodyFireI.particleEffect.setAngle( Util.PI/2 );
+				bodyFireI.particleEffect.setRotation( -Util.PI/4 );
+			}
+			bodyPowerSwitch2.addEntityToTrigger( bodyFireI );
+		}
 		
 		//DECALS:
 		TextureAtlas dragon_objects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
@@ -1283,7 +1294,9 @@ public class DragonScreen extends Screen {
 				.get( "tail2_switch2" );
 		PowerSwitch tail2Switch3 = ( PowerSwitch ) LevelFactory.entities
 				.get( "tail2_switch3" );
+		
 		Pipe tail2Pipe1 = ( Pipe ) LevelFactory.entities.get( "tail2_pipe1" );
+		
 		
 		Pipe tail2Pipe2 = ( Pipe ) LevelFactory.entities.get( "tail2_pipe2" );
 		
@@ -1309,6 +1322,7 @@ public class DragonScreen extends Screen {
 		tail2Switch3
 				.addBeginIAction( new RotateTweenAction( -Util.PI / 2 ) );
 		tail2Switch3.addEndIAction( new RotateTweenAction( 0 ) );
+		
 	}
 	
 	void tail3Decals(){
@@ -1375,8 +1389,8 @@ public class DragonScreen extends Screen {
 		Skeleton rotateScrewSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "body_inside_rotatepuzzle_skeleton" );
 		s = dragon_objects.createSprite("rotation_machine_rotate_plate");//rotation_machine_wheel
-		s.setScale( 1, 1.37f );
-		rotateScrewSkeleton.addBGDecal( s, new Vector2(-s.getWidth( )/2,-30) );//-s.getHeight( )/2
+		s.setScale( 1, -1.37f );
+		rotateScrewSkeleton.addBGDecal( s, new Vector2(-s.getWidth( )/2, 30) );//-s.getHeight( )/2
 		addBGEntity( rotateScrewSkeleton );
 		
 

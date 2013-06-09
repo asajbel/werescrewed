@@ -573,9 +573,7 @@ public class Player extends Entity {
 				setMoverAtCurrentState( null );
 				Filter filter = new Filter( );
 				for ( Fixture f : body.getFixtureList( ) ) {
-					if ( f != rightSensor && f != leftSensor && f != topSensor ) {
-						f.setSensor( true );
-					}
+					f.setSensor( true );
 					filter.categoryBits = Util.CATEGORY_SUBPLAYER;
 					filter.maskBits = Util.CATEGORY_CHECKPOINTS | Util.CATEGORY_SCREWS;
 					f.setFilterData( filter );

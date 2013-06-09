@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.checkpoints;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
@@ -79,8 +80,8 @@ public class ProgressManager {
 			// .put( p2.name, atlas.findRegion( "player_female_idle_ghost" ) );
 		}
 		this.world = world;
-		chkptAnchor = new Anchor( Vector2.Zero, new Vector2( 0,
-				0 ), Player.ANCHOR_BUFFER_SIZE );
+		chkptAnchor = new Anchor( Vector2.Zero, new Vector2( 0, 0 ),
+				Player.ANCHOR_BUFFER_SIZE );
 		AnchorList.getInstance( ).addAnchor( chkptAnchor );
 	}
 
@@ -161,7 +162,8 @@ public class ProgressManager {
 		}
 		chkptAnchor.setPosition( currentCheckPoint.getPositionPixel( ) );
 		for ( Player player : players.values( ) ) {
-			if ( player.isPlayerDead( ) && player.getPositionPixel( ).y < MAX_FALL_POS ) {
+			if ( player.isPlayerDead( )
+					&& player.getPositionPixel( ).y < MAX_FALL_POS ) {
 				player.setAutoRezzing( );
 			}
 			if ( player.isAutoRezzing( ) ) {
@@ -375,7 +377,15 @@ public class ProgressManager {
 		removeRezScrew( );
 		player.setRezTime( 0f );
 		player.respawnPlayer( );
-		
+
+		Filter filter = new Filter( );
+		for ( Fixture f : player.body.getFixtureList( ) ) {
+			f.setSensor( true );
+			filter.categoryBits = Util.CATEGORY_SUBPLAYER;
+			filter.maskBits = Util.CATEGORY_CHECKPOINTS  | Util.CATEGORY_SCREWS;
+			f.setFilterData( filter );
+		}
+
 		player.setMoverAtCurrentState( new FollowEntityWithVelocity( player
 				.getPositionPixel( ), currentCheckPoint ) );
 		chkptAnchor.setPosition( currentCheckPoint.getPositionPixel( ) );
@@ -407,11 +417,11 @@ public class ProgressManager {
 	 */
 	private void spawnAtCheckPoint( Player player ) {
 		player.setRezzing( false );
-		
+
 		chkptAnchor.deactivate( );
 		Vector2 rezPoint = new Vector2( currentCheckPoint.body.getPosition( ) );
 		rezPoint.add( -60 * Util.PIXEL_TO_BOX, 36f * Util.PIXEL_TO_BOX );
-		//player.activateAnchors( );
+		// player.activateAnchors( );
 		player.body.setType( BodyType.DynamicBody );
 		player.body.setTransform( rezPoint, 0.0f );
 		player.setVisible( true );

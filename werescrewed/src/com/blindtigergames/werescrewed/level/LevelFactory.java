@@ -683,7 +683,7 @@ public class LevelFactory {
 				float yPos = item.pos.y - ( height / 2 );
 				skeleBuilder.position( new Vector2(xPos, yPos) );
 
-			} else {
+			} else if ( !item.props.containsKey( "nopolysprite" ) ){
 				Array< Vector2 > polySprite = contstructSkeletonPoly( item );
 				skeleBuilder.position( item.pos );
 				if ( item.props.containsKey( "invisible" ) ) {
@@ -1040,6 +1040,9 @@ public class LevelFactory {
 		if(item.props.containsKey( "nopoly" )){
 			out.sprite = null;
 		}
+		if ( item.props.containsKey( "nopolysprite" )){
+			out.sprite = null;
+		}
 		
 		entities.put( item.name, out );
 		return out;
@@ -1077,6 +1080,14 @@ public class LevelFactory {
 				.dynamic( isDynamic ).properties( item.props )
 				.buildComplexPlatform( );
 
+
+		if(item.props.containsKey( "nopoly" )){
+			out.sprite = null;
+		}
+		if ( item.props.containsKey( "nopolysprite" )){
+			out.sprite = null;
+		}
+		
 		entities.put( item.name, out );
 
 		out.setCrushing( isCrushable );
