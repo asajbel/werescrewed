@@ -66,6 +66,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected boolean transOutEnd = true;
 	protected static boolean fullscreen = false; 
 	protected boolean assetsLoaded = false;
+	protected boolean once = true;
 	
 	BitmapFont debug_font;
 	Camera uiCamera;
@@ -133,7 +134,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 		shapeRenderer.filledRect(bX, bY, screenWidth, screenHeight );
 		shapeRenderer.end( );
 		
-		
+		if ( once && trans != null ) {
+			trans.setSize( scaleMax, scaleMax );
+			once = false;
+		}
 		
 		if (level != null){			
 			updateStep(delta);
@@ -199,13 +203,14 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 	
 	protected void drawTransIn ( SpriteBatch batch ) {
-		scale = scale - SCALE_SIZE;
+		scale -= 0.03;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
 		//trans.setSize( scale, scale );
 		//trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
-		trans.setBounds( width / 2 - trans.getWidth( ) / 2 - 50, 
-				height / 2 - trans.getHeight( ) / 2 - 50, scale, scale );
+		trans.setScale( scale );
+		trans.setPosition( width / 2 - trans.getWidth( ) / 2, 
+				height / 2 - trans.getHeight( ) / 2 );
 		trans.draw( batch );
 		if ( scale < SCALE_MIN ) {
 			transInEnd = true;
@@ -214,13 +219,14 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch ) {
-		scale = scale + SCALE_SIZE;
+		scale += 0.03;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
-		trans.setBounds( width / 2 - trans.getWidth( ) / 2 + 50, 
-				height / 2 - trans.getHeight( ) / 2 + 50, scale, scale );
+		trans.setScale( scale );
+		trans.setPosition( width / 2 - trans.getWidth( ) / 2, 
+				height / 2 - trans.getHeight( ) / 2 );
 		trans.draw( batch );
-		if ( scale > scaleMax ) {
+		if ( scale > 1.0f ) {
 			transOutEnd = true;
 			scale = scaleMax;
 			if ( Buttons.size( ) > 0 ) 
@@ -229,13 +235,14 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch, ScreenType screen ) {
-		scale = scale + SCALE_SIZE;
+		scale += 0.03;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
-		trans.setBounds( width / 2 - trans.getWidth( ) / 2 + 50, 
-				height / 2 - trans.getHeight( ) / 2 + 50, scale, scale );
+		trans.setScale( scale );
+		trans.setPosition( width / 2 - trans.getWidth( ) / 2, 
+				height / 2 - trans.getHeight( ) / 2 );
 		trans.draw( batch );
-		if ( scale > scaleMax ) {
+		if ( scale > 1.0f ) {
 			transOutEnd = true;
 			scale = scaleMax;
 			ScreenManager.getInstance( ).show( screen );

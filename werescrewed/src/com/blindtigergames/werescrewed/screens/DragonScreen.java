@@ -8,6 +8,7 @@ import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -138,7 +139,7 @@ public class DragonScreen extends Screen {
 		
 	}
 	@Override
-	public void load(){
+	public void load( ){
 		super.load( );
 		if (bgm == null){
 			bgm = Gdx.audio.newMusic(Gdx.files.internal("data/common/music/waltz.mp3"));
@@ -150,6 +151,13 @@ public class DragonScreen extends Screen {
 			sounds.getSound( "jaw_close", WereScrewedGame.dirHandle + "/levels/dragon/sounds/jawClose.ogg" ).setRange( 8000 );
 			//sounds.getSound( "jaw_open",WereScrewedGame.dirHandle + "/levels/dragon/sounds/cannon.ogg" );
 		}
+		
+		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/transitions/trans-gear.png", Texture.class );
+		trans = new Sprite( transition );
+		scaleMax = trans.getHeight( ) * SCALE_MAX;
+		scale = 1.0f;
+		transInEnd = false;
 	}
 	void buildBalloon( ) {
 		balloon1 = ( Platform ) LevelFactory.entities.get( "balloon1" );
@@ -340,7 +348,8 @@ public class DragonScreen extends Screen {
 
 					// You win and goto next screen!!!
 					// this currently doesn't work
-					ScreenManager.getInstance( ).show( ScreenType.TROPHY_2 );
+					//ScreenManager.getInstance( ).show( ScreenType.TROPHY_2 );
+					transOutEnd = false;
 				}
 			}
 		}
@@ -402,6 +411,15 @@ public class DragonScreen extends Screen {
 
 		}
 
+		batch.begin( );
+		if ( !transInEnd ) {
+			drawTransIn( batch );
+		}
+		
+		if ( !transOutEnd ) {
+			drawTransOut( batch, ScreenType.TROPHY_2 );
+		}
+		batch.end( );
 	}
 
 	IMover balloonMover( Platform skel, float yPos, float angle, float initPause ) {
