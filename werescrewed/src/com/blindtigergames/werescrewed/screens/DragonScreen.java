@@ -7,7 +7,6 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -71,7 +70,16 @@ public class DragonScreen extends Screen {
 	MouthFire mouthFire;
 	boolean headEvent = false;
 	int headEventTimer = 180;
-
+	
+	boolean balloon2_ss1Unscrewed = false;
+	boolean balloon2_ss2Unscrewed = false;
+	boolean tail_ssLUnscrewed = false;
+	boolean tail_ssRUnscrewed = false;
+	boolean tail2_ssLUnscrewed = false;
+	boolean tail2_ssRUnscrewed = false;
+	boolean tail3_ssLUnscrewed = false;
+	boolean tail3_ssRUnscrewed = false;
+	boolean tail2ToTail3Unscrewed = false;
 	float mouthFireTimer = 0;
 	final float mouthFireDelay = 8f, mouthFireTotalTime = 24f;
 	boolean mouthFireTriggered = false;
@@ -141,9 +149,8 @@ public class DragonScreen extends Screen {
 	@Override
 	public void load( ) {
 		super.load( );
-		if ( bgm == null ) {
-			bgm = Gdx.audio.newMusic( Gdx.files
-					.internal( "data/common/music/waltz.mp3" ) );
+		if (bgm == null){
+			bgm = Gdx.audio.newMusic(Gdx.files.internal("data/levels/dragon/riding.mp3"));
 		}
 		if ( sounds == null ) {
 			sounds = new SoundManager( );
@@ -212,8 +219,8 @@ public class DragonScreen extends Screen {
 		// Util.PI/16, 2) );
 		// balloon5_skeleton.addMover( balloonMover(balloon5_skeleton, 800,
 		// Util.PI/32, 0) );
-		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
-				+ "/levels/dragon/riding.mp3", Music.class );
+//		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
+//				+ "/levels/dragon/riding.mp3", Music.class );
 	}
 
 	float time;

@@ -49,25 +49,25 @@ public class RootSkeleton extends Skeleton {
 	 * @param activeState
 	 *            true/false, true to activate the body, false to deactivate it
 	 */
-	public void setSkeletonActiveState( Skeleton skeletonToChangeState,
-			boolean activeState ) {
-		if ( activeState ) {
-			skeletonToSetActive.add( skeletonToChangeState );
-		} else {
-			skeletonToSetInactive.add( skeletonToChangeState );
-		}
-	}
-
-	private void setSkeletonListActiveState( ArrayList< Skeleton > list,
-			boolean setToThisActiveState ) {
-		if ( list.size( ) > 0 ) {
-
-			for ( Skeleton s : list ) {
-				s.setSkeletonActive( setToThisActiveState );
-			}
-			list.clear( );
-		}
-	}
+//	public void setSkeletonActiveState( Skeleton skeletonToChangeState,
+//			boolean activeState ) {
+//		if ( activeState ) {
+//			skeletonToSetActive.add( skeletonToChangeState );
+//		} else {
+//			skeletonToSetInactive.add( skeletonToChangeState );
+//		}
+//	}
+//
+//	private void setSkeletonListActiveState( ArrayList< Skeleton > list,
+//			boolean setToThisActiveState ) {
+//		if ( list.size( ) > 0 ) {
+//
+//			for ( Skeleton s : list ) {
+//				s.setSkeletonActive( setToThisActiveState );
+//			}
+//			list.clear( );
+//		}
+//	}
 
 	private void deleteSkeletons( ) {
 		if ( skeletonsToDelete.size( ) > 0 ) {
@@ -85,8 +85,8 @@ public class RootSkeleton extends Skeleton {
 
 	@Override
 	public void update( float deltaTime ) {
-		setSkeletonListActiveState( skeletonToSetActive, true );
-		setSkeletonListActiveState( skeletonToSetInactive, false );
+		//setSkeletonListActiveState( skeletonToSetActive, true );
+		//setSkeletonListActiveState( skeletonToSetInactive, false );
 		deleteSkeletons( );
 		super.update( deltaTime );
 		for ( Entity entity : looseEntity ) {

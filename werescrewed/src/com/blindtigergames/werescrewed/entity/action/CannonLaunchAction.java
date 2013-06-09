@@ -1,10 +1,8 @@
 package com.blindtigergames.werescrewed.entity.action;
 
-import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.CannonLaunchMover;
-import com.blindtigergames.werescrewed.sound.SoundManager;
 
 public class CannonLaunchAction implements IAction {
 

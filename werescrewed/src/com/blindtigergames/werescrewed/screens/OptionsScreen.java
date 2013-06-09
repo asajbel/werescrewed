@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
@@ -16,6 +17,7 @@ import com.blindtigergames.werescrewed.gui.CheckBox;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.OptionButton;
 import com.blindtigergames.werescrewed.gui.Slider;
+import com.blindtigergames.werescrewed.gui.SwitchButton;
 import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.sound.SoundManager.SoundType;
@@ -28,7 +30,7 @@ class OptionsScreen extends MenuScreen {
 	private ScreenType backScreen = null;
 	@SuppressWarnings( "unused" )
 	private Sprite menuBG = null;
-	//private Sprite fade = null;
+	// private Sprite fade = null;
 	private int lineHeight = 0;
 	private final int VOLUME_MAX = 100;
 	private final int VOLUME_MIN = 0;
@@ -49,7 +51,10 @@ class OptionsScreen extends MenuScreen {
 	// private OptionButton subtitles = null;
 	private TextButton backButton = null;
 	private CheckBox fullBox;
-	private OptionButton fullCheck;
+	private SwitchButton fullCheck;
+
+	public static boolean restart = false;
+	private final String restartMessage = "Restart the game for changes to take effect.";
 
 	/*
 	 * Things needed... Controls: Shows a visual map of the controls depending
@@ -64,33 +69,35 @@ class OptionsScreen extends MenuScreen {
 		font = new BitmapFont( );
 		this.backScreen = screen;
 	}
-	
+
 	public OptionsScreen( ) {
 		this( null );
 	}
-	
+
 	@Override
-	public void load( ){
+	public void load( ) {
 		super.load( );
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
-		//Texture fadeScreen = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-		//		+ "/menu/transition.png", Texture.class );
-		//fade = new Sprite( fadeScreen );
-		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
-				+ "/transitions/trans-gear.png", Texture.class );
+		// Texture fadeScreen = WereScrewedGame.manager.get(
+		// WereScrewedGame.dirHandle
+		// + "/menu/transition.png", Texture.class );
+		// fade = new Sprite( fadeScreen );
+		Texture transition = WereScrewedGame.manager.get(
+				WereScrewedGame.dirHandle + "/transitions/trans-gear.png",
+				Texture.class );
 		trans = new Sprite( transition );
 		maxScale = trans.getHeight( ) * SCALE_SIZE;
 		scale = 1.0f;
 		transInEnd = false;
-		
+
 		fancyFont.setScale( 1.0f );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
 		screenLabel = new Label( "OPTIONS", fancyFont );
-		
+
 		loadButtons( );
 		setClearColor( 40, 40, 40, 255 );
 	}
-	
+
 	@Override
 	public void render( float delta ) {
 		super.render( delta );
@@ -104,20 +111,32 @@ class OptionsScreen extends MenuScreen {
 		// subtitles.draw( batch, camera );
 		backButton.draw( batch, camera );
 		fullCheck.draw( batch, camera );
+		fullBox.draw( batch );
 
+		if ( restart ) {
+			fancyFont.setScale( 1f );
+			fancyFont
+					.draw( batch,
+							restartMessage,
+							width
+									/ 2
+									- fancyFont.getBounds( restartMessage ).width
+									/ 2,
+							100 + fancyFont.getBounds( restartMessage ).height );
+		}
 		if ( !transInEnd ) {
 			drawTransIn( batch );
 		}
-		
+
 		if ( !transOutEnd ) {
 			drawTransOut( batch );
 			if ( transOutEnd )
 				buttonIndex = 0;
 		}
-		
-		//if ( !alphaFinish )
-			//setAlpha( -0.02f );
-		//fade.draw( batch, alpha );
+
+		// if ( !alphaFinish )
+		// setAlpha( -0.02f );
+		// fade.draw( batch, alpha );
 
 		batch.end( );
 	}
@@ -126,13 +145,14 @@ class OptionsScreen extends MenuScreen {
 	public void resize( int _width, int _height ) {
 		super.resize( _width, _height );
 		camera = new OrthographicCamera( );
-		camera.setToOrtho( false, WereScrewedGame.getWidth(), WereScrewedGame.getHeight() );
+		camera.setToOrtho( false, WereScrewedGame.getWidth( ),
+				WereScrewedGame.getHeight( ) );
 		batch.setProjectionMatrix( camera.combined );
 		int centerX = width / 2;
 		int leftX = width / 4;
 		int centerY = height / 2;
 
-		//fade.setPosition( 0, 0 );
+		// fade.setPosition( 0, 0 );
 
 		screenLabel.setX( centerX - screenLabel.getWidth( ) / 2 );
 		screenLabel.setY( centerY + 7 * ( lineHeight - 20 ) );
@@ -146,8 +166,10 @@ class OptionsScreen extends MenuScreen {
 		noise.setY( centerY + lineHeight );
 		// subtitles.setX( leftX - subtitles.getWidth( ) / 2 );
 		// subtitles.setY( centerY );
-		fullCheck.setX( leftX -  fullCheck.getWidth( ) / 2 );
+		fullCheck.setX( leftX - fullCheck.getWidth( ) / 2 );
 		fullCheck.setY( centerY );
+		fullBox.setX( fullCheck.getX( ) * 4 );
+		fullBox.setY( fullCheck.getY( ) - fullCheck.getHeight( ) * 2 + 20 );
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 100 + backButton.getHeight( ) );
 
@@ -169,29 +191,33 @@ class OptionsScreen extends MenuScreen {
 	}
 
 	private void loadButtons( ) {
-		buttonTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "button" );
-		TextureRegion slidTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "slider" );
-		TextureRegion screwTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "screw" );
-		
+		buttonTex = WereScrewedGame.manager.getAtlas( "menu-textures" )
+				.findRegion( "button" );
+		TextureRegion slidTex = WereScrewedGame.manager.getAtlas(
+				"menu-textures" ).findRegion( "slider" );
+		TextureRegion screwTex = WereScrewedGame.manager.getAtlas(
+				"menu-textures" ).findRegion( "screw" );
+
 		ScreenType back = ScreenType.MAIN_MENU;
 		if ( backScreen != null )
 			back = backScreen;
-		
+
 		musicSlider = new Slider( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2,
 				SoundType.MUSIC, slidTex, screwTex );
 		soundSlider = new Slider( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2,
 				SoundType.SFX, slidTex, screwTex );
 		noiseSlider = new Slider( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2,
 				SoundType.NOISE, slidTex, screwTex );
-		int val = fullscreen? 1 : 0;
-		fullBox = new CheckBox ( 0, 1, val);
+		int val = WereScrewedGame.getPrefs( ).isFullScreen( ) ? 1 : 0;
+		fullBox = new CheckBox( 0, 1, val );
 		controls = new Button( "Controls", fancyFont, buttonTex );
 		music = new OptionButton( "Music", fancyFont, buttonTex, musicSlider );
 		sound = new OptionButton( "Sound", fancyFont, buttonTex, soundSlider );
 		noise = new OptionButton( "Noise", fancyFont, buttonTex, noiseSlider );
 		// subtitles = new OptionButton( "Subtitles", fancyFont,
 		// subBox );
-		fullCheck = new OptionButton( "Fullscreen", fancyFont, buttonTex, fullBox );
+		fullCheck = new SwitchButton( "Fullscreen", fancyFont, buttonTex,
+				new FullHandler( fullBox ) );
 		backButton = new TextButton( "Back", fancyFont, buttonTex,
 				new ScreenSwitchHandler( back ) );
 
