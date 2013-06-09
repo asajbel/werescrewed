@@ -388,15 +388,15 @@ public class AlphaScreen extends Screen {
 			powerSwitch10.setState( true );
 		}
 		
-		batch.begin( );
+		level.backgroundBatch.begin( );
 		if ( !transInEnd ) {
-			drawTransIn( batch );
+			drawTransIn( level.backgroundBatch );
 		}
 		
 		if ( !transOutEnd ) {
-			drawTransOut( batch, ScreenType.LOADING_TROPHY_2  );
+			drawTransOut( level.backgroundBatch, ScreenType.LOADING_TROPHY_2  );
 		}
-		batch.end( );
+		level.backgroundBatch.end( );
 
 	}
 
