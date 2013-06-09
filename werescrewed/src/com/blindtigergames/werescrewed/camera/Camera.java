@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 
 /*******************************************************************************
  * Camera class. Zooms and translates based on anchors. Max 30 anchors.
@@ -176,10 +177,10 @@ public class Camera {
 		// Tracks player holding "N"
 		debugRender = false;
 		// check debug keys
-		if ( Gdx.input.isKeyPressed( Keys.B ) ) {
+		if (  WereScrewedGame.debug && Gdx.input.isKeyPressed( Keys.B ) ) {
 			debugInput = true;// now camera is a toggle
 		}
-		if ( Gdx.input.isKeyPressed( Keys.N ) ) {
+		if (  WereScrewedGame.debug && Gdx.input.isKeyPressed( Keys.N ) ) {
 			debugRender = true;
 		}
 

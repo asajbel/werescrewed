@@ -6,7 +6,7 @@ offset: 0, 0
 head_left
   rotate: false
   xy: 2, 2
-  size: 1498, 1650
+  size: 1498, 1638
   orig: 1498, 1650
-  offset: 0, 0
+  offset: 0, 12
   index: -1
