@@ -57,9 +57,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 	private ShapeRenderer shapeRenderer;
 	protected float scale = 0.0f;
 	protected final float SCALE_MIN = 0.0f;
-	protected final float SCALE_MAX = 10.0f;
-	protected final float SCALE_SIZE = 150.0f;
-	protected float scaleMax = 0.0f;
+	protected final float SCALE_MAX = 1.0f;
+	protected final float SCALE_SIZE = 10.0f;
+	protected final float SCALE_ADJUST = 0.03f;
+	protected float maxScale = 0.0f;
 	protected Sprite trans = null;
 	protected boolean alphaFinish = false;
 	protected boolean transInEnd = true;
@@ -135,7 +136,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		shapeRenderer.end( );
 		
 		if ( once && trans != null ) {
-			trans.setSize( scaleMax, scaleMax );
+			trans.setSize( maxScale, maxScale );
 			once = false;
 		}
 		
@@ -203,7 +204,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 	
 	protected void drawTransIn ( SpriteBatch batch ) {
-		scale -= 0.03;
+		scale -= SCALE_ADJUST;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
 		//trans.setSize( scale, scale );
@@ -214,37 +215,37 @@ public class Screen implements com.badlogic.gdx.Screen {
 		trans.draw( batch );
 		if ( scale < SCALE_MIN ) {
 			transInEnd = true;
-			scale = 0.0f;
+			scale = SCALE_MIN;
 		}
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch ) {
-		scale += 0.03;
+		scale += SCALE_ADJUST;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
 		trans.setScale( scale );
 		trans.setPosition( width / 2 - trans.getWidth( ) / 2, 
 				height / 2 - trans.getHeight( ) / 2 );
 		trans.draw( batch );
-		if ( scale > 1.0f ) {
+		if ( scale > SCALE_MAX ) {
 			//transOutEnd = true;
-			scale = 1.0f;
+			scale = SCALE_MAX;
 			if ( Buttons.size( ) > 0 ) 
 				Buttons.get( buttonIndex ).setSelected( true );
 		}
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch, ScreenType screen ) {
-		scale += 0.03;
+		scale += SCALE_ADJUST;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
 		trans.setScale( scale );
 		trans.setPosition( width / 2 - trans.getWidth( ) / 2, 
 				height / 2 - trans.getHeight( ) / 2 );
 		trans.draw( batch );
-		if ( scale > 1.0f ) {
+		if ( scale > SCALE_MAX ) {
 			//transOutEnd = true;
-			scale = 1.0f;
+			scale = SCALE_MAX;
 			ScreenManager.getInstance( ).show( screen );
 		}
 	}

@@ -170,7 +170,7 @@ public class DragonScreen extends Screen {
 				WereScrewedGame.dirHandle + "/transitions/trans-gear.png",
 				Texture.class );
 		trans = new Sprite( transition );
-		scaleMax = trans.getHeight( ) * SCALE_MAX;
+		maxScale = trans.getHeight( ) * SCALE_SIZE;
 		scale = 1.0f;
 		transInEnd = false;
 	}

@@ -30,8 +30,7 @@ public class TextButton extends Button {
 	 *            int
 	 */
 	public TextButton( String caption, BitmapFont font, TextureRegion button,
-			ButtonHandler handler,
-			int x, int y ) {
+			ButtonHandler handler, int x, int y ) {
 		super( caption, font, button, x, y );
 		this.caption = caption;
 		this.font = font;
