@@ -319,8 +319,7 @@ public class Camera {
 
 		// If a buffer has left the screen
 		if ( !steering
-				&& ( ( !currActiveAnchors.equals( prevActiveAnchors ) && ( outside || camera.zoom > targetZoom
-						+ ZOOM_SIG_DIFF ) ) || ( zoomIn && camera.zoom == STANDARD_ZOOM ) ) ) {
+				&& ( ( !currActiveAnchors.equals( prevActiveAnchors ) ) || ( zoomIn && camera.zoom == STANDARD_ZOOM ) ) ) {
 			startSteering( );
 		}
 
