@@ -359,7 +359,7 @@ public class DragonScreen extends Screen {
 
 					// You win and goto next screen!!!
 					// this currently doesn't work
-					ScreenManager.getInstance( ).show( ScreenType.TROPHY_2 );
+					ScreenManager.getInstance( ).show( ScreenType.LOADING_TROPHY_3 );
 				}
 			}
 		}
