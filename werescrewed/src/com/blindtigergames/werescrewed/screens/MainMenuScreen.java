@@ -66,8 +66,8 @@ class MainMenuScreen extends MenuScreen {
 		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/transitions/trans-gear.png", Texture.class );
 		trans = new Sprite( transition );
-		scale = trans.getHeight( ) * SCALE_MAX;
-		scaleMax = scale;
+		scaleMax = trans.getHeight( ) * SCALE_MAX;
+		scale = 1.0f;
 		transInEnd = false;
 		
 		man = new SimpleSpinemator( "red_male_atlas", "male", "fall_idle", true );
@@ -92,6 +92,7 @@ class MainMenuScreen extends MenuScreen {
 		moveCharacters( delta );
 		updateDebris( );
 		batch.begin( );
+		
 		for ( Falling g : gears ) {
 			g.sprite.draw( batch );
 		}

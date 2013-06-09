@@ -661,10 +661,14 @@ public class LevelFactory {
 			entities.put( item.name, level.root );
 
 		} else {
+			
 			// attach skeleton to skeleton
 			SkeletonBuilder skeleBuilder = new SkeletonBuilder( level.world );
 			skeleBuilder.name( item.name ).texture( null );
 
+			if(levelName == "data/levels/dragonlevel.xml")
+				skeleBuilder.lessExtraBorder( );
+			
 			if ( item.props.containsKey( "rectangle" ) ) {
 				skeleBuilder.setUseBoundingRect( true );
 				skeleBuilder
