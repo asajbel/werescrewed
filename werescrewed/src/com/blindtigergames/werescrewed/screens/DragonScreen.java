@@ -7,7 +7,6 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -73,6 +72,16 @@ public class DragonScreen extends Screen {
 	float mouthFireTimer=0;
 	final float mouthFireDelay=8f, mouthFireTotalTime=24f;
 	boolean mouthFireTriggered=false;
+	
+	boolean balloon2_ss1Unscrewed = false;
+	boolean balloon2_ss2Unscrewed = false;
+	boolean tail_ssLUnscrewed = false;
+	boolean tail_ssRUnscrewed = false;
+	boolean tail2_ssLUnscrewed = false;
+	boolean tail2_ssRUnscrewed = false;
+	boolean tail3_ssLUnscrewed = false;
+	boolean tail3_ssRUnscrewed = false;
+	boolean tail2ToTail3Unscrewed = false;
 	
 	// the numbers here correspond to gleed numbers
 	Fire tail3Fire2, tail3Fire3, tail3Fire4, tail3Fire5, tail3Fire6;
@@ -215,8 +224,6 @@ public class DragonScreen extends Screen {
 			time = 0;
 		}
 
-		
-		
 		if(!bodyPowerSwitch3.isTurnedOn( )){
 			bodyPowerSwitch3.setActive( false );
 			bodyRoomJoint.setMotorSpeed( -0.1f );
