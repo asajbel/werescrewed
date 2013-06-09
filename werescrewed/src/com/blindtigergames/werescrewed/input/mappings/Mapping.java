@@ -103,4 +103,9 @@ public class Mapping {
 			BUTTON_SYSTEM = 2000;
 		}
 	}
+
+	public static boolean isAndroid( ) {
+		return runningOnAndroid;
+	}
+	
 }

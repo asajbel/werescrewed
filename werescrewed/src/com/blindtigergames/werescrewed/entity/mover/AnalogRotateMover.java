@@ -64,12 +64,12 @@ public class AnalogRotateMover implements IMover {
 			p.setMoverAtCurrentState( this );
 			transformBody.setTransform( p.getPosition( ), p.getLocalRot( ) );
 		}
-		if ( screwVal > lastVal ) {
+		if ( screw.getDepth( ) > lastVal ) {
 			clockWise = true;
 		} else {
 			clockWise = false;
 		}
-		lastVal = screwVal;
+		lastVal = screw.getDepth( );
 		speedSteps = 10;
 	}
 
