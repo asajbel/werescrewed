@@ -47,8 +47,8 @@ class CreditsScreen extends MenuScreen {
 		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/transitions/trans-gear.png", Texture.class );
 		trans = new Sprite( transition );
-		scale = trans.getHeight( ) * SCALE_MAX;
-		scaleMax = scale;
+		scaleMax = trans.getHeight( ) * SCALE_MAX;
+		scale = 1.0f;
 		transInEnd = false;
 		
 
@@ -60,6 +60,8 @@ class CreditsScreen extends MenuScreen {
 		codeLabel = new Label( "Programmers: ", fancyFont );
 		artLabel = new Label( "Artists: ", fancyFont );
 		soundLabel = new Label( "Musicians", fancyFont );
+		
+		WereScrewedGame.manager.loadAtlas( "data/menu/menu-textures.pack" );
 		
 		buttonTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "button" );
 		

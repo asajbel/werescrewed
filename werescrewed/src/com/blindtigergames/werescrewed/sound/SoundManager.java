@@ -523,7 +523,7 @@ public class SoundManager implements Disposable {
 			offset = new Vector2(0f,0f);
 		}
 
-		protected long play( float delayAmount, float extVol, float extPitch ) {
+		public long play( float delayAmount, float extVol, float extPitch ) {
 			long id = -1;
 			if ( delay < DELAY_MINIMUM ) {
 				finalVolume = Math.max(

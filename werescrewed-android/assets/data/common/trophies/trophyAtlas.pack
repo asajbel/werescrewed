@@ -10,16 +10,23 @@ trophy11
   orig: 64, 64
   offset: 0, 0
   index: -1
+trophy29
+  rotate: false
+  xy: 134, 200
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 trophy9
   rotate: false
-  xy: 332, 200
+  xy: 134, 266
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 trophy25
   rotate: false
-  xy: 200, 134
+  xy: 332, 134
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -33,14 +40,21 @@ trophy1
   index: -1
 trophy4
   rotate: false
-  xy: 68, 200
+  xy: 332, 200
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy21b
+  rotate: false
+  xy: 68, 134
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 trophy5
   rotate: false
-  xy: 134, 200
+  xy: 398, 200
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -59,9 +73,16 @@ trophy12
   orig: 64, 64
   offset: 0, 0
   index: -1
+trophy26
+  rotate: false
+  xy: 398, 134
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 trophy22
   rotate: false
-  xy: 68, 134
+  xy: 134, 134
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -89,28 +110,28 @@ trophy17
   index: -1
 trophy27
   rotate: false
-  xy: 266, 134
+  xy: 2, 200
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 trophy7
   rotate: false
-  xy: 266, 200
+  xy: 68, 266
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 trophy23
   rotate: false
-  xy: 134, 134
+  xy: 200, 134
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 trophy3
   rotate: false
-  xy: 398, 134
+  xy: 200, 200
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -138,14 +159,14 @@ trophy10
   index: -1
 trophy28
   rotate: false
-  xy: 332, 134
+  xy: 68, 200
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 trophy6
   rotate: false
-  xy: 200, 200
+  xy: 2, 266
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -153,6 +174,13 @@ trophy6
 trophy21a
   rotate: false
   xy: 2, 134
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+trophy24
+  rotate: false
+  xy: 266, 134
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -187,7 +215,7 @@ trophy15
   index: -1
 trophy30
   rotate: false
-  xy: 2, 200
+  xy: 266, 200
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
