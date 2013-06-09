@@ -34,7 +34,7 @@ public class TrophyScreen extends Screen {
 	private int trophyLength = 5;
 	private int lineHeight = 0;
 	private int trophyMax = 30; // Current number of possible trophies
-	private float offSet = 96;
+	private float offSet = 256;
 	private ScreenType screenTag = null;
 	private Label[ ] player1 = new Label[ trophyLength ];
 	private Label[ ] player1Desc = new Label[ trophyLength ];
@@ -51,6 +51,9 @@ public class TrophyScreen extends Screen {
 	private Label player2Name = null;
 	private TextButton next = null;
 	private TextureAtlas texAtlas;
+	private TextureAtlas bgAtlas;
+	private Sprite bg;
+	private Sprite bgFront;
 	
 	private TweenManager tweenManager;
 
@@ -85,6 +88,12 @@ public class TrophyScreen extends Screen {
 		next.setColored( true );
 
 		texAtlas = WereScrewedGame.manager.loadAtlas( WereScrewedGame.dirHandle + "/common/trophies/trophyAtlas.pack" );
+		bgAtlas = WereScrewedGame.manager.loadAtlas( WereScrewedGame.dirHandle + "/common/trophies/bg.pack" );
+		
+		bg = bgAtlas.createSprite("bg");
+		bg.setPosition( 0, 0 );
+		bgFront = bgAtlas.createSprite("front");
+		bg.setPosition( 0, 0 );
 		
 		
 		Tween.registerAccessor( Sprite.class, new SpriteAccessor( ) );
@@ -671,6 +680,7 @@ public class TrophyScreen extends Screen {
 		tweenManager.update( delta );
 		batch.begin( );
 		smallerFont.setScale( 0.5f );
+		bg.draw( batch );
 		player1Name.draw( batch );
 		player2Name.draw( batch );
 		for ( int i = 0; i < trophyLength; i++ ) {
@@ -684,9 +694,10 @@ public class TrophyScreen extends Screen {
 			if( player2Desc[ i ] != null ){
 				player2Desc[ i ].draw( batch );
 			}
-		}
+		}		
+		bgFront.draw( batch );
 		next.draw( batch, camera );
-		
+
 		if ( !transInEnd ) {
 			drawTransIn( batch );
 		}
@@ -733,31 +744,31 @@ public class TrophyScreen extends Screen {
 		player1Name.setX( 0 + ( int ) offSet );
 		player1Name.setY( offScreenY );
 		Tween.to( player1Name, LabelAccessor.POSITION_Y, 1 )
-		.target( centerY / 2 + lineHeight * 3 * ( trophyLength + 1 ) )
+		.target( centerY / 2 + lineHeight * 3 * ( trophyLength + 1 ) - 64 )
 		.start( tweenManager );
 		player2Name.setX( centerX + ( int ) offSet );
 		player2Name.setY( offScreenY );
 		Tween.to( player2Name, LabelAccessor.POSITION_Y, 1 )
-		.target( centerY / 2 + lineHeight * 3 * ( trophyLength + 1 ) )
+		.target( centerY / 2 + lineHeight * 3 * ( trophyLength + 1 ) - 64 )
 		.start( tweenManager );
 		for ( int j = 0; j < trophyLength; j++ ) {
 			player1[ j ].setX( 0 + ( int ) offSet );
 			player1[ j ].setY( offScreenY );
 			Tween.to( player1[ j ], LabelAccessor.POSITION_Y, 1 )
-			.target( centerY / 2 + lineHeight * 3 * ( j + 1 ) ).delay( delay*j )
+			.target( centerY / 2 + lineHeight * 3 * ( j + 1 ) - 64 ).delay( delay*j )
 			.start( tweenManager );
 			
-			trophies1[ j ].setX(  16  );
+			trophies1[ j ].setX(  184  );
 			trophies1[ j ].setY( offScreenY  );
 			Tween.to( trophies1[ j ], SpriteAccessor.POSITION_Y, 1 )
-			.target( centerY / 2 + lineHeight * 3 * ( j ) + trophies1[ j ].getHeight( ) / 2 ).delay( delay*j )
+			.target( centerY / 2 + lineHeight * 3 * ( j ) + trophies1[ j ].getHeight( ) / 2 - 64 ).delay( delay*j )
 			.start( tweenManager );
 			
 			if (player1Desc[ j ] != null){
 				player1Desc[ j ].setX( 0 + ( int ) offSet );
 				player1Desc[ j ].setY( offScreenY );
 				Tween.to( player1Desc[ j ], LabelAccessor.POSITION_Y, 1 )
-				.target( centerY / 2 + lineHeight * 3 * ( j + 1 ) - player1[ j ].getHeight( ) ).delay( delay*j )
+				.target( centerY / 2 + lineHeight * 3 * ( j + 1 ) - player1[ j ].getHeight( ) / 2 - 64 ).delay( delay*j )
 				.start( tweenManager );
 			}
 			
@@ -765,20 +776,20 @@ public class TrophyScreen extends Screen {
 			player2[ j ].setX( centerX + ( int ) offSet );
 			player2[ j ].setY( offScreenY );
 			Tween.to( player2[ j ], LabelAccessor.POSITION_Y, 1 )
-			.target( centerY / 2 + lineHeight * 3 * ( j + 1 ) ).delay( delay*j )
+			.target( centerY / 2 + lineHeight * 3 * ( j + 1 ) - 64 ).delay( delay*j )
 			.start( tweenManager );
 			
-			trophies2[ j ].setX( centerX );
+			trophies2[ j ].setX( centerX + 184);
 			trophies2[ j ].setY( offScreenY  );
 			Tween.to( trophies2[ j ], SpriteAccessor.POSITION_Y, 1 )
-			.target( centerY / 2 + lineHeight * 3 * ( j ) + trophies2[ j ].getHeight( ) / 2 ).delay( delay*j )
+			.target( centerY / 2 + lineHeight * 3 * ( j ) + trophies2[ j ].getHeight( ) / 2 - 64 ).delay( delay*j )
 			.start( tweenManager );
 			
 			if (player2Desc[ j ] != null){
 				player2Desc[ j ].setX( centerX + ( int ) offSet );
 				player2Desc[ j ].setY( offScreenY );
 				Tween.to( player2Desc[ j ], LabelAccessor.POSITION_Y, 1 )
-				.target( centerY / 2 + lineHeight * 3 * ( j + 1 ) - player2[ j ].getHeight( ) ).delay( delay*j )
+				.target( centerY / 2 + lineHeight * 3 * ( j + 1 ) - player2[ j ].getHeight( ) / 2 - 64 ).delay( delay*j )
 				.start( tweenManager );
 			}
 		}

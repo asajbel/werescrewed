@@ -345,11 +345,11 @@ public class DragonScreen extends Screen {
 			}else{
 				if(dragonBrain.isTimeLineMoverFinished( )){
 					
+					transOutEnd = false;
 
 					// You win and goto next screen!!!
-					// this currently doesn't work
-					//ScreenManager.getInstance( ).show( ScreenType.TROPHY_2 );
-					transOutEnd = false;
+					ScreenManager.getInstance( ).show( ScreenType.LOADING_TROPHY_3 );
+					
 				}
 			}
 		}
