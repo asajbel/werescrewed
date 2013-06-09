@@ -10,8 +10,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 public class Main {
-	private static boolean fullscreen = false;
-	private static boolean debug = false;
+	private static boolean fullscreen = true;
+	private static boolean debug = true;
 
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
@@ -26,7 +26,7 @@ public class Main {
 		cfg.vSyncEnabled = true;
 		// cfg.fullscreen = true;
 		
-		readConfig( ); 
+		//readConfig( );
 
 		if (fullscreen) {
 			cfg.setFromDisplayMode(LwjglApplicationConfiguration
