@@ -303,7 +303,7 @@ public class DragonScreen extends Screen {
 			
 			headEventTimer--;
 			if(headEventTimer == 0){
-				headSkeleton.setFade( false );
+				//headSkeleton.setFade( false );
 				headEvent = false;
 			
 			}else{
@@ -1488,7 +1488,7 @@ public class DragonScreen extends Screen {
 				new Vector2(-brain_impulse, 0),
 				 level.world, true );
 		
-		int boltsPerEmitter = 2, boltLife = 5;
+		int boltsPerEmitter = 2, boltLife = 3;
 		for(int i =0; i < boltsPerEmitter; ++i ){
 			brainEmitter1.addParticle( createBoltEnemy( pos.cpy().add(0,n*h), i ), boltLife, 0, i*boltLife/boltsPerEmitter );
 		}
