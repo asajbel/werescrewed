@@ -57,7 +57,7 @@ public class SoundManager implements Disposable {
 		for (SoundRef ref: loopSounds){
 			if (allowLoopSounds && activeLoops < maxLoopChannels){
 				if (ref.loopId < 0){
-					ref.loopId = ref.mid.loop( ref.finalVolume, ref.finalPitch, ref.pan );
+					ref.loopId = ref.mid.loop( ref.finalVolume * getNoiseVolume(), ref.finalPitch, ref.pan );
 				}
 				activeLoops++;
 			} else {
@@ -94,6 +94,21 @@ public class SoundManager implements Disposable {
 			sounds.set( id, index, ref );
 		}
 		return sounds.get( id , index );
+	}
+	
+	public SoundRef loadMultiSound(String id, int index, float sDelay, String sName,  float mDelay, String mName, float lDelay, String eName, float eDelay){
+		Sound start = WereScrewedGame.manager.get( sName, Sound.class );
+		Sound mid = WereScrewedGame.manager.get( mName, Sound.class );
+		Sound end = WereScrewedGame.manager.get( eName, Sound.class );
+		SoundRef ref = new SoundRef(mid);
+		ref.start = start;
+		ref.end = end;
+		ref.startDelay = sDelay;
+		ref.midDelay = mDelay;
+		ref.loopDelay = lDelay;
+		ref.endDelay = eDelay;
+		sounds.put( id, ref );
+		return ref;
 	}
 	
 	public SoundRef setSound( String id, int index, String assetName){
@@ -514,7 +529,7 @@ public class SoundManager implements Disposable {
 			stop(true);
 		}
 		
-		protected void stop( boolean hard ) {
+		public void stop( boolean hard ) {
 			if (hard){
 				if (start != null)
 					start.stop();

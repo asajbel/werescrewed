@@ -249,12 +249,42 @@ public class AlphaScreen extends Screen {
 			sounds = new SoundManager( );
 		}
 		if (!assetsLoaded){
-			sounds.getSound( "arm_start", WereScrewedGame.dirHandle.path( )
-					+ "/levels/alphabot/sounds/arm_move_begin.ogg" );
-			sounds.getSound( "arm_loop", WereScrewedGame.dirHandle.path( )
-					+ "/levels/alphabot/sounds/arm_move_loop.ogg" );
-			sounds.getSound( "arm_end", WereScrewedGame.dirHandle.path( )
-					+ "/levels/alphabot/sounds/arm_move_end.ogg" );
+			sounds.loadMultiSound( "left_arm_movement", 
+									0, 
+									0.0f, 
+									WereScrewedGame.dirHandle.path( )
+									+ "/levels/alphabot/sounds/arm_move_begin.ogg", 
+									1.0f, 
+									WereScrewedGame.dirHandle.path( )
+									+ "/levels/alphabot/sounds/arm_move_loop.ogg", 
+									0.0f, 
+									WereScrewedGame.dirHandle.path( )
+									+ "/levels/alphabot/sounds/arm_move_end.ogg", 
+									0.0f );
+			sounds.loadMultiSound( "right_arm_movement_1", 
+					0, 
+					0.0f, 
+					WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/arm_move_begin.ogg", 
+					1.0f, 
+					WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/arm_move_loop.ogg", 
+					0.0f, 
+					WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/arm_move_end.ogg", 
+					0.0f );
+			sounds.loadMultiSound( "right_arm_movement_2", 
+					0, 
+					5.0f, 
+					WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/arm_move_begin.ogg", 
+					1.0f, 
+					WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/arm_move_loop.ogg", 
+					0.0f, 
+					WereScrewedGame.dirHandle.path( )
+					+ "/levels/alphabot/sounds/arm_move_end.ogg", 
+					0.0f );
 			sounds.getSound( "fireworks", WereScrewedGame.dirHandle.path( )
 					+ "/levels/alphabot/sounds/fireworks1.ogg" );
 			sounds.getSound( "fireworks", WereScrewedGame.dirHandle.path( )
@@ -939,9 +969,8 @@ public class AlphaScreen extends Screen {
 		}
 		if ( powerSwitch7.isTurnedOn( ) && powerSwitch8.isTurnedOn( ) ) {
 			if ( leftShoulderSkeleton.currentMover( ) == null ) {
-				sounds.playSound( "arm_start", 2.0f );
-				sounds.loopSound( "arm_loop" );
-				sounds.setSoundVolume( "arm_loop", 0.0f);
+				//sounds.playSound( "arm_start", 2.0f );
+				sounds.loopSound( "left_arm_movement" );
 				updatePanels( "left_arm" );
 				Timeline t = Timeline.createSequence( );
 
@@ -958,12 +987,9 @@ public class AlphaScreen extends Screen {
 			} else if (leftShoulderSkeleton.anchors.get( 0 ).activated){
 				if (leftShoulderSkeleton.isTimeLineMoverFinished( )){
 					// deactivate anchor
-					sounds.stopSound( "arm_loop" );
-					sounds.playSound( "arm_end", 1.0f );
+					sounds.getSound( "left_arm_movement" ).stop( false );
 					sounds.playSound( "applause_action", 1.0f );
 					leftShoulderSkeleton.anchors.get( 0 ).deactivate( );
-				} else if (!sounds.isDelayed( "arm_start" )) {	
-					sounds.setSoundVolume( "arm_loop", 1.0f);
 				}
 			}
 		}
@@ -974,9 +1000,8 @@ public class AlphaScreen extends Screen {
 					.get( "rightShoulderSkeleton" );
 
 			if ( rightElbowSkeleton.currentMover( ) == null ) {
-				sounds.playSound( "arm_start", 2.0f );
-				sounds.loopSound( "arm_loop" );
-				sounds.setSoundVolume( "arm_loop", 0.0f);
+				//sounds.playSound( "arm_start", 2.0f );
+				sounds.loopSound( "right_arm_movement_1" );
 				updatePanels( "right_arm" );
 				Timeline t = Timeline.createSequence( );
 
@@ -993,11 +1018,10 @@ public class AlphaScreen extends Screen {
 			} else if (rightElbowSkeleton.anchors.get( 0 ).activated){
 				if (rightElbowSkeleton.isTimeLineMoverFinished( )){
 					// deactivate anchor
-					sounds.stopSound( "arm_loop" );
-					sounds.playSound( "arm_end", 5.0f );
+					sounds.getSound( "right_arm_movement_1" ).stop( false );
+					sounds.loopSound( "right_arm_movement_2" );
+					//sounds.playSound( "arm_end", 5.0f );
 					rightElbowSkeleton.anchors.get( 0 ).deactivate( );
-				} else if (!sounds.isDelayed( "arm_start" )) {	
-					sounds.setSoundVolume( "arm_loop", 1.0f);
 				}
 			}
 
@@ -1018,18 +1042,9 @@ public class AlphaScreen extends Screen {
 			} else if ( rightShoulderSkeleton.anchors.get( 0 ).activated ) {
 				if (rightShoulderSkeleton.isTimeLineMoverFinished( )){
 					// deactivate anchor
-					sounds.stopSound( "arm_loop" );
-					sounds.playSound( "arm_end", 1.0f );
+					sounds.getSound( "right_arm_movement_2" ).stop( false );
 					sounds.playSound( "applause_action", 1.0f );
 					rightShoulderSkeleton.anchors.get( 0 ).deactivate( );
-				} else if (!(sounds.isDelayed( "arm_end" ) || sounds.isLooping( "arm_loop" ))){
-					//play startup sound when the previous sound ends.
-					sounds.playSound( "arm_start", 1.0f );
-					sounds.loopSound( "arm_loop" );
-					sounds.setSoundVolume( "arm_loop", 0.0f);
-				} else if (!sounds.isDelayed( "arm_start" )){
-					//turn on the loop sound when the startup sound ends.
-					sounds.setSoundVolume( "arm_loop", 1.0f);
 				}
 			}
 		}
