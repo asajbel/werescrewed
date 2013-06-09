@@ -83,12 +83,8 @@ public class EntityParticleEmitter extends Entity {
 	 * @param mover
 	 * @param lifeSpanOffset
 	 */
-	public void addParticle( Entity entity, float lifeSpan, float lifeSpanOffset ) {
-		particles.add( new EntityParticle( entity, lifeSpan, lifeSpanOffset ) );
-	}
-	
-	public void addParticle(Entity entity, float lifeSpan, float lifeSpanOffset, float delay){
-		particles.add( new EntityParticle( entity, lifeSpan, delay ) );
+	public void addParticle( Entity entity, float lifeSpan, float delay, float initDelay ) {
+		particles.add( new EntityParticle( entity, lifeSpan, delay, initDelay ) );
 	}
 
 
@@ -102,7 +98,7 @@ public class EntityParticleEmitter extends Entity {
 		if(activeEmitting){
 			for ( EntityParticle p : particles ) {
 				p.update( deltaTime );
-				if( p.isDelayDone( ) ){
+				if( p.isDelayDone( ) ){//only returns true once per lifespan
 					Body b = p.getEntity( ).body;
 					b.setLinearVelocity( 0,0 );
 					b.setGravityScale( 0.1f );
@@ -110,7 +106,7 @@ public class EntityParticleEmitter extends Entity {
 				}
 				if ( p.isDead( ) ) {
 					p.resetParticle( this.getPosition( ) );
-					p.getEntity( ).body.applyLinearImpulse( emitionImpusle, p.getEntity( ).body.getWorldCenter( ) );
+					//p.getEntity( ).body.applyLinearImpulse( emitionImpusle, p.getEntity( ).body.getWorldCenter( ) );
 				}
 			}
 		}
@@ -121,7 +117,7 @@ public class EntityParticleEmitter extends Entity {
 		super.draw( batch, deltaTime, camera );
 		if(active){
 			for ( EntityParticle particle : particles ) {
-				if(!particle.isDead( ) && !particle.isDelayed() )particle.getEntity( ).draw( batch, deltaTime, camera );
+				if(particle.isAlive()) particle.getEntity( ).draw( batch, deltaTime, camera );
 			}
 		}
 	}

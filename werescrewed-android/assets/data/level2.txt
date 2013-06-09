@@ -64,3 +64,6 @@
 /levels/dragon/interior_tail2_bodyright.pack
 /levels/dragon/interior_tail3_bodyleft.pack
 
+#Intro balloon interior
+/levels/dragon/intro-balloon.pack
+

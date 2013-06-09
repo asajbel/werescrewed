@@ -71,7 +71,7 @@ public class DragonScreen extends Screen {
 	int headEventTimer = 180;
 	
 	float mouthFireTimer=0;
-	final float mouthFireDelay=8f, mouthFireTotalTime=24f;
+	final float mouthFireDelay, mouthFireTotalTime;
 	boolean mouthFireTriggered=false;
 	
 	// the numbers here correspond to gleed numbers
@@ -107,10 +107,11 @@ public class DragonScreen extends Screen {
 		getTailStructureScrews();
 		initFireballEnemy();
 
-		
+		introBalloonDecals();
 		
 		mouthFire = new MouthFire( "mouth-fire", new Vector2(25000, 900), new Vector2(32000, 75),
 				4f, 100f, 800f, level.world);
+		mouthFire.dontPutToSleep=true;
 		Skeleton head_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_sub_skeleton1" );
 		head_skeleton.addHazard( mouthFire );
@@ -121,7 +122,10 @@ public class DragonScreen extends Screen {
 		jaw_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "jaw_skeleton" );
 		Timeline t = Timeline.createSequence( );
-
+		
+		mouthFireDelay = 8f;
+		mouthFireTotalTime=22f;
+		
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
 				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
 				.start( ).delay( 2f ) );
@@ -1193,6 +1197,8 @@ public class DragonScreen extends Screen {
 		brow.addFGDecal( Sprite.scale( browAtlas.createSprite( "eyebrow" ),1.6f));//, new Vector2(-393,-161) );
 		addFGSkeleton( brow );
 		
+		//pizza.
+		
 		//angry mover
 		Timeline browSequence = Timeline.createSequence( );
 		//begin the mover by moving it to the starting position quickly
@@ -1202,8 +1208,17 @@ public class DragonScreen extends Screen {
 		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, .5f )
 				.target( 0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
 		browSequence.end( );
+		//.5s
 		
-		browSequence.beginParallel( );
+		browSequence.beginParallel( );//idling
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 1.875f )
+			.target( 20, -20f ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 2, 0 ).start( ) );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 1.875f )
+				.target( -Util.FOURTH_PI/6 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 2, 0 ).start( ) );
+		browSequence.end( );
+		//8s of brow movement by now
+		
+		browSequence.beginParallel( );//angry
 			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, .5f )
 				.target( 100, -100f ).ease( TweenEquations.easeInOutQuad ).start( ) );
 			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, .5f )
@@ -1211,20 +1226,36 @@ public class DragonScreen extends Screen {
 		browSequence.end( );
 		
 		browSequence.beginParallel( );
-			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 2f )
-					.target( 110, -130 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 3, 0 ).start( ) );
-			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 2f )
-				.target( -Util.FOURTH_PI/2-Util.FOURTH_PI/6 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 3, 0 ).start( ) );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 1.875f )
+					.target( 110, -130 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 2, 0 ).start( ) );
+			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 1.875f )
+				.target( -Util.FOURTH_PI/2-Util.FOURTH_PI/6 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 2, 0 ).start( ) );
 		browSequence.end( );
+		//16s by now
 		
-		
-		browSequence.beginParallel( );
-			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 1.5f )
-					.target( 0,0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
-			browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 1.5f )
-					.target( 0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
-			browSequence.end( );
+		browSequence.beginParallel( );///move back to beginning
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 2f )
+				.target( 0,0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 2f )
+				.target( 0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+		browSequence.end( );
+		//18 s
+
+		browSequence.beginParallel( );//idling
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 2f )
+			.target( 20, -20f ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 1, 0 ).start( ) );
+		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 2f )
+				.target( -Util.FOURTH_PI/6 ).ease( TweenEquations.easeInOutQuad ).repeatYoyo( 1, 0 ).start( ) );
+		browSequence.end( );
 		browSequence = browSequence.repeat( Tween.INFINITY, 0f );
+		//22s now
+		
+//		browSequence.beginParallel( );
+//		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_POS_XY, 2f )
+//				.target( 0,0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+//		browSequence.push( Tween.to( brow, PlatformAccessor.LOCAL_ROT, 2f )
+//				.target( 0 ).ease( TweenEquations.easeInOutQuad ).start( ) );
+//		browSequence.end( );
 		
 		//brow.addMover( new TimelineTweenMover( angry.start( ) ) );
 		brow.addMover( new TimelineTweenMover( browSequence.start( ) ), RobotState.HOSTILE );
@@ -1246,13 +1277,15 @@ public class DragonScreen extends Screen {
 		browSequence.end( );
 		browSequence = browSequence.repeat( Tween.INFINITY, 0f );
 		
+		
+		
 		brow.addMover( new TimelineTweenMover( browSequence.start( ) ), RobotState.IDLE );
 		brow.setCurrentMover( RobotState.HOSTILE);
 		
 		//((TimelineTweenMover)brow.currentMover( )).timeline.start( );
 		
 		
-		
+		brow.dontPutToSleep=true;
 		
 	}
 	
@@ -1475,7 +1508,7 @@ public class DragonScreen extends Screen {
 				new Vector2(),
 				 level.world, true );
 		for(int i =0; i < 4; ++i ){
-			fireballEmitter.addParticle( createBoltEnemy( new Vector2(13750, 300).add(0,n*h), i ), 10, 0, i*5 );
+			fireballEmitter.addParticle( createBoltEnemy( new Vector2(13750, 300).add(0,n*h), i ), 10, 3, i*5 );
 		}
 		level.root.addLooseEntity( fireballEmitter );
 		
@@ -1487,9 +1520,9 @@ public class DragonScreen extends Screen {
 				new Vector2(-brain_impulse, 0),
 				 level.world, true );
 		
-		int boltsPerEmitter = 2, boltLife = 3;
+		int boltsPerEmitter = 2, boltLife = 5;
 		for(int i =0; i < boltsPerEmitter; ++i ){
-			brainEmitter1.addParticle( createBoltEnemy( pos.cpy().add(0,n*h), i ), boltLife, 0, i*boltLife/boltsPerEmitter );
+			brainEmitter1.addParticle( createBoltEnemy( pos.cpy().add(0,n*h), i ), boltLife, 1, i*boltLife/boltsPerEmitter );
 		}
 		level.root.addLooseEntity( brainEmitter1 );
 		
@@ -1500,7 +1533,7 @@ public class DragonScreen extends Screen {
 				 level.world, true );
 		
 		for(int i =0; i < boltsPerEmitter; ++i ){
-			brainEmitter2.addParticle( createBoltEnemy( pos2.cpy().add(0,n*h), i ), boltLife, 0, i*boltLife/boltsPerEmitter );
+			brainEmitter2.addParticle( createBoltEnemy( pos2.cpy().add(0,n*h), i ), boltLife, 1, i*boltLife/boltsPerEmitter );
 		}
 		level.root.addLooseEntity( brainEmitter2 );
 		
@@ -1511,7 +1544,7 @@ public class DragonScreen extends Screen {
 				 level.world, true );
 		
 		for(int i =0; i < boltsPerEmitter; ++i ){
-			brainEmitter3.addParticle( createBoltEnemy( pos3.cpy().add(0,n*h), i ), boltLife, 0, i*boltLife/boltsPerEmitter );
+			brainEmitter3.addParticle( createBoltEnemy( pos3.cpy().add(0,n*h), i ), boltLife, 1, i*boltLife/boltsPerEmitter );
 		}
 		level.root.addLooseEntity( brainEmitter3 );
 		
@@ -1522,7 +1555,7 @@ public class DragonScreen extends Screen {
 				 level.world, true );
 		
 		for(int i =0; i < boltsPerEmitter; ++i ){
-			brainEmitter4.addParticle( createBoltEnemy( pos4.cpy().add(0,n*h), i ), boltLife, 0, i*boltLife/boltsPerEmitter );
+			brainEmitter4.addParticle( createBoltEnemy( pos4.cpy().add(0,n*h), i ), boltLife, 1, i*boltLife/boltsPerEmitter );
 		}
 		level.root.addLooseEntity( brainEmitter4 );
 	}
@@ -1546,5 +1579,25 @@ public class DragonScreen extends Screen {
 		tail2Right = ( StructureScrew ) LevelFactory.entities
 				.get( "tail2_ss_right" );
 		
+	}
+	
+	void introBalloonDecals(){
+		Skeleton skele;
+		Sprite s;
+		TextureAtlas mesh = WereScrewedGame.manager.getAtlas( "intro-balloon" );
+		Vector2 pos;
+		float scale = 1f/.75f;
+		for(int i = 1; i <= 3; i++){
+			skele = ( Skeleton ) LevelFactory.entities
+					.get( "balloon"+i+"_skeleton" );
+			skele.bgSprite=null;
+			s = mesh.createSprite( "intro-balloon"+i );
+			pos = new Vector2(-s.getWidth( )/2f*scale,-s.getHeight( )/2f*scale);
+			if(i==1)pos.sub(20,105);
+			if(i==2)pos.add(23,-117);
+			if(i==3)pos.sub( -8,50 );
+			skele.addBGDecal( Sprite.scale( s,(i==1)?scale*1.33f:scale), pos);
+			addBGSkeleton( skele );
+		}
 	}
 }

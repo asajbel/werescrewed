@@ -1,0 +1,26 @@
+intro-balloon.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+offset: 0, 0
+intro-balloon3
+  rotate: false
+  xy: 4, 4
+  size: 1351, 535
+  orig: 1351, 535
+  offset: 0, 0
+  index: -1
+intro-balloon1
+  rotate: false
+  xy: 835, 545
+  size: 757, 399
+  orig: 757, 399
+  offset: 0, 0
+  index: -1
+intro-balloon2
+  rotate: false
+  xy: 4, 545
+  size: 825, 552
+  orig: 825, 552
+  offset: 0, 0
+  index: -1
