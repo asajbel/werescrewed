@@ -17,6 +17,7 @@ import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundRef;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class Link extends Entity {
@@ -26,6 +27,7 @@ public class Link extends Entity {
 	protected static final float SOUND_PITCH = 1.0f;
 	protected static final float SOUND_PITCH_VARIANCE = 0.0f;
 	protected static final float SOUND_VOLUME = 1.0f;
+	protected static final float SOUND_RANGE = 50.0f;
 	
 	private float width, height;
 	private float xOffset, yOffset;
@@ -67,9 +69,9 @@ public class Link extends Entity {
 	private void loadSounds( ) {
 		if (sounds == null)
 			sounds = new SoundManager();
-		sounds.getSound( "clink", WereScrewedGame.dirHandle + "/common/sounds/chain1.ogg" );
-		sounds.getSound( "clink", WereScrewedGame.dirHandle + "/common/sounds/chain2.ogg" );
-		sounds.getSound( "clink", WereScrewedGame.dirHandle + "/common/sounds/chain3.ogg" );
+		sounds.getSound( "clink", WereScrewedGame.dirHandle + "/common/sounds/chain1.ogg" ).setRange( SOUND_RANGE );
+		sounds.getSound( "clink", WereScrewedGame.dirHandle + "/common/sounds/chain2.ogg" ).setRange( SOUND_RANGE );
+		sounds.getSound( "clink", WereScrewedGame.dirHandle + "/common/sounds/chain3.ogg" ).setRange( SOUND_RANGE );
 	}
 
 	private void constructBody( Vector2 pos ) {
@@ -152,12 +154,24 @@ public class Link extends Entity {
 			av = Math.abs( body.getAngularVelocity( ) );
 		}
 		if (av > MIN_AV){
-			float vol = av * SOUND_VOLUME * sounds.calculatePositionalVolume( "clink", screenPos, Camera.CAMERA_RECT );
+			float vol = av * SOUND_VOLUME;
 			float del = SOUND_DELAY + SOUND_DELAY_VARIANCE * WereScrewedGame.random.nextFloat( );
-			float pitch = (SOUND_PITCH - SOUND_PITCH_VARIANCE) + (SOUND_PITCH_VARIANCE * Math.min( av, 1.0f ) ); 
+			float pitch = (SOUND_PITCH - SOUND_PITCH_VARIANCE) + (SOUND_PITCH_VARIANCE * Math.min( av, 1.0f ) );
 			if (vol > 0.0f){
-				sounds.playSound( "clink", 0, del, vol, pitch);
-				sounds.setDelay( "clink", del);
+				boolean foundSound = false;
+				for (SoundRef clink : sounds.getAllSounds("clink")){
+					if (!clink.isDelayed( )){
+						clink.setEndDelay( del );
+						if (!foundSound){
+							clink.setVolume( vol * clink.calculatePositionalVolume( screenPos, Camera.CAMERA_RECT ));
+							clink.setPan( pitch );
+							clink.play(false);
+							foundSound = true;
+						} else {
+							clink.delay();
+						}
+					}
+				}
 			}
 		}
 	}

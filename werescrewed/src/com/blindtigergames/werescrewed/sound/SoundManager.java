@@ -57,7 +57,7 @@ public class SoundManager implements Disposable {
 		for (SoundRef ref: loopSounds){
 			if (allowLoopSounds && activeLoops < maxLoopChannels){
 				if (ref.loopId < 0){
-					ref.loop( false );
+					ref.loopId = ref.mid.loop( ref.finalVolume, ref.finalPitch, ref.pan );
 				}
 				activeLoops++;
 			} else {
@@ -157,7 +157,7 @@ public class SoundManager implements Disposable {
 			if (subSounds.containsKey( "pitchrange" ))
 				sound.setPitchRange(Float.parseFloat( subSounds.get("pitchrange") ));
 			if (name.contains("collision")){
-				sound.delay = 1.0f;
+				sound.endDelay = 1.0f;
 			}
 			return sound;
 		}
@@ -203,7 +203,11 @@ public class SoundManager implements Disposable {
 	public void playSound( String id, int index, float delay, float extVol,
 			float extPitch ) {
 		if ( hasSound( id, index ) ) {
-			sounds.get( id, index ).play( delay, extVol, extPitch );
+			SoundRef ref = 	sounds.get( id, index );
+			ref.endDelay = delay;
+			ref.setVolume( extVol );
+			ref.setPitch( extPitch );
+			ref.play( false );
 		} else {
 			// Gdx.app.log( "SoundManager",
 			// "No sound loaded for tag: "+id+"/"+index );
@@ -211,27 +215,25 @@ public class SoundManager implements Disposable {
 	}
 
 	public void addSoundToLoops( String id ) {
-		addSoundToLoops( id, 0, true, 1.0f, 1.0f );
+		addSoundToLoops( id, 0 );
 	}
 
 	public void addSoundToLoops( String id, int index ) {
-		addSoundToLoops( id, index, true, 1.0f, 1.0f );
-	}
-
-	public void addSoundToLoops( String id, int index, boolean override,
-			float extVol, float extPitch ) {
 		if ( hasSound( id, index ) ) {
 			//sounds.get( id ).loop( override, extVol, extPitch );
-			addSoundToLoops(sounds.get( id ), extVol, extPitch);
+			addSoundToLoops(sounds.get( id ));
 		}
 	}
 
-	public static void addSoundToLoops( SoundRef ref , float extVol, float extPitch){
-		ref.setVolume( extVol );
-		ref.setPitch( extPitch );
+	public static void addSoundToLoops( SoundRef ref ){
 		loopSounds.add( ref );		
 	}
 	
+	public static void removeFromLoops( SoundRef ref ) {
+		if (SoundManager.loopSounds.contains(ref)){
+			SoundManager.loopSounds.remove(ref);
+		}
+	}
 	public void stopSound( String id ){
 		if (hasSound(id)){
 			Array<SoundRef> refs = sounds.getAll( id );
@@ -253,7 +255,7 @@ public class SoundManager implements Disposable {
 
 	public boolean isLooping( String id ) {
 		if ( hasSound( id ) ) {
-			if ( sounds.get( id ).loopId >= 0 )
+			if ( sounds.get( id ).looping )
 				return true;
 		}
 		return false;
@@ -274,9 +276,10 @@ public class SoundManager implements Disposable {
 	public void handleSoundPosition( String id, Vector2 soundPos,
 			Rectangle cameraBox ) {
 		if ( hasSound( id ) ) {
+			SoundRef ref = sounds.get( id );
 			float xPan = calculatePositionalPan( soundPos, cameraBox );
 			float vol = calculatePositionalVolume( soundPos, cameraBox,
-					sounds.get( id ).range, sounds.get( id ).falloff );
+					ref.range, ref.depthFactor, ref.falloff );
 			setSoundVolume( id, vol );
 			setSoundPan( id, xPan );
 			// Gdx.app.log( "Handle Sound Position", center.toString(
@@ -288,20 +291,21 @@ public class SoundManager implements Disposable {
 
 	public float calculatePositionalVolume( String id, Vector2 soundPos,
 			Rectangle cameraBox ) {
-		if ( hasSound( id ) )
-			return calculatePositionalVolume( soundPos.cpy().add( sounds.get( id ).offset), cameraBox,
-					sounds.get( id ).range, sounds.get( id ).falloff );
+		if ( hasSound( id ) ){
+			SoundRef ref = sounds.get( id );
+			return ref.calculatePositionalVolume( soundPos, cameraBox );
+		}
 		return 0.0f;
 	}
 
 	public static float calculatePositionalVolume( Vector2 soundPos,
-			Rectangle cameraBox, float range, float falloff ) {
+			Rectangle cameraBox, float range, float depth, float falloff ) {
 		Vector2 camPos = new Vector2( cameraBox.getX( ), cameraBox.getY( ) );
 		Vector2 scale = new Vector2( cameraBox.getWidth( ),
 				cameraBox.getHeight( ) );
 		float zoom = scale.len( ) / Camera.SCREEN_TO_ZOOM;
 		Vector3 center3 = new Vector3( camPos.x + 0.5f * scale.x, camPos.y
-				+ 0.5f * scale.y, ( float ) Math.pow( zoom, 2.0f ) );
+				+ 0.5f * scale.y, ( float ) Math.pow( zoom * depth, 2.0f ) );
 		Vector3 sound3 = new Vector3( soundPos.x, soundPos.y, Camera.MIN_ZOOM );
 		float dist = center3.dst( sound3 );
 		float vol = ( float ) Math.pow( Math.max( ( 1f - dist / range ), 0f ),
@@ -365,48 +369,6 @@ public class SoundManager implements Disposable {
 		}
 	}
 
-	public float getDelay( String id ) {
-		if ( hasSound( id ) ) {
-			return sounds.get( id ).delay;
-		}
-		return 0.0f;
-	}
-
-	public boolean isDelayed( String id ) {
-		if ( hasSound( id ) ) {
-			return sounds.get( id ).delay >= SoundRef.DELAY_MINIMUM;
-		}
-		return false;
-	}
-
-	public void addDelay( String id, float amount ) {
-		if ( hasSound( id ) ) {
-			if ( hasSound( id ) ) {
-				for ( SoundRef sound : sounds.getAll( id ) ) {
-					sound.delay += amount;
-				}
-			}
-		}
-	}
-
-	public void setDelay( String id, float amount ) {
-		if ( hasSound( id ) ) {
-			for ( SoundRef sound : sounds.getAll( id ) ) {
-				sound.delay = amount;
-			}
-		}
-	}
-	
-	public void delay(String id, float amount){
-		if (hasSound(id)){
-			for (SoundRef sound : sounds.getAll(id)){
-				if (sounds.get(id).delay < amount){
-					sound.delay = amount;
-				}
-			}				
-		}
-	}
-
 	public void copyRefs( SoundManager that ) {
 		for ( String name : that.sounds.keySet( ) ) {
 			sounds.put( name, that.sounds.get( name ) );
@@ -415,7 +377,7 @@ public class SoundManager implements Disposable {
 
 	public Sound getGDXSound( String id, int index ) {
 		if ( hasSound( id, index ) ) {
-			return sounds.get( id, index ).loop;
+			return sounds.get( id, index ).getSound();
 		}
 		return null;
 	}
@@ -477,25 +439,33 @@ public class SoundManager implements Disposable {
 	}
 	
 	public class SoundRef implements Disposable{
-		protected Sound loop;
-		protected Sound start;
-		protected Sound end;
+		protected Sound mid = null;
+		protected Sound start = null;
+		protected Sound end = null;
 		protected Array< Long > soundIds;
-		protected long loopId;
+		protected long loopId = -1;
+		protected boolean looping = false;
 		protected float volume = 1.0f;
 		protected float volumeRange = 0.0f;
 		protected float pitch = 1.0f;
 		protected float pitchRange = 0.0f;
 		protected float pan = 0.0f;
-		protected float delay = INITIAL_DELAY;
-		protected float endDelay;
-		protected float range;
-		protected float falloff;
-		protected Vector2 offset;
-		protected String assetName;
+		protected float time = 0.0f;
+		protected float startDelay = 0.0f;
+		protected float midDelay = 0.0f;
+		protected float loopDelay = 0.0f;
+		protected float endDelay = INITIAL_DELAY;
+		protected float range = 500.0f;
+		protected float depthFactor = 1.0f;
+		protected int state = 4;
 		
-		protected float finalVolume;
-		protected float finalPitch;
+		
+		protected float falloff = 2.0f;
+		protected Vector2 offset = new Vector2(0,0);
+		protected String assetName = "dkdc";
+		
+		protected float finalVolume = 1.0f;
+		protected float finalPitch = 1.0f;
 		
 		public static final float VOLUME_MINIMUM = 0.00001f;
 		protected static final float DELAY_MINIMUM = 0.0001f;
@@ -507,93 +477,109 @@ public class SoundManager implements Disposable {
 		public static final float INITIAL_DELAY = 0.1f;
 
 		protected SoundRef( Sound s ) {
-			assetName = "dkdc";
-			volume = 1.0f;
-			volumeRange = 0.0f;
-			finalVolume = 1.0f;
-			finalPitch = 1.0f;
-			pitch = 1.0f;
-			pitchRange = 0.0f;
-			pan = 0.0f;
-			delay = INITIAL_DELAY;
-			endDelay = 0.0f;
 			soundIds = new Array< Long >( );
-			loopId = -1;
-			loop = s;
-			range = 500.0f;
-			falloff = 2.0f;
+			mid = s;
+			end = s;
 			offset = new Vector2(0f,0f);
-			start = null;
-			end = null;
 		}
-
-		protected long play( float delayAmount, float extVol, float extPitch ) {
-			long id = -1;
-			if ( delay < DELAY_MINIMUM ) {
-				finalVolume = Math.max(
-						Math.min( getSoundVolume( ) * volume * extVol, 1.0f ),
-						0.0f );
-				finalPitch = pitch * extPitch;
-				if (finalVolume > VOLUME_MINIMUM){
-					if (start == null)
-						id = loop.play( finalVolume, finalPitch, pan );
-					else
-						id = start.play( finalVolume, finalPitch, pan);
+		
+		protected void calculateFinalVolume(float extVol){
+			finalVolume = Math.max(
+			Math.min( volume * extVol, 1.0f ),
+			0.0f );
+		}
+		
+		protected void calculateFinalPitch(float extPitch){
+			finalPitch = pitch * extPitch;
+		}
+		
+		public void play( boolean override ) {
+			if ( override || state == 0 ) {
+				if (looping){
+					stop();
 				}
-				soundIds.add( id );
-				delay = delayAmount;
+				setState(1);
 			}
-			return id;
 		}
 		
-		protected long loop( boolean override, float extVol, float extPitch ) {
-			setVolume( extVol );
-			setPitch( extPitch );
-			return loop(override);
-		}
-		
-		protected long loop( boolean override ) {
-			if ( override && loopId >= 0 ) {
-				loop.stop( loopId );
-				forceLoop();
-			} else if ( loopId < 0 ) {
-				forceLoop();
-			}
-			return loopId;
-		}
 
-		protected long forceLoop(){
-			loopId = loop.loop( finalVolume );
-			if (start != null){
-				start.play();
+		public void loop( boolean override ) {
+			if (override || state == 0 || state == 4){
+				looping = true;
+				setState(1);
 			}
-			return loopId;
 		}
 		
-		protected void stop( ) {
-			loop.stop( );
-			loopId = -1;
-			delay = 0.0f;
-			if (end != null){
-				end.play();
-			}
+		protected void stop (){
+			stop(true);
 		}
+		
+		protected void stop( boolean hard ) {
+			if (hard){
+				if (start != null)
+					start.stop();
+				if (mid != null)
+					mid.stop();
+				if (end != null)
+					end.stop();
+				loopId = -1;
+				setState(0);
+			}
+			looping = false;
+		}
+		
 		public void stop( long thatId ) {
 			if (loopId == thatId){
-				loop.stop(thatId);
+				mid.stop( loopId );
 				loopId = -1;
-				delay = 0.0f;
-				if (end != null){
-					end.play();
-				}
+				setState(0);
+				looping = false;
 			}
 		}
+		
 		protected void update( float dT ) {
-			delay = ( float ) ( Math.max( delay - dT, 0.0f ) );
+			if (state == 1 && time > startDelay){//Start Delay
+				//Play start sound, if present
+				if (start != null){
+					start.play(finalVolume * getSoundVolume(), finalPitch, pan);
+				}
+				setState(2);
+			} else if (state == 2 && time > midDelay){//Mid Delay
+				if (looping){
+					//If looping, loop middle sound and go to state 3
+					SoundManager.addSoundToLoops(this);
+					setState(3);
+				} else {
+					//Else, play end sound if present and go to state 4
+					if (end != null){
+						end.play(finalVolume * getSoundVolume(), finalPitch, pan);
+					}
+					setState(4);
+				}
+			} else if (state == 3 && (time > loopDelay && !looping)){//Looping/Loop Delay
+				if (loopId >= 0){
+					SoundManager.removeFromLoops(this);
+					mid.stop(loopId);
+					loopId = -1;
+				}
+				if (end != null){
+					end.play(finalVolume * getSoundVolume(), finalPitch, pan);
+				}
+				setState(4);
+			} else if (state == 4 && time > endDelay){
+				setState(0);
+			}
+			if (state != 0)
+				time += dT;
 		}
-
+		
+		protected void setState(int s){
+			time = 0.0f;
+			state = s;
+		}
+		
 		public Sound getSound( ) {
-			return loop;
+			return mid;
 		}
 
 		public void setInternalVolume( float value ) {
@@ -601,18 +587,18 @@ public class SoundManager implements Disposable {
 		}
 
 		public void setVolume( float extVol ) {
-			finalVolume = getNoiseVolume( ) * volume * extVol;
+			finalVolume = Math.min( Math.max(volume * extVol , 0.0f) , 1.0f);
 			if (loopSounds.contains( this )){
 				loopSounds.remove(this);
 				loopSounds.add( this );
 			}
 			if ( loopId >= 0 ) {
-				loop.setVolume( loopId, finalVolume);
+				mid.setVolume( loopId, finalVolume);
 			}
 		}
 
 		public void setVolumeRange(float value){
-			pitchRange = value;
+			volumeRange = value;
 		}
 
 		public void setInternalPitch( float value ) {
@@ -622,7 +608,7 @@ public class SoundManager implements Disposable {
 		public void setPitch( float extPitch ) {
 			finalPitch = pitch * extPitch;
 			if ( loopId >= 0 ) {
-				loop.setPitch( loopId,  finalPitch );
+				mid.setPitch( loopId,  finalPitch );
 			}
 		}
 
@@ -646,7 +632,7 @@ public class SoundManager implements Disposable {
 			offset = vec;
 		}
 		
-		public void setDefaultDelay( float value ){
+		public void setEndDelay( float value ){
 			endDelay = value;
 		}
 		
@@ -668,14 +654,46 @@ public class SoundManager implements Disposable {
 		
 		public void dispose(){
 			stop();
-			loop.stop( );
-			if (SoundManager.loopSounds.contains(this)){
-				SoundManager.loopSounds.remove(this);
-			}
+			mid.stop( );
+			SoundManager.removeFromLoops(this);
 		}
 
 		public long getLoopID( ) {
 			return loopId;
+		}
+
+		public boolean isDelayed( ) {
+			return state != 0;
+		}
+
+		public float getRange( ) {
+			return range;
+		}
+		public float getDepth( ) {
+			return depthFactor;
+		}
+		public float getFalloff( ) {
+			return falloff;
+		}
+
+		public int getState( ) {
+			return state;
+		}
+		
+		public void setTime(float t){
+			time = t;
+		}
+
+		public float calculatePositionalVolume( Vector2 position_pixel,
+				Rectangle camera_rect ) {
+			return SoundManager.calculatePositionalVolume( position_pixel, camera_rect,
+					range, depthFactor, falloff );
+		}
+
+		public void delay( ) {
+			if (state == 0){
+				setState(4);
+			}
 		}
 	}
 	public static class CompareByVolume implements Comparator<SoundRef>{
@@ -706,9 +724,36 @@ public class SoundManager implements Disposable {
 	public void loopSound(String tag){
 		loopSound(tag, 0, false);
 	}
+	
 	public void loopSound( String tag , int index, boolean override) {
 		if (hasSound (tag, index)){
 			sounds.get( tag, index ).loop(override);
 		}
+	}
+
+	public boolean isDelayed( String string ) {
+		// TODO Auto-generated method stub
+		return getSound(string).isDelayed();
+	}
+
+	public void setDelay( String string, float delay ) {
+		if (sounds.containsKey( string )){
+			for (SoundRef ref: sounds.getAll( string )){
+				ref.endDelay = delay;
+			}
+		}
+	}
+	
+	public void delaySounds(String string){
+		if (sounds.containsKey( string )){
+			for (SoundRef ref: sounds.getAll( string )){
+				if (ref.getState() == 0)
+					ref.setState( 4 );
+			}
+		}		
+	}
+
+	public Array<SoundRef> getAllSounds( String string ) {
+		return sounds.getAll( string );
 	}
 }

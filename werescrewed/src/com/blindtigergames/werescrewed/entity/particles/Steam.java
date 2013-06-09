@@ -106,11 +106,11 @@ public class Steam extends Platform {
 
 	@Override
 	public void update( float dT ) {
+		SoundRef idle = sounds.getSound( "idle" );
+		idle.setVolume( this.isActive() ? 
+							idle.calculatePositionalVolume(getPositionPixel( ), Camera.CAMERA_RECT ) 
+							: 0f );
 		super.update( dT );
-		sounds.setSoundVolume(
-				"idle",
-				isActive( ) ? sounds.calculatePositionalVolume( "idle",
-						getPositionPixel( ), Camera.CAMERA_RECT ) : 0f );
 	}
 
 	/**
