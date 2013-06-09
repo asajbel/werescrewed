@@ -2,15 +2,14 @@ package com.blindtigergames.werescrewed.entity.action;
 
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.entity.Skeleton;
 
 public class SetActiveStateSkeleton implements IAction {
 
 	int timesRun = 0;
-	private boolean isActive;
+	//private boolean isActive;
 
 	public SetActiveStateSkeleton( boolean isActive ) {
-		this.isActive = isActive;
+		//this.isActive = isActive;
 	}
 
 	@Override
@@ -22,7 +21,7 @@ public class SetActiveStateSkeleton implements IAction {
 	public void act( Entity entity ) {
 		timesRun += 1;
 		if ( entity.getEntityType( ) == EntityType.SKELETON ) {
-			Skeleton skeleton = ( Skeleton ) entity;
+			//Skeleton skeleton = ( Skeleton ) entity;
 			//skeleton.getRoot( ).setSkeletonActiveState( skeleton, isActive );
 			// Gdx.app.log( "SetActiveStateSkeleton:",
 			// skeleton.name+" active state is: "+isActive+", "+timesRun );

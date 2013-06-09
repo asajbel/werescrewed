@@ -149,7 +149,7 @@ public class DragonScreen extends Screen {
 	public void load(){
 		super.load( );
 		if (bgm == null){
-			bgm = Gdx.audio.newMusic(Gdx.files.internal("data/common/music/waltz.mp3"));
+			bgm = Gdx.audio.newMusic(Gdx.files.internal("data/levels/dragon/riding.mp3"));
 		}
 		if (sounds == null){
 			sounds = new SoundManager();
@@ -196,8 +196,8 @@ public class DragonScreen extends Screen {
 		// Util.PI/16, 2) );
 		// balloon5_skeleton.addMover( balloonMover(balloon5_skeleton, 800,
 		// Util.PI/32, 0) );
-		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
-				+ "/levels/dragon/riding.mp3", Music.class );
+//		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
+//				+ "/levels/dragon/riding.mp3", Music.class );
 	}
 
 	float time;

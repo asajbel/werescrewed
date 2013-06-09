@@ -8,7 +8,6 @@ import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -1802,7 +1801,7 @@ public class AlphaScreen extends Screen {
 	 */
 	private void initFireballEnemy(Vector2 pos){
 		
-		int w = 15, n= 10, h = 140;
+		int n= 10, h = 140;
 		
 		//build a little cage for the fireball
 	

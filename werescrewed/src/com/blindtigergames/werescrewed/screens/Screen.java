@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -23,8 +22,6 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
-import com.blindtigergames.werescrewed.gui.OptionButton;
-import com.blindtigergames.werescrewed.gui.Slider;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
@@ -221,7 +218,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 				height / 2 - trans.getHeight( ) / 2 + 50, scale, scale );
 		trans.draw( batch );
 		if ( scale > scaleMax ) {
-			transOutEnd = true;
+			//transOutEnd = true;
 			scale = scaleMax;
 			if ( Buttons.size( ) > 0 ) 
 				Buttons.get( buttonIndex ).setSelected( true );
@@ -236,7 +233,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 				height / 2 - trans.getHeight( ) / 2 + 50, scale, scale );
 		trans.draw( batch );
 		if ( scale > scaleMax ) {
-			transOutEnd = true;
+			//transOutEnd = true;
 			scale = scaleMax;
 			ScreenManager.getInstance( ).show( screen );
 		}
