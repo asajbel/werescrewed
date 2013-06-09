@@ -79,8 +79,8 @@ class OptionsScreen extends MenuScreen {
 		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/transitions/trans-gear.png", Texture.class );
 		trans = new Sprite( transition );
-		scale = trans.getHeight( ) * SCALE_MAX;
-		scaleMax = scale;
+		scaleMax = trans.getHeight( ) * SCALE_MAX;
+		scale = 1.0f;
 		transInEnd = false;
 		
 		fancyFont.setScale( 1.0f );
@@ -154,9 +154,6 @@ class OptionsScreen extends MenuScreen {
 		// subBox.setX( subtitles.getX( ) * 4 );
 		// subBox.setY( subtitles.getY( ) );
 
-		fullBox.setX( fullCheck.getX( ) * 4 );
-		fullBox.setY( fullCheck.getY( ) );
-		
 		musicSlider
 				.setXPos( ( float ) musicSlider.getMinPos( )
 						+ ( SoundManager.globalVolume.get( SoundType.MUSIC ) * 100 * SHIFT ) );
@@ -186,7 +183,8 @@ class OptionsScreen extends MenuScreen {
 				SoundType.SFX, slidTex, screwTex );
 		noiseSlider = new Slider( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2,
 				SoundType.NOISE, slidTex, screwTex );
-		fullBox = new CheckBox ( 0, 1, 0 );
+		int val = fullscreen? 1 : 0;
+		fullBox = new CheckBox ( 0, 1, val);
 		controls = new Button( "Controls", fancyFont, buttonTex );
 		music = new OptionButton( "Music", fancyFont, buttonTex, musicSlider );
 		sound = new OptionButton( "Sound", fancyFont, buttonTex, soundSlider );

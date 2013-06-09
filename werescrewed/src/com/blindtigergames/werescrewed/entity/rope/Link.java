@@ -27,7 +27,7 @@ public class Link extends Entity {
 	protected static final float SOUND_PITCH = 1.0f;
 	protected static final float SOUND_PITCH_VARIANCE = 0.0f;
 	protected static final float SOUND_VOLUME = 1.0f;
-	protected static final float SOUND_RANGE = 50.0f;
+	protected static final float SOUND_RANGE = 300.0f;
 	
 	private float width, height;
 	private float xOffset, yOffset;

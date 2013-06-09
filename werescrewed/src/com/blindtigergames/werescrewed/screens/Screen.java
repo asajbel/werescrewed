@@ -64,8 +64,9 @@ public class Screen implements com.badlogic.gdx.Screen {
 	protected boolean alphaFinish = false;
 	protected boolean transInEnd = true;
 	protected boolean transOutEnd = true;
-	protected boolean fullscreen = false; 
+	protected static boolean fullscreen = false; 
 	protected boolean assetsLoaded = false;
+	protected boolean once = true;
 	
 	BitmapFont debug_font;
 	Camera uiCamera;
@@ -105,7 +106,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if (sounds != null){
 			sounds.update( delta );
 		}
-		if ( Gdx.input.isKeyPressed( Keys.P ) ) {
+		if ( WereScrewedGame.debug && Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
 		/////////////////////// DON'T REMOVE FOR RELEASE ///////////////////////
@@ -133,7 +134,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 		shapeRenderer.filledRect(bX, bY, screenWidth, screenHeight );
 		shapeRenderer.end( );
 		
-		
+		if ( once && trans != null ) {
+			trans.setSize( scaleMax, scaleMax );
+			once = false;
+		}
 		
 		if (level != null){			
 			updateStep(delta);
@@ -180,7 +184,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 			
 		}
 		
-		if ( Gdx.input.isKeyPressed( Input.Keys.BACKSPACE ) ) {
+		if ( WereScrewedGame.debug &&  Gdx.input.isKeyPressed( Input.Keys.BACKSPACE ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.TROPHY );
 		}
 	}
@@ -192,20 +196,21 @@ public class Screen implements com.badlogic.gdx.Screen {
 		}
 		else {
 			DisplayMode mode = Gdx.graphics.getDesktopDisplayMode( );
-			Gdx.graphics.setDisplayMode( mode.width, mode.height, true );
+			Gdx.graphics.setDisplayMode( mode.width, mode.height, false );
 			fullscreen = true; 
 		}
 		WereScrewedGame.setReconnect( true );
 	}
 	
 	protected void drawTransIn ( SpriteBatch batch ) {
-		scale = scale - SCALE_SIZE;
+		scale -= 0.03;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
 		//trans.setSize( scale, scale );
 		//trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
-		trans.setBounds( width / 2 - trans.getWidth( ) / 2 - 50, 
-				height / 2 - trans.getHeight( ) / 2 - 50, scale, scale );
+		trans.setScale( scale );
+		trans.setPosition( width / 2 - trans.getWidth( ) / 2, 
+				height / 2 - trans.getHeight( ) / 2 );
 		trans.draw( batch );
 		if ( scale < SCALE_MIN ) {
 			transInEnd = true;
@@ -214,30 +219,32 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch ) {
-		scale = scale + SCALE_SIZE;
+		scale += 0.03;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
-		trans.setBounds( width / 2 - trans.getWidth( ) / 2 + 50, 
-				height / 2 - trans.getHeight( ) / 2 + 50, scale, scale );
+		trans.setScale( scale );
+		trans.setPosition( width / 2 - trans.getWidth( ) / 2, 
+				height / 2 - trans.getHeight( ) / 2 );
 		trans.draw( batch );
-		if ( scale > scaleMax ) {
-			transOutEnd = true;
-			scale = scaleMax;
+		if ( scale > 1.0f ) {
+			//transOutEnd = true;
+			scale = 1.0f;
 			if ( Buttons.size( ) > 0 ) 
 				Buttons.get( buttonIndex ).setSelected( true );
 		}
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch, ScreenType screen ) {
-		scale = scale + SCALE_SIZE;
+		scale += 0.03;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
-		trans.setBounds( width / 2 - trans.getWidth( ) / 2 + 50, 
-				height / 2 - trans.getHeight( ) / 2 + 50, scale, scale );
+		trans.setScale( scale );
+		trans.setPosition( width / 2 - trans.getWidth( ) / 2, 
+				height / 2 - trans.getHeight( ) / 2 );
 		trans.draw( batch );
-		if ( scale > scaleMax ) {
-			transOutEnd = true;
-			scale = scaleMax;
+		if ( scale > 1.0f ) {
+			//transOutEnd = true;
+			scale = 1.0f;
 			ScreenManager.getInstance( ).show( screen );
 		}
 	}

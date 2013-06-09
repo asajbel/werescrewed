@@ -456,7 +456,7 @@ public class SoundManager implements Disposable {
 		protected float loopDelay = 0.0f;
 		protected float endDelay = INITIAL_DELAY;
 		protected float range = 500.0f;
-		protected float depthFactor = 1.0f;
+		protected float depthFactor = 3.0f;
 		protected int state = 4;
 		
 		
@@ -474,7 +474,7 @@ public class SoundManager implements Disposable {
 		 * is meant to keep collision or idle sounds from playing immediately on
 		 * startup.
 		 */
-		public static final float INITIAL_DELAY = 0.1f;
+		public static final float INITIAL_DELAY = 0.01f;
 
 		protected SoundRef( Sound s ) {
 			soundIds = new Array< Long >( );

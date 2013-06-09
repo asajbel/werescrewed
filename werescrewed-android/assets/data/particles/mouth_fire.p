@@ -8,12 +8,12 @@ lowMin: 1499.0
 lowMax: 1499.0
 - Count - 
 min: 5
-max: 30
+max: 50
 - Emission - 
 lowMin: 4.0
 lowMax: 4.0
-highMin: 5.0
-highMax: 5.0
+highMin: 10.0
+highMax: 10.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -156,19 +156,19 @@ behind: false
 fire_whisp
 - Delay -
 active: true
-lowMin: 175.0
-lowMax: 175.0
+lowMin: 190.0
+lowMax: 190.0
 - Duration - 
 lowMin: 1499.0
 lowMax: 1499.0
 - Count - 
 min: 5
-max: 30
+max: 50
 - Emission - 
 lowMin: 5.0
 lowMax: 5.0
-highMin: 5.0
-highMax: 5.0
+highMin: 10.0
+highMax: 10.0
 relative: false
 scalingCount: 1
 scaling0: 1.0

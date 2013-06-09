@@ -38,6 +38,8 @@ import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Enemy;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.MouthFire;
+import com.blindtigergames.werescrewed.entity.hazard.Spikes;
+import com.blindtigergames.werescrewed.entity.hazard.builders.HazardBuilder;
 import com.blindtigergames.werescrewed.entity.mover.DirectionFlipMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
@@ -509,15 +511,15 @@ public class PhysicsTestScreen extends Screen {
 		rootSkeleton.addDynamicPlatform( spikePlat );
 		spikePlat.addJointToSkeleton( rootSkeleton );
 
-		// HazardBuilder spikesBuilder = new HazardBuilder( world );
-		// Spikes spikes = spikesBuilder.position( 800.0f, 250f ).dimensions( 6,
-		// 1 )
-		// .down( ).active( ).buildSpikes( );
+		 HazardBuilder spikesBuilder = new HazardBuilder( world );
+		 Spikes spikes = spikesBuilder.position( 800.0f, 550f ).dimensions( 6,
+		 1 )
+		 .up( ).active( ).buildSpikes( );
 		//
 		//
 		// spikes.body.setType( BodyType.DynamicBody );
 		// spikes.body.setFixedRotation( false );
-		// rootSkeleton.addHazard( spikes );
+		 rootSkeleton.addHazard( spikes );
 		//
 		// RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		// revoluteJointDef.initialize( spikes.body, spikePlat.body,
@@ -907,10 +909,10 @@ public class PhysicsTestScreen extends Screen {
 		
 		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
 				new Vector2( pos.cpy( ).add(0,n*h) ),
-				new Vector2(),
+				new Vector2(.1f,0),
 				 world, true );
 		for(int i =0; i < 5; ++i ){
-			fireballEmitter.addParticle( createBoltEnemy( pos.cpy( ).add(0,n*h), i ), 30, 0, i*5 );
+			fireballEmitter.addParticle( createBoltEnemy( pos.cpy( ).add(0,n*h), i ), 10, 0, i*2 );
 		}
 		rootSkeleton.addLooseEntity( fireballEmitter );
 	}

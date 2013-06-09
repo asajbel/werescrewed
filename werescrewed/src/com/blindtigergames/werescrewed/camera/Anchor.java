@@ -17,6 +17,7 @@ public class Anchor {
 	protected Vector2 offsetBox;
 	protected Vector2 buffer;
 	public boolean activated;
+	public boolean player;
 	// In steps
 	protected int timer;
 	static protected final Vector2 DEFAULT_BUFFER = new Vector2( 128f, 128f );
@@ -64,6 +65,7 @@ public class Anchor {
 		this.buffer = buffer;
 		this.activated = false;
 		this.timer = -1;
+		this.player = false;
 	}
 
 	/**

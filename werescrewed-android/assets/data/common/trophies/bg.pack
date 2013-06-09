@@ -1,19 +1,19 @@
-head_jaw.png
+bg.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 offset: 0, 0
-dragonbottom_right
+bg
   rotate: false
   xy: 2, 2
-  size: 1675, 598
-  orig: 1675, 598
+  size: 1280, 720
+  orig: 1280, 720
   offset: 0, 0
   index: -1
-dragonbottom_left
+front
   rotate: false
-  xy: 2, 602
-  size: 1229, 1007
-  orig: 1229, 1007
+  xy: 2, 724
+  size: 1280, 720
+  orig: 1280, 720
   offset: 0, 0
   index: -1

@@ -101,7 +101,7 @@ public class Level {
 		if ( player2 != null )
 			player2.update( deltaTime );
 
-		if ( Gdx.input.isTouched( ) || Gdx.input.isButtonPressed( Buttons.LEFT ) ) {
+		if ( WereScrewedGame.debug && (Gdx.input.isTouched( ) || Gdx.input.isButtonPressed( Buttons.LEFT ) ) ) {
 			Vector3 cursorPosition = new Vector3( Gdx.input.getX( ),
 					Gdx.input.getY( ), 0 );
 			camera.camera.unproject( cursorPosition );
@@ -124,7 +124,7 @@ public class Level {
 		if ( progressManager != null )
 			progressManager.update( deltaTime );
 
-		if ( Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
+		if (  WereScrewedGame.debug && Gdx.input.isKeyPressed( Keys.NUM_0 ) ) {
 			if ( debugTest )
 				debug = !debug;
 			debugTest = false;

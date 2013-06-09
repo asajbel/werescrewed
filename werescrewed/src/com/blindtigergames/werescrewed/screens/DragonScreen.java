@@ -7,20 +7,18 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Joint;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -28,19 +26,16 @@ import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.action.CannonLaunchAction;
 import com.blindtigergames.werescrewed.entity.action.RemoveEntityAction;
 import com.blindtigergames.werescrewed.entity.action.RotateTweenAction;
-import com.blindtigergames.werescrewed.entity.action.SetRobotStateAction;
 import com.blindtigergames.werescrewed.entity.builders.EventTriggerBuilder;
 import com.blindtigergames.werescrewed.entity.builders.PlatformBuilder;
 import com.blindtigergames.werescrewed.entity.hazard.Enemy;
 import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.MouthFire;
-import com.blindtigergames.werescrewed.entity.mover.AnalogRotateMover;
 import com.blindtigergames.werescrewed.entity.mover.DirectionFlipMover;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
-import com.blindtigergames.werescrewed.entity.mover.RotateTweenMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
 import com.blindtigergames.werescrewed.entity.particles.EntityParticleEmitter;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
@@ -55,6 +50,7 @@ import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundRef;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class DragonScreen extends Screen {
@@ -74,8 +70,13 @@ public class DragonScreen extends Screen {
 	boolean headEvent = false;
 	int headEventTimer = 180;
 	
+	float mouthFireTimer=0;
+	final float mouthFireDelay=8f, mouthFireTotalTime=24f;
+	boolean mouthFireTriggered=false;
+	
 	// the numbers here correspond to gleed numbers
 	Fire tail3Fire2, tail3Fire3, tail3Fire4, tail3Fire5, tail3Fire6;
+	
 
 	public DragonScreen( ) {
 		super( );
@@ -111,7 +112,7 @@ public class DragonScreen extends Screen {
 		mouthFire = new MouthFire( "mouth-fire", new Vector2(25000, 900), new Vector2(32000, 75),
 				4f, 100f, 800f, level.world);
 		Skeleton head_skeleton = ( Skeleton ) LevelFactory.entities
-				.get( "head_skeleton" );
+				.get( "head_sub_skeleton1" );
 		head_skeleton.addHazard( mouthFire );
 		
 		jawStructureScrew = ( StructureScrew ) LevelFactory.entities
@@ -125,25 +126,10 @@ public class DragonScreen extends Screen {
 				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
 				.start( ).delay( 2f ) );
 
-		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 4f )
-				.ease( TweenEquations.easeNone ).target( 0 ).delay( 2f )
-				.start( ) );
-
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
-				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
-				.start( ).delay( 2f ) );
-
-		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
-				.ease( TweenEquations.easeNone ).target( 0 ).delay( 2f )
+				.ease( TweenEquations.easeNone ).target( 0 ).delay( 8f )
 				.start( ) );
 
-		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 8f )
-				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
-				.start( ).delay( 4f ) );
-
-		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 5f )
-				.ease( TweenEquations.easeNone ).target( 0 ).delay( 2f )
-				.start( ) );
 		t.repeat( Tween.INFINITY, 0f );
 		jaw_skeleton.addMover( new TimelineTweenMover( t.start( ) ) );
 		
@@ -153,18 +139,25 @@ public class DragonScreen extends Screen {
 		
 	}
 	@Override
-	public void load(){
+	public void load( ){
 		super.load( );
 		if (bgm == null){
 			bgm = Gdx.audio.newMusic(Gdx.files.internal("data/common/music/waltz.mp3"));
 		}
 		if (sounds == null){
 			sounds = new SoundManager();
-			sounds.getSound( "roar_calm",  WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_calm.ogg");
-			sounds.getSound( "roar_angry", WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_angry.ogg");
-			sounds.getSound( "jaw_close", WereScrewedGame.dirHandle + "/levels/dragon/sounds/jawClose.ogg" );
+			sounds.getSound( "roar_calm",  WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_calm.ogg").setRange( 80000 );
+			sounds.getSound( "roar_angry", WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_angry.ogg").setRange( 8000 );
+			sounds.getSound( "jaw_close", WereScrewedGame.dirHandle + "/levels/dragon/sounds/jawClose.ogg" ).setRange( 8000 );
 			//sounds.getSound( "jaw_open",WereScrewedGame.dirHandle + "/levels/dragon/sounds/cannon.ogg" );
 		}
+		
+		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/transitions/trans-gear.png", Texture.class );
+		trans = new Sprite( transition );
+		scaleMax = trans.getHeight( ) * SCALE_MAX;
+		scale = 1.0f;
+		transInEnd = false;
 	}
 	void buildBalloon( ) {
 		balloon1 = ( Platform ) LevelFactory.entities.get( "balloon1" );
@@ -273,8 +266,32 @@ public class DragonScreen extends Screen {
 				headEvent = true;
 			}
 		}
-		if ( Gdx.input.isKeyPressed( Input.Keys.SHIFT_LEFT ) && Gdx.input.isKeyPressed( Input.Keys.M ) ) {
+		
+		
+		if(jawStructureScrew.getDepth( )>0)mouthFireTimer+=deltaTime;
+		else mouthFireTimer=0.0f;
+		if(mouthFireTimer>=mouthFireDelay && !mouthFireTriggered){
+			Vector2 roarPos = new Vector2(25000, 900);
+			Vector2 camPos = new Vector2(Camera.getCurrentCameraCoords( ).x, Camera.getCurrentCameraCoords( ).y);
+			SoundRef roarRef;
+			if (roarPos.dst( camPos ) < 3000.0f){
+				roarRef = sounds.getSound( "roar_angry" );
+			} else {
+				roarRef = sounds.getSound( "roar_calm" );
+			}
+			float volume = roarRef.calculatePositionalVolume( roarPos, Camera.CAMERA_RECT );
+			roarRef.setVolume( volume );
+			roarRef.play( false );
 			mouthFire.setActiveHazard( true );
+			mouthFireTriggered=true;
+		}
+		if(mouthFireTimer>=mouthFireTotalTime){
+			mouthFireTimer=0;
+			mouthFireTriggered=false;
+			float volume = sounds.calculatePositionalVolume( "jaw_close", new Vector2(25000, 900), Camera.CAMERA_RECT );
+			SoundRef jawRef = sounds.getSound( "jaw_close" );
+			jawRef.setVolume( volume );
+			jawRef.play( false);
 		}
 		
 		// Zoom out and fade the head skeleton back in so you can see the jaw
@@ -284,12 +301,12 @@ public class DragonScreen extends Screen {
 			
 			headEventTimer--;
 			if(headEventTimer == 0){
-				headSkeleton.setFgFade( true );
+				//headSkeleton.setFade( false );
 				headEvent = false;
 			
 			}else{
 				
-				headSkeleton.setFgFade( false );
+				headSkeleton.setFade( true );
 			}
 		}
 //		if(tail1Left.body == null && tail2.body == null){
@@ -337,10 +354,11 @@ public class DragonScreen extends Screen {
 			}else{
 				if(dragonBrain.isTimeLineMoverFinished( )){
 					
+					transOutEnd = false;
 
 					// You win and goto next screen!!!
-					// this currently doesn't work
-					ScreenManager.getInstance( ).show( ScreenType.TROPHY_2 );
+					//ScreenManager.getInstance( ).show( ScreenType.LOADING_TROPHY_3 );
+					
 				}
 			}
 		}
@@ -402,6 +420,15 @@ public class DragonScreen extends Screen {
 
 		}
 
+		level.backgroundBatch.begin( );
+		if ( !transInEnd ) {
+			drawTransIn( level.backgroundBatch );
+		}
+		
+		if ( !transOutEnd ) {
+			drawTransOut( level.backgroundBatch, ScreenType.LOADING_TROPHY_3  );
+		}
+		level.backgroundBatch.end( );
 	}
 
 	IMover balloonMover( Platform skel, float yPos, float angle, float initPause ) {
@@ -511,23 +538,23 @@ public class DragonScreen extends Screen {
 	}
 
 	private void initPuzzleScrews( ) {
-		PuzzleScrew tail2PuzzleScrew1 = ( PuzzleScrew ) LevelFactory.entities
-				.get( "tail2_puzzle_screw1" );
-		PuzzleScrew tail2PuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
-				.get( "tail2_puzzle_screw2" );
-
-		AnalogRotateMover anlgRot = new AnalogRotateMover( 0.6f, level.world );
-
-		AnalogRotateMover anlgRot2 = new AnalogRotateMover( 0.6f, level.world );
-
-		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot );
-		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot );
-
-		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot2 );
-		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot2 );
-
-		tail2PuzzleScrew1.puzzleManager.addScrew( tail2PuzzleScrew2 );
-		tail2PuzzleScrew2.puzzleManager.addScrew( tail2PuzzleScrew1 );
+//		PuzzleScrew tail2PuzzleScrew1 = ( PuzzleScrew ) LevelFactory.entities
+//				.get( "tail2_puzzle_screw1" );
+//		PuzzleScrew tail2PuzzleScrew2 = ( PuzzleScrew ) LevelFactory.entities
+//				.get( "tail2_puzzle_screw2" );
+//
+//		AnalogRotateMover anlgRot = new AnalogRotateMover( 0.6f, level.world );
+//
+//		AnalogRotateMover anlgRot2 = new AnalogRotateMover( 0.6f, level.world );
+//
+//		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot );
+//		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot );
+//
+//		tail2PuzzleScrew1.puzzleManager.addMover( anlgRot2 );
+//		tail2PuzzleScrew2.puzzleManager.addMover( anlgRot2 );
+//
+//		tail2PuzzleScrew1.puzzleManager.addScrew( tail2PuzzleScrew2 );
+//		tail2PuzzleScrew2.puzzleManager.addScrew( tail2PuzzleScrew1 );
 
 		PuzzleScrew tail3PuzzleScrew1 = ( PuzzleScrew ) LevelFactory.entities
 				.get( "tail3_puzzle_screw1" );
@@ -709,6 +736,7 @@ public class DragonScreen extends Screen {
 				.get( "body_fire6" );
 		bodyFire6.particleEffect.setAngle( Util.PI/2 );
 		bodyFire6.particleEffect.setRotation( -Util.PI/4 );
+		
 		Fire bodyFire5 = (Fire) LevelFactory.entities
 				.get( "body_fire5" );
 		
@@ -740,7 +768,17 @@ public class DragonScreen extends Screen {
 		bodyPowerSwitch2.actOnEntity = true;
 		bodyPowerSwitch2.addEntityToTrigger( bodyFire5 );
 		bodyPowerSwitch2.addEntityToTrigger( bodyFire6 );
-
+		
+		Fire bodyFireI;
+		for(int iter = 13; iter < 19; iter++){
+			bodyFireI = (Fire) LevelFactory.entities
+					.get( "body_fire" + iter );
+			if(iter < 15){
+				bodyFireI.particleEffect.setAngle( Util.PI/2 );
+				bodyFireI.particleEffect.setRotation( -Util.PI/4 );
+			}
+			bodyPowerSwitch2.addEntityToTrigger( bodyFireI );
+		}
 		
 		//DECALS:
 		TextureAtlas dragon_objects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
@@ -891,7 +929,7 @@ public class DragonScreen extends Screen {
 		
 		TextureAtlas clouds_sun_bg = WereScrewedGame.manager.getAtlas( "clouds_sun_bg" );
 		TextureAtlas mountains_back_clouds = WereScrewedGame.manager.getAtlas( "mountains-back-clouds" );
-		float frontTopCloudsY = 2400, midOrangeCloudsY = -900, bottomFrontCloudsY = -1000;
+		float frontTopCloudsY = 2650, midOrangeCloudsY = -900, bottomFrontCloudsY = -1000;
 		float frontCloudVariation = 600;
 		float numFrontClouds = 50;
 		float xMax = 32000, xMin = -7000;
@@ -1083,7 +1121,7 @@ public class DragonScreen extends Screen {
 		e=new Entity("sun",new Vector2(),null,b,false,0);//0,2048-2*
 		e.changeSprite( Sprite.scale( clouds_sun_bg.createSprite( "sun" ), sunScale ) );
 		//e.setPosition( new Vector2().mul( Util.PIXEL_TO_BOX ) );
-		float sunYPos = (2.99111f*height)-sunScale*e.sprite.getHeight( )+yOffset;
+		float sunYPos = (height)+e.sprite.getHeight( )+150-sunScale*e.sprite.getHeight( );
 		sunYPos = sunYPos * ratio; 
 		float endHeight = -2048/ratio+sunYPos; 
 		m = new ParallaxMover( new Vector2(400*ratio,sunYPos),
@@ -1101,29 +1139,34 @@ public class DragonScreen extends Screen {
 		
 		headSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_skeleton" );
+		
+		Skeleton headSubSkeleton1 = ( Skeleton ) LevelFactory.entities
+				.get( "head_sub_skeleton1" );
+		
 		TextureAtlas head_left = WereScrewedGame.manager.getAtlas( "head_left" );
 		TextureAtlas head_right = WereScrewedGame.manager.getAtlas( "head_top_right" );
 		TextureAtlas head_jaw = WereScrewedGame.manager.getAtlas( "head_jaw" );
 		TextureAtlas head_interior = WereScrewedGame.manager.getAtlas( "body_right-head_interior" );
+		TextureAtlas dragon_objects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
 		float scale = 2;//1f/.66f;
 		//UPPER HEAD
 		Sprite s;
 		
-		Vector2 headPos = new Vector2(-3500,-1455 );
-		s = head_left.createSprite( "head_left" );
-		headSkeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( headPos ) );
-		headSkeleton.addFGDecal( 
+		Vector2 headPos = new Vector2(-3570,-1455 ).add(125,41);//1219,31
+		s = head_left.createSprite( "head_left" );//1219,31
+		headSkeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2(65,0).add( headPos ) );
+		headSubSkeleton1.addFGDecal( 
 				Sprite.scale( head_right.createSprite( "head_right" ), scale ), 
-				new Vector2(4946,1029).add( headPos ) );
+				new Vector2(5146,740).add( headPos ).add( -1219,31 ) );//200,276
 		headSkeleton.addFGDecal( 
 				Sprite.scale( head_right.createSprite( "head_middle" ), scale ), 
-				new Vector2(2982,30).add( headPos ) );
+				new Vector2(3050,30).add( headPos ) );
 		addFGSkeleton( headSkeleton );
-		
+		addFGSkeleton(headSubSkeleton1);
 		//LOW HEAD/ JAW
-		Vector2 pos = new Vector2(-1375,-615);
+		Vector2 pos = new Vector2(-1420,-615);
 		s = head_jaw.createSprite( "dragonbottom_left" );
-		jaw_skeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( pos ) );//959,615
+		jaw_skeleton.addFGDecal( Sprite.scale( s, scale ), new Vector2().add( pos ).add(2,37) );//959,615
 		jaw_skeleton.addFGDecal( Sprite.scale( head_jaw.createSprite( "dragonbottom_right" ), scale ), 
 				new Vector2(s.getWidth( )*scale-8,16).add( pos ) );
 		addFGSkeleton( jaw_skeleton );
@@ -1131,8 +1174,15 @@ public class DragonScreen extends Screen {
 		//inside of head.
 		headSkeleton.addBGDecal( 
 				Sprite.scale(head_interior.createSprite( "head-interior" ),1f/.4f), 
-				new Vector2(-1300,-720) );
+				new Vector2(-1420,-720) );
 		addBGSkeleton( headSkeleton );
+		
+		
+		scale=1f/.65f;
+		Platform brain = dragonBrain;
+		s = dragon_objects.createSprite( "dragon_brain" );
+		brain.addFGDecal( Sprite.scale(s,scale),new Vector2(-s.getWidth( )/2*scale,-s.getHeight( )/2*scale) );
+		addFGEntity( brain );
 	}
 	
 	void initEyebrow(){
@@ -1245,6 +1295,42 @@ public class DragonScreen extends Screen {
 		tail2_skeleton.addBGDecal( Sprite.scale( tailInterior.createSprite( "tail2_interior" ), 2), new Vector2(-1137,-525) );//-1137,-525
 		tail2_skeleton.bgSprite=null;
 		addBGSkeleton( tail2_skeleton );
+		
+		PowerSwitch tail2Switch1 = ( PowerSwitch ) LevelFactory.entities
+				.get( "tail2_switch1" );
+		PowerSwitch tail2Switch2 = ( PowerSwitch ) LevelFactory.entities
+				.get( "tail2_switch2" );
+		PowerSwitch tail2Switch3 = ( PowerSwitch ) LevelFactory.entities
+				.get( "tail2_switch3" );
+		
+		Pipe tail2Pipe1 = ( Pipe ) LevelFactory.entities.get( "tail2_pipe1" );
+		
+		
+		Pipe tail2Pipe2 = ( Pipe ) LevelFactory.entities.get( "tail2_pipe2" );
+		
+		
+		
+		tail2Switch1.actOnEntity = true;
+		tail2Switch1.addEntityToTrigger( tail2Pipe1 );
+		tail2Switch1.addEntityToTrigger( tail2Pipe2 );
+		tail2Switch1
+				.addBeginIAction( new RotateTweenAction( -Util.PI / 2 ) );
+		tail2Switch1.addEndIAction( new RotateTweenAction( 0 ) );
+		
+		tail2Switch2.actOnEntity = true;
+		tail2Switch2.addEntityToTrigger( tail2Pipe1 );
+		tail2Switch2.addEntityToTrigger( tail2Pipe2 );
+		tail2Switch2
+				.addBeginIAction( new RotateTweenAction( -Util.PI / 2 ) );
+		tail2Switch2.addEndIAction( new RotateTweenAction( 0 ) );
+
+		tail2Switch3.actOnEntity = true;
+		tail2Switch3.addEntityToTrigger( tail2Pipe1 );
+		tail2Switch3.addEntityToTrigger( tail2Pipe2 );
+		tail2Switch3
+				.addBeginIAction( new RotateTweenAction( -Util.PI / 2 ) );
+		tail2Switch3.addEndIAction( new RotateTweenAction( 0 ) );
+		
 	}
 	
 	void tail3Decals(){
@@ -1254,38 +1340,43 @@ public class DragonScreen extends Screen {
 		TextureAtlas interiorAtlas = WereScrewedGame.manager.getAtlas( "interior_tail3_bodyleft" );
 		
 		//fg
-		tail3_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail3" ), 2.6f), new Vector2(-820,-580) );//227,17
-		tail3_skeleton.fgSprite=null;//237,98
-		//tail3_skeleton.setFgFade( true );
+		Sprite s = tailAtlas.createSprite( "tail3" );
+		s.setOrigin( 0, 0 );
+		tail3_skeleton.addFGDecal( Sprite.scale( s, 2.6f), new Vector2(-820-330,-580-134-28) );
+		tail3_skeleton.fgSprite=null;
 		addFGSkeleton( tail3_skeleton );
 		
 		//bg
 		tail3_skeleton.addBGDecal( Sprite.scale( interiorAtlas.createSprite( "tail3_interior" ), 2.06f, 2.12f), new Vector2(-1100,-685) );//227,17
 		tail3_skeleton.bgSprite=null;
 		addBGSkeleton( tail3_skeleton );
+		
+		
 	}
 	
 	void bodyDecals(){
 		Skeleton neck_skeleton = (Skeleton)LevelFactory.entities.get( "neck_skeleton" );
-		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "body-neck" );
+		TextureAtlas body_neck = WereScrewedGame.manager.getAtlas( "body-neck" );
 		TextureAtlas bodyRight = WereScrewedGame.manager.getAtlas( "body_right-head_interior" );
 		TextureAtlas interiorLeftAtlas = WereScrewedGame.manager.getAtlas( "interior_tail3_bodyleft" );
 		TextureAtlas interiorRightAtlas = WereScrewedGame.manager.getAtlas( "interior_tail2_bodyright" );
 		TextureAtlas dragon_objects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
 		
 		//neck
-		neck_skeleton.addFGDecal( Sprite.scale( tailAtlas.createSprite( "neck" ), 2f), new Vector2(-1167,-914) );//4,414
+		neck_skeleton.addFGDecal( Sprite.scale( body_neck.createSprite( "neck" ), 2f), new Vector2(-1167,-914) );//4,414
 		neck_skeleton.fgSprite=null;
 		//neck_skeleton.setFgFade( false );//3497.1770
 		addFGSkeleton( neck_skeleton );
 		
 		
-		float bodyScale = 1f/.375f;
+		float bodyScale = 1f/.385f;
 		Skeleton bodySkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "body_skeleton" );
 		//body exterior //32,11
-		Vector2 bodyPos = new Vector2(-3468,-1509);
-		Sprite s = Sprite.scale(tailAtlas.createSprite( "body_left" ),bodyScale);
+
+		Vector2 bodyPos = new Vector2(-3468,-1433);
+		Sprite s = Sprite.scale(body_neck.createSprite( "body_left" ),bodyScale);
+
 		bodySkeleton.addFGDecal( s, bodyPos );
 		bodySkeleton.addFGDecal( Sprite.scale(bodyRight.createSprite( "body_right" ),bodyScale), bodyPos.cpy( ).add( s.getWidth( )*bodyScale, 0 ));
 		addFGSkeleton( bodySkeleton );
@@ -1306,28 +1397,21 @@ public class DragonScreen extends Screen {
 		Skeleton rotateScrewSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "body_inside_rotatepuzzle_skeleton" );
 		s = dragon_objects.createSprite("rotation_machine_rotate_plate");//rotation_machine_wheel
-		s.setScale( 1, 1.37f );
-		rotateScrewSkeleton.addBGDecal( s, new Vector2(-s.getWidth( )/2,-30) );//-s.getHeight( )/2
+		s.setScale( 1, -1.37f );
+		rotateScrewSkeleton.addBGDecal( s, new Vector2(-s.getWidth( )/2, 30) );//-s.getHeight( )/2
 		addBGEntity( rotateScrewSkeleton );
 		
-		//l body_rotate_puzzle2
-		//m body_rotate_puzzle3
-		//r body_rotate_puzzle4
+
 		Vector2 bodyP = bodySkeleton.getPositionPixel( );
 		screw = LevelFactory.entities.get("body_rotate_puzzle2");
 		Vector2 screwP = new Vector2(-338,-383);
 		bodySkeleton.addBGDecal( dragon_objects.createSprite( "rotation_machine_decal_left" ),new Vector2(0,8).add( screwP ));
 
-		screw = LevelFactory.entities.get("body_rotate_puzzle3");
-		bodySkeleton.addBGDecal( dragon_objects.createSprite( "rotation_machine_decal_middle" ),new Vector2(498,-73).add( screwP ) );
-
 		screw = LevelFactory.entities.get("body_rotate_puzzle4");
 		bodySkeleton.addBGDecal( dragon_objects.createSprite( "rotation_machine_decal_right" ),new Vector2(995,9).add( screwP ));
 		addBGSkeleton( bodySkeleton );
-		//338,383
 		
 		//balloons
-		//body_balloon_center/left/right
 		TextureAtlas balloons = WereScrewedGame.manager.getAtlas( "balloons" );
 		
 		String[] bodyBalloons = {"body_balloon_left","body_balloon_center","body_balloon_right"};
@@ -1343,7 +1427,25 @@ public class DragonScreen extends Screen {
 			addFGEntity( entity );
 		}
 		
+		Skeleton mesh_skeleton1 = (Skeleton)LevelFactory.entities.get( "mesh_skeleton1" );
+		for(int i=0; i<9;++i){
+			//dragon_objects
+			s = dragon_objects.createSprite( "mesh" );
+			mesh_skeleton1.addBGDecal( s, new Vector2(-220,-s.getHeight()*i+i*7+612));
+		}
+		addBGSkeleton( mesh_skeleton1 );
 		
+		
+		Skeleton body_lower_skeleton = (Skeleton)LevelFactory.entities.get( "body_lower_skeleton" );
+		Vector2 legPos = new Vector2(-3*1280+120+34-21,-700+183-63+21);
+		body_lower_skeleton.addFGDecal(  body_neck.createSprite( "legs_left" ), legPos.cpy());
+		for(int i=0; i<9;++i){
+			//dragon_objects
+			s = body_neck.createSprite( "legs_middle" );
+			body_lower_skeleton.addFGDecal( s, new Vector2(s.getWidth()*(i+0)+377+3-i*7,3).add(legPos));
+		}
+		body_lower_skeleton.addFGDecal( body_neck.createSprite( "legs_right" ), legPos.cpy().add(9*s.getWidth( )-7+326+5,-7+9));
+		addFGSkeleton( body_lower_skeleton );
 	}
 
 	void createMotor(Skeleton rotating, Skeleton parent, float motorSpeed){
@@ -1367,7 +1469,7 @@ public class DragonScreen extends Screen {
 		//ground1
 		TiledPlatform ground = (TiledPlatform)LevelFactory.entities.get( "ground1" );
 		TextureAtlas objects = WereScrewedGame.manager.getAtlas( "dragon_objects" );
-		ground.addFGDecal( Sprite.scale(objects.createSprite( "bridge" ),3,2), new Vector2(-1370,-277*2));
+		ground.addFGDecal( Sprite.scale(objects.createSprite( "bridge" ),3), new Vector2(-2100,-277*3-26));
 		ground.setVisible( false );
 		addFGEntity( ground );
 	}
@@ -1381,26 +1483,62 @@ public class DragonScreen extends Screen {
 				new Vector2( new Vector2(13750, 300).add(0,n*h) ),
 				new Vector2(),
 				 level.world, true );
-		for(int i =0; i < 5; ++i ){
+		for(int i =0; i < 4; ++i ){
 			fireballEmitter.addParticle( createBoltEnemy( new Vector2(13750, 300).add(0,n*h), i ), 10, 0, i*5 );
 		}
 		level.root.addLooseEntity( fireballEmitter );
 		
-		Vector2 pos = new Vector2(23850, 400);
-		brainEmitter1 = new EntityParticleEmitter( "bolt emitter",
+		
+		float brain_impulse = 0.1f;
+		Vector2 pos = new Vector2(23950, 120);
+		brainEmitter1 = new EntityParticleEmitter( "brainEmitter1",
 				new Vector2( pos.cpy().add(0,n*h) ),
-				new Vector2(),
+				new Vector2(-brain_impulse, 0),
 				 level.world, true );
 		
-		for(int i =0; i < 2; ++i ){
-			brainEmitter1.addParticle( createBoltEnemy( pos.cpy().add(0,n*h), i ), 5, 0, i*2 );
+		int boltsPerEmitter = 2, boltLife = 3;
+		for(int i =0; i < boltsPerEmitter; ++i ){
+			brainEmitter1.addParticle( createBoltEnemy( pos.cpy().add(0,n*h), i ), boltLife, 0, i*boltLife/boltsPerEmitter );
 		}
 		level.root.addLooseEntity( brainEmitter1 );
+		
+		Vector2 pos2 = new Vector2(25250, 120);
+		brainEmitter2 = new EntityParticleEmitter( "brainEmitter2",
+				new Vector2( pos2.cpy().add(0,n*h) ),
+				new Vector2(brain_impulse, 0),
+				 level.world, true );
+		
+		for(int i =0; i < boltsPerEmitter; ++i ){
+			brainEmitter2.addParticle( createBoltEnemy( pos2.cpy().add(0,n*h), i ), boltLife, 0, i*boltLife/boltsPerEmitter );
+		}
+		level.root.addLooseEntity( brainEmitter2 );
+		
+		Vector2 pos3 = new Vector2(23950, -150);
+		brainEmitter3 = new EntityParticleEmitter( "brainEmitter3",
+				new Vector2( pos3.cpy().add(0,n*h) ),
+				new Vector2(-brain_impulse, 0),
+				 level.world, true );
+		
+		for(int i =0; i < boltsPerEmitter; ++i ){
+			brainEmitter3.addParticle( createBoltEnemy( pos3.cpy().add(0,n*h), i ), boltLife, 0, i*boltLife/boltsPerEmitter );
+		}
+		level.root.addLooseEntity( brainEmitter3 );
+		
+		Vector2 pos4 = new Vector2(25250, -150);
+		brainEmitter4 = new EntityParticleEmitter( "brainEmitter4",
+				new Vector2( pos4.cpy().add(0,n*h) ),
+				new Vector2(brain_impulse, 0),
+				 level.world, true );
+		
+		for(int i =0; i < boltsPerEmitter; ++i ){
+			brainEmitter4.addParticle( createBoltEnemy( pos4.cpy().add(0,n*h), i ), boltLife, 0, i*boltLife/boltsPerEmitter );
+		}
+		level.root.addLooseEntity( brainEmitter4 );
 	}
 	
 	Enemy createBoltEnemy(Vector2 pos, int index){
 		Enemy hotbolt = new Enemy( "hot-bolt"+index, pos,25, level.world, true );
-		hotbolt.addMover( new DirectionFlipMover( false, 0.002f, hotbolt, 1f, .04f ) );
+		hotbolt.addMover( new DirectionFlipMover( false, 0.002f, hotbolt, 1.5f, .04f ) );
 		addBGEntity( hotbolt );
 		return hotbolt;
 	}

@@ -400,4 +400,12 @@ public class AnchorList {
 		}
 		return total;
 	}
+
+	public void deactivateAllAnchors( boolean includePlayers ) {
+		for ( Anchor anchor : anchorList ) {
+			if ( anchor.activated && ( !anchor.player || includePlayers ) ) {
+				anchor.deactivate( );
+			}
+		}
+	}
 }

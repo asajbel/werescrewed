@@ -47,8 +47,8 @@ class CreditsScreen extends MenuScreen {
 		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/transitions/trans-gear.png", Texture.class );
 		trans = new Sprite( transition );
-		scale = trans.getHeight( ) * SCALE_MAX;
-		scaleMax = scale;
+		scaleMax = trans.getHeight( ) * SCALE_MAX;
+		scale = 1.0f;
 		transInEnd = false;
 		
 
@@ -61,6 +61,8 @@ class CreditsScreen extends MenuScreen {
 		artLabel = new Label( "Artists: ", fancyFont );
 		soundLabel = new Label( "Musicians", fancyFont );
 		
+		WereScrewedGame.manager.loadAtlas( "data/menu/menu-textures.pack" );
+		
 		buttonTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "button" );
 		
 		backButton = new TextButton( "Back", fancyFont, buttonTex,
@@ -71,7 +73,7 @@ class CreditsScreen extends MenuScreen {
 	
 	private void initPeople ( ) {
 		authorsLabel[ 0 ] = new Label( "Anders Sajbel", fancyFont );
-		authorsLabel[ 1 ] = new Label( "Bryan Pacini", fancyFont );
+		authorsLabel[ 1 ] = new Label( "William Pacini", fancyFont );
 		authorsLabel[ 2 ] = new Label( "Dennis Foley", fancyFont );
 		authorsLabel[ 3 ] = new Label( "Dan Malear", fancyFont );
 		authorsLabel[ 4 ] = new Label( "Edward Boning", fancyFont );
@@ -86,8 +88,8 @@ class CreditsScreen extends MenuScreen {
 		authorsLabel[ 13 ] = new Label( "Melissa Eap", fancyFont );
 		authorsLabel[ 14 ] = new Label( "Michael Monterrosa", fancyFont );
 		authorsLabel[ 15 ] = new Label( "Rebecca Alto", fancyFont );
-		authorsLabel[ 16 ] = new Label( "August Sandage", fancyFont );
-		authorsLabel[ 17 ] = new Label( "Falon Wong", fancyFont );
+		authorsLabel[ 16 ] = new Label( "Augustus Sandage", fancyFont );
+		authorsLabel[ 17 ] = new Label( "Falcon Wong", fancyFont );
 	}
 
 	@Override

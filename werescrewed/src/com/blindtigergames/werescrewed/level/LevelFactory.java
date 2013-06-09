@@ -661,10 +661,14 @@ public class LevelFactory {
 			entities.put( item.name, level.root );
 
 		} else {
+			
 			// attach skeleton to skeleton
 			SkeletonBuilder skeleBuilder = new SkeletonBuilder( level.world );
 			skeleBuilder.name( item.name ).texture( null );
 
+			if(levelName == "data/levels/dragonlevel.xml")
+				skeleBuilder.lessExtraBorder( );
+			
 			if ( item.props.containsKey( "rectangle" ) ) {
 				skeleBuilder.setUseBoundingRect( true );
 				skeleBuilder
@@ -683,7 +687,7 @@ public class LevelFactory {
 				float yPos = item.pos.y - ( height / 2 );
 				skeleBuilder.position( new Vector2(xPos, yPos) );
 
-			} else {
+			} else if ( !item.props.containsKey( "nopolysprite" ) ){
 				Array< Vector2 > polySprite = contstructSkeletonPoly( item );
 				skeleBuilder.position( item.pos );
 				if ( item.props.containsKey( "invisible" ) ) {
@@ -941,6 +945,10 @@ public class LevelFactory {
 						Util.CATEGORY_EVERYTHING );
 			}
 		}
+		
+		if(item.props.containsKey( "black" )){
+			out.setTilesBlack();
+		}
 		return out;
 	}
 
@@ -1032,6 +1040,14 @@ public class LevelFactory {
 			out.setCategoryMask( Util.CATEGORY_PLATFORMS,
 					Util.CATEGORY_EVERYTHING );
 		}
+		
+		if(item.props.containsKey( "nopoly" )){
+			out.sprite = null;
+		}
+		if ( item.props.containsKey( "nopolysprite" )){
+			out.sprite = null;
+		}
+		
 		entities.put( item.name, out );
 		return out;
 	}
@@ -1068,6 +1084,14 @@ public class LevelFactory {
 				.dynamic( isDynamic ).properties( item.props )
 				.buildComplexPlatform( );
 
+
+		if(item.props.containsKey( "nopoly" )){
+			out.sprite = null;
+		}
+		if ( item.props.containsKey( "nopolysprite" )){
+			out.sprite = null;
+		}
+		
 		entities.put( item.name, out );
 
 		out.setCrushing( isCrushable );
@@ -1664,7 +1688,7 @@ public class LevelFactory {
 				item.getAtlasName( ), "" );
 		parent.addKinematicPlatform( out );
 		entities.put( item.name, out );
-		addBackGroundEntity(out);
+		//addBackGroundEntity(out);
 		return out;
 	}
 
@@ -1734,7 +1758,7 @@ public class LevelFactory {
 
 		Hazard hazard = hazardBuilder.buildSpikes( );
 		parent.addKinematicPlatform( hazard );
-
+		entities.put( item.name, hazard );
 		return hazard;
 	}
 
