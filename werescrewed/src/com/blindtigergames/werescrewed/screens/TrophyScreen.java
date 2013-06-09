@@ -62,12 +62,20 @@ public class TrophyScreen extends Screen {
 			screenTag = nextLvl;
 		}
 		batch = new SpriteBatch( );
-		font = new BitmapFont( );		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
-		smallerFont = WereScrewedGame.manager.getFont( "longdon-small" );
+		font = new BitmapFont( );
+		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
+		smallerFont = WereScrewedGame.manager.getFont( "longdon" );
 		lineHeight = Math.round( 2.5f * font.getCapHeight( ) );
 		player1Name = new Label( "Player 1", fancyFont );
 		player2Name = new Label( "Player 2", fancyFont );
 
+		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/transitions/trans-gear.png", Texture.class );
+		trans = new Sprite( transition );
+		scaleMax = trans.getHeight( ) * SCALE_MAX;
+		scale = 1.0f;
+		transInEnd = false;
+		
 		// Button classes now require you to send in a texture for the button image.
 		TextureRegion buttonTex = WereScrewedGame.manager.
 				getAtlas( "menu-textures" ).findRegion( "button" );
@@ -675,6 +683,7 @@ public class TrophyScreen extends Screen {
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
 		tweenManager.update( delta );
 		batch.begin( );
+		smallerFont.setScale( 0.5f );
 		player1Name.draw( batch );
 		player2Name.draw( batch );
 		for ( int i = 0; i < trophyLength; i++ ) {
@@ -690,10 +699,33 @@ public class TrophyScreen extends Screen {
 			}
 		}
 		next.draw( batch, camera );
+		
+		if ( !transInEnd ) {
+			drawTransIn( batch );
+		}
+		
+		if ( !transOutEnd ) {
+			drawTransOut( batch, screenTag );
+		}
 		batch.end( );
 
-		if ( Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-			ScreenManager.getInstance( ).show( screenTag );
+		if ( Gdx.input.isKeyPressed( Keys.ENTER ) && transOutEnd ) {
+			//ScreenManager.getInstance( ).show( screenTag );
+			transOutEnd = false;
+		}
+		if ( WereScrewedGame.p1Controller != null && transOutEnd ) {
+			if ( WereScrewedGame.p1ControllerListener.jumpPressed( )
+					|| WereScrewedGame.p1ControllerListener
+							.pausePressed( ) ) {
+				transOutEnd = false;
+			}
+		}
+		if ( WereScrewedGame.p2Controller != null && transOutEnd ) {
+			if ( WereScrewedGame.p2ControllerListener.jumpPressed( )
+					|| WereScrewedGame.p2ControllerListener
+							.pausePressed( ) ) {
+				transOutEnd = false;
+			}
 		}
 	}
 

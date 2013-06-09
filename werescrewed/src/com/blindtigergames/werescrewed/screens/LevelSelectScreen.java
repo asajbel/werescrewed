@@ -68,8 +68,8 @@ public class LevelSelectScreen extends MenuScreen {
 		gears = new Array< Falling >( );
 		debris = new Array< Falling >( );
 		
-		scale = trans.getHeight( ) * SCALE_MAX;
-		scaleMax = scale;
+		scaleMax = trans.getHeight( ) * SCALE_MAX;
+		scale = 1.0f;
 		transInEnd = false;
 		
 		TextureAtlas gearsAtlas = WereScrewedGame.manager.getAtlas( "gears" );

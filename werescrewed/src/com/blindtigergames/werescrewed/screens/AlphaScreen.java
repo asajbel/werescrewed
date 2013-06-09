@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -264,6 +265,13 @@ public class AlphaScreen extends Screen {
 					+ "/levels/alphabot/sounds/applause_final.ogg" );
 			assetsLoaded = true;
 		}
+		
+		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/transitions/trans-gear.png", Texture.class );
+		trans = new Sprite( transition );
+		scaleMax = trans.getHeight( ) * SCALE_MAX;
+		scale = 1.0f;
+		transInEnd = false;
 	}
 	
 	@Override
@@ -361,7 +369,8 @@ public class AlphaScreen extends Screen {
 						&& headEyebrow2.isTimeLineMoverFinished( ) ) {
 					
 					// You win and goto next screen!!!
-					ScreenManager.getInstance( ).show( ScreenType.LOADING_TROPHY_2 );
+					//ScreenManager.getInstance( ).show( ScreenType.LOADING_TROPHY_2 );
+					transOutEnd = false;
 				}
 			}
 		}
@@ -378,6 +387,16 @@ public class AlphaScreen extends Screen {
 			powerSwitch9.setState( true );
 			powerSwitch10.setState( true );
 		}
+		
+		batch.begin( );
+		if ( !transInEnd ) {
+			drawTransIn( batch );
+		}
+		
+		if ( !transOutEnd ) {
+			drawTransOut( batch, ScreenType.LOADING_TROPHY_2  );
+		}
+		batch.end( );
 
 	}
 
