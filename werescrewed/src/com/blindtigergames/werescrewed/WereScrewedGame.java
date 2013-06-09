@@ -5,8 +5,10 @@ import java.util.Random;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
@@ -20,9 +22,10 @@ import com.blindtigergames.werescrewed.screens.ScreenManager;
 import com.blindtigergames.werescrewed.screens.ScreenType;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Metrics;
+import com.blindtigergames.werescrewed.util.WereScrewedPreferences;
 
 public class WereScrewedGame extends Game {
-
+	private static WereScrewedPreferences preferences; 
 	public static final float targetFrameRate = 60f;
 	public static final float oneOverTargetFrameRate = 1f/targetFrameRate;
 	
@@ -62,13 +65,19 @@ public class WereScrewedGame extends Game {
 	private static final int height = 720; 
 	
 	private static boolean reconnect = false;
+	
 
 	@Override
 	public void create( ) {
+		preferences = new WereScrewedPreferences();  
 		random = new Random( 0 );
 		manager = new AssetManager( );
 
 		ScreenManager.getInstance( ).initialize( this );
+		if (preferences.isFullScreen( )) {
+			DisplayMode mode = Gdx.graphics.getDesktopDisplayMode( );
+			Gdx.graphics.setDisplayMode( mode.width, mode.height, false );
+		}
 
 		// used to stop auto call of render
 		// Gdx.graphics.setContinuousRendering(false);
@@ -86,6 +95,10 @@ public class WereScrewedGame extends Game {
 		
 
 		setUpControllers( );
+	}
+	
+	public static WereScrewedPreferences getPrefs() {
+		return preferences; 
 	}
 
 	@Override
