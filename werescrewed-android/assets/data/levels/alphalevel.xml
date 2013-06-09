@@ -7773,7 +7773,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="right_arm_paltform_3" Visible="true">
                     <Position>
-                        <X>3200</X>
+                        <X>3216</X>
                         <Y>-5136</Y>
                     </Position>
                     <CustomProperties>
