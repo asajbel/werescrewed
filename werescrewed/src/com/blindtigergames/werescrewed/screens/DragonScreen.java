@@ -348,7 +348,7 @@ public class DragonScreen extends Screen {
 					transOutEnd = false;
 
 					// You win and goto next screen!!!
-					ScreenManager.getInstance( ).show( ScreenType.LOADING_TROPHY_3 );
+					//ScreenManager.getInstance( ).show( ScreenType.LOADING_TROPHY_3 );
 					
 				}
 			}
@@ -411,15 +411,15 @@ public class DragonScreen extends Screen {
 
 		}
 
-		batch.begin( );
+		level.backgroundBatch.begin( );
 		if ( !transInEnd ) {
-			drawTransIn( batch );
+			drawTransIn( level.backgroundBatch );
 		}
 		
 		if ( !transOutEnd ) {
-			drawTransOut( batch, ScreenType.TROPHY_2 );
+			drawTransOut( level.backgroundBatch, ScreenType.LOADING_TROPHY_3  );
 		}
-		batch.end( );
+		level.backgroundBatch.end( );
 	}
 
 	IMover balloonMover( Platform skel, float yPos, float angle, float initPause ) {
