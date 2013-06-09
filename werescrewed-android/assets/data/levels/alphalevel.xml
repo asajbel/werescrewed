@@ -5065,37 +5065,6 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
-                <Item xsi:type="CircleItem" Name="Circle_0983" Visible="true">
-                    <Position>
-                        <X>-1056</X>
-                        <Y>-6400</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="definition" Type="string" Description="">
-                            <string>decal</string>
-                        </Property>
-                        <Property Name="target" Type="string" Description="">
-                            <string>chestPlatLeft1</string>
-                        </Property>
-                        <Property Name="atlas" Type="string" Description="">
-                            <string>common-textures</string>
-                        </Property>
-                        <Property Name="image" Type="string" Description="">
-                            <string>rivet</string>
-                        </Property>
-                        <Property Name="decal" Type="string" Description="">
-                            <string />
-                        </Property>
-                    </CustomProperties>
-                    <Radius>22</Radius>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
                 <Item xsi:type="CircleItem" Name="Circle_1028" Visible="true">
                     <Position>
                         <X>-1408</X>
@@ -5106,69 +5075,7 @@
                             <string>decal</string>
                         </Property>
                         <Property Name="target" Type="string" Description="">
-                            <string>chestPlatLeft1</string>
-                        </Property>
-                        <Property Name="atlas" Type="string" Description="">
-                            <string>common-textures</string>
-                        </Property>
-                        <Property Name="image" Type="string" Description="">
-                            <string>rivet</string>
-                        </Property>
-                        <Property Name="decal" Type="string" Description="">
-                            <string />
-                        </Property>
-                    </CustomProperties>
-                    <Radius>22</Radius>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="CircleItem" Name="Circle_0982" Visible="true">
-                    <Position>
-                        <X>-720</X>
-                        <Y>-6400</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="definition" Type="string" Description="">
-                            <string>decal</string>
-                        </Property>
-                        <Property Name="target" Type="string" Description="">
-                            <string>chestPlatLeft1</string>
-                        </Property>
-                        <Property Name="atlas" Type="string" Description="">
-                            <string>common-textures</string>
-                        </Property>
-                        <Property Name="image" Type="string" Description="">
-                            <string>rivet</string>
-                        </Property>
-                        <Property Name="decal" Type="string" Description="">
-                            <string />
-                        </Property>
-                    </CustomProperties>
-                    <Radius>22</Radius>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="CircleItem" Name="Circle_0981" Visible="true">
-                    <Position>
-                        <X>-320</X>
-                        <Y>-6384</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="definition" Type="string" Description="">
-                            <string>decal</string>
-                        </Property>
-                        <Property Name="target" Type="string" Description="">
-                            <string>chestPlatLeft1</string>
+                            <string>rightShoulder</string>
                         </Property>
                         <Property Name="atlas" Type="string" Description="">
                             <string>common-textures</string>
@@ -13584,7 +13491,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_0781" Visible="true">
                     <Position>
                         <X>3504</X>
-                        <Y>-5744</Y>
+                        <Y>-5760</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Screwtype" Type="string" Description="">
@@ -13627,7 +13534,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_0782" Visible="true">
                     <Position>
                         <X>3648</X>
-                        <Y>-5744</Y>
+                        <Y>-5760</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Screwtype" Type="string" Description="">
@@ -20213,38 +20120,7 @@
                             <string>decal</string>
                         </Property>
                         <Property Name="target" Type="string" Description="">
-                            <string>chestPlatLeft1</string>
-                        </Property>
-                        <Property Name="atlas" Type="string" Description="">
-                            <string>common-textures</string>
-                        </Property>
-                        <Property Name="image" Type="string" Description="">
-                            <string>rivet</string>
-                        </Property>
-                        <Property Name="decal" Type="string" Description="">
-                            <string />
-                        </Property>
-                    </CustomProperties>
-                    <Radius>22</Radius>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
-                </Item>
-                <Item xsi:type="CircleItem" Name="Circle_0985" Visible="true">
-                    <Position>
-                        <X>-1664</X>
-                        <Y>-6400</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="definition" Type="string" Description="">
-                            <string>decal</string>
-                        </Property>
-                        <Property Name="target" Type="string" Description="">
-                            <string>chestPlatLeft1</string>
+                            <string>chestSkeleton</string>
                         </Property>
                         <Property Name="atlas" Type="string" Description="">
                             <string>common-textures</string>
@@ -20267,7 +20143,7 @@
                 </Item>
                 <Item xsi:type="CircleItem" Name="Circle_0986" Visible="true">
                     <Position>
-                        <X>3760</X>
+                        <X>3744</X>
                         <Y>-5888</Y>
                     </Position>
                     <CustomProperties>
@@ -20391,7 +20267,7 @@
                 </Item>
                 <Item xsi:type="CircleItem" Name="Circle_0990" Visible="true">
                     <Position>
-                        <X>3760</X>
+                        <X>3744</X>
                         <Y>-4688</Y>
                     </Position>
                     <CustomProperties>
@@ -20546,7 +20422,7 @@
                 </Item>
                 <Item xsi:type="CircleItem" Name="Circle_0996" Visible="true">
                     <Position>
-                        <X>2896</X>
+                        <X>2880</X>
                         <Y>-5728</Y>
                     </Position>
                     <CustomProperties>
@@ -21710,8 +21586,8 @@
         <NextItemNumber>1034</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-159.322433</X>
-            <Y>-1159.37866</Y>
+            <X>357.3452</X>
+            <Y>-2292.71753</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
