@@ -714,17 +714,19 @@ public class Skeleton extends Platform {
 				if ( screw.removeNextStep ) {
 					entitiesToRemove.add( screw );
 				} else if ( !screw.dontPutToSleep ) {
-					if ( this.useBoundingRect ) {
-						if ( inRectangleBounds( this.boundingRect,
-								screw.getPositionPixel( ) ) ) {
+					if ( screw.getDepth( ) > 0 ) {
+						if ( this.useBoundingRect ) {
+							if ( inRectangleBounds( this.boundingRect,
+									screw.getPositionPixel( ) ) ) {
+								screw.body.setAwake( true );
+								screw.body.setActive( false );
+							} else {
+								screw.dontPutToSleep = true;
+							}
+						} else {
 							screw.body.setAwake( true );
 							screw.body.setActive( false );
-						} else {
-							screw.dontPutToSleep = true;
 						}
-					} else {
-						screw.body.setAwake( true );
-						screw.body.setActive( false );
 					}
 				}
 			}
