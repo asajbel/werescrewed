@@ -1,0 +1,19 @@
+bg.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+offset: 0, 0
+bg
+  rotate: false
+  xy: 2, 2
+  size: 1280, 720
+  orig: 1280, 720
+  offset: 0, 0
+  index: -1
+front
+  rotate: false
+  xy: 2, 724
+  size: 1280, 720
+  orig: 1280, 720
+  offset: 0, 0
+  index: -1
