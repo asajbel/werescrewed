@@ -131,7 +131,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton1" Visible="true">
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton1" Visible="false">
                     <Position>
                         <X>-368</X>
                         <Y>-4384</Y>
@@ -163,7 +163,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton2" Visible="true">
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton2" Visible="false">
                     <Position>
                         <X>-1728</X>
                         <Y>-6464</Y>
@@ -195,7 +195,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton3" Visible="true">
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton3" Visible="false">
                     <Position>
                         <X>-1472</X>
                         <Y>-5120</Y>
@@ -227,7 +227,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton4" Visible="true">
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton4" Visible="false">
                     <Position>
                         <X>1248</X>
                         <Y>-4896</Y>
@@ -259,7 +259,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton5" Visible="true">
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton5" Visible="false">
                     <Position>
                         <X>1104</X>
                         <Y>-6368</Y>
@@ -291,7 +291,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton6" Visible="true">
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton6" Visible="false">
                     <Position>
                         <X>-240</X>
                         <Y>-6448</Y>
@@ -323,7 +323,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton7" Visible="true">
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton7" Visible="false">
                     <Position>
                         <X>-288</X>
                         <Y>-5456</Y>
@@ -12627,7 +12627,7 @@
                 <Item xsi:type="PathItem" Name="chestEnginePipe3" Visible="true">
                     <Position>
                         <X>128</X>
-                        <Y>-5504</Y>
+                        <Y>-5568</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -12644,21 +12644,21 @@
                         </Vector2>
                         <Vector2>
                             <X>0</X>
-                            <Y>-256</Y>
+                            <Y>-192</Y>
                         </Vector2>
                         <Vector2>
                             <X>-320</X>
-                            <Y>-256</Y>
+                            <Y>-192</Y>
                         </Vector2>
                         <Vector2>
                             <X>-320</X>
-                            <Y>-912</Y>
+                            <Y>-848</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
                             <X>128</X>
-                            <Y>-5504</Y>
+                            <Y>-5568</Y>
                         </Vector2>
                         <Vector2>
                             <X>128</X>
@@ -12686,7 +12686,7 @@
                 <Item xsi:type="PathItem" Name="chestEnginePipe1" Visible="true">
                     <Position>
                         <X>448</X>
-                        <Y>-5504</Y>
+                        <Y>-5568</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -12703,25 +12703,25 @@
                         </Vector2>
                         <Vector2>
                             <X>0</X>
-                            <Y>-128</Y>
+                            <Y>-64</Y>
                         </Vector2>
                         <Vector2>
                             <X>256</X>
-                            <Y>-128</Y>
+                            <Y>-64</Y>
                         </Vector2>
                         <Vector2>
                             <X>256</X>
-                            <Y>-256</Y>
+                            <Y>-192</Y>
                         </Vector2>
                         <Vector2>
                             <X>640</X>
-                            <Y>-256</Y>
+                            <Y>-192</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
                             <X>448</X>
-                            <Y>-5504</Y>
+                            <Y>-5568</Y>
                         </Vector2>
                         <Vector2>
                             <X>448</X>
@@ -21586,8 +21586,8 @@
         <NextItemNumber>1034</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>357.3452</X>
-            <Y>-2292.71753</Y>
+            <X>274.01178</X>
+            <Y>-2892.72046</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
