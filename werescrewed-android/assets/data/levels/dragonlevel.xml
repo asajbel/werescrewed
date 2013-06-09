@@ -68,8 +68,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>-1488</X>
-                        <Y>-1408</Y>
+                        <X>16320</X>
+                        <Y>-704</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -191,8 +191,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
-                        <X>-1504</X>
-                        <Y>2032</Y>
+                        <X>16240</X>
+                        <Y>-544</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -222,8 +222,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
-                        <X>-1376</X>
-                        <Y>2032</Y>
+                        <X>16368</X>
+                        <Y>-544</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1452,7 +1452,7 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="balloon3_super" Visible="true">
+                <Item xsi:type="RectangleItem" Name="balloon3_super" Visible="false">
                     <Position>
                         <X>2096</X>
                         <Y>-3536</Y>
@@ -3657,11 +3657,11 @@
                             <Y>512</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1568</X>
+                            <X>1536</X>
                             <Y>688</Y>
                         </Vector2>
                         <Vector2>
-                            <X>1568</X>
+                            <X>1536</X>
                             <Y>-624</Y>
                         </Vector2>
                         <Vector2>
@@ -3683,11 +3683,11 @@
                             <Y>-704</Y>
                         </Vector2>
                         <Vector2>
-                            <X>13088</X>
+                            <X>13056</X>
                             <Y>-528</Y>
                         </Vector2>
                         <Vector2>
-                            <X>13088</X>
+                            <X>13056</X>
                             <Y>-1840</Y>
                         </Vector2>
                         <Vector2>
@@ -5660,11 +5660,11 @@
                         </Vector2>
                         <Vector2>
                             <X>64</X>
-                            <Y>-1040</Y>
+                            <Y>-1056</Y>
                         </Vector2>
                         <Vector2>
                             <X>-64</X>
-                            <Y>-1040</Y>
+                            <Y>-1056</Y>
                         </Vector2>
                         <Vector2>
                             <X>-64</X>
@@ -5686,11 +5686,11 @@
                         </Vector2>
                         <Vector2>
                             <X>20832</X>
-                            <Y>-2336</Y>
+                            <Y>-2352</Y>
                         </Vector2>
                         <Vector2>
                             <X>20704</X>
-                            <Y>-2336</Y>
+                            <Y>-2352</Y>
                         </Vector2>
                         <Vector2>
                             <X>20704</X>
@@ -5791,11 +5791,11 @@
                             <Y>48</Y>
                         </Vector2>
                         <Vector2>
-                            <X>2352</X>
+                            <X>2320</X>
                             <Y>32</Y>
                         </Vector2>
                         <Vector2>
-                            <X>2352</X>
+                            <X>2320</X>
                             <Y>-80</Y>
                         </Vector2>
                         <Vector2>
@@ -5817,11 +5817,11 @@
                             <Y>-2336</Y>
                         </Vector2>
                         <Vector2>
-                            <X>19392</X>
+                            <X>19360</X>
                             <Y>-2352</Y>
                         </Vector2>
                         <Vector2>
-                            <X>19392</X>
+                            <X>19360</X>
                             <Y>-2464</Y>
                         </Vector2>
                         <Vector2>
@@ -9315,7 +9315,7 @@
                             <string>RootSkeleton</string>
                         </Property>
                         <Property Name="anchor1" Type="string" Description="">
-                            <string>0, -500, 300, 2000</string>
+                            <string>0, -1000, 300, 1600</string>
                         </Property>
                     </CustomProperties>
                     <Width>224</Width>
@@ -12563,8 +12563,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="body_fire7" Visible="true">
                     <Position>
-                        <X>19776</X>
-                        <Y>-1440</Y>
+                        <X>19792</X>
+                        <Y>-1456</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -12574,8 +12574,8 @@
                             <string>body_fire_skeleton</string>
                         </Property>
                     </CustomProperties>
-                    <Width>64</Width>
-                    <Height>160</Height>
+                    <Width>32</Width>
+                    <Height>176</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -13821,8 +13821,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="body_fire8" Visible="true">
                     <Position>
-                        <X>19520</X>
-                        <Y>-1440</Y>
+                        <X>19536</X>
+                        <Y>-1456</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -13832,8 +13832,8 @@
                             <string>body_fire_skeleton</string>
                         </Property>
                     </CustomProperties>
-                    <Width>64</Width>
-                    <Height>160</Height>
+                    <Width>32</Width>
+                    <Height>176</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -13844,7 +13844,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="body_fire9" Visible="true">
                     <Position>
-                        <X>19648</X>
+                        <X>19664</X>
                         <Y>-1104</Y>
                     </Position>
                     <CustomProperties>
@@ -13858,8 +13858,8 @@
                             <string />
                         </Property>
                     </CustomProperties>
-                    <Width>64</Width>
-                    <Height>160</Height>
+                    <Width>32</Width>
+                    <Height>176</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -13870,7 +13870,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="body_fire10" Visible="true">
                     <Position>
-                        <X>19904</X>
+                        <X>19920</X>
                         <Y>-1104</Y>
                     </Position>
                     <CustomProperties>
@@ -13884,8 +13884,8 @@
                             <string />
                         </Property>
                     </CustomProperties>
-                    <Width>64</Width>
-                    <Height>160</Height>
+                    <Width>32</Width>
+                    <Height>176</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -13896,8 +13896,8 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="body_fire11" Visible="true">
                     <Position>
-                        <X>20032</X>
-                        <Y>-1440</Y>
+                        <X>20048</X>
+                        <Y>-1456</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -13907,8 +13907,8 @@
                             <string>body_fire_skeleton</string>
                         </Property>
                     </CustomProperties>
-                    <Width>64</Width>
-                    <Height>160</Height>
+                    <Width>32</Width>
+                    <Height>176</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -13919,7 +13919,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="body_fire12" Visible="true">
                     <Position>
-                        <X>20160</X>
+                        <X>20176</X>
                         <Y>-1104</Y>
                     </Position>
                     <CustomProperties>
@@ -13933,8 +13933,8 @@
                             <string />
                         </Property>
                     </CustomProperties>
-                    <Width>64</Width>
-                    <Height>160</Height>
+                    <Width>32</Width>
+                    <Height>176</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -14014,7 +14014,7 @@
                 <Item xsi:type="PathItem" Name="faggot" Visible="true">
                     <Position>
                         <X>20288</X>
-                        <Y>-2384</Y>
+                        <Y>-2400</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -14030,7 +14030,7 @@
                             <Y>0</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-688</X>
+                            <X>-656</X>
                             <Y>48</Y>
                         </Vector2>
                         <Vector2>
@@ -14042,38 +14042,38 @@
                             <Y>-64</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-688</X>
+                            <X>-656</X>
                             <Y>-64</Y>
                         </Vector2>
                         <Vector2>
-                            <X>-688</X>
+                            <X>-656</X>
                             <Y>48</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
                             <X>20288</X>
-                            <Y>-2384</Y>
+                            <Y>-2400</Y>
                         </Vector2>
                         <Vector2>
-                            <X>19600</X>
-                            <Y>-2336</Y>
-                        </Vector2>
-                        <Vector2>
-                            <X>20832</X>
-                            <Y>-2336</Y>
+                            <X>19632</X>
+                            <Y>-2352</Y>
                         </Vector2>
                         <Vector2>
                             <X>20832</X>
-                            <Y>-2448</Y>
+                            <Y>-2352</Y>
                         </Vector2>
                         <Vector2>
-                            <X>19600</X>
-                            <Y>-2448</Y>
+                            <X>20832</X>
+                            <Y>-2464</Y>
                         </Vector2>
                         <Vector2>
-                            <X>19600</X>
-                            <Y>-2336</Y>
+                            <X>19632</X>
+                            <Y>-2464</Y>
+                        </Vector2>
+                        <Vector2>
+                            <X>19632</X>
+                            <Y>-2352</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -14563,7 +14563,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="body_section2_fire1" Visible="true">
                     <Position>
-                        <X>17536</X>
+                        <X>17552</X>
                         <Y>-576</Y>
                     </Position>
                     <CustomProperties>
@@ -14574,7 +14574,7 @@
                             <string>body_fire_skeleton</string>
                         </Property>
                     </CustomProperties>
-                    <Width>64</Width>
+                    <Width>32</Width>
                     <Height>160</Height>
                     <FillColor>
                         <R>192</R>
@@ -14612,7 +14612,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="body_section2_fire2" Visible="true">
                     <Position>
-                        <X>17344</X>
+                        <X>17360</X>
                         <Y>-576</Y>
                     </Position>
                     <CustomProperties>
@@ -14623,7 +14623,7 @@
                             <string>body_fire_skeleton</string>
                         </Property>
                     </CustomProperties>
-                    <Width>64</Width>
+                    <Width>32</Width>
                     <Height>160</Height>
                     <FillColor>
                         <R>192</R>
@@ -14635,7 +14635,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="body_section2_fire3" Visible="true">
                     <Position>
-                        <X>17152</X>
+                        <X>17168</X>
                         <Y>-576</Y>
                     </Position>
                     <CustomProperties>
@@ -14646,7 +14646,7 @@
                             <string>body_fire_skeleton</string>
                         </Property>
                     </CustomProperties>
-                    <Width>64</Width>
+                    <Width>32</Width>
                     <Height>160</Height>
                     <FillColor>
                         <R>192</R>
@@ -14658,7 +14658,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="body_section2_fire4" Visible="true">
                     <Position>
-                        <X>16960</X>
+                        <X>16976</X>
                         <Y>-576</Y>
                     </Position>
                     <CustomProperties>
@@ -14669,7 +14669,7 @@
                             <string>body_fire_skeleton</string>
                         </Property>
                     </CustomProperties>
-                    <Width>64</Width>
+                    <Width>32</Width>
                     <Height>160</Height>
                     <FillColor>
                         <R>192</R>
@@ -14681,7 +14681,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="body_section2_fire5" Visible="true">
                     <Position>
-                        <X>16768</X>
+                        <X>16784</X>
                         <Y>-576</Y>
                     </Position>
                     <CustomProperties>
@@ -14692,7 +14692,7 @@
                             <string>body_fire_skeleton</string>
                         </Property>
                     </CustomProperties>
-                    <Width>64</Width>
+                    <Width>32</Width>
                     <Height>160</Height>
                     <FillColor>
                         <R>192</R>
@@ -18362,20 +18362,17 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>tail_skeleton_super</string>
                         </Property>
-                        <Property Name="repeatable" Type="string" Description="">
-                            <string />
-                        </Property>
                         <Property Name="beginaction" Type="string" Description="">
                             <string>activate_anchor tail1_balloon1 1</string>
-                        </Property>
-                        <Property Name="endaction" Type="string" Description="">
-                            <string>deactivate_anchor tail1_balloon1 1</string>
                         </Property>
                         <Property Name="twoplayerstoactivate" Type="string" Description="">
                             <string />
                         </Property>
                         <Property Name="twoplayerstodeactivate" Type="string" Description="">
                             <string />
+                        </Property>
+                        <Property Name="timer" Type="string" Description="">
+                            <string>300</string>
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -18628,14 +18625,11 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>tail_skeleton_super</string>
                         </Property>
-                        <Property Name="repeatable" Type="string" Description="">
-                            <string />
+                        <Property Name="timer" Type="string" Description="">
+                            <string>300</string>
                         </Property>
                         <Property Name="beginaction" Type="string" Description="">
                             <string>activate_anchor tail2_balloon1 1</string>
-                        </Property>
-                        <Property Name="endaction" Type="string" Description="">
-                            <string>deactivate_anchor tail2_balloon1 1</string>
                         </Property>
                         <Property Name="twoplayerstoactivate" Type="string" Description="">
                             <string />
@@ -18923,7 +18917,7 @@
                 <Item xsi:type="TextureItem" Name="Texture_1234" Visible="true">
                     <Position>
                         <X>13152</X>
-                        <Y>-448</Y>
+                        <Y>-416</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -19056,6 +19050,40 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
+                <Item xsi:type="TextureItem" Name="top_body_checkpoint" Visible="true">
+                    <Position>
+                        <X>20672</X>
+                        <Y>-2464</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>checkpoint</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>body_lower_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Rotation>0</Rotation>
+                    <Scale>
+                        <X>1</X>
+                        <Y>1</Y>
+                    </Scale>
+                    <TintColor>
+                        <R>255</R>
+                        <G>255</G>
+                        <B>255</B>
+                        <A>255</A>
+                        <PackedValue>4294967295</PackedValue>
+                    </TintColor>
+                    <FlipHorizontally>false</FlipHorizontally>
+                    <FlipVertically>true</FlipVertically>
+                    <texture_filename>cletter.png</texture_filename>
+                    <asset_name>cletter</asset_name>
+                    <Origin>
+                        <X>32</X>
+                        <Y>64</Y>
+                    </Origin>
+                </Item>
             </Items>
             <ScrollSpeed>
                 <X>1</X>
@@ -19065,11 +19093,11 @@
     </Layers>
     <CustomProperties />
     <EditorRelated>
-        <NextItemNumber>1235</NextItemNumber>
+        <NextItemNumber>1236</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>12619.3975</X>
-            <Y>-1953.33325</Y>
+            <X>13202.874</X>
+            <Y>-486.6595</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
