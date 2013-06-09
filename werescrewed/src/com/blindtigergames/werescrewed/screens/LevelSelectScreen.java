@@ -68,7 +68,7 @@ public class LevelSelectScreen extends MenuScreen {
 		gears = new Array< Falling >( );
 		debris = new Array< Falling >( );
 		
-		scaleMax = trans.getHeight( ) * SCALE_MAX;
+		maxScale = trans.getHeight( ) * SCALE_SIZE;
 		scale = 1.0f;
 		transInEnd = false;
 		
