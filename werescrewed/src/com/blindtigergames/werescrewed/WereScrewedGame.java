@@ -58,8 +58,6 @@ public class WereScrewedGame extends Game {
 	// then
 	// player 1 is the male character
 	public static boolean player1Female = false;
-	@SuppressWarnings( "unused" )
-	private float fpsTime = 0;
 	
 	private static final int width = 1280;
 	private static final int height = 720; 
@@ -180,11 +178,7 @@ public class WereScrewedGame extends Game {
 	}
 
 	public static void setUpControllers( ) {
-		for ( @SuppressWarnings( "unused" )
-		Controller controller : Controllers.getControllers( ) ) {
-			// Gdx.app.log( "controllers", controller.getName( ) );
-		}
-		Gdx.app.log( "Set up controllers", Controllers.getControllers( ).size + "" );
+		//Gdx.app.log( "Set up controllers", Controllers.getControllers( ).size + "" );
 		if ( Controllers.getControllers( ).size >= 1 ) {
 
 			p1ControllerListener = new MyControllerListener( );

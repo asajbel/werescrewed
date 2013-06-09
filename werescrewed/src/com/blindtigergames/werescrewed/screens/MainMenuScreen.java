@@ -4,7 +4,6 @@ import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -67,8 +66,8 @@ class MainMenuScreen extends MenuScreen {
 		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/transitions/trans-gear.png", Texture.class );
 		trans = new Sprite( transition );
-		scale = trans.getHeight( ) * SCALE_MAX;
-		scaleMax = scale;
+		maxScale = trans.getHeight( ) * SCALE_SIZE;
+		scale = 1.0f;
 		transInEnd = false;
 		
 		man = new SimpleSpinemator( "red_male_atlas", "male", "fall_idle", true );
@@ -93,6 +92,7 @@ class MainMenuScreen extends MenuScreen {
 		moveCharacters( delta );
 		updateDebris( );
 		batch.begin( );
+		
 		for ( Falling g : gears ) {
 			g.sprite.draw( batch );
 		}

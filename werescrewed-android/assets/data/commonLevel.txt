@@ -101,7 +101,7 @@
 #/fonts/ArmenianCircus.fnt
 #/fonts/Screwball.fnt
 /fonts/longdon.fnt
-/fonts/longdon-small.fnt
+#/fonts/longdon-small.fnt
 
 #slides
 ## TODO: unload these during the level
@@ -147,7 +147,6 @@ black.palette
 grey.palette
 
 /common/tutorial/thought_bubble.png
-/common/tutorial/placeholderTut.png
 
 /common/title_background.png
 
@@ -161,6 +160,8 @@ grey.palette
 /common/tutorial/screw_ready2.png
 /common/tutorial/switch0.png
 /common/tutorial/switch1.png
+/common/tutorial/death0.png
+/common/tutorial/death1.png
 
 ##Trophy icons
 /common/trophies/trophy.png

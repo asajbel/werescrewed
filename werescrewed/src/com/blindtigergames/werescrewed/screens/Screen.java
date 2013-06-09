@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -23,8 +22,6 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
-import com.blindtigergames.werescrewed.gui.OptionButton;
-import com.blindtigergames.werescrewed.gui.Slider;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
@@ -57,15 +54,17 @@ public class Screen implements com.badlogic.gdx.Screen {
 	private ShapeRenderer shapeRenderer;
 	protected float scale = 0.0f;
 	protected final float SCALE_MIN = 0.0f;
-	protected final float SCALE_MAX = 10.0f;
-	protected final float SCALE_SIZE = 150.0f;
-	protected float scaleMax = 0.0f;
+	protected final float SCALE_MAX = 1.0f;
+	protected final float SCALE_SIZE = 10.0f;
+	protected final float SCALE_ADJUST = 0.03f;
+	protected float maxScale = 0.0f;
 	protected Sprite trans = null;
 	protected boolean alphaFinish = false;
 	protected boolean transInEnd = true;
 	protected boolean transOutEnd = true;
 	protected static boolean fullscreen = false; 
 	protected boolean assetsLoaded = false;
+	protected boolean once = true;
 	
 	BitmapFont debug_font;
 	Camera uiCamera;
@@ -133,7 +132,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 		shapeRenderer.filledRect(bX, bY, screenWidth, screenHeight );
 		shapeRenderer.end( );
 		
-		
+		if ( once && trans != null ) {
+			trans.setSize( maxScale, maxScale );
+			once = false;
+		}
 		
 		if (level != null){			
 			updateStep(delta);
@@ -199,45 +201,48 @@ public class Screen implements com.badlogic.gdx.Screen {
 	}
 	
 	protected void drawTransIn ( SpriteBatch batch ) {
-		scale = scale - SCALE_SIZE;
+		scale -= SCALE_ADJUST;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
 		//trans.setSize( scale, scale );
 		//trans.setPosition( width / 2 - trans.getWidth( ) / 2, height / 2 - trans.getHeight( ) / 2 );
-		trans.setBounds( width / 2 - trans.getWidth( ) / 2 - 50, 
-				height / 2 - trans.getHeight( ) / 2 - 50, scale, scale );
+		trans.setScale( scale );
+		trans.setPosition( width / 2 - trans.getWidth( ) / 2, 
+				height / 2 - trans.getHeight( ) / 2 );
 		trans.draw( batch );
 		if ( scale < SCALE_MIN ) {
 			transInEnd = true;
-			scale = 0.0f;
+			scale = SCALE_MIN;
 		}
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch ) {
-		scale = scale + SCALE_SIZE;
+		scale += SCALE_ADJUST;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
-		trans.setBounds( width / 2 - trans.getWidth( ) / 2 + 50, 
-				height / 2 - trans.getHeight( ) / 2 + 50, scale, scale );
+		trans.setScale( scale );
+		trans.setPosition( width / 2 - trans.getWidth( ) / 2, 
+				height / 2 - trans.getHeight( ) / 2 );
 		trans.draw( batch );
-		if ( scale > scaleMax ) {
-			transOutEnd = true;
-			scale = scaleMax;
+		if ( scale > SCALE_MAX ) {
+			//transOutEnd = true;
+			scale = SCALE_MAX;
 			if ( Buttons.size( ) > 0 ) 
 				Buttons.get( buttonIndex ).setSelected( true );
 		}
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch, ScreenType screen ) {
-		scale = scale + SCALE_SIZE;
+		scale += SCALE_ADJUST;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
-		trans.setBounds( width / 2 - trans.getWidth( ) / 2 + 50, 
-				height / 2 - trans.getHeight( ) / 2 + 50, scale, scale );
+		trans.setScale( scale );
+		trans.setPosition( width / 2 - trans.getWidth( ) / 2, 
+				height / 2 - trans.getHeight( ) / 2 );
 		trans.draw( batch );
-		if ( scale > scaleMax ) {
-			transOutEnd = true;
-			scale = scaleMax;
+		if ( scale > SCALE_MAX ) {
+			//transOutEnd = true;
+			scale = SCALE_MAX;
 			ScreenManager.getInstance( ).show( screen );
 		}
 	}

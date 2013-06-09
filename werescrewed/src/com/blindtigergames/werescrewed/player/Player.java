@@ -99,8 +99,6 @@ public class Player extends Entity {
 	boolean botCrush;
 
 	int check = 0;
-	private boolean have_control = true;
-	private boolean control_counter = false;
 
 	private PovDirection prevButton = null;
 	public PlayerInputHandler inputHandler;
@@ -136,6 +134,7 @@ public class Player extends Entity {
 	private int tutorialEnd; // current index
 	private int tutorialTimer = 0; // countdown to next frame
 	private int tutorialFrame = 0; // current frame
+	private boolean deathBubble;
 
 	private Player otherPlayer;
 	private RevoluteJoint playerJoint;
@@ -159,11 +158,7 @@ public class Player extends Entity {
 	private boolean autoRezzing = false;
 	public boolean waitingOnInactiveSkelToRespwan = false;
 
-	@SuppressWarnings( "unused" )
-	private boolean changeDirections = false;
 	private boolean steamCollide = false;
-	@SuppressWarnings( "unused" )
-	private boolean steamDone = false;
 
 	//private IMover mover;
 
@@ -174,6 +169,8 @@ public class Player extends Entity {
 	private float rezTime = Float.MAX_VALUE; 
 	private boolean rezzing = false; 
 	private boolean deadPlayerHitCheckpnt = false; 
+	
+	private boolean have_control = true;
 
 	// Enums
 	/**
@@ -291,12 +288,12 @@ public class Player extends Entity {
 		if ( switchTimer > 0 )
 			--switchTimer;
 		
-		/*if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
+		if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
 			have_control = false;
 		}
 		if ( Gdx.input.isKeyPressed( Keys.SLASH ) ) {
 			have_control = true;
-		}*/
+		}
 		
 		if ( drawTutorial ) {
 			tutorialTimer++;
@@ -517,10 +514,8 @@ public class Player extends Entity {
 		} else if ( steamCollide ) {
 			// if ( !steamDone ) {
 			steamResolution( );
-			steamDone = true;
 			// }
-		} else
-			steamDone = false;
+		}
 		terminalVelocityCheck( 15.0f );
 		// the jump doesn't work the first time on dynamic bodies so do it
 		// twice
@@ -570,6 +565,9 @@ public class Player extends Entity {
 	public void killPlayer( boolean disableAnchor ) {
 		if ( respawnTimeout == 0 ) {
 			if ( !world.isLocked( ) ) {
+				setTutorial( 10, 11 );
+				setDrawTutorial( true );
+				deathBubble = true;
 				if ( otherPlayer != null
 						&& otherPlayer.getState( ) == PlayerState.HeadStand ) {
 					otherPlayer.checkHeadStandState( );
@@ -631,6 +629,8 @@ public class Player extends Entity {
 	 * This function sets player in alive state
 	 */
 	public void respawnPlayer( ) {
+		setDrawTutorial( false );
+		deathBubble = false;
 		topCrush = false;
 		botCrush = false;
 		leftCrush = false;
@@ -744,18 +744,26 @@ public class Player extends Entity {
 			float ypos = body.getPosition( ).y;
 			bubble.getScaleX( );
 			if ( tutorial != null ) {
-				bubble.setPosition(
+				if( !deathBubble ){
+					bubble.setPosition(
 						xpos * Util.BOX_TO_PIXEL - bubble.getWidth( ) / 2.0f
 								+ 350f, ypos * Util.BOX_TO_PIXEL + 100f );
-				bubble.setRotation( MathUtils.radiansToDegrees
+					bubble.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
-				tutorial.setPosition(
-						xpos * Util.BOX_TO_PIXEL - tutorial.getWidth( ) / 2.0f
-								+ 350f, ypos * Util.BOX_TO_PIXEL + 230 );
-				tutorial.setRotation( MathUtils.radiansToDegrees
+					tutorial.setPosition(
+							xpos * Util.BOX_TO_PIXEL - tutorial.getWidth( ) / 2.0f
+									+ 350f, ypos * Util.BOX_TO_PIXEL + 230 );
+					tutorial.setRotation( MathUtils.radiansToDegrees
+							* body.getAngle( ) );
+					bubble.draw( batch );
+				}
+				else{
+					tutorial.setPosition(
+						xpos * Util.BOX_TO_PIXEL - tutorial.getWidth( ) / 2.0f + 64, ypos * Util.BOX_TO_PIXEL + 50 );
+					tutorial.setRotation( MathUtils.radiansToDegrees
 						* body.getAngle( ) );
+				}
 			}
-			bubble.draw( batch );
 			tutorial.draw( batch );
 		}
 	}
@@ -1643,24 +1651,6 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * handles what happens when player pressed the grab button
-	 */
-	private void processGrabPressed( ) {
-		// old grab functionality
-		// if ( otherPlayer != null
-		// && otherPlayer.getState( ) == PlayerState.Standing
-		// && !isGrounded( ) ) {
-		// if this player is jumping or falling and the other player is
-		// standing
-		// topPlayer = true;
-		// setHeadStand( );
-		// otherPlayer.setHeadStand( );
-		// } else if ( playerState == PlayerState.Standing ) {
-		// playerState = PlayerState.GrabMode;
-		// }
-	}
-
-	/**
 	 * removes the player to player joint used for double jumping
 	 */
 	private void removePlayerToPlayer( ) {
@@ -1853,11 +1843,6 @@ public class Player extends Entity {
 		}
 		// grab another player, if your colliding, - for double jump
 		// functionality
-		if ( inputHandler.isGrabPressed( )
-				&& playerState != PlayerState.Screwing
-				&& playerState != PlayerState.HeadStand ) {
-			processGrabPressed( );
-		}
 		if ( playerState == PlayerState.GrabMode
 				&& !inputHandler.isGrabPressed( ) ) {
 			processReleaseGrab( );
@@ -1966,13 +1951,7 @@ public class Player extends Entity {
 				prevButton = null;
 			}
 		}
-		// grab another player, if your colliding
-		// with another player, for double jump
-		if ( controllerListener.isGrabPressed( )
-				&& playerState != PlayerState.Screwing
-				&& playerState != PlayerState.HeadStand ) {
-			processGrabPressed( );
-		}
+
 		if ( playerState == PlayerState.GrabMode
 				&& !controllerListener.isGrabPressed( ) ) {
 			processReleaseGrab( );
@@ -2067,7 +2046,7 @@ public class Player extends Entity {
 	private void initTutorials( ) {
 		bubbleTex = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/tutorial/thought_bubble.png" );
-		tutorials = new Texture[ 10 ];
+		tutorials = new Texture[ 12 ];
 		tutorials[ 0 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/tutorial/move_jump0.png" );
 		tutorials[ 1 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
@@ -2088,6 +2067,11 @@ public class Player extends Entity {
 				+ "/common/tutorial/dubba1.png" );
 		tutorials[ 9 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/common/tutorial/dubba2.png" );
+		tutorials[ 10 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/death0.png" );
+		tutorials[ 11 ] = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+				+ "/common/tutorial/death1.png" );
+		
 
 		bubble = constructSprite( bubbleTex );
 		tutorial = constructSprite( tutorials[ 0 ] );
@@ -2263,13 +2247,10 @@ public class Player extends Entity {
 		// feet
 		// also make sure its not the player
 		Fixture playerFix;
-		Fixture otherFix;
 		if ( contact.getFixtureB( ).getUserData( ).equals( this ) ) {
 			playerFix = contact.getFixtureB( );
-			otherFix = contact.getFixtureA( );
 		} else {
 			playerFix = contact.getFixtureA( );
-			otherFix = contact.getFixtureB( );
 		}
 		if ( that.isSolid( ) ) {
 			if ( playerFix.getShape( ) instanceof CircleShape ) {

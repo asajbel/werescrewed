@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.entity.action;
 
-import com.badlogic.gdx.Gdx;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.player.Player;

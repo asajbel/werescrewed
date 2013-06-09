@@ -661,10 +661,14 @@ public class LevelFactory {
 			entities.put( item.name, level.root );
 
 		} else {
+			
 			// attach skeleton to skeleton
 			SkeletonBuilder skeleBuilder = new SkeletonBuilder( level.world );
 			skeleBuilder.name( item.name ).texture( null );
 
+			if(levelName == "data/levels/dragonlevel.xml")
+				skeleBuilder.lessExtraBorder( );
+			
 			if ( item.props.containsKey( "rectangle" ) ) {
 				skeleBuilder.setUseBoundingRect( true );
 				skeleBuilder
@@ -1578,7 +1582,14 @@ public class LevelFactory {
 				int i = Integer.parseInt( tokens[ 2 ] ) - 1;
 				Anchor anchor = LevelFactory.entities.get( tokens[ 1 ] ).anchors
 						.get( i );
-				etb.beginAction( new AnchorActivateAction( anchor ) );
+				
+				if(item.props.containsKey( "timer" )){
+					int time = Integer.parseInt(item.props.get( "timer" ));
+					
+					etb.beginAction( new AnchorActivateAction( anchor, time ) );
+				}else{
+					etb.beginAction( new AnchorActivateAction( anchor ) );
+				}
 			} else if ( action.contains( "deactivate_anchor" ) ) {
 				String tokens[] = action.split( " " );
 				int i = Integer.parseInt( tokens[ 2 ] ) - 1;

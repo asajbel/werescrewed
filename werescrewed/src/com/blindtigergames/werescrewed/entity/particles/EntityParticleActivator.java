@@ -13,7 +13,6 @@ public class EntityParticleActivator implements IAction {
 
 	}
 
-	@SuppressWarnings( "deprecation" )
 	@Override
 	public void act( Entity entity ) {
 		if ( entity.getEntityType( ) == EntityType.PARTICLE_EMITTER ) {
