@@ -1,17 +1,10 @@
 package com.blindtigergames.werescrewed;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 public class Main {
-	private static boolean fullscreen = false;
-	private static boolean debug = true;
+	private static boolean debug = false;
 
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
@@ -22,23 +15,12 @@ public class Main {
 		cfg.height = 720;
 		cfg.vSyncEnabled = true;
 
-		// cfg.useCPUSynch = false;
 		cfg.vSyncEnabled = true;
-		// cfg.fullscreen = true;
-		
-		//readConfig( );
 
-		if (fullscreen) {
-			cfg.setFromDisplayMode(LwjglApplicationConfiguration
-					.getDesktopDisplayMode());
-		}
 		for (String cmd : args) {
 			if (cmd.equals("-debug")) debug = true; 
 		}
 		WereScrewedGame.debug = debug;
 		new LwjglApplication(new WereScrewedGame(), cfg);
-	}
-
-	private static void readConfig( ) {
 	}
 }

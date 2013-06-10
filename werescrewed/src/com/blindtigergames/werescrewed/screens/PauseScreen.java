@@ -12,14 +12,10 @@ import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.gui.Button;
-import com.blindtigergames.werescrewed.gui.CheckBox;
 import com.blindtigergames.werescrewed.gui.Label;
-import com.blindtigergames.werescrewed.gui.OptionButton;
-import com.blindtigergames.werescrewed.gui.Slider;
 import com.blindtigergames.werescrewed.gui.TextButton;
 import com.blindtigergames.werescrewed.screens.ScreenSwitchHandler;
 import com.blindtigergames.werescrewed.sound.SoundManager;
-import com.blindtigergames.werescrewed.sound.SoundManager.SoundType;
 
 class PauseScreen extends MenuScreen {
 
