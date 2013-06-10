@@ -47,7 +47,6 @@ public class SoundManager implements Disposable {
 		for ( SoundType type : SoundType.values( ) ) {
 			globalVolume.put( type, 1.0f );
 		}
-		globalVolume.put( SoundType.MUSIC, 0.0f );//PIZZA
 		maxLoopChannels = 4;
 		allowLoopSounds = true;
 		loopSounds = new PriorityQueue<SoundRef>(maxLoopChannels, new CompareByVolume());
