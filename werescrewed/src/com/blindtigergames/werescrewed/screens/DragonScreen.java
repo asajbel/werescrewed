@@ -328,7 +328,7 @@ public class DragonScreen extends Screen {
 
 			headEventTimer--;
 			if ( headEventTimer == 0 ) {
-				// headSkeleton.setFade( false );
+				headSkeleton.setFade( false );
 				headEvent = false;
 
 			} else {
@@ -1192,7 +1192,7 @@ public class DragonScreen extends Screen {
 		// inside of head.
 		headSkeleton.addBGDecal( Sprite.scale(
 				head_interior.createSprite( "head-interior" ), 1f / .4f ),
-				new Vector2( -1420, -720 ) );
+				new Vector2( -1420, -740 ) );
 		addBGSkeleton( headSkeleton );
 
 		scale = 1f / .50f;
