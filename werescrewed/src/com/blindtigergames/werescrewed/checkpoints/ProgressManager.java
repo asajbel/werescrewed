@@ -481,7 +481,9 @@ public class ProgressManager {
 	private void removeRezScrew( ) {
 		for ( String key : new ArrayList< String >( rezScrewMap.keySet( ) ) ) {
 			if ( !rezScrewMap.get( key ).getDeadPlayer( ).isPlayerDead( ) ) {
-				rezScrewMap.get( key ).remove( );
+				if ( !rezScrewMap.get( key ).isRemoved( ) ) {
+					rezScrewMap.get( key ).remove( );
+				}
 				if ( rezScrewMap.get( key ).isRemoved( ) ) {
 					rezScrewMap.remove( key );
 				}
