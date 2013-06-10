@@ -220,21 +220,6 @@ public class ProgressManager {
 			} else if ( player.isPlayerDead( ) ) {
 				if ( !rezScrewMap.containsKey( player.name ) ) {
 					handleDeadPlayer( player );
-				} else {
-					ResurrectScrew rezScrew = rezScrewMap.get( player.name );
-					if ( ( rezScrew.entityJoint.getBodyA( ) != null
-							&& rezScrew.entityJoint.getBodyA( ) != rezScrew.body
-							&& rezScrew.entityJoint.getBodyA( ) != null && ( !rezScrew.entityJoint
-							.getBodyA( ).isActive( ) || !rezScrew.entityJoint
-							.getBodyA( ).isAwake( ) ) )
-							|| ( rezScrew.entityJoint.getBodyB( ) != null
-									&& rezScrew.entityJoint.getBodyB( ) != rezScrew.body
-									&& rezScrew.entityJoint.getBodyA( ) != null && ( !rezScrew.entityJoint
-									.getBodyA( ).isActive( ) || !rezScrew.entityJoint
-									.getBodyA( ).isAwake( ) ) ) ) {
-						rezScrewMap.get( player.name ).connectScrewToEntity(
-								currentCheckPoint );
-					}
 				}
 				noPlayersDead = false;
 			}
@@ -368,12 +353,8 @@ public class ProgressManager {
 		}
 		player.body.setLinearVelocity( Vector2.Zero );
 		player.body.setType( BodyType.KinematicBody );
-		Entity jointE = player.getLastPlatform( );
-		if ( jointE == null ) {
-			jointE = currentCheckPoint;
-		}
 		rezScrewMap.put( player.name, rezzBuilder.playerOffset( true )
-				.lerpMover( screwMover ).position( screwPos ).entity( jointE )
+				.lerpMover( screwMover ).position( screwPos ).entity( currentCheckPoint )
 				.buildRezzScrew( ) );
 	}
 
