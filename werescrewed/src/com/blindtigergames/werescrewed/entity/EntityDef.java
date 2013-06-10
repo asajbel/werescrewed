@@ -241,8 +241,7 @@ public class EntityDef {
 			out.setCategory( xml.get( "category", "" ) ); // EntityCategory.tag,
 															// "" ) );
 			// Sprite Data
-			@SuppressWarnings( "unused" )
-			String atlasName = null;
+			//String atlasName = null;
 			out.texName = xml.get( "texture", "" );
 			for ( Element atlasElem : xml.getChildrenByName( "atlas" ) ) {
 				// Gdx.app.log( "EntityDef",

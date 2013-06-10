@@ -30,7 +30,6 @@ import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
-import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
@@ -1621,11 +1620,9 @@ public class Entity implements GleedLoadable {
 		}
 		body.setType( body.getType( ) );
 
-		if ( entityType == EntityType.PLATFORM ) {
-			@SuppressWarnings( "unused" )
-			Platform p = ( Platform ) this;
-
-		}
+		//if ( entityType == EntityType.PLATFORM ) {
+		//	Platform p = ( Platform ) this;
+		//}
 	}
 
 	// Call this function after all your sprites, sounds, etc. are loaded.

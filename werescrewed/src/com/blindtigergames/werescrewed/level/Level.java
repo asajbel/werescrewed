@@ -198,21 +198,6 @@ public class Level {
 
 	}
 
-	private float accum = 0f;
-	@SuppressWarnings( "unused" )
-	private final float step = 1f / 60f;
-	private final float maxAccum = 1f / 20f;
-
-	@SuppressWarnings( "unused" )
-	private void worldStep( float delta ) {
-		accum += delta;
-		accum = Math.min( accum, maxAccum );
-		while ( accum >= maxAccum ) {
-			world.step( 1f / 30f, 1, 1 );
-			accum -= maxAccum;
-		}
-	}
-
 	private void drawBGStuff( SpriteBatch batch, float deltaTime ) {
 		ArrayList< Skeleton > skelsToRemove = new ArrayList< Skeleton >( );
 		ArrayList< Entity > entitiesToRemove = new ArrayList< Entity >( );

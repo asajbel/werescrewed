@@ -157,9 +157,6 @@ public class Player extends Entity {
 	public boolean waitingOnInactiveSkelToRespwan = false;
 
 	private boolean steamCollide = false;
-
-	@SuppressWarnings( "unused" )
-	private boolean steamDone = false;
 	
 	private float controlValue = 0f;
 
@@ -1996,10 +1993,6 @@ public class Player extends Entity {
 	 * @author Ranveer
 	 */
 	private void setUpController( ) {
-		for ( @SuppressWarnings( "unused" )
-		Controller controller2 : Controllers.getControllers( ) ) {
-			// Gdx.app.log( "controllers", controller2.getName( ) );
-		}
 		if ( Controllers.getControllers( ).size >= 1 ) {
 			if ( this.name.equals( "player1" ) ) {
 

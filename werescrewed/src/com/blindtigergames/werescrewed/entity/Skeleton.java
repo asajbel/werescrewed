@@ -16,7 +16,6 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
-import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
@@ -864,42 +863,7 @@ public class Skeleton extends Platform {
 	 */
 	private void drawPlatform( Platform platform, SpriteBatch batch,
 			float deltaTime, Camera camera ) {
-
 		platform.draw( batch, deltaTime, camera );
-
-		// switch ( platform.getEntityType( ) ) {
-		// case PLATFORM:
-		// if ( platform.getPlatformType( ) == PlatformType.TILED ) {
-		// ( ( TiledPlatform ) platform ).draw( batch, deltaTime );
-		// } else {
-		// platform.draw( batch, deltaTime );
-		// }
-		// break;
-		// case HAZARD:
-		// drawHazard( ( Hazard ) platform, batch, deltaTime );
-		// break;
-		// case STEAM:
-		// Steam steam = ( Steam ) platform;
-		// steam.draw( batch, deltaTime );
-		// break;
-		// default:
-		// throw new RuntimeException( "Skeleton: " + name
-		// + " doesn't know how to draw your platform: "
-		// + platform.name );
-		// }
-	}
-
-	@SuppressWarnings( "unused" )
-	private void drawHazard( Hazard hazard, SpriteBatch batch, float deltaTime,
-			Camera camera ) {
-		switch ( hazard.hazardType ) {
-		case FIRE:
-			( ( Fire ) hazard ).draw( batch, deltaTime, camera );
-			break;
-		default:
-			hazard.draw( batch, deltaTime, camera );
-			break;
-		}
 	}
 
 	public boolean getWasInactive( ) {

@@ -22,8 +22,6 @@ public class EventTriggerBuilder extends
 	private boolean offsetAbove, offsetBelow, offsetRight, offsetLeft;
 	private boolean attachedToEntity;
 	private boolean actOnEntity;
-	@SuppressWarnings( "unused" )
-	private float attachedEntityHeight, attachedEntityWidth;
 	private boolean repeatableAction;
 	private boolean twoPlayersToActivate;
 	private boolean twoPlayersToDeactive;
@@ -32,9 +30,6 @@ public class EventTriggerBuilder extends
 	private IAction endAction;
 	private ArrayList< Entity > entitiesToAdd;
 	private float polygonExtraBorder;
-
-	@SuppressWarnings( "unused" )
-	private Array< Vector2 > skeleVertsPix;
 
 	public EventTriggerBuilder( World world ) {
 		super( );
@@ -53,8 +48,6 @@ public class EventTriggerBuilder extends
 		this.radius = 100f;
 		this.width = 100f;
 		this.height = 100f;
-		this.attachedEntityHeight = 0.0f;
-		this.attachedEntityWidth = 0.0f;
 		this.endAction = null;
 		this.beginAction = null;
 		this.repeatableAction = false;

@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.camera.Camera;
@@ -21,7 +20,6 @@ import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
-import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.util.Util;
@@ -466,9 +464,8 @@ public class ProgressManager {
 	 */
 	public void addPlayerOne( Player p1 ) {
 		if ( !players.containsKey( p1.name ) ) {
-			@SuppressWarnings( "unused" )
-			TextureAtlas atlas = WereScrewedGame.manager
-					.getAtlas( "common-textures" );
+			//TextureAtlas atlas = WereScrewedGame.manager
+			//		.getAtlas( "common-textures" );
 			this.players.put( p1.name, p1 );
 			// ghostTextures.put(
 			// p1.name,
@@ -483,9 +480,8 @@ public class ProgressManager {
 	 */
 	public void addPlayerTwo( Player p2 ) {
 		if ( !players.containsKey( p2.name ) ) {
-			@SuppressWarnings( "unused" )
-			TextureAtlas atlas = WereScrewedGame.manager
-					.getAtlas( "common-textures" );
+			//TextureAtlas atlas = WereScrewedGame.manager
+			//		.getAtlas( "common-textures" );
 			this.players.put( p2.name, p2 );
 			// ghostTextures
 			// .put( p2.name, atlas.findRegion( "player_female_idle_ghost" ) );

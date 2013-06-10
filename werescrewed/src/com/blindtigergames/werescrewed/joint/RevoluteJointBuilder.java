@@ -31,10 +31,9 @@ public class RevoluteJointBuilder {
 	 * empty constructor is private to force passing in world when building this
 	 * joint
 	 */
-	@SuppressWarnings( "unused" )
-	private RevoluteJointBuilder( ) {
-
-	};
+//	private RevoluteJointBuilder( ) {
+//
+//	};
 
 	/**
 	 * These are the required parameters for a prismatic joint

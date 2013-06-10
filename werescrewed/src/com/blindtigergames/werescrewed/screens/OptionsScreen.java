@@ -27,8 +27,6 @@ class OptionsScreen extends MenuScreen {
 	private BitmapFont font = null;
 	private BitmapFont fancyFont = null;
 	private ScreenType backScreen = null;
-	@SuppressWarnings( "unused" )
-	private Sprite menuBG = null;
 	// private Sprite fade = null;
 	private int lineHeight = 0;
 	private final int VOLUME_MAX = 100;

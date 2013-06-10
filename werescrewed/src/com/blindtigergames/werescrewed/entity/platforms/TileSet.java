@@ -16,8 +16,8 @@ import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 public class TileSet {
 	private TextureAtlas atlas;
 	private TextureAtlas bleedAtlas;
-	@SuppressWarnings( "unused" )
-	private int tileHeight, tileWidth;
+	//@SuppressWarnings( "unused" )
+	//private int tileHeight, tileWidth;
 	int r = 1;
 
 	public TileSet( TextureAtlas atlas, TextureAtlas bleedAtlas ) {
@@ -112,8 +112,7 @@ public class TileSet {
 	 * Bleed sprite functions
 	 */
 	private Sprite getBleedSprite( int position ) {
-		@SuppressWarnings( "unused" )
-		String randomColor = WereScrewedGame.manager.getRandomPaletteColor( );
+		//String randomColor = WereScrewedGame.manager.getRandomPaletteColor( );
 
 		// System.out.println( "GetRanColor:"+randomColor+position );
 		// Gdx.app.log( "TileSet",

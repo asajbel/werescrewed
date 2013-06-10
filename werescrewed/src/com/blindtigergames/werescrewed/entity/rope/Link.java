@@ -30,8 +30,6 @@ public class Link extends Entity {
 	
 	protected Link parent;
 	
-	@SuppressWarnings( "unused" )
-	private boolean drawTwoLinks = false;
 	private TextureRegion chainLinkTexRegion;
 	private TextureRegion chainLinkLongTexRegion;
 
