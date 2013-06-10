@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.input;
 
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
 import com.blindtigergames.werescrewed.input.mappings.Mapping;
@@ -495,11 +494,9 @@ public class MyControllerListener implements ControllerListener {
 	 * @param controller
 	 * @return int
 	 */
-
-	@SuppressWarnings( "unused" )
-	private int indexOf( Controller controller ) {
-		return Controllers.getControllers( ).indexOf( controller, true );
-	}
+//	private int indexOf( Controller controller ) {
+//		return Controllers.getControllers( ).indexOf( controller, true );
+//	}
 
 	public int getCurrRegion( ) {
 		return currRegion;

@@ -137,49 +137,49 @@ public class EventTrigger extends Platform {
 	@SuppressWarnings( "unused" )
 	private void constructPolygonBody( Array< Vector2 > vertsPixels,
 			Vector2 positionPixel, float additionalBorderPix ) {
-		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.StaticBody;
-		bodyDef.position.set( positionPixel.cpy( ).mul( Util.PIXEL_TO_BOX ) );
-		body = world.createBody( bodyDef );
-
-		// Deep copy verts so we can turn the pixel position into meters.
-		// We also have to modify the size of the points to give the skeletons a
-		// buffer in which
-		// they activate/deactivate.
-		Vector2[ ] vertsMeters;
-		int size = vertsPixels.size;
-		while ( vertsPixels.get( size - 1 ) == null )
-			--size;
-		if ( vertsPixels.get( size - 1 ).equals( vertsPixels.get( 0 ) ) ) {
-			size -= 1;
-		}
-		vertsMeters = new Vector2[ size ];
-
-		for ( int i = 0; i < vertsMeters.length; ++i ) {
-			Vector2 newPoint = vertsPixels.get( i ).cpy( )
-					.mul( Util.PIXEL_TO_BOX );
-			Vector2 norm = newPoint.cpy( ).nor( ).mul( additionalBorderPix )
-					.mul( Util.PIXEL_TO_BOX );// may divide by 0
-			newPoint.add( norm );
-			vertsMeters[ i ] = newPoint;
-			// Gdx.app.log( "ET:", "From point"+vertsPixels.get( i ).cpy( ).mul(
-			// 1 )+" To:"+newPoint.cpy( ).mul( Util.BOX_TO_PIXEL ) );
-		}
-
-		PolygonShape polygon = new PolygonShape( );
-		polygon.set( vertsMeters );
-
-		FixtureDef fixture = new FixtureDef( );
-		fixture.filter.categoryBits = Util.CATEGORY_SCREWS;
-		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
-		fixture.isSensor = true;
-		fixture.shape = polygon;
-
-		body.createFixture( fixture );
-		body.setFixedRotation( true );
-		body.setUserData( this );
-
-		polygon.dispose( );
+//		BodyDef bodyDef = new BodyDef( );
+//		bodyDef.type = BodyType.StaticBody;
+//		bodyDef.position.set( positionPixel.cpy( ).mul( Util.PIXEL_TO_BOX ) );
+//		body = world.createBody( bodyDef );
+//
+//		// Deep copy verts so we can turn the pixel position into meters.
+//		// We also have to modify the size of the points to give the skeletons a
+//		// buffer in which
+//		// they activate/deactivate.
+//		Vector2[ ] vertsMeters;
+//		int size = vertsPixels.size;
+//		while ( vertsPixels.get( size - 1 ) == null )
+//			--size;
+//		if ( vertsPixels.get( size - 1 ).equals( vertsPixels.get( 0 ) ) ) {
+//			size -= 1;
+//		}
+//		vertsMeters = new Vector2[ size ];
+//
+//		for ( int i = 0; i < vertsMeters.length; ++i ) {
+//			Vector2 newPoint = vertsPixels.get( i ).cpy( )
+//					.mul( Util.PIXEL_TO_BOX );
+//			Vector2 norm = newPoint.cpy( ).nor( ).mul( additionalBorderPix )
+//					.mul( Util.PIXEL_TO_BOX );// may divide by 0
+//			newPoint.add( norm );
+//			vertsMeters[ i ] = newPoint;
+//			// Gdx.app.log( "ET:", "From point"+vertsPixels.get( i ).cpy( ).mul(
+//			// 1 )+" To:"+newPoint.cpy( ).mul( Util.BOX_TO_PIXEL ) );
+//		}
+//
+//		PolygonShape polygon = new PolygonShape( );
+//		polygon.set( vertsMeters );
+//
+//		FixtureDef fixture = new FixtureDef( );
+//		fixture.filter.categoryBits = Util.CATEGORY_SCREWS;
+//		fixture.filter.maskBits = Util.CATEGORY_EVERYTHING;
+//		fixture.isSensor = true;
+//		fixture.shape = polygon;
+//
+//		body.createFixture( fixture );
+//		body.setFixedRotation( true );
+//		body.setUserData( this );
+//
+//		polygon.dispose( );
 	}
 
 	/**

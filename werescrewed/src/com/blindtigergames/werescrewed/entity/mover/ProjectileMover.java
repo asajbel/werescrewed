@@ -11,10 +11,10 @@ import com.blindtigergames.werescrewed.entity.screws.Screw;
 
 public class ProjectileMover implements IMover {
 
-	@SuppressWarnings( "unused" )
-	private PuzzleType puzzleType;
-	@SuppressWarnings( "unused" )
-	private float spawn;
+//	@SuppressWarnings( "unused" )
+//	private PuzzleType puzzleType;
+//	@SuppressWarnings( "unused" )
+//	private float spawn;
 	private float onVal;
 	private Body[ ] elementList;
 	private int elementIndex = 0;
@@ -32,9 +32,9 @@ public class ProjectileMover implements IMover {
 
 	public ProjectileMover( int on, float spawnTime, int elementNumber,
 			Vector2 spawnOrigin ) {
-		puzzleType = PuzzleType.ON_OFF_MOVER;
+		//puzzleType = PuzzleType.ON_OFF_MOVER;
 		origin = spawnOrigin;
-		spawn = spawnTime;
+		//spawn = spawnTime;
 		numElements = elementNumber;
 		elementList = new Body[ numElements ];
 		if ( on <= 1 && on >= 0 ) {
@@ -54,8 +54,8 @@ public class ProjectileMover implements IMover {
 	public void runPuzzleMovement( Screw screw, float screwVal, Platform p ) {
 		if ( screwVal <= onVal ) {
 			if ( elementList[ elementIndex ] == null ) {
-				@SuppressWarnings( "unused" )
-				Body body;
+				//@SuppressWarnings( "unused" )
+				//Body body;
 				BodyDef bodyDef = new BodyDef( );
 				bodyDef.position.set( origin );
 				bodyDef.type = BodyType.DynamicBody;

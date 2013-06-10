@@ -38,8 +38,7 @@ public class PuzzleScrew extends Screw {
 	private int startFrame = 15;
 	private final int lastMotionFrame = 14;
 	private final int animeSteps = 12;
-	@SuppressWarnings( "unused" )
-	private int soundCounter = 0;
+	//private int soundCounter = 0;
 	
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, int startDepth, boolean resetable,
@@ -131,7 +130,7 @@ public class PuzzleScrew extends Screw {
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
-			soundCounter = 0;
+			//soundCounter = 0;
 		}
 
 		if ( depth > 0 ) {
@@ -154,7 +153,7 @@ public class PuzzleScrew extends Screw {
 			} else {
 				depth += newDiff;
 			}
-			soundCounter += Math.abs( newDiff );
+			//soundCounter += Math.abs( newDiff );
 
 			if ( depth < 0 )
 				depth = 0;
@@ -204,7 +203,7 @@ public class PuzzleScrew extends Screw {
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
-			soundCounter = 0;
+			//soundCounter = 0;
 		}
 
 		if ( depth < maxDepth ) {
@@ -223,7 +222,7 @@ public class PuzzleScrew extends Screw {
 			} else {
 				depth += newDiff;
 			}
-			soundCounter += newDiff;
+			//soundCounter += newDiff;
 			// System.out.println( soundCounter);
 			// if(soundCounter > maxDepth/8) {
 			// sounds.playSound( "screwing" , 0 );

@@ -18,10 +18,10 @@ public class FullHandler implements ButtonHandler {
 		float value = c.getCurrentValue( );
 		if (value >= 1) {
 			c.setCurrentValue( 0 );
-			WereScrewedGame.getPrefs( ).setFullSceen( false );
+			WereScrewedGame.getPrefs( ).setFullScreen( false );
 		} else {
 			c.setCurrentValue( 1 ); 
-			WereScrewedGame.getPrefs( ).setFullSceen( true );
+			WereScrewedGame.getPrefs( ).setFullScreen( true );
 		}
 	}
 

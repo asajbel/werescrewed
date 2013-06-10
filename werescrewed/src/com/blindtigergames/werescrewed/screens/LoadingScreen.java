@@ -21,8 +21,6 @@ public class LoadingScreen extends Screen {
 
 	public ScreenType screenType;
 	private BitmapFont font = null;
-	@SuppressWarnings( "unused" )
-	private int scaleSize = 7;
 	private Label loadingLabel = null;
 	private Label loadingCompleteLabel = null;
 	private Label pressStart = null;
@@ -277,11 +275,6 @@ public class LoadingScreen extends Screen {
 		loadingCompleteLabel = new Label( "Press 'A'!!", font );
 		batch = new SpriteBatch( );
 
-		@SuppressWarnings( "unused" )
-		int width = Gdx.graphics.getWidth( );
-		@SuppressWarnings( "unused" )
-		int height = Gdx.graphics.getHeight( );
-
 		loadingBar = new Entity( "loadingScrew", null, null, null, false );
 
 		//unloads textures and texture atlases
@@ -289,9 +282,10 @@ public class LoadingScreen extends Screen {
 		for( int i=0; i<assets.size; i++ ) {
 			if ( WereScrewedGame.manager.getAssetType( assets.get( i ) ) == Texture.class ) {
 				WereScrewedGame.manager.unload( assets.get( i ) );
-			} else if ( WereScrewedGame.manager.getAssetType( assets.get( i ) ) == Sound.class ) {
+			} 
+			//else if ( WereScrewedGame.manager.getAssetType( assets.get( i ) ) == Sound.class ) {
 				//WereScrewedGame.manager.unload(  assets.get( i ) );
-			}
+			//}
 			
 		}
 		Object[] atlases = WereScrewedGame.manager.getAtlases( );

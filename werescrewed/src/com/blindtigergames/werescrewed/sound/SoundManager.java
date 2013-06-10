@@ -45,7 +45,8 @@ public class SoundManager implements Disposable {
 	static {
 		globalVolume = new EnumMap< SoundType, Float >( SoundType.class );
 		for ( SoundType type : SoundType.values( ) ) {
-			globalVolume.put( type, 1.0f );
+			float val = WereScrewedGame.getPrefs( ).getSoundValue( type.name() ); 
+			globalVolume.put( type, val );
 		}
 		maxLoopChannels = 4;
 		allowLoopSounds = true;
