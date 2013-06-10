@@ -78,7 +78,6 @@ public class AnchorList {
 			}
 			// Safety check & deactivate
 			if ( curAnchor.getTimer( ) == 0 ) {
-				curAnchor.setTimer( 0 );
 				curAnchor.deactivate( );
 			}
 		}

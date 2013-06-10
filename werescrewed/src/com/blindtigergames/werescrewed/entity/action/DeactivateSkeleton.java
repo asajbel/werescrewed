@@ -21,7 +21,7 @@ public class DeactivateSkeleton implements IAction {
 			// Gdx.app.log( "DeActivateSkeleton",
 			// "Attempting to deactivate skele"+timesRun );
 			if ( skeleton.body.isActive( ) ) {
-				skeleton.getRoot( ).setSkeletonActiveState( skeleton, false );
+				//skeleton.getRoot( ).setSkeletonActiveState( skeleton, false );
 				// skeleton.setSkeletonActive(false);
 			}
 			// Gdx.app.log( "DeActivateSkeleton",

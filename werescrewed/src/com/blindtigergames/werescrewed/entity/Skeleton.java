@@ -3,7 +3,6 @@ package com.blindtigergames.werescrewed.entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -353,44 +352,6 @@ public class Skeleton extends Platform {
 	}
 
 	/**
-	 * setSkeletonActive() recursively sets all child skeletons active state to
-	 * isActive\
-	 * 
-	 * @author stew
-	 */
-	public void setSkeletonActiveRec( boolean isActive ) {
-		setSkeletonActive( isActive );
-		for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-			skeleton.setSkeletonActiveRec( isActive );
-		}
-	}
-
-	/**
-	 * Sets this skeleton & all associated entity's active state to isActive
-	 * Don't use this, instead add all of the entity to root skeleton list
-	 * 
-	 * @param isActive
-	 * @author stew
-	 */
-	public void setSkeletonActive( boolean isActive ) {
-		/*
-		 * if ( body.isActive( ) != isActive ) body.setActive( isActive );
-		 * setActive( isActive ); for ( Platform platform :
-		 * dynamicPlatformMap.values( ) ) { platform.body.setActive( isActive );
-		 * platform.setActive( isActive ); } for ( Platform platform :
-		 * kinematicPlatformMap.values( ) ) { platform.body.setActive( isActive
-		 * ); platform.setActive( isActive ); } for ( Screw screw :
-		 * screwMap.values( ) ) { screw.body.setActive( isActive );
-		 * screw.setActive( isActive ); } for ( CheckPoint chkpt :
-		 * checkpointMap.values( ) ) { chkpt.body.setActive( isActive );
-		 * chkpt.setActive( isActive ); } // for ( Rope rope : ropeMap.values( )
-		 * ){
-		 * 
-		 * // } /* TODO: add ropes
-		 */
-	}
-
-	/**
 	 * finds the skeleton with this name
 	 */
 	public Skeleton getSubSkeletonByName( String name ) {
@@ -404,10 +365,31 @@ public class Skeleton extends Platform {
 		this.setEntitiesToSleepOnUpdate( );
 		this.wasInactive = true;
 		for ( Skeleton skeleton : this.childSkeletonMap.values( ) ) {
-			skeleton.setSkeletonEntitiesToSleepRecursively( );
-			skeleton.body.setActive( true );
-			skeleton.body.setAwake( false );
+			if ( !skeleton.dontPutToSleep ) {
+				if ( this.useBoundingRect ) {
+					if ( inRectangleBounds( this.boundingRect,
+							skeleton.getPositionPixel( ) ) ) {
+						skeleton.setSkeletonEntitiesToSleepRecursively( );
+						skeleton.body.setActive( true );
+						skeleton.body.setAwake( false );
+					} else {
+						skeleton.dontPutToSleep = true;
+					}
+				} else {
+					skeleton.setSkeletonEntitiesToSleepRecursively( );
+					skeleton.body.setActive( true );
+					skeleton.body.setAwake( false );
+				}
+			}
 		}
+	}
+
+	public boolean inRectangleBounds( Rectangle rect, Vector2 point ) {
+		if ( point.x > rect.x && point.x < rect.x + rect.width
+				&& point.y > rect.y && point.y < rect.y + rect.height ) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -425,7 +407,8 @@ public class Skeleton extends Platform {
 				if ( !this.removeNextStep ) {
 					super.update( deltaTime );
 					float frameRate = 1 / deltaTime;
-					isUpdatable = ( !this.isFadingSkel( ) || this.isFGFaded( ) );
+					isUpdatable = ( !this.isFadingSkel( ) || this.isFGFaded( ) )
+							|| this.dontPutToSleep;
 					if ( useBoundingRect && updatedOnce ) {
 						boundingRect.x = this.getPositionPixel( ).x
 								- ( boundingRect.width / 2.0f );
@@ -584,21 +567,22 @@ public class Skeleton extends Platform {
 					// }
 					// recursively update child skeletons
 
-					if ( !setChildSkeletonsToSleep || isUpdatable ) {
-						for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-							if ( skeleton.removeNextStep ) {
-								entitiesToRemove.add( skeleton );
-							} else {
+					for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
+						if ( skeleton.removeNextStep ) {
+							entitiesToRemove.add( skeleton );
+						} else {
+							if ( !setChildSkeletonsToSleep || isUpdatable
+									|| skeleton.dontPutToSleep ) {
 								skeleton.update( deltaTime );
 							}
 						}
 					}
-					
+
 					// remove stuff
 					if ( entitiesToRemove.size( ) > 0 ) {
-						
+
 						for ( Entity e : entitiesToRemove ) {
-							
+
 							switch ( e.entityType ) {
 							case SKELETON:
 								Skeleton s = childSkeletonMap.remove( e.name );
@@ -730,8 +714,20 @@ public class Skeleton extends Platform {
 				if ( screw.removeNextStep ) {
 					entitiesToRemove.add( screw );
 				} else if ( !screw.dontPutToSleep ) {
-					screw.body.setAwake( true );
-					screw.body.setActive( false );
+					if ( screw.getDepth( ) > 0 ) {
+						if ( this.useBoundingRect ) {
+							if ( inRectangleBounds( this.boundingRect,
+									screw.getPositionPixel( ) ) ) {
+								screw.body.setAwake( true );
+								screw.body.setActive( false );
+							} else {
+								screw.dontPutToSleep = true;
+							}
+						} else {
+							screw.body.setAwake( true );
+							screw.body.setActive( false );
+						}
+					}
 				}
 			}
 			for ( Rope rope : ropeMap.values( ) ) {
@@ -795,7 +791,7 @@ public class Skeleton extends Platform {
 					// batch.setColor( c.r, c.g, c.b, oldAlpha );
 				}
 				if ( applyFadeToFGDecals ) {
-					if(name.equals("head_skeleton"))
+					if ( name.equals( "head_skeleton" ) )
 						getAngle( );
 					fadeFGDecals( );
 				}

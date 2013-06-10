@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -19,6 +18,7 @@ import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
+import com.blindtigergames.werescrewed.input.mappings.Mapping;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -141,15 +141,23 @@ public class StructureScrew extends Screw {
 			// body.setAngularVelocity( -1 );
 			if ( newDiff != 0 )
 				newDiff /= newDiff;
-			depth += newDiff;
+			if ( Mapping.isAndroid( ) ) {
+				depth += newDiff * 4;
+			} else {
+				depth += newDiff;
+			}
 			if ( diff != 0 ) {
 				int rotAfter = rotation + ( -newDiff * 5 );
 				if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
 					screwSound( diff, 5 );
 				}
 				rotation = rotAfter;
+
+				if ( Mapping.isAndroid( ) ) {
+					rotation *= 2;
+				}
 			}
-			screwStep = depth + 6;
+			screwStep = depth + 5;
 		}
 
 	}
@@ -189,7 +197,12 @@ public class StructureScrew extends Screw {
 			if ( newDiff != 0 )
 				newDiff /= newDiff;
 			newDiff *= -1;
-			depth += newDiff;
+
+			if ( Mapping.isAndroid( ) ) {
+				depth += newDiff * 4;
+			} else {
+				depth += newDiff;
+			}
 			spriteRegion += region;
 			if ( diff != 0 ) {
 				int rotAfter = rotation + ( -newDiff * 5 );
@@ -197,7 +210,12 @@ public class StructureScrew extends Screw {
 					unscrewSound( diff, 5 );
 				}
 				rotation = rotAfter;
+
+				if ( Mapping.isAndroid( ) ) {
+					rotation *= 2;
+				}
 			}
+
 			screwStep = depth + 5;
 		}
 

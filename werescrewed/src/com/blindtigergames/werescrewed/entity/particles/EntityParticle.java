@@ -2,11 +2,6 @@ package com.blindtigergames.werescrewed.entity.particles;
 
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.entity.hazard.Enemy;
-import com.blindtigergames.werescrewed.entity.hazard.Hazard;
-import com.blindtigergames.werescrewed.entity.hazard.HazardType;
-import com.blindtigergames.werescrewed.entity.mover.IMover;
 
 /**
  * Particle data structure that keeps track of an entity's lifespan
