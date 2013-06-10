@@ -633,6 +633,7 @@ public class Skeleton extends Platform {
 							case CHECKPOINT:
 								CheckPoint chkpt = checkpointMap
 										.remove( e.name );
+								chkpt.setNextCheckPointInPM( );
 								chkpt.remove( );
 								break;
 							default:
@@ -673,6 +674,7 @@ public class Skeleton extends Platform {
 		}
 		screwMap.clear( );
 		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+			chkpt.setNextCheckPointInPM( );
 			chkpt.remove( );
 		}
 		checkpointMap.clear( );
@@ -746,8 +748,12 @@ public class Skeleton extends Platform {
 					if ( this.useBoundingRect ) {
 						if ( inRectangleBounds( this.boundingRect,
 								screw.getPositionPixel( ) ) ) {
-							screw.body.setAwake( true );
-							screw.body.setActive( false );
+							if ( screw.getDepth( ) >= 0 ) {
+								screw.body.setAwake( true );
+								screw.body.setActive( false );
+							} else {
+								screw.dontPutToSleep = true;
+							}
 						} else {
 							screw.dontPutToSleep = true;
 						}

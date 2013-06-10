@@ -141,6 +141,48 @@ public class ProgressManager {
 				.testPoint( player.getPosition( ) );
 	}
 
+	public void setNextChkpt( CheckPoint chkpt ) {
+		if ( chkpt == this.currentCheckPoint ) {
+			int chkptIndex = checkPoints.indexOf( currentCheckPoint );
+			if ( chkptIndex+1 < checkPoints.size( ) ) {
+				currentCheckPoint = checkPoints.get( chkptIndex+1 );
+			} else{
+				currentCheckPoint = checkPoints.get( 0 );				
+			}
+			for ( Entity ghost : ghostMap.values( ) ) {
+				if ( ghost.currentMover( ) instanceof LerpMover ) {
+					LerpMover lm = ( LerpMover ) ghost.currentMover( );
+					// Change the destination
+					lm.changeBeginPos( ghost.getPositionPixel( ) );
+					lm.setAlpha( 0 );
+					lm.changeEndPos( currentCheckPoint.getPositionPixel( ).sub(
+							chkptOffset ) );
+					// Adjust the speed
+					lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
+							.sub( ghost.getPositionPixel( ) ).len( ) );
+					if ( currentCheckPoint.getPositionPixel( ).x < ghost
+							.getPositionPixel( ).x
+							&& oldChkptPos.x > ghost.getPositionPixel( ).x ) {
+						ghost.getSpinemator( ).flipX( true );
+					} else if ( currentCheckPoint.getPositionPixel( ).x > ghost
+							.getPositionPixel( ).x
+							&& oldChkptPos.x < ghost.getPositionPixel( ).x ) {
+						ghost.getSpinemator( ).flipX( false );
+					}
+				}
+			}
+			for ( Player movingPlayer : players.values( ) ) {
+				if ( movingPlayer.currentMover( ) != null
+						&& movingPlayer.body.getType( ) == BodyType.KinematicBody
+						&& movingPlayer.currentMover( ) instanceof FollowEntityWithVelocity ) {
+					FollowEntityWithVelocity playerMover = ( FollowEntityWithVelocity ) movingPlayer
+							.currentMover( );
+					playerMover.changeEntityToFollow( currentCheckPoint );
+				}
+			}
+		}
+	}
+	
 	/**
 	 * 
 	 * @param deltaTime

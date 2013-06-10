@@ -45,7 +45,7 @@ public class MyContactListener implements ContactListener {
 	private static final float LAND_FALLOFF = 3.0f;
 	private static final float COLLISION_SOUND_DELAY = 0.2f;
 	private static final float COLLISION_FORCE_FALLOFF = 3.0f;
-	private static final float COLLISION_SCREEN_FALLOFF = 1.0f;
+	//private static final float COLLISION_SCREEN_FALLOFF = 1.0f;
 	private static final float MINIMUM_HIT_FORCE = 1.0f;
 	private static final float MAXIMUM_HIT_FORCE = 5.0f;
 	private static final float HIT_X_Y_RATIO = 5.0f;
