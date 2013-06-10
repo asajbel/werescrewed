@@ -158,6 +158,12 @@ public class Player extends Entity {
 
 	private boolean steamCollide = false;
 
+	@SuppressWarnings( "unused" )
+	private boolean steamDone = false;
+	
+	private float controlValue = 0f;
+
+
 	//private IMover mover;
 
 	public int grabCounter = 0;
@@ -168,7 +174,7 @@ public class Player extends Entity {
 	private boolean rezzing = false; 
 	private boolean deadPlayerHitCheckpnt = false; 
 	
-	//private boolean have_control = true;
+	private boolean have_control = true;
 
 	// Enums
 	/**
@@ -286,12 +292,11 @@ public class Player extends Entity {
 		if ( switchTimer > 0 )
 			--switchTimer;
 		
-//		if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
-//			have_control = false;
-//		}
-//		if ( Gdx.input.isKeyPressed( Keys.SLASH ) ) {
-//			have_control = true;
-//		}
+		controlValue = controlValue - deltaTime;
+		if(controlValue < 0 && grounded){
+			have_control = true;
+		}
+
 		
 		if ( drawTutorial ) {
 			tutorialTimer++;
@@ -300,11 +305,6 @@ public class Player extends Entity {
 				if ( tutorialFrame > tutorialEnd )
 					tutorialFrame = tutorialBegin;
 				tutorial.setTexture( tutorials[ tutorialFrame ] );
-				// Gdx.app.log( "tutorialIndexes: " + tutorialIndexes[
-				// tutorialFrame
-				// ], "\ntutorialFrame: " + tutorialFrame + "\ntutorialTimer: "
-				// +
-				// tutorialTimer );
 				tutorialTimer = 0;
 			}
 		}
@@ -1819,12 +1819,12 @@ public class Player extends Entity {
 		}
 		resetScrewJumpGrabKeyboard( );
 
-		if ( inputHandler.leftPressed( ) ) {
+		if ( inputHandler.leftPressed( ) && have_control ) {
 			processMovingState( );
 			moveLeft( );
 			prevButton = PovDirection.west;
 		}
-		if ( inputHandler.rightPressed( ) ) {
+		if ( inputHandler.rightPressed( ) && have_control ) {
 			processMovingState( );
 			moveRight( );
 			prevButton = PovDirection.east;
@@ -1918,7 +1918,7 @@ public class Player extends Entity {
 				} else {
 					moveAnalogLeft( );
 				}
-			} else {
+			} else if( have_control ){
 				moveLeft( );
 			}
 			prevButton = PovDirection.west;
@@ -1932,7 +1932,7 @@ public class Player extends Entity {
 				} else {
 					moveAnalogRight( );
 				}
-			} else {
+			} else if(have_control){
 				moveRight( );
 			}
 			prevButton = PovDirection.east;
@@ -2310,6 +2310,18 @@ public class Player extends Entity {
 
 	public void setDeadPlayerHitCheckpnt( boolean deadPlayerHitCheckpnt ) {
 		this.deadPlayerHitCheckpnt = deadPlayerHitCheckpnt;
+	}
+	
+	/**
+	 * takes control from player and checks for grounded to give control
+	 * back after delay seconds, used for cannon
+	 * 
+	 * @param delay
+	 *            float
+	 */
+	public void loseControl( float delay ) {
+		have_control = false;
+		controlValue = delay;
 	}
 	
 	@Override

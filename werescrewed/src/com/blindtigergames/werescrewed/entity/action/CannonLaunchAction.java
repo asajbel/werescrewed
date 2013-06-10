@@ -1,8 +1,10 @@
 package com.blindtigergames.werescrewed.entity.action;
 
 import com.blindtigergames.werescrewed.entity.Entity;
+import com.blindtigergames.werescrewed.entity.EntityType;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.mover.CannonLaunchMover;
+import com.blindtigergames.werescrewed.player.Player;
 
 public class CannonLaunchAction implements IAction {
 
@@ -38,6 +40,10 @@ public class CannonLaunchAction implements IAction {
 
 		entity.setMoverAtCurrentState( new CannonLaunchMover( cannon,
 				impulseStrength, delaySeconds ) );
+		if(entity.entityType == EntityType.PLAYER ){
+			Player player = (Player) entity;
+			player.loseControl( delaySeconds * 2 );
+		}
 	}
 
 	@Override

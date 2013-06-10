@@ -795,8 +795,8 @@ public class TrophyScreen extends Screen {
 				.start( tweenManager );
 			}
 		}
-		next.setX( centerX - next.getWidth( ) / 2 - 5 );
-		next.setY( 130 + next.getHeight( ) );
+		next.setX( centerX - next.getWidth( ) / 2 );
+		next.setY( 125 + next.getHeight( ) );
 	}
 
 	@Override
