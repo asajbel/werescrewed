@@ -354,7 +354,7 @@ public class ProgressManager {
 		player.body.setLinearVelocity( Vector2.Zero );
 		player.body.setType( BodyType.KinematicBody );
 		rezScrewMap.put( player.name, rezzBuilder.playerOffset( true )
-				.lerpMover( screwMover ).position( screwPos ).entity( currentCheckPoint )
+				.lerpMover( screwMover ).position( screwPos ).entity( currentCheckPoint.getParentSkeleton( ).getRoot( ) )
 				.buildRezzScrew( ) );
 	}
 
