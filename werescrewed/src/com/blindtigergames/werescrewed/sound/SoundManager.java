@@ -467,9 +467,9 @@ public class SoundManager implements Disposable {
 		protected float pitchRange = 0.0f;
 		protected float pan = 0.0f;
 		protected float time = 0.0f;
-		protected float startDelay = 0.0f;
-		protected float midDelay = 0.0f;
-		protected float loopDelay = 0.0f;
+		protected float startDelay = -0.1f;
+		protected float midDelay = -0.1f;
+		protected float loopDelay = -0.1f;
 		protected float endDelay = INITIAL_DELAY;
 		protected float range = 500.0f;
 		protected float depthFactor = 3.0f;
@@ -554,13 +554,16 @@ public class SoundManager implements Disposable {
 		}
 		
 		protected void update( float dT ) {
+			if (state != 0)
+				time += dT;
 			if (state == 1 && time > startDelay){//Start Delay
 				//Play start sound, if present
 				if (start != null){
 					start.play(finalVolume * getSoundVolume(), finalPitch, pan);
 				}
 				setState(2);
-			} else if (state == 2 && time > midDelay){//Mid Delay
+			}
+			if (state == 2 && time > midDelay){//Mid Delay
 				if (looping){
 					//If looping, loop middle sound and go to state 3
 					SoundManager.addSoundToLoops(this);
@@ -572,7 +575,8 @@ public class SoundManager implements Disposable {
 					}
 					setState(4);
 				}
-			} else if (state == 3 && (time > loopDelay && !looping)){//Looping/Loop Delay
+			}
+			if (state == 3 && (time > loopDelay && !looping)){//Looping/Loop Delay
 				if (loopId >= 0){
 					SoundManager.removeFromLoops(this);
 					mid.stop(loopId);
@@ -582,11 +586,10 @@ public class SoundManager implements Disposable {
 					end.play(finalVolume * getSoundVolume(), finalPitch, pan);
 				}
 				setState(4);
-			} else if (state == 4 && time > endDelay){
+			}
+			if (state == 4 && time > endDelay){
 				setState(0);
 			}
-			if (state != 0)
-				time += dT;
 		}
 		
 		protected void setState(int s){

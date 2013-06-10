@@ -95,7 +95,7 @@ public class ResurrectScrew extends Screw {
 	public void loadSounds(){
 		sounds = new SoundManager( );
 		sounds.getSound( "screwing", WereScrewedGame.dirHandle
-				+ "/common/sounds/rezzScrew.ogg" );
+				+ "/common/sounds/rezzScrew.ogg" ).setInternalVolume( 0.40f );
 		sounds.getSound( "attach", WereScrewedGame.dirHandle
 				+ "/common/sounds/screwAtt.ogg" );
 		sounds.getSound( "detach", WereScrewedGame.dirHandle
