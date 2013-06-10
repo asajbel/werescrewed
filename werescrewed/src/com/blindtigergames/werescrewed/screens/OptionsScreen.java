@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -110,8 +111,10 @@ class OptionsScreen extends MenuScreen {
 		noise.draw( batch, camera );
 		// subtitles.draw( batch, camera );
 		backButton.draw( batch, camera );
-		fullCheck.draw( batch, camera );
-		fullBox.draw( batch );
+		if ( Gdx.app.getType( ) == ApplicationType.Desktop ) {
+			fullCheck.draw( batch, camera );
+			fullBox.draw( batch );
+		}
 
 		if ( restart ) {
 			fancyFont.setScale( 1f );
@@ -166,10 +169,6 @@ class OptionsScreen extends MenuScreen {
 		noise.setY( centerY + lineHeight );
 		// subtitles.setX( leftX - subtitles.getWidth( ) / 2 );
 		// subtitles.setY( centerY );
-		fullCheck.setX( leftX - fullCheck.getWidth( ) / 2 );
-		fullCheck.setY( centerY );
-		fullBox.setX( fullCheck.getX( ) * 4 );
-		fullBox.setY( fullCheck.getY( ) - fullCheck.getHeight( ) * 2 + 20 );
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 100 + backButton.getHeight( ) );
 
@@ -188,6 +187,13 @@ class OptionsScreen extends MenuScreen {
 				.setXPos( ( float ) noiseSlider.getMinPos( )
 						+ ( SoundManager.globalVolume.get( SoundType.NOISE ) * 100 * SHIFT ) );
 		noiseSlider.setYPos( ( float ) noiseSlider.getY( ) );
+
+		if ( Gdx.app.getType( ) == ApplicationType.Desktop ) {
+			fullCheck.setX( leftX - fullCheck.getWidth( ) / 2 );
+			fullCheck.setY( centerY );
+			fullBox.setX( fullCheck.getX( ) * 4 );
+			fullBox.setY( fullCheck.getY( ) - fullCheck.getHeight( ) * 2 + 20 );
+		}
 	}
 
 	private void loadButtons( ) {
@@ -208,16 +214,13 @@ class OptionsScreen extends MenuScreen {
 				SoundType.SFX, slidTex, screwTex );
 		noiseSlider = new Slider( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2,
 				SoundType.NOISE, slidTex, screwTex );
-		int val = WereScrewedGame.getPrefs( ).isFullScreen( ) ? 1 : 0;
-		fullBox = new CheckBox( 0, 1, val );
 		controls = new Button( "Controls", fancyFont, buttonTex );
 		music = new OptionButton( "Music", fancyFont, buttonTex, musicSlider );
 		sound = new OptionButton( "Sound", fancyFont, buttonTex, soundSlider );
 		noise = new OptionButton( "Noise", fancyFont, buttonTex, noiseSlider );
 		// subtitles = new OptionButton( "Subtitles", fancyFont,
 		// subBox );
-		fullCheck = new SwitchButton( "Fullscreen", fancyFont, buttonTex,
-				new FullHandler( fullBox ) );
+
 		backButton = new TextButton( "Back", fancyFont, buttonTex,
 				new ScreenSwitchHandler( back ) );
 
@@ -228,7 +231,16 @@ class OptionsScreen extends MenuScreen {
 		Buttons.add( music );
 		Buttons.add( sound );
 		Buttons.add( noise );
-		Buttons.add( fullCheck );
+
+		if ( Gdx.app.getType( ) == ApplicationType.Desktop ) {
+			int val = WereScrewedGame.getPrefs( ).isFullScreen( ) ? 1 : 0;
+			fullBox = new CheckBox( 0, 1, val );
+			fullCheck = new SwitchButton( "Fullscreen", fancyFont, buttonTex,
+					new FullHandler( fullBox ) );
+
+			Buttons.add( fullCheck );
+		}
+
 		Buttons.add( backButton );
 	}
 }
