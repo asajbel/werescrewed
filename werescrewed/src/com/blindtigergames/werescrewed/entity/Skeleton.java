@@ -633,6 +633,7 @@ public class Skeleton extends Platform {
 							case CHECKPOINT:
 								CheckPoint chkpt = checkpointMap
 										.remove( e.name );
+								chkpt.removeThisFromPM( );
 								chkpt.remove( );
 								break;
 							default:
@@ -673,6 +674,7 @@ public class Skeleton extends Platform {
 		}
 		screwMap.clear( );
 		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+			chkpt.removeThisFromPM( );
 			chkpt.remove( );
 		}
 		checkpointMap.clear( );
@@ -957,6 +959,7 @@ public class Skeleton extends Platform {
 			screw.dispose( );
 		}
 		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+			chkpt.removeThisFromPM( );
 			chkpt.dispose( );
 		}
 		screwMap.clear( );

@@ -106,6 +106,13 @@ public class CheckPoint extends Entity {
 	}
 
 	/**
+	 * calls the progress manager and sets next checkpoint if this is removed
+	 */
+	public void removeThisFromPM( ) {
+		progressManager.setNextChkpt( );
+	}
+	
+	/**
 	 * returns whether the checkpoint is the most recent active checkpoint
 	 * 
 	 * @return active
