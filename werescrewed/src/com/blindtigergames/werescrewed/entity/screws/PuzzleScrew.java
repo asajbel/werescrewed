@@ -164,10 +164,6 @@ public class PuzzleScrew extends Screw {
 					unscrewSound( diff, 5 );
 				}
 				rotation = rotAfter;
-
-				if ( Mapping.isAndroid( ) ) {
-					rotation *= 2;
-				}
 			}
 			screwStep = depth + 5;
 			puzzleManager.runElement( this, ( float ) depth
@@ -237,10 +233,6 @@ public class PuzzleScrew extends Screw {
 					screwSound( diff, 5 );
 				}
 				rotation = rotAfter;
-
-				if ( Mapping.isAndroid( ) ) {
-					rotation *= 2;
-				}
 			}
 			screwStep = depth + 5;
 			puzzleManager.runElement( this, ( float ) depth
