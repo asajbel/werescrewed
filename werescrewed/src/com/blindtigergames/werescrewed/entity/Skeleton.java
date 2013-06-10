@@ -391,6 +391,10 @@ public class Skeleton extends Platform {
 		return false;
 	}
 
+	public boolean isRemoved( ) {
+		return removed;
+	}
+	
 	/**
 	 * This update function is ONLY called on the very root skeleton, it takes
 	 * care of the child sksletons

@@ -202,7 +202,7 @@ public class Level {
 		ArrayList< Skeleton > skelsToRemove = new ArrayList< Skeleton >( );
 		ArrayList< Entity > entitiesToRemove = new ArrayList< Entity >( );
 		for ( Skeleton skel : skelBGList ) {
-			if ( skel.getPositionPixel( ).y < MAX_FALL_POS ) {
+			if ( skel.isRemoved( ) || skel.getPositionPixel( ).y < MAX_FALL_POS ) {
 				skelsToRemove.add( skel );
 			} else {
 				if ( skel.isActive( ) ) {
@@ -253,7 +253,7 @@ public class Level {
 			}
 		}
 		for ( Skeleton skel : skelFGList ) {
-			if ( skel.getPositionPixel( ).y < MAX_FALL_POS ) {
+			if ( skel.isRemoved( ) || skel.getPositionPixel( ).y < MAX_FALL_POS ) {
 				skelsToRemove.add( skel );
 			} else {
 				if ( skel.fgSprite != null && skel.fgSprite.getAlpha( ) != 0 ) {

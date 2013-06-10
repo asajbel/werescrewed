@@ -159,7 +159,7 @@ public class ResurrectScrew extends Screw {
 				rotation += ( -newDiff * 5 );
 			}
 			screwStep = depth + 5;
-			if ( deadPlayer.isPlayerDead( ) ) {
+			if ( deadPlayer.isPlayerDead( ) && !this.removeNextStep ) {
 				playerMover.moveAnalog( this, ( float ) depth
 						/ ( ( float ) maxDepth ), deadPlayer.body );
 			}
