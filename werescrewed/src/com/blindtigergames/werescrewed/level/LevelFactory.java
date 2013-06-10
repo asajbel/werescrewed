@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -101,14 +100,6 @@ public class LevelFactory {
 	protected static final String panelTag = "panel";
 	protected static final String entityEmitterTag = "entityemitter";
 
-	@SuppressWarnings( "unused" )
-	private Random random;
-
-	@SuppressWarnings( "unused" )
-	private final String robotTexBG = "/levels/alphabot/alphabot-interior.png";
-	@SuppressWarnings( "unused" )
-	private final String robotOutlineTex = "/levels/alphabot/alphabot-outline.png";
-
 	public LevelFactory( ) {
 		reader = new XmlReader( );
 		items = new EnumMap< GleedTypeTag, LinkedHashMap< String, Item >>(
@@ -123,7 +114,6 @@ public class LevelFactory {
 		polySprites = new LinkedHashMap< String, Array< Vector2 > >( );
 		level = new Level( );
 		spawnPoints = 0;
-		random = new Random( );
 	}
 
 	public Level load( String filename ) {
@@ -680,8 +670,8 @@ public class LevelFactory {
 				
 				float width = item.element.getFloat( "Width" );
 				float height = item.element.getFloat( "Height" );
-				int tileWidth = ( int ) ( width / Platform.tile );
-				int tileHeight = ( int ) ( height / Platform.tile );
+				//int tileWidth = ( int ) ( width / Platform.tile );
+				//int tileHeight = ( int ) ( height / Platform.tile );
 
 				float xPos = item.pos.x + ( width / 2 );
 				float yPos = item.pos.y - ( height / 2 );

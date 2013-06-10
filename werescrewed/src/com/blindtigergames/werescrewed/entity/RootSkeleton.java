@@ -12,7 +12,7 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 public class RootSkeleton extends Skeleton {
 
 	private ArrayList< Entity > looseEntity, entitiesToDelete;
-	private ArrayList< Skeleton > skeletonToSetActive, skeletonToSetInactive;
+	//private ArrayList< Skeleton > skeletonToSetActive, skeletonToSetInactive;
 	private ArrayList< Skeleton > skeletonsToDelete;
 
 	public RootSkeleton( String name, Vector2 positionPix, Texture tex,
@@ -21,8 +21,8 @@ public class RootSkeleton extends Skeleton {
 		entityType = EntityType.ROOTSKELETON;
 		looseEntity = new ArrayList< Entity >( );
 		entitiesToDelete = new ArrayList< Entity >( );
-		skeletonToSetActive = new ArrayList< Skeleton >( );
-		skeletonToSetInactive = new ArrayList< Skeleton >( );
+		//skeletonToSetActive = new ArrayList< Skeleton >( );
+		//skeletonToSetInactive = new ArrayList< Skeleton >( );
 		skeletonsToDelete = new ArrayList< Skeleton >( );
 		parentSkeleton = this;
 		rootSkeleton = this;
