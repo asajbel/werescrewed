@@ -154,6 +154,15 @@ public class ProgressManager {
 		while ( this.currentCheckPoint == null && index < checkPoints.size( ) ) {
 			if ( checkPoints.get( index ) != null ) {
 				this.currentCheckPoint = checkPoints.get( index );
+				for ( Player movingPlayer : players.values( ) ) {
+					if ( movingPlayer.currentMover( ) != null
+							&& movingPlayer.body.getType( ) == BodyType.KinematicBody
+							&& movingPlayer.currentMover( ) instanceof FollowEntityWithVelocity ) {
+						FollowEntityWithVelocity playerMover = ( FollowEntityWithVelocity ) movingPlayer
+								.currentMover( );
+						playerMover.changeEntityToFollow( currentCheckPoint );
+					}
+				}
 			} else {
 				checkPoints.remove( index );
 			}
