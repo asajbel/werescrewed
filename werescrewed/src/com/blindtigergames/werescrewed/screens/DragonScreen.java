@@ -58,7 +58,7 @@ public class DragonScreen extends Screen {
 	Platform balloon1;
 	Skeleton balloon1_super, bodyRoomRotateSkeleton, headSkeleton;
 	PowerSwitch tail3Switch1, tail3Switch2, tail3Switch3, bodyPowerSwitch1,
-			bodyPowerSwitch3, dragonBrainSwitch, dragonBrainSwitch2;
+			bodyPowerSwitch3, dragonBrainSwitch, dragonBrainSwitch2, powerSwitchBalloon1;
 	Platform dragonBrain;
 	RevoluteJoint bodyRoomJoint;
 	EntityParticleEmitter fireballEmitter, brainEmitter1, brainEmitter2,
@@ -210,8 +210,8 @@ public class DragonScreen extends Screen {
 		balloon1_super = ( Skeleton ) LevelFactory.entities
 				.get( "balloon1_super" );
 
-		puzzleScrewBalloon1 = ( PuzzleScrew ) LevelFactory.entities
-				.get( "puzzle_screw_balloon1" );
+		powerSwitchBalloon1 = ( PowerSwitch ) LevelFactory.entities
+				.get( "switch_balloon1" );
 
 		tail1Balloon
 				.addMover( balloonMover( tail1Balloon, 200, Util.PI / 32, 0 ) );
@@ -379,8 +379,7 @@ public class DragonScreen extends Screen {
 				}
 			}
 		}
-		if ( puzzleScrewBalloon1.getDepth( ) == puzzleScrewBalloon1
-				.getMaxDepth( ) ) {
+		if ( powerSwitchBalloon1.isTurnedOn( ) ) {
 			if ( balloon1_super.currentMover( ) == null ) {
 
 				Platform balloon1LeftHatch = ( Platform ) LevelFactory.entities
@@ -1196,7 +1195,7 @@ public class DragonScreen extends Screen {
 				new Vector2( -1420, -720 ) );
 		addBGSkeleton( headSkeleton );
 
-		scale = 1f / .65f;
+		scale = 1f / .50f;
 		Platform brain = dragonBrain;
 		s = dragon_objects.createSprite( "dragon_brain" );
 		brain.addFGDecal( Sprite.scale( s, scale ), new Vector2( -s.getWidth( )
