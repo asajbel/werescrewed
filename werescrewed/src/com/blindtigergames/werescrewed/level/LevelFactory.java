@@ -939,6 +939,11 @@ public class LevelFactory {
 		if(item.props.containsKey( "black" )){
 			out.setTilesBlack();
 		}
+		
+		if(item.props.containsKey("color")){
+			
+		}
+		
 		return out;
 	}
 
