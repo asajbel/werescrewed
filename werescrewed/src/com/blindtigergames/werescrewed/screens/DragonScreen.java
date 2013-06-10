@@ -1320,9 +1320,10 @@ public class DragonScreen extends Screen {
 				.get( "tail_skeleton" );
 
 		TextureAtlas tailAtlas = WereScrewedGame.manager.getAtlas( "tail-fg" );
-
-		tail.addFGDecal( Sprite.scale( tailAtlas.createSprite( "tail" ), 2 ),
-				new Vector2( -1800, -400 ) );
+		Sprite s = Sprite.scale( tailAtlas.createSprite( "tail" ),2);
+		s.setOrigin( 0, 0 );
+		tail.addFGDecal( s ,
+				new Vector2( -1800+47, -400+36 ) );
 		tail.fgSprite = null;
 		// tail.setFgFade( true );
 		addFGSkeleton( tail );
