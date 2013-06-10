@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.player;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
@@ -109,7 +107,7 @@ public class Player extends Entity {
 	// private boolean reachedMaxSpeed;
 	private PlayerDirection prevPlayerDir = PlayerDirection.Idle;
 	private Controller controller;
-	private boolean flyDebug = false;
+	//private boolean flyDebug = false;
 	private float leftAnalogX;
 	// private float leftAnalogY;
 	// private float rightAnalogX;
@@ -170,7 +168,7 @@ public class Player extends Entity {
 	private boolean rezzing = false; 
 	private boolean deadPlayerHitCheckpnt = false; 
 	
-	private boolean have_control = true;
+	//private boolean have_control = true;
 
 	// Enums
 	/**
@@ -288,12 +286,12 @@ public class Player extends Entity {
 		if ( switchTimer > 0 )
 			--switchTimer;
 		
-		if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
-			have_control = false;
-		}
-		if ( Gdx.input.isKeyPressed( Keys.SLASH ) ) {
-			have_control = true;
-		}
+//		if ( Gdx.input.isKeyPressed( Keys.PERIOD ) ) {
+//			have_control = false;
+//		}
+//		if ( Gdx.input.isKeyPressed( Keys.SLASH ) ) {
+//			have_control = true;
+//		}
 		
 		if ( drawTutorial ) {
 			tutorialTimer++;
@@ -310,10 +308,10 @@ public class Player extends Entity {
 				tutorialTimer = 0;
 			}
 		}
-		if ( Gdx.input.isKeyPressed( Keys.NUM_7 ) )
-			flyDebug = !flyDebug;
-		if ( flyDebug )
-			grounded = true;
+//		if ( Gdx.input.isKeyPressed( Keys.NUM_7 ) )
+//			flyDebug = !flyDebug;
+//		if ( flyDebug )
+//			grounded = true;
 
 		if ( kinematicTransform ) {
 			// setPlatformTransform( platformOffset );
