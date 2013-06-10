@@ -442,8 +442,12 @@ public class Skeleton extends Platform {
 								entitiesToRemove.add( platform );
 							} else {
 								if ( wasInactive ) {
-									platform.body.setAwake( false );
-									platform.body.setActive( true );
+									if ( !platform.body.isActive( ) ) {
+										platform.body.setActive( true );
+									}
+									if ( platform.body.isAwake( ) ) {
+										platform.body.setAwake( false );
+									}
 									platform.translatePosRotFromSKeleton( this );
 									platform.update( deltaTime );
 								} else {
@@ -451,7 +455,7 @@ public class Skeleton extends Platform {
 									if ( !platform.body.isActive( ) ) {
 										platform.body.setActive( true );
 									}
-									if ( !platform.body.isAwake( ) ) {
+									if ( platform.body.isAwake( ) ) {
 										platform.body.setAwake( false );
 									}
 									if ( platform.hasMoved( )
@@ -474,8 +478,12 @@ public class Skeleton extends Platform {
 								entitiesToRemove.add( platform );
 							} else {
 								if ( wasInactive ) {
-									platform.body.setActive( true );
-									platform.body.setAwake( false );
+									if ( !platform.body.isActive( ) ) {
+										platform.body.setActive( true );
+									}
+									if ( platform.body.isAwake( ) ) {
+										platform.body.setAwake( false );
+									}
 								}
 								platform.updateMover( deltaTime );
 								platform.update( deltaTime );
@@ -486,8 +494,12 @@ public class Skeleton extends Platform {
 								entitiesToRemove.add( chkpt );
 							} else {
 								if ( wasInactive ) {
-									chkpt.body.setActive( true );
-									chkpt.body.setAwake( false );
+									if ( !chkpt.body.isActive( ) ) {
+										chkpt.body.setActive( true );
+									}
+									if ( chkpt.body.isAwake( ) ) {
+										chkpt.body.setAwake( false );
+									}
 								}
 								chkpt.update( deltaTime );
 							}
@@ -497,8 +509,12 @@ public class Skeleton extends Platform {
 								entitiesToRemove.add( screw );
 							} else {
 								if ( wasInactive ) {
-									screw.body.setActive( true );
-									screw.body.setAwake( false );
+									if ( !screw.body.isActive( ) ) {
+										screw.body.setActive( true );
+									}
+									if ( screw.body.isAwake( ) ) {
+										screw.body.setAwake( false );
+									}
 								}
 								screw.update( deltaTime );
 							}
@@ -509,14 +525,20 @@ public class Skeleton extends Platform {
 								boolean nextLink = true;
 								int index = 0;
 								if ( rope.getEndAttachment( ) != null ) {
-									rope.getEndAttachment( ).body
-											.setAwake( false );
-									rope.getEndAttachment( ).body
-											.setActive( true );
+									if ( !rope.getEndAttachment( ).body.isActive( ) ) {
+										rope.getEndAttachment( ).body.setActive( true );
+									}
+									if ( rope.getEndAttachment( ).body.isAwake( ) ) {
+										rope.getEndAttachment( ).body.setAwake( false );
+									}
 								}
 								while ( nextLink ) {
-									rope.getLink( index ).body.setActive( true );
-									rope.getLink( index ).body.setAwake( false );
+									if ( !rope.getLink( index ).body.isActive( ) ) {
+										rope.getLink( index ).body.setActive( true );
+									}
+									if ( rope.getLink( index ).body.isAwake( ) ) {
+										rope.getLink( index ).body.setAwake( false );
+									}
 									if ( rope.getLastLink( ) == rope
 											.getLink( index ) ) {
 										nextLink = false;
@@ -527,11 +549,19 @@ public class Skeleton extends Platform {
 							rope.update( deltaTime );
 						}
 						if ( wasInactive ) {
-							this.body.setActive( true );
-							this.body.setAwake( false );
+							if ( !body.isActive( ) ) {
+								body.setActive( true );
+							}
+							if ( body.isAwake( ) ) {
+								body.setAwake( false );
+							}
 							for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-								skeleton.body.setActive( true );
-								skeleton.body.setAwake( false );
+								if ( !skeleton.body.isActive( ) ) {
+									skeleton.body.setActive( true );
+								}
+								if ( skeleton.body.isAwake( ) ) {
+									skeleton.body.setAwake( false );
+								}
 							}
 							wasInactive = false;
 						}
