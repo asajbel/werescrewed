@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
-import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Anchor;
 import com.blindtigergames.werescrewed.camera.AnchorList;
 import com.blindtigergames.werescrewed.camera.Camera;
@@ -21,7 +20,6 @@ import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.screws.ResurrectScrew;
 import com.blindtigergames.werescrewed.entity.screws.ScrewType;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
-import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.util.Util;
@@ -143,6 +141,48 @@ public class ProgressManager {
 				.testPoint( player.getPosition( ) );
 	}
 
+	public void setNextChkpt( CheckPoint chkpt ) {
+		if ( chkpt == this.currentCheckPoint ) {
+			int chkptIndex = checkPoints.indexOf( currentCheckPoint );
+			if ( chkptIndex+1 < checkPoints.size( ) ) {
+				currentCheckPoint = checkPoints.get( chkptIndex+1 );
+			} else{
+				currentCheckPoint = checkPoints.get( 0 );				
+			}
+			for ( Entity ghost : ghostMap.values( ) ) {
+				if ( ghost.currentMover( ) instanceof LerpMover ) {
+					LerpMover lm = ( LerpMover ) ghost.currentMover( );
+					// Change the destination
+					lm.changeBeginPos( ghost.getPositionPixel( ) );
+					lm.setAlpha( 0 );
+					lm.changeEndPos( currentCheckPoint.getPositionPixel( ).sub(
+							chkptOffset ) );
+					// Adjust the speed
+					lm.setSpeed( 10f / currentCheckPoint.getPositionPixel( )
+							.sub( ghost.getPositionPixel( ) ).len( ) );
+					if ( currentCheckPoint.getPositionPixel( ).x < ghost
+							.getPositionPixel( ).x
+							&& oldChkptPos.x > ghost.getPositionPixel( ).x ) {
+						ghost.getSpinemator( ).flipX( true );
+					} else if ( currentCheckPoint.getPositionPixel( ).x > ghost
+							.getPositionPixel( ).x
+							&& oldChkptPos.x < ghost.getPositionPixel( ).x ) {
+						ghost.getSpinemator( ).flipX( false );
+					}
+				}
+			}
+			for ( Player movingPlayer : players.values( ) ) {
+				if ( movingPlayer.currentMover( ) != null
+						&& movingPlayer.body.getType( ) == BodyType.KinematicBody
+						&& movingPlayer.currentMover( ) instanceof FollowEntityWithVelocity ) {
+					FollowEntityWithVelocity playerMover = ( FollowEntityWithVelocity ) movingPlayer
+							.currentMover( );
+					playerMover.changeEntityToFollow( currentCheckPoint );
+				}
+			}
+		}
+	}
+	
 	/**
 	 * 
 	 * @param deltaTime
@@ -152,21 +192,11 @@ public class ProgressManager {
 		noPlayersDead = true;
 		int index = 0;
 		while ( this.currentCheckPoint == null && index < checkPoints.size( ) ) {
-			if ( checkPoints.get( index ) != null ) {
-				this.currentCheckPoint = checkPoints.get( index );
-				for ( Player movingPlayer : players.values( ) ) {
-					if ( movingPlayer.currentMover( ) != null
-							&& movingPlayer.body.getType( ) == BodyType.KinematicBody
-							&& movingPlayer.currentMover( ) instanceof FollowEntityWithVelocity ) {
-						FollowEntityWithVelocity playerMover = ( FollowEntityWithVelocity ) movingPlayer
-								.currentMover( );
-						playerMover.changeEntityToFollow( currentCheckPoint );
-					}
-				}
-			} else {
+			if ( checkPoints.get( index ) == null ) {
 				checkPoints.remove( index );
+			} else {
+				index++;
 			}
-			index++;
 		}
 		chkptAnchor.setPosition( currentCheckPoint.getPositionPixel( ) );
 		for ( Player player : players.values( ) ) {
@@ -466,9 +496,8 @@ public class ProgressManager {
 	 */
 	public void addPlayerOne( Player p1 ) {
 		if ( !players.containsKey( p1.name ) ) {
-			@SuppressWarnings( "unused" )
-			TextureAtlas atlas = WereScrewedGame.manager
-					.getAtlas( "common-textures" );
+			//TextureAtlas atlas = WereScrewedGame.manager
+			//		.getAtlas( "common-textures" );
 			this.players.put( p1.name, p1 );
 			// ghostTextures.put(
 			// p1.name,
@@ -483,9 +512,8 @@ public class ProgressManager {
 	 */
 	public void addPlayerTwo( Player p2 ) {
 		if ( !players.containsKey( p2.name ) ) {
-			@SuppressWarnings( "unused" )
-			TextureAtlas atlas = WereScrewedGame.manager
-					.getAtlas( "common-textures" );
+			//TextureAtlas atlas = WereScrewedGame.manager
+			//		.getAtlas( "common-textures" );
 			this.players.put( p2.name, p2 );
 			// ghostTextures
 			// .put( p2.name, atlas.findRegion( "player_female_idle_ghost" ) );

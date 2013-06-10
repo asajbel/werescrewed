@@ -1,6 +1,7 @@
 package com.blindtigergames.werescrewed.gui;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.sound.SoundManager;
@@ -76,7 +77,9 @@ public class Slider extends OptionControl {
 			if ( xPos < minPos )
 				xPos = minPos;
 			screw.setX( xPos );
-			SoundManager.globalVolume.put( type, SoundManager.globalVolume.get( type ) - 0.01f ); 
+			float val = SoundManager.globalVolume.get( type ) - 0.01f;
+			SoundManager.globalVolume.put( type, val ); 
+			WereScrewedGame.getPrefs( ).setSoundValue( type.name( ), val ); 
 		}
 	}
 
@@ -87,7 +90,9 @@ public class Slider extends OptionControl {
 			if ( xPos > maxPos )
 				xPos = maxPos;
 			screw.setX( xPos );
-			SoundManager.globalVolume.put( type, SoundManager.globalVolume.get( type ) + 0.01f ); 
+			float val = SoundManager.globalVolume.get( type ) + 0.01f;
+			SoundManager.globalVolume.put( type, val ); 
+			WereScrewedGame.getPrefs( ).setSoundValue( type.name( ), val );
 		}
 	}
 

@@ -26,8 +26,8 @@ public class PuzzlePistonTweenMover extends TweenMover implements IMover {
 										// local coord pixels
 	private float timeUp, timeDown;
 	private float delayDown, delayUp;
-	@SuppressWarnings( "unused" )
-	private float delayOnce;
+	//@SuppressWarnings( "unused" )
+	//private float delayOnce;
 	private boolean isAtMaxScrewValue;
 
 	// private Tween tween;

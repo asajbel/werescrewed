@@ -30,13 +30,13 @@ import com.blindtigergames.werescrewed.entity.animator.PlayerAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
-import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
 import com.blindtigergames.werescrewed.graphics.particle.ParticleEffect;
 import com.blindtigergames.werescrewed.level.GleedLoadable;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundRef;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -430,8 +430,8 @@ public class Entity implements GleedLoadable {
 
 		if ( sounds != null ) {
 			if ( sounds.hasSound( "idle" ) ) {
-				sounds.handleSoundPosition( "idle", this.getPositionPixel( ),
-						Camera.CAMERA_RECT );
+				SoundRef ref = sounds.getSound( "idle" );
+				ref.setVolume( ref.calculatePositionalVolume( this.getPositionPixel(),  Camera.CAMERA_RECT ) );
 			}
 			handleMovementSounds( deltaTime );
 			sounds.update( deltaTime );
@@ -1567,8 +1567,9 @@ public class Entity implements GleedLoadable {
 	// Idle sound
 	public void idleSound( ) {
 		if ( sounds != null && sounds.hasSound( "idle" ) ) {
-			sounds.addSoundToLoops( "idle", 0 );
-			sounds.setSoundVolume( "idle", 0.0f );
+			SoundRef ref = sounds.getSound( "idle" );
+			ref.setVolume( 0.0f );
+			ref.loop( false );
 			// Gdx.app.log( name, "Starting Idle Sound" );
 		}
 	}
@@ -1621,11 +1622,9 @@ public class Entity implements GleedLoadable {
 		}
 		body.setType( body.getType( ) );
 
-		if ( entityType == EntityType.PLATFORM ) {
-			@SuppressWarnings( "unused" )
-			Platform p = ( Platform ) this;
-
-		}
+		//if ( entityType == EntityType.PLATFORM ) {
+		//	Platform p = ( Platform ) this;
+		//}
 	}
 
 	// Call this function after all your sprites, sounds, etc. are loaded.

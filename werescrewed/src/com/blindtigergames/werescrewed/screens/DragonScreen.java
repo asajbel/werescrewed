@@ -158,25 +158,12 @@ public class DragonScreen extends Screen {
 		if (bgm == null){
 			bgm = Gdx.audio.newMusic(Gdx.files.internal("data/levels/dragon/riding.mp3"));
 		}
-		if ( sounds == null ) {
-			sounds = new SoundManager( );
-			sounds.getSound(
-					"roar_calm",
-					WereScrewedGame.dirHandle
-							+ "/levels/dragon/sounds/dragon_roar_calm.ogg" )
-					.setRange( 8000 );
-			sounds.getSound(
-					"roar_angry",
-					WereScrewedGame.dirHandle
-							+ "/levels/dragon/sounds/dragon_roar_angry.ogg" )
-					.setRange( 8000 );
-			sounds.getSound(
-					"jaw_close",
-					WereScrewedGame.dirHandle
-							+ "/levels/dragon/sounds/jawClose.ogg" ).setRange(
-					8000 );
-			// sounds.getSound( "jaw_open",WereScrewedGame.dirHandle +
-			// "/levels/dragon/sounds/cannon.ogg" );
+		if (sounds == null){
+			sounds = new SoundManager();
+			sounds.getSound( "roar_calm",  WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_calm.ogg").setRange( 80000 );
+			sounds.getSound( "roar_angry", WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_angry.ogg").setRange( 8000 );
+			sounds.getSound( "jaw_close", WereScrewedGame.dirHandle + "/levels/dragon/sounds/jawClose.ogg" ).setRange( 8000 );
+			//sounds.getSound( "jaw_open",WereScrewedGame.dirHandle + "/levels/dragon/sounds/cannon.ogg" );
 		}
 
 		Texture transition = WereScrewedGame.manager.get(
@@ -299,16 +286,22 @@ public class DragonScreen extends Screen {
 				headEvent = true;
 			}
 		}
-
-		if ( jawStructureScrew.getDepth( ) > 0 )
-			mouthFireTimer += deltaTime;
-		else
-			mouthFireTimer = 0.0f;
-		if ( mouthFireTimer >= mouthFireDelay && !mouthFireTriggered ) {
-			float volume = sounds.calculatePositionalVolume( "roar_angry",
-					new Vector2( 25000, 900 ), Camera.CAMERA_RECT );
-			SoundRef roarRef = sounds.getSound( "roar_angry" );
-			roarRef.play( 0, volume, 1 );
+		
+		
+		if(jawStructureScrew.getDepth( )>0)mouthFireTimer+=deltaTime;
+		else mouthFireTimer=0.0f;
+		if(mouthFireTimer>=mouthFireDelay && !mouthFireTriggered){
+			Vector2 roarPos = new Vector2(25000, 900);
+			Vector2 camPos = new Vector2(Camera.getCurrentCameraCoords( ).x, Camera.getCurrentCameraCoords( ).y);
+			SoundRef roarRef;
+			if (roarPos.dst( camPos ) < 3000.0f){
+				roarRef = sounds.getSound( "roar_angry" );
+			} else {
+				roarRef = sounds.getSound( "roar_calm" );
+			}
+			float volume = roarRef.calculatePositionalVolume( roarPos, Camera.CAMERA_RECT );
+			roarRef.setVolume( volume );
+			roarRef.play( false );
 			mouthFire.setActiveHazard( true );
 			mouthFireTriggered = true;
 		}
@@ -318,7 +311,8 @@ public class DragonScreen extends Screen {
 			float volume = sounds.calculatePositionalVolume( "jaw_close",
 					new Vector2( 25000, 900 ), Camera.CAMERA_RECT );
 			SoundRef jawRef = sounds.getSound( "jaw_close" );
-			jawRef.play( 0, volume, 1 );
+			jawRef.setVolume( volume );
+			jawRef.play( false);
 		}
 
 		// Zoom out and fade the head skeleton back in so you can see the jaw

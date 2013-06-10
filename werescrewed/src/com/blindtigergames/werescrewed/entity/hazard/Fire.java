@@ -103,10 +103,10 @@ public class Fire extends Hazard {
 		upsideDown = !upsideDown;
 	}
 	public void update( float deltaTime){
-		sounds.setSoundVolume(
-				"idle",
-				this.activeHazard ? sounds.calculatePositionalVolume( "idle",
-						getPositionPixel( ), Camera.CAMERA_RECT ) : 0f );
+		SoundRef idle = sounds.getSound( "idle" );
+		idle.setVolume( this.activeHazard ? 
+							idle.calculatePositionalVolume(getPositionPixel( ), Camera.CAMERA_RECT ) 
+							: 0f );
 		sounds.update( deltaTime );
 	}
 	/**
@@ -154,6 +154,7 @@ public class Fire extends Hazard {
 		fireSound.setRange( 1000.f );
 		fireSound.setFalloff( 2.0f );
 		fireSound.setOffset( new Vector2(0.0f, height / 2.0f) );
-		SoundManager.addSoundToLoops( fireSound , 0.0f, 1.0f);
+		fireSound.setVolume( 0.0f );
+		SoundManager.addSoundToLoops( fireSound );
 	}
 }

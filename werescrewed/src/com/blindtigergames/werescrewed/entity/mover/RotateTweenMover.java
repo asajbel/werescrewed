@@ -17,14 +17,14 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class RotateTweenMover extends TweenMover implements IMover {
 
-	@SuppressWarnings( "unused" )
-	private float duration;
-	@SuppressWarnings( "unused" )
-	private float rotAmount;
-	@SuppressWarnings( "unused" )
-	private float delay;
-	@SuppressWarnings( "unused" )
-	private boolean isYoyoRepeat;
+//	@SuppressWarnings( "unused" )
+//	private float duration;
+//	@SuppressWarnings( "unused" )
+//	private float rotAmount;
+//	@SuppressWarnings( "unused" )
+//	private float delay;
+//	@SuppressWarnings( "unused" )
+//	private boolean isYoyoRepeat;
 
 	/**
 	 * Rotate a platform. Use this if you want something to rotate indefinetly.
@@ -41,10 +41,10 @@ public class RotateTweenMover extends TweenMover implements IMover {
 	public RotateTweenMover( Platform platform, float duration,
 			float rotAmountRadians, float delay, boolean isYoyoRepeat ) {
 		super( true );
-		this.duration = duration;
-		this.rotAmount = rotAmountRadians;
-		this.delay = delay;
-		this.isYoyoRepeat = isYoyoRepeat;
+//		this.duration = duration;
+//		this.rotAmount = rotAmountRadians;
+//		this.delay = delay;
+//		this.isYoyoRepeat = isYoyoRepeat;
 		Tween t = Tween.to( platform, PlatformAccessor.LOCAL_ROT, duration )
 				.ease( TweenEquations.easeNone ) // no ease for smooth lerp
 				.target( rotAmountRadians );

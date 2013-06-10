@@ -7,8 +7,8 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 
 public class Label {
 
-	@SuppressWarnings( "unused" )
-	private static final Color COLOR = new Color( 1f, 1f, 1f, 1f );
+	//@SuppressWarnings( "unused" )
+	//private static final Color COLOR = new Color( 1f, 1f, 1f, 1f );
 
 	private String caption = null;
 	private BitmapFont font = null;

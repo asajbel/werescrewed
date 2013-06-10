@@ -32,9 +32,8 @@ public class PrismaticJointBuilder {
 	 * empty constructor is private to force passing in world when building this
 	 * joint
 	 */
-	@SuppressWarnings( "unused" )
-	private PrismaticJointBuilder( ) {
-	};
+//	private PrismaticJointBuilder( ) {
+//	};
 
 	/**
 	 * These are the required parameters for a prismatic joint

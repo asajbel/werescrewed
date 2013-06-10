@@ -124,7 +124,6 @@ class MainMenuScreen extends MenuScreen {
 		
 		batch.end( );
 
-		//******************* REMEMBER TO REMOVE THESE LINES FOR RELEASE *******************//
 		if (  WereScrewedGame.debug && Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 1 );
 		}
@@ -148,7 +147,6 @@ class MainMenuScreen extends MenuScreen {
 		if ( WereScrewedGame.debug &&  Gdx.input.isKeyPressed( Keys.H ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.HAZARD );
 		}
-		//**********************************************************************************//
 	}
 
 	@Override

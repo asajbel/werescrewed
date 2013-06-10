@@ -22,13 +22,17 @@ public class ArrayHash< K, V > {
 	}
 
 	public void set( K key, int index, V value ) {
+		Array<V> array;
 		if ( !data.containsKey( key ) ) {
-			data.put( key, new Array< V >( ) );
+			array = new Array<V>();
+			data.put( key, array );
+		} else {
+			array = data.get( key );
 		}
-		if ( index >= data.get( key ).size ) {
-			data.get( key ).ensureCapacity( index );
+		if ( index >= array.size ) {
+			array.ensureCapacity( index+1 );
 		}
-		data.get( key ).set( index, value );
+		array.set( index, value );
 	}
 
 	public V put( K key, V value ) {

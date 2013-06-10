@@ -16,7 +16,6 @@ import com.blindtigergames.werescrewed.camera.Camera;
 import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
-import com.blindtigergames.werescrewed.entity.hazard.Fire;
 import com.blindtigergames.werescrewed.entity.hazard.Hazard;
 import com.blindtigergames.werescrewed.entity.particles.Steam;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
@@ -392,6 +391,10 @@ public class Skeleton extends Platform {
 		return false;
 	}
 
+	public boolean isRemoved( ) {
+		return removed;
+	}
+	
 	/**
 	 * This update function is ONLY called on the very root skeleton, it takes
 	 * care of the child sksletons
@@ -443,8 +446,12 @@ public class Skeleton extends Platform {
 								entitiesToRemove.add( platform );
 							} else {
 								if ( wasInactive ) {
-									platform.body.setAwake( false );
-									platform.body.setActive( true );
+									if ( !platform.body.isActive( ) ) {
+										platform.body.setActive( true );
+									}
+									if ( platform.body.isAwake( ) ) {
+										platform.body.setAwake( false );
+									}
 									platform.translatePosRotFromSKeleton( this );
 									platform.update( deltaTime );
 								} else {
@@ -452,7 +459,7 @@ public class Skeleton extends Platform {
 									if ( !platform.body.isActive( ) ) {
 										platform.body.setActive( true );
 									}
-									if ( !platform.body.isAwake( ) ) {
+									if ( platform.body.isAwake( ) ) {
 										platform.body.setAwake( false );
 									}
 									if ( platform.hasMoved( )
@@ -475,8 +482,12 @@ public class Skeleton extends Platform {
 								entitiesToRemove.add( platform );
 							} else {
 								if ( wasInactive ) {
-									platform.body.setActive( true );
-									platform.body.setAwake( false );
+									if ( !platform.body.isActive( ) ) {
+										platform.body.setActive( true );
+									}
+									if ( platform.body.isAwake( ) ) {
+										platform.body.setAwake( false );
+									}
 								}
 								platform.updateMover( deltaTime );
 								platform.update( deltaTime );
@@ -487,8 +498,12 @@ public class Skeleton extends Platform {
 								entitiesToRemove.add( chkpt );
 							} else {
 								if ( wasInactive ) {
-									chkpt.body.setActive( true );
-									chkpt.body.setAwake( false );
+									if ( !chkpt.body.isActive( ) ) {
+										chkpt.body.setActive( true );
+									}
+									if ( chkpt.body.isAwake( ) ) {
+										chkpt.body.setAwake( false );
+									}
 								}
 								chkpt.update( deltaTime );
 							}
@@ -498,8 +513,12 @@ public class Skeleton extends Platform {
 								entitiesToRemove.add( screw );
 							} else {
 								if ( wasInactive ) {
-									screw.body.setActive( true );
-									screw.body.setAwake( false );
+									if ( !screw.body.isActive( ) ) {
+										screw.body.setActive( true );
+									}
+									if ( screw.body.isAwake( ) ) {
+										screw.body.setAwake( false );
+									}
 								}
 								screw.update( deltaTime );
 							}
@@ -510,14 +529,20 @@ public class Skeleton extends Platform {
 								boolean nextLink = true;
 								int index = 0;
 								if ( rope.getEndAttachment( ) != null ) {
-									rope.getEndAttachment( ).body
-											.setAwake( false );
-									rope.getEndAttachment( ).body
-											.setActive( true );
+									if ( !rope.getEndAttachment( ).body.isActive( ) ) {
+										rope.getEndAttachment( ).body.setActive( true );
+									}
+									if ( rope.getEndAttachment( ).body.isAwake( ) ) {
+										rope.getEndAttachment( ).body.setAwake( false );
+									}
 								}
 								while ( nextLink ) {
-									rope.getLink( index ).body.setActive( true );
-									rope.getLink( index ).body.setAwake( false );
+									if ( !rope.getLink( index ).body.isActive( ) ) {
+										rope.getLink( index ).body.setActive( true );
+									}
+									if ( rope.getLink( index ).body.isAwake( ) ) {
+										rope.getLink( index ).body.setAwake( false );
+									}
 									if ( rope.getLastLink( ) == rope
 											.getLink( index ) ) {
 										nextLink = false;
@@ -528,11 +553,19 @@ public class Skeleton extends Platform {
 							rope.update( deltaTime );
 						}
 						if ( wasInactive ) {
-							this.body.setActive( true );
-							this.body.setAwake( false );
+							if ( !body.isActive( ) ) {
+								body.setActive( true );
+							}
+							if ( body.isAwake( ) ) {
+								body.setAwake( false );
+							}
 							for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-								skeleton.body.setActive( true );
-								skeleton.body.setAwake( false );
+								if ( !skeleton.body.isActive( ) ) {
+									skeleton.body.setActive( true );
+								}
+								if ( skeleton.body.isAwake( ) ) {
+									skeleton.body.setAwake( false );
+								}
 							}
 							wasInactive = false;
 						}
@@ -604,6 +637,7 @@ public class Skeleton extends Platform {
 							case CHECKPOINT:
 								CheckPoint chkpt = checkpointMap
 										.remove( e.name );
+								chkpt.setNextCheckPointInPM( );
 								chkpt.remove( );
 								break;
 							default:
@@ -644,6 +678,7 @@ public class Skeleton extends Platform {
 		}
 		screwMap.clear( );
 		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
+			chkpt.setNextCheckPointInPM( );
 			chkpt.remove( );
 		}
 		checkpointMap.clear( );
@@ -717,8 +752,12 @@ public class Skeleton extends Platform {
 					if ( this.useBoundingRect ) {
 						if ( inRectangleBounds( this.boundingRect,
 								screw.getPositionPixel( ) ) ) {
-							screw.body.setAwake( true );
-							screw.body.setActive( false );
+							if ( screw.getDepth( ) >= 0 ) {
+								screw.body.setAwake( true );
+								screw.body.setActive( false );
+							} else {
+								screw.dontPutToSleep = true;
+							}
 						} else {
 							screw.dontPutToSleep = true;
 						}
@@ -864,42 +903,7 @@ public class Skeleton extends Platform {
 	 */
 	private void drawPlatform( Platform platform, SpriteBatch batch,
 			float deltaTime, Camera camera ) {
-
 		platform.draw( batch, deltaTime, camera );
-
-		// switch ( platform.getEntityType( ) ) {
-		// case PLATFORM:
-		// if ( platform.getPlatformType( ) == PlatformType.TILED ) {
-		// ( ( TiledPlatform ) platform ).draw( batch, deltaTime );
-		// } else {
-		// platform.draw( batch, deltaTime );
-		// }
-		// break;
-		// case HAZARD:
-		// drawHazard( ( Hazard ) platform, batch, deltaTime );
-		// break;
-		// case STEAM:
-		// Steam steam = ( Steam ) platform;
-		// steam.draw( batch, deltaTime );
-		// break;
-		// default:
-		// throw new RuntimeException( "Skeleton: " + name
-		// + " doesn't know how to draw your platform: "
-		// + platform.name );
-		// }
-	}
-
-	@SuppressWarnings( "unused" )
-	private void drawHazard( Hazard hazard, SpriteBatch batch, float deltaTime,
-			Camera camera ) {
-		switch ( hazard.hazardType ) {
-		case FIRE:
-			( ( Fire ) hazard ).draw( batch, deltaTime, camera );
-			break;
-		default:
-			hazard.draw( batch, deltaTime, camera );
-			break;
-		}
 	}
 
 	public boolean getWasInactive( ) {

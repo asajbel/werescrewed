@@ -22,8 +22,6 @@ import com.blindtigergames.werescrewed.util.Util;
  * 
  */
 public class CheckPoint extends Entity {
-	@SuppressWarnings( "unused" )
-	private String levelLoadStage;
 	private boolean active = false;
 	private ProgressManager progressManager;
 	private boolean removed = false;
@@ -42,14 +40,9 @@ public class CheckPoint extends Entity {
 	 */
 	public CheckPoint( String name, Vector2 pos, Entity entity, World world,
 			ProgressManager pm, String levelToReload ) {
-		super( name, pos, null
-		/*
-		 * WereScrewedGame.manager.get( null WereScrewedGame.dirHandle.path ( )
-		 * + "/common/cletter.png" , Texture.class )
-		 */, null, false );
+		super( name, pos, null, null, false );
 		this.world = world;
 		this.progressManager = pm;
-		this.levelLoadStage = levelToReload;
 		this.entityType = EntityType.CHECKPOINT;
 		this.entity = entity;
 		if ( progressManager.currentCheckPoint == null ) {
@@ -58,18 +51,7 @@ public class CheckPoint extends Entity {
 		setSpinemator( new SimpleSpinemator( "rez_chamber_atlas", "chamber",
 				"off-idle", false ) );
 		getSpinemator().setPosition( pos.x, pos.y );
-		// TextureAtlas atlas = WereScrewedGame.manager.getAtlas( "checkpoint"
-		// );
-		// checkpointFrameAnimator = new SimpleFrameAnimator( ).speed( 0f )
-		// .loop( LoopBehavior.STOP ).time( 0.001f ).startFrame( 0 )
-		// .maxFrames( atlas.getRegions( ).size + 1 );
-		// Sprite sprite = new Sprite( atlas, checkpointFrameAnimator );
-		// sprite.setOrigin( sprite.getWidth( ) / 2, sprite.getHeight( ) / 2 );
-		// changeSprite( sprite );
-		// super.offset = new Vector2( sprite.getWidth( ) / 2,
-		// sprite.getHeight( ) / 2 );
 
-		// sprite.setColor( Color.PINK );
 		constructBody( pos );
 		connectScrewToEntity( entity );
 	}
@@ -101,6 +83,13 @@ public class CheckPoint extends Entity {
 		return removed;
 	}
 
+	/**
+	 * sets the next checkpoint to one after this one
+	 */
+	public void setNextCheckPointInPM( ) {
+		progressManager.setNextChkpt( this );
+	}
+	
 	/**
 	 * activates this checkpoint if not already active
 	 */
@@ -148,20 +137,6 @@ public class CheckPoint extends Entity {
 		getSpinemator().setPosition( bodyPos );
 		getSpinemator().setRotation( body.getAngle( ) );
 		super.update( deltaTime );
-		// this.body.setTransform( body.getPosition( ), entity.getAngle( ) );
-		// sprite.setRotation( MathUtils.radiansToDegrees * entity.getAngle( )
-		// );
-		// sprite.setPosition( bodyPos.x - offset.x, bodyPos.y - offset.y );
-		// if ( !checkpointFrameAnimator.isStopped( ) )
-		// checkpointFrameAnimator.update( deltaTime );
-		// System.out.println( checkpointFrameAnimator.getFrame( ) );
-		// if ( active ) {
-		// if ( body.getAngle( ) >= 90f * Util.DEG_TO_RAD ) {
-		// body.setAngularVelocity( 0.0f );
-		// }
-		// } else if ( body.getAngle( ) <= 0.0f ) {
-		// body.setAngularVelocity( 0.0f );
-		// }
 	}
 
 	private void constructBody( Vector2 pos ) {

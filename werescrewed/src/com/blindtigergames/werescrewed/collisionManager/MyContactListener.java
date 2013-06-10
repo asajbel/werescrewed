@@ -26,6 +26,7 @@ import com.blindtigergames.werescrewed.eventTrigger.PowerSwitch;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.player.Player.PlayerState;
 import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundRef;
 
 /**
  * 
@@ -44,7 +45,7 @@ public class MyContactListener implements ContactListener {
 	private static final float LAND_FALLOFF = 3.0f;
 	private static final float COLLISION_SOUND_DELAY = 0.2f;
 	private static final float COLLISION_FORCE_FALLOFF = 3.0f;
-	private static final float COLLISION_SCREEN_FALLOFF = 1.0f;
+	//private static final float COLLISION_SCREEN_FALLOFF = 1.0f;
 	private static final float MINIMUM_HIT_FORCE = 1.0f;
 	private static final float MAXIMUM_HIT_FORCE = 5.0f;
 	private static final float HIT_X_Y_RATIO = 5.0f;
@@ -118,7 +119,7 @@ public class MyContactListener implements ContactListener {
 											player2Plat = plat;
 										}
 										player.hitSolidObject( plat, contact );
-										player.setGrounded( true );
+										//player.setGrounded( true );
 									} 
 								} 
 							}
@@ -131,17 +132,11 @@ public class MyContactListener implements ContactListener {
 									}
 									if ( player.getState( ) != PlayerState.Screwing ) {
 										if ( !player.isGrounded( ) ) {
-											player.sounds
-													.playSound(
-															"land",
-															player.sounds
-																	.randomSoundId( "land" ),
-															LAND_DELAY,
-															( float ) Math.pow(
-																	force.len( )
-																			* LAND_VOLUME,
-																	LAND_FALLOFF ),
-															1.0f );
+											float fallVolume = ( float ) Math.pow(force.len( ) * LAND_VOLUME, LAND_FALLOFF );
+											SoundRef fallSound = player.sounds.getSound( "land" );
+											fallSound.setVolume( fallVolume );
+											fallSound.setEndDelay( LAND_DELAY );
+											fallSound.play( false );
 										}
 										player.setGrounded( true );
 									}
@@ -567,33 +562,33 @@ public class MyContactListener implements ContactListener {
 		boolean playSoundB = objectB.hasSoundManager( );
 		// Only continue if we have at least one sound manager
 		if ( playSoundA || playSoundB ) {
-			String soundA = "collision";
+			String soundNameA = "collision";
 			int indexA = 0;
 
-			String soundB = "collision";
+			String soundNameB = "collision";
 			int indexB = 0;
 
 			if ( playSoundB && objectA instanceof Platform
 					&& objectB.sounds.hasSound( "platformcollision" ) ) {
-				soundB = "platformcollision";
+				soundNameB = "platformcollision";
 				indexB = 0;
 			}
 			if ( playSoundA && objectB instanceof Platform
 					&& objectA.sounds.hasSound( "platformcollision" ) ) {
-				soundA = "platformcollision";
+				soundNameA = "platformcollision";
 				indexA = 0;
 			}
 
 			// Skip playing a sound that the sound manager doesn't have.
-			if ( playSoundA && !objectA.sounds.hasSound( soundA, indexA ) )
+			if ( playSoundA && !objectA.sounds.hasSound( soundNameA, indexA ) )
 				playSoundA = false;
-			if ( playSoundB && !objectB.sounds.hasSound( soundA, indexA ) )
+			if ( playSoundB && !objectB.sounds.hasSound( soundNameA, indexA ) )
 				playSoundB = false;
 
 			// Resolve duplicate sounds
 			if ( playSoundA && playSoundB ) {
-				if ( objectA.sounds.getGDXSound( soundA, indexA ).equals(
-						objectB.sounds.getGDXSound( soundB, indexB ) ) ) {
+				if ( objectA.sounds.getGDXSound( soundNameA, indexA ).equals(
+						objectB.sounds.getGDXSound( soundNameB, indexB ) ) ) {
 					playSoundB = false;
 				}
 			}
@@ -605,25 +600,27 @@ public class MyContactListener implements ContactListener {
 							2.0f );
 			// Play soundA
 			if ( playSoundA ) {
-				float vA = v
-						* SoundManager.calculatePositionalVolume(
-								objectA.getPositionPixel( ),
-								Camera.CAMERA_RECT,
-								objectA.sounds.getRange( soundA, indexA ),
-								COLLISION_SCREEN_FALLOFF );
-				objectA.sounds.playSound( soundA, indexA,
+				SoundRef soundA = objectA.sounds.getSound( soundNameA , indexA );
+				float vA = v * SoundManager.calculatePositionalVolume( objectA.getPositionPixel(), 
+						Camera.CAMERA_RECT, 
+						soundA.getRange(), 
+						soundA.getDepth(), 
+						soundA.getFalloff() 
+						);
+				objectA.sounds.playSound( soundNameA, indexA,
 						COLLISION_SOUND_DELAY, vA, 1.0f );
 			}
 
 			// Play soundB
 			if ( playSoundB ) {
-				float vB = v
-						* SoundManager.calculatePositionalVolume(
-								objectB.getPositionPixel( ),
-								Camera.CAMERA_RECT,
-								objectB.sounds.getRange( soundB, indexB ),
-								COLLISION_SCREEN_FALLOFF );
-				objectB.sounds.playSound( soundB, indexB,
+				SoundRef soundB = objectB.sounds.getSound( soundNameB , indexB );
+				float vB = v * SoundManager.calculatePositionalVolume( objectB.getPositionPixel(), 
+						Camera.CAMERA_RECT, 
+						soundB.getRange(), 
+						soundB.getDepth(), 
+						soundB.getFalloff() 
+						);
+				objectB.sounds.playSound( soundNameB, indexB,
 						COLLISION_SOUND_DELAY, vB, 1.0f );
 			}
 		}
