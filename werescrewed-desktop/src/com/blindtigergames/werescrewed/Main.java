@@ -1,16 +1,9 @@
 package com.blindtigergames.werescrewed;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 public class Main {
-	private static boolean fullscreen = false;
 	private static boolean debug = false;
 
 	public static void main(String[] args) {
@@ -22,43 +15,12 @@ public class Main {
 		cfg.height = 720;
 		cfg.vSyncEnabled = true;
 
-		// cfg.useCPUSynch = false;
 		cfg.vSyncEnabled = true;
-		// cfg.fullscreen = true;
-		
-		readConfig( ); 
 
-		if (fullscreen) {
-			cfg.setFromDisplayMode(LwjglApplicationConfiguration
-					.getDesktopDisplayMode());
-		}
 		for (String cmd : args) {
 			if (cmd.equals("-debug")) debug = true; 
 		}
 		WereScrewedGame.debug = debug;
 		new LwjglApplication(new WereScrewedGame(), cfg);
-	}
-
-	private static void readConfig( ) {
-		try {
-			String line;
-			BufferedReader reader = new BufferedReader(new FileReader("config"));
-			while ((line = reader.readLine()) != null) { 
-				String[] values = line.split(" "); 
-				if (values[0].equals("fullscreen")) {
-					fullscreen = Boolean.parseBoolean(values[1]); 
-				}
-				if (values[0].equals("debug")) {
-					debug = Boolean.parseBoolean(values[1]); 
-				}
-			}
-			reader.close(); 
-		} catch (FileNotFoundException e) {
-			Gdx.app.log("Main", "No config file found"); 
-			e.printStackTrace();
-		} catch (IOException e) {
-			Gdx.app.log("Reader", "No Line"); 
-			e.printStackTrace();
-		} 
 	}
 }

@@ -119,7 +119,7 @@ public class MyContactListener implements ContactListener {
 											player2Plat = plat;
 										}
 										player.hitSolidObject( plat, contact );
-										player.setGrounded( true );
+										//player.setGrounded( true );
 									} 
 								} 
 							}
@@ -132,17 +132,11 @@ public class MyContactListener implements ContactListener {
 									}
 									if ( player.getState( ) != PlayerState.Screwing ) {
 										if ( !player.isGrounded( ) ) {
-											player.sounds
-													.playSound(
-															"land",
-															player.sounds
-																	.randomSoundId( "land" ),
-															LAND_DELAY,
-															( float ) Math.pow(
-																	force.len( )
-																			* LAND_VOLUME,
-																	LAND_FALLOFF ),
-															1.0f );
+											float fallVolume = ( float ) Math.pow(force.len( ) * LAND_VOLUME, LAND_FALLOFF );
+											SoundRef fallSound = player.sounds.getSound( "land" );
+											fallSound.setVolume( fallVolume );
+											fallSound.setEndDelay( LAND_DELAY );
+											fallSound.play( false );
 										}
 										player.setGrounded( true );
 									}

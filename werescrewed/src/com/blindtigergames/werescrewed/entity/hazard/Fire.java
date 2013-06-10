@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -66,49 +65,6 @@ public class Fire extends Hazard {
 		loadSounds();
 	}
 
-	/**
-	 * sets up physics bodies
-	 * 
-	 * @param position
-	 *            Vector2
-	 */
-	private void constructBodyOld( Vector2 position ) {
-		BodyDef bodyDef = new BodyDef( );
-		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.position.set( position.x * Util.PIXEL_TO_BOX, position.y
-				* Util.PIXEL_TO_BOX );
-		body = world.createBody( bodyDef );
-
-		FixtureDef fireFixtureDef = new FixtureDef( );
-		EdgeShape polygon = new EdgeShape( );
-		polygon.set( ( 0 ) * Util.PIXEL_TO_BOX, ( 0 ) * Util.PIXEL_TO_BOX,
-				( width ) * Util.PIXEL_TO_BOX, ( height ) * Util.PIXEL_TO_BOX );
-		fireFixtureDef.shape = polygon;
-		fireFixtureDef.isSensor = true;
-		fireFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
-		fireFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
-		body.createFixture( fireFixtureDef );
-		polygon.set( ( 0 ) * Util.PIXEL_TO_BOX, ( 0 ) * Util.PIXEL_TO_BOX,
-				( width * -1 ) * Util.PIXEL_TO_BOX, ( height )
-						* Util.PIXEL_TO_BOX );
-		fireFixtureDef.shape = polygon;
-		fireFixtureDef.isSensor = true;
-		fireFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
-		fireFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
-		body.createFixture( fireFixtureDef );
-		polygon.set( ( width ) * Util.PIXEL_TO_BOX, ( height )
-				* Util.PIXEL_TO_BOX, ( width * -1 ) * Util.PIXEL_TO_BOX,
-				( height ) * Util.PIXEL_TO_BOX );
-		fireFixtureDef.shape = polygon;
-		fireFixtureDef.isSensor = true;
-		fireFixtureDef.filter.categoryBits = Util.CATEGROY_HAZARD;
-		fireFixtureDef.filter.maskBits = Util.CATEGORY_PLAYER;
-		body.createFixture( fireFixtureDef );
-
-		polygon.dispose( );
-
-		body.setUserData( this );
-	}
 	void constructBody( Vector2 pos ){
 		BodyDef bodyDef = new BodyDef( );
 		bodyDef.type = BodyType.KinematicBody;

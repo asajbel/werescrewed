@@ -8,7 +8,7 @@
 @ tilecolor 32 208 36
 
 ##music
-/levels/dragon/riding.mp3
+##/levels/dragon/riding.mp3
 
 ##sounds
 /common/sounds/inceptionbutton.mp3
@@ -63,4 +63,7 @@
 #Interior bg packs
 /levels/dragon/interior_tail2_bodyright.pack
 /levels/dragon/interior_tail3_bodyleft.pack
+
+#Intro balloon interior
+/levels/dragon/intro-balloon.pack
 

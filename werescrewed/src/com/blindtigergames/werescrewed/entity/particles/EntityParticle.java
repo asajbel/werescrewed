@@ -2,11 +2,6 @@ package com.blindtigergames.werescrewed.entity.particles;
 
 import com.badlogic.gdx.math.Vector2;
 import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.EntityType;
-import com.blindtigergames.werescrewed.entity.hazard.Enemy;
-import com.blindtigergames.werescrewed.entity.hazard.Hazard;
-import com.blindtigergames.werescrewed.entity.hazard.HazardType;
-import com.blindtigergames.werescrewed.entity.mover.IMover;
 
 /**
  * Particle data structure that keeps track of an entity's lifespan
@@ -18,10 +13,9 @@ public class EntityParticle {
 
 	private float lifeDelta;
 	private float lifeSpanSeconds;
-	private float initLifeSpan;
 	private Entity particle;
 	private Vector2 initPositionMeter;
-	private float initDelay, delayDelta;
+	private float initDelay, delayDelta, delay;
 	private boolean isDelayDone;
 
 	/**
@@ -30,25 +24,25 @@ public class EntityParticle {
 	 * @param mover
 	 */
 	public EntityParticle( Entity particleEntity, float lifespanSeconds ) {
-		this( particleEntity, lifespanSeconds, lifespanSeconds, 0 );
+		this( particleEntity, lifespanSeconds, 0, 0 );
 	}
 	
 	/**
 	 * Delay happens once on creation or if you call hard reset
 	 */
-	public EntityParticle( Entity particleEntity, float lifespanSeconds, float delay ) {
-		this( particleEntity, lifespanSeconds, lifespanSeconds, delay );
+	public EntityParticle( Entity particleEntity, float lifespanSeconds, float delayBetweenSpawn ) {
+		this( particleEntity, lifespanSeconds, delayBetweenSpawn, 0 );
 	}
 	
-	public EntityParticle( Entity particleEntity, float lifespanSeconds, float initLifeSpan, float delay ) {
+	public EntityParticle( Entity particleEntity, float lifespanSeconds, float delayBetweenSpawn, float initDelay ) {
 		this.particle = particleEntity;
 		this.lifeSpanSeconds = lifespanSeconds;
-		this.initLifeSpan = initLifeSpan;
-		this.lifeDelta = initLifeSpan;
+		this.lifeDelta = lifeSpanSeconds;
 		this.initPositionMeter = particleEntity.getPosition( );
-		this.initDelay = delay;
-		this.delayDelta = delay;
-		isDelayDone = (this.initDelay <= 0);
+		this.initDelay = initDelay;
+		this.delayDelta = delayBetweenSpawn+initDelay;
+		this.delay=delayBetweenSpawn;
+		isDelayDone = (this.delayDelta <= 0);
 	}
 
 	/**
@@ -99,6 +93,7 @@ public class EntityParticle {
 		particle.reset( );
 		particle.setPosition( posMeters.cpy() );
 		resetLifespan( );
+		delayDelta=delay;
 	}
 
 	/**
@@ -113,11 +108,15 @@ public class EntityParticle {
 	 */
 	public void hardReset(){
 		particle.setPosition( initPositionMeter.cpy() );
-		lifeDelta = initLifeSpan;
-		delayDelta = initDelay;
+		lifeDelta = lifeSpanSeconds;
+		delayDelta = initDelay+delay;
 	}
 	
 	public Entity getEntity(){
 		return this.particle;
+	}
+	
+	public boolean isAlive(){
+		return (!isDead() && !isDelayed());
 	}
 }

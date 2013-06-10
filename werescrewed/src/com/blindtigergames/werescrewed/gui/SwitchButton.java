@@ -1,34 +1,34 @@
 package com.blindtigergames.werescrewed.gui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.gui.TextButton.ButtonHandler;
 
-public class TextButton extends Button {
-
+public class SwitchButton extends Button{
 	private ButtonHandler handler = null;
 
 	/**
-	 * makes a new button instance
+	 * Makes a new button instance for a switch 
 	 * 
 	 * @param caption
-	 *            String
+	 *            Message on the button
 	 * @param font
-	 *            BitmapFont
+	 *            Font for the message
 	 * @param handler
-	 *            ButtonHandler
+	 *            What the button should do
 	 * @param x
-	 *            int
+	 *            The x position in pixels
 	 * @param y
-	 *            int
+	 *            The y position in pixels
 	 */
-	public TextButton( String caption, BitmapFont font, TextureRegion button,
-			ButtonHandler handler, int x, int y ) {
+	public SwitchButton( String caption, BitmapFont font, TextureRegion button,
+			ButtonHandler handler,
+			int x, int y ) {
 		super( caption, font, button, x, y );
 		this.caption = caption;
 		this.font = font;
@@ -37,22 +37,22 @@ public class TextButton extends Button {
 		this.handler = handler;
 		// calculateDimensions( );
 	}
-
+	
 	/**
-	 * makes a new button instance
+	 * Makes a new button instance for a switch 
 	 * 
 	 * @param caption
-	 *            String
+	 *            Message on the button
 	 * @param font
-	 *            BitmapFont
+	 *            Font for the message
 	 * @param handler
-	 *            ButtonHandler
+	 *            What the button should do
 	 */
-	public TextButton( String caption, BitmapFont font, 
+	public SwitchButton( String caption, BitmapFont font, 
 			TextureRegion button, ButtonHandler handler ) {
 		this( caption, font, button, handler, 0, 0 );
 	}
-
+	
 	public void draw( SpriteBatch batch, Camera camera ) {
 		super.draw( batch, camera );
 
@@ -63,16 +63,10 @@ public class TextButton extends Button {
 				cursorPosition.y );
 		
 		if ( ( isIntersect && !WereScrewedGame.isMouseClicked( ) && ( Gdx.input
-				.isTouched( ) || Gdx.input.isButtonPressed( Buttons.LEFT ) ) )
+				.isTouched( ) ) )
 				|| selected ) {
-			selected = false;
+			selected = false; 
 			handler.onClick( );
 		}
 	}
-
-	public static interface ButtonHandler {
-		public void onClick( );
-
-	}
-
 }

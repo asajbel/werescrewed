@@ -1,11 +1,9 @@
 package com.blindtigergames.werescrewed.entity.action;
 
-import com.badlogic.gdx.physics.box2d.Body;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
-import com.blindtigergames.werescrewed.util.Util;
 
 public class SetRobotStateAction implements IAction {
 

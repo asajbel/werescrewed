@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.tween;
 
 import aurelienribon.tweenengine.TweenAccessor;
 
-import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.Sprite;
 
 /*******************************************************************************

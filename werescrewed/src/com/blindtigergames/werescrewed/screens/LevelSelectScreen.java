@@ -1,7 +1,5 @@
 package com.blindtigergames.werescrewed.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -68,7 +66,7 @@ public class LevelSelectScreen extends MenuScreen {
 		gears = new Array< Falling >( );
 		debris = new Array< Falling >( );
 		
-		scaleMax = trans.getHeight( ) * SCALE_MAX;
+		maxScale = trans.getHeight( ) * SCALE_SIZE;
 		scale = 1.0f;
 		transInEnd = false;
 		

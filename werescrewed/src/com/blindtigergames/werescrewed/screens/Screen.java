@@ -3,7 +3,6 @@ package com.blindtigergames.werescrewed.screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -23,8 +21,6 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Button;
-import com.blindtigergames.werescrewed.gui.OptionButton;
-import com.blindtigergames.werescrewed.gui.Slider;
 import com.blindtigergames.werescrewed.level.Level;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.util.Util;
@@ -57,9 +53,10 @@ public class Screen implements com.badlogic.gdx.Screen {
 	private ShapeRenderer shapeRenderer;
 	protected float scale = 0.0f;
 	protected final float SCALE_MIN = 0.0f;
-	protected final float SCALE_MAX = 10.0f;
-	protected final float SCALE_SIZE = 150.0f;
-	protected float scaleMax = 0.0f;
+	protected final float SCALE_MAX = 1.0f;
+	protected final float SCALE_SIZE = 10.0f;
+	protected final float SCALE_ADJUST = 0.03f;
+	protected float maxScale = 0.0f;
 	protected Sprite trans = null;
 	protected boolean alphaFinish = false;
 	protected boolean transInEnd = true;
@@ -109,13 +106,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if ( WereScrewedGame.debug && Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
-		/////////////////////// DON'T REMOVE FOR RELEASE ///////////////////////
-		if ((Gdx.input.isKeyPressed( Keys.ALT_LEFT ) 
-				|| Gdx.input.isKeyPressed( Keys.ALT_RIGHT )) 
-				&& Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-			changeFullScreen( );
-		}
-		//////////////////////////////////////////////////////////////////////
 		Gdx.gl.glViewport(
 				x,
 				y,  
@@ -135,7 +125,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		shapeRenderer.end( );
 		
 		if ( once && trans != null ) {
-			trans.setSize( scaleMax, scaleMax );
+			trans.setSize( maxScale, maxScale );
 			once = false;
 		}
 		
@@ -189,21 +179,8 @@ public class Screen implements com.badlogic.gdx.Screen {
 		}
 	}
 	
-	protected void changeFullScreen( ) {
-		if (fullscreen) {
-			Gdx.graphics.setDisplayMode( 1280, 720, false );
-			fullscreen = false;
-		}
-		else {
-			DisplayMode mode = Gdx.graphics.getDesktopDisplayMode( );
-			Gdx.graphics.setDisplayMode( mode.width, mode.height, false );
-			fullscreen = true; 
-		}
-		WereScrewedGame.setReconnect( true );
-	}
-	
 	protected void drawTransIn ( SpriteBatch batch ) {
-		scale -= 0.03;
+		scale -= SCALE_ADJUST;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
 		//trans.setSize( scale, scale );
@@ -214,37 +191,37 @@ public class Screen implements com.badlogic.gdx.Screen {
 		trans.draw( batch );
 		if ( scale < SCALE_MIN ) {
 			transInEnd = true;
-			scale = 0.0f;
+			scale = SCALE_MIN;
 		}
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch ) {
-		scale += 0.03;
+		scale += SCALE_ADJUST;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
 		trans.setScale( scale );
 		trans.setPosition( width / 2 - trans.getWidth( ) / 2, 
 				height / 2 - trans.getHeight( ) / 2 );
 		trans.draw( batch );
-		if ( scale > 1.0f ) {
+		if ( scale > SCALE_MAX ) {
 			//transOutEnd = true;
-			scale = 1.0f;
+			scale = SCALE_MAX;
 			if ( Buttons.size( ) > 0 ) 
 				Buttons.get( buttonIndex ).setSelected( true );
 		}
 	}
 	
 	protected void drawTransOut ( SpriteBatch batch, ScreenType screen ) {
-		scale += 0.03;
+		scale += SCALE_ADJUST;
 		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
 		trans.rotate( 5.0f );
 		trans.setScale( scale );
 		trans.setPosition( width / 2 - trans.getWidth( ) / 2, 
 				height / 2 - trans.getHeight( ) / 2 );
 		trans.draw( batch );
-		if ( scale > 1.0f ) {
+		if ( scale > SCALE_MAX ) {
 			//transOutEnd = true;
-			scale = 1.0f;
+			scale = SCALE_MAX;
 			ScreenManager.getInstance( ).show( screen );
 		}
 	}

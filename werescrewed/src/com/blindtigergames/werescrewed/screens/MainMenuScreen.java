@@ -4,7 +4,6 @@ import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -67,7 +66,7 @@ class MainMenuScreen extends MenuScreen {
 		Texture transition = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 				+ "/transitions/trans-gear.png", Texture.class );
 		trans = new Sprite( transition );
-		scaleMax = trans.getHeight( ) * SCALE_MAX;
+		maxScale = trans.getHeight( ) * SCALE_SIZE;
 		scale = 1.0f;
 		transInEnd = false;
 		
