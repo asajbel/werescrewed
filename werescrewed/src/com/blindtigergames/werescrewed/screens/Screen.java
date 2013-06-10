@@ -3,7 +3,6 @@ package com.blindtigergames.werescrewed.screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
@@ -107,13 +106,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if ( WereScrewedGame.debug && Gdx.input.isKeyPressed( Keys.P ) ) {
 			System.exit( 0 );
 		}
-		/////////////////////// DON'T REMOVE FOR RELEASE ///////////////////////
-		if ((Gdx.input.isKeyPressed( Keys.ALT_LEFT ) 
-				|| Gdx.input.isKeyPressed( Keys.ALT_RIGHT )) 
-				&& Gdx.input.isKeyPressed( Keys.ENTER ) ) {
-			changeFullScreen( );
-		}
-		//////////////////////////////////////////////////////////////////////
 		Gdx.gl.glViewport(
 				x,
 				y,  
@@ -185,19 +177,6 @@ public class Screen implements com.badlogic.gdx.Screen {
 		if ( WereScrewedGame.debug &&  Gdx.input.isKeyPressed( Input.Keys.BACKSPACE ) ) {
 			ScreenManager.getInstance( ).show( ScreenType.TROPHY );
 		}
-	}
-	
-	protected void changeFullScreen( ) {
-		if (fullscreen) {
-			Gdx.graphics.setDisplayMode( 1280, 720, false );
-			fullscreen = false;
-		}
-		else {
-			DisplayMode mode = Gdx.graphics.getDesktopDisplayMode( );
-			Gdx.graphics.setDisplayMode( mode.width, mode.height, false );
-			fullscreen = true; 
-		}
-		WereScrewedGame.setReconnect( true );
 	}
 	
 	protected void drawTransIn ( SpriteBatch batch ) {
