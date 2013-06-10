@@ -2,7 +2,6 @@ package com.blindtigergames.werescrewed.entity.screws;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -19,6 +18,7 @@ import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
+import com.blindtigergames.werescrewed.input.mappings.Mapping;
 import com.blindtigergames.werescrewed.puzzles.PuzzleManager;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -137,6 +137,9 @@ public class PuzzleScrew extends Screw {
 		if ( depth > 0 ) {
 			diff = startRegion - region;
 			newDiff = diff - prevDiff;
+			if ( Mapping.isAndroid( ) ) {
+				newDiff *= 10;
+			}
 			if ( newDiff > 10 ) {
 				newDiff = 0;
 			}
@@ -146,7 +149,11 @@ public class PuzzleScrew extends Screw {
 			if ( newDiff != 0 )
 				newDiff /= newDiff;
 			newDiff *= -1;
-			depth += newDiff;
+			if ( Mapping.isAndroid( ) ) {
+				depth += newDiff * 4;
+			} else {
+				depth += newDiff;
+			}
 			soundCounter += Math.abs( newDiff );
 
 			if ( depth < 0 )
@@ -158,6 +165,10 @@ public class PuzzleScrew extends Screw {
 					unscrewSound( diff, 5 );
 				}
 				rotation = rotAfter;
+
+				if ( Mapping.isAndroid( ) ) {
+					rotation *= 2;
+				}
 			}
 			screwStep = depth + 5;
 			puzzleManager.runElement( this, ( float ) depth
@@ -207,7 +218,11 @@ public class PuzzleScrew extends Screw {
 			body.setAngularVelocity( -1 );
 			if ( newDiff != 0 )
 				newDiff /= newDiff;
-			depth += newDiff;
+			if ( Mapping.isAndroid( ) ) {
+				depth += newDiff * 4;
+			} else {
+				depth += newDiff;
+			}
 			soundCounter += newDiff;
 			// System.out.println( soundCounter);
 			// if(soundCounter > maxDepth/8) {
@@ -223,8 +238,12 @@ public class PuzzleScrew extends Screw {
 					screwSound( diff, 5 );
 				}
 				rotation = rotAfter;
+
+				if ( Mapping.isAndroid( ) ) {
+					rotation *= 2;
+				}
 			}
-			screwStep = depth + 6;
+			screwStep = depth + 5;
 			puzzleManager.runElement( this, ( float ) depth
 					/ ( ( float ) maxDepth ) );
 		}

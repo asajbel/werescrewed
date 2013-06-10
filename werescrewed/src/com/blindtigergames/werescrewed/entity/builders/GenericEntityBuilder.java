@@ -14,7 +14,6 @@ import com.blindtigergames.werescrewed.entity.EntityDef;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.mover.IMover;
 import com.blindtigergames.werescrewed.sound.SoundManager;
-import com.blindtigergames.werescrewed.sound.SoundManager.SoundRef;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 
 /**

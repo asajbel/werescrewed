@@ -7,7 +7,6 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -59,7 +58,7 @@ public class DragonScreen extends Screen {
 	Platform balloon1;
 	Skeleton balloon1_super, bodyRoomRotateSkeleton, headSkeleton;
 	PowerSwitch tail3Switch1, tail3Switch2, tail3Switch3, bodyPowerSwitch1,
-			bodyPowerSwitch3, dragonBrainSwitch, dragonBrainSwitch2;
+			bodyPowerSwitch3, dragonBrainSwitch, dragonBrainSwitch2, powerSwitchBalloon1;
 	Platform dragonBrain;
 	RevoluteJoint bodyRoomJoint;
 	EntityParticleEmitter fireballEmitter, brainEmitter1, brainEmitter2,
@@ -71,7 +70,16 @@ public class DragonScreen extends Screen {
 	MouthFire mouthFire;
 	boolean headEvent = false;
 	int headEventTimer = 180;
-
+	
+	boolean balloon2_ss1Unscrewed = false;
+	boolean balloon2_ss2Unscrewed = false;
+	boolean tail_ssLUnscrewed = false;
+	boolean tail_ssRUnscrewed = false;
+	boolean tail2_ssLUnscrewed = false;
+	boolean tail2_ssRUnscrewed = false;
+	boolean tail3_ssLUnscrewed = false;
+	boolean tail3_ssRUnscrewed = false;
+	boolean tail2ToTail3Unscrewed = false;
 	float mouthFireTimer = 0;
 	final float mouthFireDelay = 8f, mouthFireTotalTime = 24f;
 	boolean mouthFireTriggered = false;
@@ -141,9 +149,8 @@ public class DragonScreen extends Screen {
 	@Override
 	public void load( ) {
 		super.load( );
-		if ( bgm == null ) {
-			bgm = Gdx.audio.newMusic( Gdx.files
-					.internal( "data/common/music/waltz.mp3" ) );
+		if (bgm == null){
+			bgm = Gdx.audio.newMusic(Gdx.files.internal("data/levels/dragon/riding.mp3"));
 		}
 		if ( sounds == null ) {
 			sounds = new SoundManager( );
@@ -197,8 +204,8 @@ public class DragonScreen extends Screen {
 		balloon1_super = ( Skeleton ) LevelFactory.entities
 				.get( "balloon1_super" );
 
-		puzzleScrewBalloon1 = ( PuzzleScrew ) LevelFactory.entities
-				.get( "puzzle_screw_balloon1" );
+		powerSwitchBalloon1 = ( PowerSwitch ) LevelFactory.entities
+				.get( "switch_balloon1" );
 
 		tail1Balloon
 				.addMover( balloonMover( tail1Balloon, 200, Util.PI / 32, 0 ) );
@@ -212,8 +219,8 @@ public class DragonScreen extends Screen {
 		// Util.PI/16, 2) );
 		// balloon5_skeleton.addMover( balloonMover(balloon5_skeleton, 800,
 		// Util.PI/32, 0) );
-		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
-				+ "/levels/dragon/riding.mp3", Music.class );
+//		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( )
+//				+ "/levels/dragon/riding.mp3", Music.class );
 	}
 
 	float time;
@@ -366,8 +373,7 @@ public class DragonScreen extends Screen {
 				}
 			}
 		}
-		if ( puzzleScrewBalloon1.getDepth( ) == puzzleScrewBalloon1
-				.getMaxDepth( ) ) {
+		if ( powerSwitchBalloon1.isTurnedOn( ) ) {
 			if ( balloon1_super.currentMover( ) == null ) {
 
 				Platform balloon1LeftHatch = ( Platform ) LevelFactory.entities
@@ -1183,7 +1189,7 @@ public class DragonScreen extends Screen {
 				new Vector2( -1420, -720 ) );
 		addBGSkeleton( headSkeleton );
 
-		scale = 1f / .65f;
+		scale = 1f / .50f;
 		Platform brain = dragonBrain;
 		s = dragon_objects.createSprite( "dragon_brain" );
 		brain.addFGDecal( Sprite.scale( s, scale ), new Vector2( -s.getWidth( )

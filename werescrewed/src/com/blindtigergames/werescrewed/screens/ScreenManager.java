@@ -75,7 +75,6 @@ public final class ScreenManager {
 					dispose( prevScreen );
 					//pauseScreenShown = false;
 				}
-
 			}
 		}
 

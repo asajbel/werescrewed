@@ -40,25 +40,5 @@ public class Main {
 	}
 
 	private static void readConfig( ) {
-		try {
-			String line;
-			BufferedReader reader = new BufferedReader(new FileReader("config"));
-			while ((line = reader.readLine()) != null) { 
-				String[] values = line.split(" "); 
-				if (values[0].equals("fullscreen")) {
-					fullscreen = Boolean.parseBoolean(values[1]); 
-				}
-				if (values[0].equals("debug")) {
-					debug = Boolean.parseBoolean(values[1]); 
-				}
-			}
-			reader.close(); 
-		} catch (FileNotFoundException e) {
-			Gdx.app.log("Main", "No config file found"); 
-			e.printStackTrace();
-		} catch (IOException e) {
-			Gdx.app.log("Reader", "No Line"); 
-			e.printStackTrace();
-		} 
 	}
 }
