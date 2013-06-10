@@ -74,7 +74,7 @@ public class WereScrewedGame extends Game {
 		ScreenManager.getInstance( ).initialize( this );
 		if (preferences.isFullScreen( )) {
 			DisplayMode mode = Gdx.graphics.getDesktopDisplayMode( );
-			Gdx.graphics.setDisplayMode( mode.width, mode.height, false );
+			Gdx.graphics.setDisplayMode( mode.width, mode.height, true );
 		}
 
 		// used to stop auto call of render
