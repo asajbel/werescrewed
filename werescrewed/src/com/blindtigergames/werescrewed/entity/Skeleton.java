@@ -831,9 +831,8 @@ public class Skeleton extends Platform {
 			// child skeletons
 			// if ( isUpdatable || isMacroSkeleton )
 			{
-				for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
-					if ( !setChildSkeletonsToSleep || isUpdatable
-							|| skeleton.dontPutToSleep ) {
+				if ( !setChildSkeletonsToSleep || isUpdatable ) {
+					for ( Skeleton skeleton : childSkeletonMap.values( ) ) {
 						skeleton.draw( batch, deltaTime, camera );
 					}
 				}
