@@ -997,7 +997,7 @@ public class PhysicsTestScreen extends Screen {
 		PowerSwitch pSwitch;
 		for(int i=0;i<states.length;++i){
 			pSwitch = new PowerSwitch( "switch"+i, new Vector2(1300+150*i,30), world );
-			pSwitch.addBeginIAction( new SetRobotStateAction( states[i] ) );
+			pSwitch.setBeginIAction( new SetRobotStateAction( states[i] ) );
 			pSwitch.setRepeatable( true );
 			pSwitch.setActingOnEntity( true );
 			pSwitch.addEntityToTrigger( brow );

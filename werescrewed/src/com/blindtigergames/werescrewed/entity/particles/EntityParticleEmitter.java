@@ -36,6 +36,7 @@ public class EntityParticleEmitter extends Entity {
 	public EntityParticleEmitter( String name, Vector2 positionPixels, Vector2 particleEmitImpulse, World world,
 			boolean active ) {
 		super( name, positionPixels, null, null, false );
+		
 		particles = new ArrayList< EntityParticle >( );
 		this.world = world;
 		constructBody( positionPixels );
@@ -108,6 +109,11 @@ public class EntityParticleEmitter extends Entity {
 					//p.getEntity( ).body.applyLinearImpulse( emitionImpusle, p.getEntity( ).body.getWorldCenter( ) );
 				}
 			}
+		}else{
+			//HOLD THE particle in emitting place.
+			for ( EntityParticle p : particles ) {
+				p.hardReset( );
+			}
 		}
 	}
 	
@@ -137,6 +143,14 @@ public class EntityParticleEmitter extends Entity {
 			if(e.entityType == EntityType.HAZARD){
 				((Hazard)e).setActiveHazard(isActive);
 			}
+		}
+	}
+	
+	public void setEmittingActive(boolean isEmitting){
+		activeEmitting=isEmitting;
+		for ( EntityParticle particle : particles ) {
+			particle.hardReset( );
+			particle.getEntity( ).body.setActive( isEmitting );
 		}
 	}
 }
