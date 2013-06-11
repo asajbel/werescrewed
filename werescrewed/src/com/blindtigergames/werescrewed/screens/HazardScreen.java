@@ -275,8 +275,8 @@ public class HazardScreen implements com.badlogic.gdx.Screen {
 				world );
 		ps.addEntityToTrigger( fallingGear1 );
 		ps.actOnEntity = true;
-		ps.addBeginIAction( new DestroyPlatformJointAction( ) );
-		ps.addEndIAction( new DestroyPlatformJointAction( ) );
+		ps.setBeginIAction( new DestroyPlatformJointAction( ) );
+		ps.setEndIAction( new DestroyPlatformJointAction( ) );
 		// AnchorDeactivateAction
 
 		skeleton.addEventTrigger( et );

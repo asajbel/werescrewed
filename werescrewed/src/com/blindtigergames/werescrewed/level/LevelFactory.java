@@ -1803,10 +1803,10 @@ public class LevelFactory {
 			String action = item.props.get( "beginaction" );
 
 			if ( action.equals( "activate_hazard" ) ) {
-				ps.addBeginIAction( new HazardActivateAction( ) );
+				ps.setBeginIAction( new HazardActivateAction( ) );
 			}
 			if ( action.equals( "activate_mover" ) ) {
-				ps.addBeginIAction( new EntityActivateMoverAction( )  );
+				ps.setBeginIAction( new EntityActivateMoverAction( )  );
 			}
 			
 		}
@@ -1815,11 +1815,11 @@ public class LevelFactory {
 			String action = item.props.get( "endaction" );
 
 			if ( action.equals( "deactivate_hazard" ) ) {
-				ps.addEndIAction( new HazardDeactivateAction( ) );
+				ps.setEndIAction( new HazardDeactivateAction( ) );
 			}
 			
 			if ( action.equals( "deactivate_mover" ) ) {
-				ps.addBeginIAction( new EntityDeactivateMoverAction( )  );
+				ps.setBeginIAction( new EntityDeactivateMoverAction( )  );
 			}
 		}
 

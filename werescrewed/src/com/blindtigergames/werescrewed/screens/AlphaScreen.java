@@ -901,9 +901,9 @@ public class AlphaScreen extends Screen {
 		chestSteamPowerSwitch.addEntityToTrigger( engineSteam );
 		chestSteamPowerSwitch.actOnEntity = true;
 		chestSteamPowerSwitch
-				.addBeginIAction( new EntityActivateMoverAction( ) );
+				.setBeginIAction( new EntityActivateMoverAction( ) );
 		chestSteamPowerSwitch
-				.addEndIAction( new EntityDeactivateMoverAction( ) );
+				.setEndIAction( new EntityDeactivateMoverAction( ) );
 
 		powerSwitchPuzzle1 = ( PowerSwitch ) LevelFactory.entities
 				.get( "powerSwitchPuzzle1" );
@@ -914,15 +914,15 @@ public class AlphaScreen extends Screen {
 		powerSwitchPuzzle1.addEntityToTrigger( chestRotatePlat3 );
 		powerSwitchPuzzle1.addEntityToTrigger( chestRotatePlat1 );
 		powerSwitchPuzzle1
-				.addBeginIAction( new RotateTweenAction( Util.PI / 2 ) );
-		powerSwitchPuzzle1.addEndIAction( new RotateTweenAction( 0 ) );
+				.setBeginIAction( new RotateTweenAction( Util.PI / 2 ) );
+		powerSwitchPuzzle1.setEndIAction( new RotateTweenAction( 0 ) );
 
 		powerSwitchPuzzle2.actOnEntity = true;
 		powerSwitchPuzzle2.addEntityToTrigger( chestRotatePlat3 );
 		powerSwitchPuzzle2.addEntityToTrigger( chestRotatePlat1 );
 		powerSwitchPuzzle2
-				.addBeginIAction( new RotateTweenAction( Util.PI / 2 ) );
-		powerSwitchPuzzle2.addEndIAction( new RotateTweenAction( 0 ) );
+				.setBeginIAction( new RotateTweenAction( Util.PI / 2 ) );
+		powerSwitchPuzzle2.setEndIAction( new RotateTweenAction( 0 ) );
 
 	}
 
@@ -1209,7 +1209,7 @@ public class AlphaScreen extends Screen {
 
 		rightKneeTrapDoorEvent1.addEntityToTrigger( rightKneeTrapDoorSkeleton1 );
 		rightKneeTrapDoorEvent1.actOnEntity = true;
-		rightKneeTrapDoorEvent1.addBeginIAction( new RotateTweenAction(
+		rightKneeTrapDoorEvent1.setBeginIAction( new RotateTweenAction(
 				-Util.PI / 2, 0.8f ) );
 
 		EventTrigger rightKneeTrapDoorEvent2 = ( EventTrigger ) LevelFactory.entities
@@ -1217,7 +1217,7 @@ public class AlphaScreen extends Screen {
 
 		rightKneeTrapDoorEvent2.addEntityToTrigger( rightKneeTrapDoorSkeleton2 );
 		rightKneeTrapDoorEvent2.actOnEntity = true;
-		rightKneeTrapDoorEvent2.addBeginIAction( new RotateTweenAction(
+		rightKneeTrapDoorEvent2.setBeginIAction( new RotateTweenAction(
 				Util.PI / 2, 0.8f ) );
 
 	}
@@ -1628,8 +1628,8 @@ public class AlphaScreen extends Screen {
 				level.world );
 		ps.addEntityToTrigger( fallingGear1 );
 		ps.actOnEntity = true;
-		ps.addBeginIAction( new DestroyPlatformJointAction( ) );
-		ps.addEndIAction( new DestroyPlatformJointAction( ) );
+		ps.setBeginIAction( new DestroyPlatformJointAction( ) );
+		ps.setEndIAction( new DestroyPlatformJointAction( ) );
 		// AnchorDeactivateAction
 
 		chestSkeleton.addEventTrigger( ps );
