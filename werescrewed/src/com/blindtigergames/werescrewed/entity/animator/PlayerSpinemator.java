@@ -250,6 +250,9 @@ public class PlayerSpinemator implements ISpinemator {
 	 * @return The PlayerAnim value that is the current animation
 	 */
 	protected PlayerAnim getCurrentAnim( ) {
+		if (player.isPlayerDead( )) {
+			return PlayerAnim.DEATH; 
+		}
 		switch ( player.getState( ) ) {
 		case Standing:
 			if ( player.getMoveState( ) == PlayerDirection.Left
