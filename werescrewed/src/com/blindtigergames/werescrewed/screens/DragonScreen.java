@@ -1527,7 +1527,7 @@ public class DragonScreen extends Screen {
 		Vector2 legPos = new Vector2( -3 * 1280 + 120 + 34 - 21,
 				-700 + 183 - 63 + 21 );
 		body_lower_skeleton.addFGDecal( body_neck.createSprite( "legs_left" ),
-				legPos.cpy( ) );
+				legPos.cpy( ).add( -103,2 ) );
 		for ( int i = 0; i < 9; ++i ) {
 			// dragon_objects
 			s = body_neck.createSprite( "legs_middle" );

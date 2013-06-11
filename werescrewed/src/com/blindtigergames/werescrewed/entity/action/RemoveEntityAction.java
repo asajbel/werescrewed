@@ -26,11 +26,10 @@ public class RemoveEntityAction implements IAction {
 	 */
 	@Override
 	public void act( Entity entity ) {
-		if ( entity.getEntityType( ) != EntityType.PLAYER ) {
+		if ( entity.getEntityType( ) != EntityType.PLAYER && entity.getEntityType( ) != EntityType.SKELETON ) {
 			if(entity.getEntityType( ) == EntityType.HAZARD && ((Hazard) entity).hazardType == HazardType.ENEMY ){
 				return;
 			}
-			
 			entity.setRemoveNextStep( );
 			// Gdx.app.log( "removing Entity", entity.name );
 		} else {
