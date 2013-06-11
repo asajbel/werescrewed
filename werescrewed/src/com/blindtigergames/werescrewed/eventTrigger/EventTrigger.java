@@ -441,8 +441,9 @@ public class EventTrigger extends Platform {
 	 *            - IAction
 	 * @author Ranveer
 	 */
-	public void addBeginIAction( IAction action ) {
+	public EventTrigger addBeginIAction( IAction action ) {
 		this.beginAction = action;
+		return this;
 	}
 
 	/**
@@ -452,8 +453,9 @@ public class EventTrigger extends Platform {
 	 *            - IAction
 	 * @author Ranveer
 	 */
-	public void addEndIAction( IAction action ) {
+	public EventTrigger addEndIAction( IAction action ) {
 		this.endAction = action;
+		return this;
 	}
 
 	/**

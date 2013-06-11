@@ -36,6 +36,7 @@ import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
+import com.blindtigergames.werescrewed.entity.particles.EntityParticleActivator;
 import com.blindtigergames.werescrewed.entity.particles.EntityParticleEmitter;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
@@ -829,7 +830,11 @@ public class DragonScreen extends Screen {
 		bodySkeleton.addBGDecal( Sprite.scale( s, scale ), new Vector2( 1473,
 				-1198 ) );
 		addBGSkeleton( bodySkeleton );
-
+		
+		
+		
+		//bodySkeleton.getEvent(bodySkeleton.name+"-fg-fader").addBeginIAction( new EntityParticleActivator(true) ).addEntityToTrigger( fireballEmitter );
+		//bodySkeleton.getEvent(bodySkeleton.name+"-fg-fader").addEndIAction( new EntityParticleActivator(false) );
 	}
 
 	void buildAllCannons( ) {
@@ -1569,7 +1574,7 @@ public class DragonScreen extends Screen {
 			fireballEmitter.addParticle( createBoltEnemy( new Vector2(13750, 300).add(0,n*h), i ), 10, 3, i*5 );
 		}
 		level.root.addLooseEntity( fireballEmitter );
-
+		fireballEmitter.setEmittingActive( false );
 		float brain_impulse = 0.1f;
 		Vector2 pos = new Vector2( 23950, 120 );
 		brainEmitter1 = new EntityParticleEmitter( "brainEmitter1",
