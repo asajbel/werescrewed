@@ -1581,7 +1581,7 @@ public class DragonScreen extends Screen {
 		TextureAtlas objects = WereScrewedGame.manager
 				.getAtlas( "dragon_objects" );
 		ground.addFGDecal( Sprite.scale( objects.createSprite( "bridge" ), 3 ),
-				new Vector2( -2100, -277 * 3 - 26 ) );
+				new Vector2( -1550, -277 * 3 - 26 ) );
 		ground.setVisible( false );
 		addFGEntity( ground );
 	}
