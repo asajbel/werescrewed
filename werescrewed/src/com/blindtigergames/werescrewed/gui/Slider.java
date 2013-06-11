@@ -78,6 +78,9 @@ public class Slider extends OptionControl {
 				xPos = minPos;
 			screw.setX( xPos );
 			float val = SoundManager.globalVolume.get( type ) - 0.01f;
+			if ( val < 0 ) {
+				val = 0f;
+			}
 			SoundManager.globalVolume.put( type, val ); 
 			WereScrewedGame.getPrefs( ).setSoundValue( type.name( ), val ); 
 		}
@@ -91,6 +94,9 @@ public class Slider extends OptionControl {
 				xPos = maxPos;
 			screw.setX( xPos );
 			float val = SoundManager.globalVolume.get( type ) + 0.01f;
+			if ( val > 1.0 ){
+				val = 1.0f;
+			}
 			SoundManager.globalVolume.put( type, val ); 
 			WereScrewedGame.getPrefs( ).setSoundValue( type.name( ), val );
 		}

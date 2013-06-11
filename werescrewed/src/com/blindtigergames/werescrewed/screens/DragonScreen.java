@@ -164,6 +164,11 @@ public class DragonScreen extends Screen {
 			sounds.getSound( "roar_calm",  WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_calm.ogg").setRange( 80000 );
 			sounds.getSound( "roar_angry", WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_angry.ogg").setRange( 8000 );
 			sounds.getSound( "jaw_close", WereScrewedGame.dirHandle + "/levels/dragon/sounds/jawClose.ogg" ).setRange( 8000 );
+			sounds.loadMultiSound( "fire_breath", 0, 
+									2.0f, WereScrewedGame.dirHandle + "/levels/dragon/sounds/fire-breath-start.ogg", 
+									0.9f, WereScrewedGame.dirHandle + "/levels/dragon/sounds/fire-breath-loop.ogg", 
+									1.4f, WereScrewedGame.dirHandle + "/levels/dragon/sounds/fire-breath-end.ogg", 
+									-0.1f );
 			//sounds.getSound( "jaw_open",WereScrewedGame.dirHandle + "/levels/dragon/sounds/cannon.ogg" );
 		}
 
@@ -285,6 +290,7 @@ public class DragonScreen extends Screen {
 			if ( jawStructureScrew.getDepth( ) == 0 ) {
 				jaw_skeleton.body.setType( BodyType.DynamicBody );
 				headEvent = true;
+				sounds.playSound( "roar_angry" );
 			}
 		}
 		
@@ -295,14 +301,22 @@ public class DragonScreen extends Screen {
 			Vector2 roarPos = new Vector2(25000, 900);
 			Vector2 camPos = new Vector2(Camera.getCurrentCameraCoords( ).x, Camera.getCurrentCameraCoords( ).y);
 			SoundRef roarRef;
-			if (roarPos.dst( camPos ) < 3000.0f){
+			boolean fireSound;
+			if (roarPos.dst( camPos ) < 4000.0f){
 				roarRef = sounds.getSound( "roar_angry" );
+				fireSound = (jaw_skeleton.body != null);
 			} else {
 				roarRef = sounds.getSound( "roar_calm" );
+				fireSound = false;
 			}
 			float volume = roarRef.calculatePositionalVolume( roarPos, Camera.CAMERA_RECT );
 			roarRef.setVolume( volume );
 			roarRef.play( false );
+			if (fireSound){
+				SoundRef fireRef = sounds.getSound("fire_breath");
+				fireRef.setVolume( volume );
+				fireRef.play( false );
+			}
 			mouthFire.setActiveHazard( true );
 			mouthFireTriggered = true;
 		}
@@ -343,6 +357,7 @@ public class DragonScreen extends Screen {
 		if ( dragonBrainSwitch.isTurnedOn( ) && dragonBrainSwitch2.isTurnedOn( ) ) {
 
 			if ( dragonBrain.currentMover( ) == null ) {
+				sounds.playSound( "roar_angry" );
 				Timeline t = Timeline.createSequence( );
 
 				t.push( Tween.to( dragonBrain, PlatformAccessor.LOCAL_ROT, 1f )
