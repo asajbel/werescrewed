@@ -564,7 +564,7 @@ public class SoundManager implements Disposable {
 				setState(2);
 			}
 			if (state == 2 && time > midDelay){//Mid Delay
-				if (looping){
+				if (looping || loopDelay > 0.0f){
 					//If looping, loop middle sound and go to state 3
 					SoundManager.addSoundToLoops(this);
 					setState(3);

@@ -771,7 +771,6 @@ public class Player extends Entity {
 								* body.getAngle( ) );
 					}
 				}
-				Gdx.app.log( name, " hi" );
 				tutorial.draw( batch );
 			}
 		}
