@@ -191,8 +191,8 @@ public class ProgressManager {
 		animTime += deltaTime;
 		noPlayersDead = true;
 		int index = 0;
-		while ( this.currentCheckPoint == null && index < checkPoints.size( ) ) {
-			if ( checkPoints.get( index ) == null ) {
+		while ( (this.currentCheckPoint.isRemoved( ) || this.currentCheckPoint == null ) && index < checkPoints.size( ) ) {
+			if ( checkPoints.get( index ).body == null && checkPoints.get( index ).isRemoved( ) ) {
 				checkPoints.remove( index );
 			} else {
 				index++;
@@ -462,7 +462,9 @@ public class ProgressManager {
 	private void removeRezScrew( ) {
 		for ( String key : new ArrayList< String >( rezScrewMap.keySet( ) ) ) {
 			if ( !rezScrewMap.get( key ).getDeadPlayer( ).isPlayerDead( ) ) {
-				rezScrewMap.get( key ).remove( );
+				if ( !rezScrewMap.get( key ).isRemoved( ) ) {
+					rezScrewMap.get( key ).remove( );
+				}
 				if ( rezScrewMap.get( key ).isRemoved( ) ) {
 					rezScrewMap.remove( key );
 				}

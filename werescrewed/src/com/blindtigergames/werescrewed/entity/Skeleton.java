@@ -704,14 +704,16 @@ public class Skeleton extends Platform {
 		// index++;
 		// }
 		// }
-		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
-			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
-		}
-		world.destroyBody( body );
-		this.fgDecals.clear( );
-		this.bgDecals.clear( );
-		this.bgSprite = null;
-		this.fgSprite = null;
+		//while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+		//	world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+		//}
+		body.setActive( false );
+		body.setAwake( true );
+		//world.destroyBody( body );
+		//this.fgDecals.clear( );
+		//this.bgDecals.clear( );
+		//this.bgSprite = null;
+		//this.fgSprite = null;
 		this.removed = true;
 	}
 

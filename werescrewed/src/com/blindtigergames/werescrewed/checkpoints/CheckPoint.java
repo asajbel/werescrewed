@@ -111,7 +111,7 @@ public class CheckPoint extends Entity {
 	public Entity getEntity( ) {
 		return entity;
 	}
-
+	
 	/**
 	 * returns whether the checkpoint is the most recent active checkpoint
 	 * 
