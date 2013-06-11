@@ -391,6 +391,12 @@ public class TiledPlatform extends Platform {
 		}
 	}
 	
+	public void setTileColor(Color c){
+		for(Tile t:tiles){
+			t.tileSprite.setColor( c );
+		}
+	}
+	
 	public void setTilesBlack(){
 		this.setTileColor(0,0,0);
 	}
