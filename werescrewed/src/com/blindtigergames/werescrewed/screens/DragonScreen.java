@@ -1583,7 +1583,7 @@ public class DragonScreen extends Screen {
 			fireballEmitter.addParticle( createBoltEnemy( new Vector2(13750, 300).add(0,n*h), i ), 10, 3, i*5 );
 		}
 		level.root.addLooseEntity( fireballEmitter );
-		fireballEmitter.setEmittingActive( false );
+	//	fireballEmitter.setEmittingActive( false );
 		float brain_impulse = 0.1f;
 		Vector2 pos = new Vector2( 23950, 120 );
 		brainEmitter1 = new EntityParticleEmitter( "brainEmitter1",

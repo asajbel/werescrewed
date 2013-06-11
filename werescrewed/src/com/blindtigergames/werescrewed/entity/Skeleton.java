@@ -394,7 +394,7 @@ public class Skeleton extends Platform {
 	public boolean isRemoved( ) {
 		return removed;
 	}
-	
+
 	/**
 	 * This update function is ONLY called on the very root skeleton, it takes
 	 * care of the child sksletons
@@ -419,8 +419,12 @@ public class Skeleton extends Platform {
 								- ( boundingRect.height / 2.0f );
 						if ( !boundingRect.overlaps( lastCameraRect ) ) {
 							isUpdatable = false;
-							if ( !wasInactive )
+							if ( !wasInactive ) {
+								wasInactive = true;
 								setSkeletonEntitiesToSleepRecursively( );
+							}
+						} else {
+							isUpdatable = true;
 						}
 					} else if ( !useBoundingRect && !isUpdatable
 							&& this.setChildSkeletonsToSleep && !wasInactive ) {
@@ -441,6 +445,42 @@ public class Skeleton extends Platform {
 					}
 
 					if ( isUpdatable ) {
+						for ( Rope rope : ropeMap.values( ) ) {
+							// TODO: ropes need to be able to be deleted
+							if ( wasInactive ) {
+								boolean nextLink = true;
+								int index = 0;
+								if ( rope.getEndAttachment( ) != null ) {
+									if ( !rope.getEndAttachment( ).body
+											.isActive( ) ) {
+										rope.getEndAttachment( ).body
+												.setActive( true );
+									}
+									// if ( rope.getEndAttachment(
+									// ).body.isAwake( ) ) {
+									// rope.getEndAttachment( ).body.setAwake(
+									// false );
+									// }
+								}
+								while ( nextLink ) {
+									if ( !rope.getLink( index ).body.isActive( ) ) {
+										rope.getLink( index ).body
+												.setActive( true );
+									}
+									// if ( rope.getLink( index ).body.isAwake(
+									// ) ) {
+									// rope.getLink( index ).body.setAwake(
+									// false );
+									// }
+									if ( rope.getLastLink( ) == rope
+											.getLink( index ) ) {
+										nextLink = false;
+									}
+									index++;
+								}
+							}
+							rope.update( deltaTime );
+						}
 						for ( Platform platform : kinematicPlatformMap.values( ) ) {
 							if ( platform.removeNextStep ) {
 								entitiesToRemove.add( platform );
@@ -522,35 +562,6 @@ public class Skeleton extends Platform {
 								}
 								screw.update( deltaTime );
 							}
-						}
-						for ( Rope rope : ropeMap.values( ) ) {
-							// TODO: ropes need to be able to be deleted
-							if ( wasInactive ) {
-								boolean nextLink = true;
-								int index = 0;
-								if ( rope.getEndAttachment( ) != null ) {
-									if ( !rope.getEndAttachment( ).body.isActive( ) ) {
-										rope.getEndAttachment( ).body.setActive( true );
-									}
-									if ( rope.getEndAttachment( ).body.isAwake( ) ) {
-										rope.getEndAttachment( ).body.setAwake( false );
-									}
-								}
-								while ( nextLink ) {
-									if ( !rope.getLink( index ).body.isActive( ) ) {
-										rope.getLink( index ).body.setActive( true );
-									}
-									if ( rope.getLink( index ).body.isAwake( ) ) {
-										rope.getLink( index ).body.setAwake( false );
-									}
-									if ( rope.getLastLink( ) == rope
-											.getLink( index ) ) {
-										nextLink = false;
-									}
-									index++;
-								}
-							}
-							rope.update( deltaTime );
 						}
 						if ( wasInactive ) {
 							if ( !body.isActive( ) ) {
@@ -704,16 +715,16 @@ public class Skeleton extends Platform {
 		// index++;
 		// }
 		// }
-		//while ( body.getJointList( ).iterator( ).hasNext( ) ) {
-		//	world.destroyJoint( body.getJointList( ).get( 0 ).joint );
-		//}
+		// while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+		// world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+		// }
 		body.setActive( false );
 		body.setAwake( true );
-		//world.destroyBody( body );
-		//this.fgDecals.clear( );
-		//this.bgDecals.clear( );
-		//this.bgSprite = null;
-		//this.fgSprite = null;
+		// world.destroyBody( body );
+		// this.fgDecals.clear( );
+		// this.bgDecals.clear( );
+		// this.bgSprite = null;
+		// this.fgSprite = null;
 		this.removed = true;
 	}
 
@@ -774,11 +785,11 @@ public class Skeleton extends Platform {
 				boolean nextLink = true;
 				int index = 0;
 				if ( rope.getEndAttachment( ) != null ) {
-					rope.getEndAttachment( ).body.setAwake( true );
+					// rope.getEndAttachment( ).body.setAwake( true );
 					rope.getEndAttachment( ).body.setActive( false );
 				}
 				while ( nextLink ) {
-					rope.getLink( index ).body.setAwake( true );
+					// rope.getLink( index ).body.setAwake( true );
 					rope.getLink( index ).body.setActive( false );
 					if ( rope.getLastLink( ) == rope.getLink( index ) ) {
 						nextLink = false;
@@ -1060,8 +1071,8 @@ public class Skeleton extends Platform {
 	public boolean isFadingSkel( ) {
 		return applyFadeToFGDecals;
 	}
-	
-	public EventTrigger getEvent(String eventName){
+
+	public EventTrigger getEvent( String eventName ) {
 		return eventMap.get( eventName );
 	}
 }

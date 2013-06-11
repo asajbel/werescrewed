@@ -581,9 +581,10 @@ public class Player extends Entity {
 				setMoverAtCurrentState( null );
 				Filter filter = new Filter( );
 				for ( Fixture f : body.getFixtureList( ) ) {
-					f.setSensor( true );
 					filter.categoryBits = Util.CATEGORY_SUBPLAYER;
-					filter.maskBits = Util.CATEGORY_CHECKPOINTS | Util.CATEGORY_SCREWS;
+					filter.maskBits = Util.CATEGORY_CHECKPOINTS 
+							| Util.CATEGORY_SCREWS 
+							| Util.CATEGORY_PLATFORMS;
 					f.setFilterData( filter );
 				}
 				playerState = PlayerState.Dead;
@@ -1164,7 +1165,7 @@ public class Player extends Entity {
 						body.getLinearVelocity( ).y );
 			}
 		}
-		if ( prevButton == null ) {
+		if ( prevButton == null  || isDead) {
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
 				frictionCounter += FRICTION_INCREMENT;
 				if ( frictionCounter > PLAYER_FRICTION ) {
