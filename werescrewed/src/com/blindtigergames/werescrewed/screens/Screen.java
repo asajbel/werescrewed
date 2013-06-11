@@ -205,7 +205,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		trans.draw( batch );
 		if ( scale > SCALE_MAX ) {
 			//transOutEnd = true;
-			scale = SCALE_MAX;
+			//scale = SCALE_MAX;
 			if ( Buttons.size( ) > 0 ) 
 				Buttons.get( buttonIndex ).setSelected( true );
 		}
@@ -221,7 +221,7 @@ public class Screen implements com.badlogic.gdx.Screen {
 		trans.draw( batch );
 		if ( scale > SCALE_MAX ) {
 			//transOutEnd = true;
-			scale = SCALE_MAX;
+			//scale = SCALE_MAX;
 			ScreenManager.getInstance( ).show( screen );
 		}
 	}

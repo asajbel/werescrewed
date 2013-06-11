@@ -940,6 +940,10 @@ public class LevelFactory {
 			out.setTilesBlack();
 		}
 		
+		if(item.props.containsKey( "gold" )){
+			out.setTilesGold();
+		}
+		
 		if(item.props.containsKey("color")){
 			
 		}
