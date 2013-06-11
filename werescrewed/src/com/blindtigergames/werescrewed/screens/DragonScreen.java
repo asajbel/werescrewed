@@ -1623,8 +1623,8 @@ public class DragonScreen extends Screen {
 		
 		//change body skeleton to fireball emitter
 		Skeleton bodySkeleton = (Skeleton)LevelFactory.entities.get( "body_skeleton" );
-		bodySkeleton.getEvent(bodySkeleton.name+"-fg-fader").setBeginIAction( new EntityParticleActivator(true) ).addEntityToTrigger( fireballEmitter );
-		bodySkeleton.getEvent(bodySkeleton.name+"-fg-fader").setEndIAction( new EntityParticleActivator(false) );
+		//bodySkeleton.getEvent(bodySkeleton.name+"-fg-fader").setBeginIAction( new EntityParticleActivator(true) ).addEntityToTrigger( fireballEmitter );
+		//bodySkeleton.getEvent(bodySkeleton.name+"-fg-fader").setEndIAction( new EntityParticleActivator(false) );
 	
 		EventTrigger headFireballEvent;
 		//headFireballEvent.setBeginIAction( new EntityParticleActivator(true) ).addEntitiesToTrigger( brainEmitter1,brainEmitter2,brainEmitter3,brainEmitter4 );
