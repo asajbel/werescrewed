@@ -152,10 +152,6 @@ public class StructureScrew extends Screw {
 					screwSound( diff, 5 );
 				}
 				rotation = rotAfter;
-
-				if ( Mapping.isAndroid( ) ) {
-					rotation *= 2;
-				}
 			}
 			screwStep = depth + 5;
 		}
@@ -210,10 +206,6 @@ public class StructureScrew extends Screw {
 					unscrewSound( diff, 5 );
 				}
 				rotation = rotAfter;
-
-				if ( Mapping.isAndroid( ) ) {
-					rotation *= 2;
-				}
 			}
 
 			screwStep = depth + 5;

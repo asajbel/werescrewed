@@ -35,6 +35,7 @@ import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.input.MyControllerListener;
 import com.blindtigergames.werescrewed.input.PlayerInputHandler;
 import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundRef;
 import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.Metrics.TrophyMetric;
 import com.blindtigergames.werescrewed.util.Util;
@@ -2258,6 +2259,8 @@ public class Player extends Entity {
 
 	public void footstepSound( float a ) {
 		float amount = ( float ) Math.pow( Math.abs( a ), 2.0 );
+		SoundRef step1 = sounds.getSound( "footstep1" );
+		SoundRef step2 = sounds.getSound( "footstep2" );
 		if ( isGrounded( ) && this.playerState != PlayerState.Screwing ) {
 			float rate = FOOTSTEP_DELAY;
 			float pitch = FOOTSTEP_PITCH_DROP
@@ -2266,13 +2269,18 @@ public class Player extends Entity {
 							.nextFloat( ) ) - 1f ) );
 			float vol = FOOTSTEP_VOLUME_DROP + amount
 					* ( 1.0f - FOOTSTEP_VOLUME_DROP );
+			step1.setEndDelay( rate );
+			step2.setEndDelay( rate );
 			if ( sounds.isDelayed( "footstep1" ) ) {
-				sounds.playSound( "footstep2",
-						sounds.randomSoundId( "footstep2" ), rate, vol, pitch );
+				step2.setVolume( vol );
+				step2.setPitch( pitch );
+				step2.play( false );
 			} else {
-				sounds.playSound( "footstep1",
-						sounds.randomSoundId( "footstep1" ), rate, vol, pitch );
-				sounds.setDelay( "footstep2", 0.5f * rate );
+				step1.setVolume( vol );
+				step1.setPitch( pitch );
+				step1.play( false );
+				step2.delay( );
+				step2.setTime( 0.5f * rate );
 			}
 		}
 	}

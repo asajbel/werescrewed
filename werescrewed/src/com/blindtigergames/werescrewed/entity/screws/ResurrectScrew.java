@@ -95,7 +95,7 @@ public class ResurrectScrew extends Screw {
 	public void loadSounds(){
 		sounds = new SoundManager( );
 		sounds.getSound( "screwing", WereScrewedGame.dirHandle
-				+ "/common/sounds/rezzScrew.ogg" );
+				+ "/common/sounds/rezzScrew.ogg" ).setInternalVolume( 0.40f );
 		sounds.getSound( "attach", WereScrewedGame.dirHandle
 				+ "/common/sounds/screwAtt.ogg" );
 		sounds.getSound( "detach", WereScrewedGame.dirHandle
@@ -159,7 +159,7 @@ public class ResurrectScrew extends Screw {
 				rotation += ( -newDiff * 5 );
 			}
 			screwStep = depth + 5;
-			if ( deadPlayer.isPlayerDead( ) ) {
+			if ( deadPlayer.isPlayerDead( ) && !this.removeNextStep ) {
 				playerMover.moveAnalog( this, ( float ) depth
 						/ ( ( float ) maxDepth ), deadPlayer.body );
 			}

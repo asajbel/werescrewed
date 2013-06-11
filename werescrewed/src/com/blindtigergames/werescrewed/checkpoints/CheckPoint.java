@@ -84,6 +84,13 @@ public class CheckPoint extends Entity {
 	}
 
 	/**
+	 * sets the next checkpoint to one after this one
+	 */
+	public void setNextCheckPointInPM( ) {
+		progressManager.setNextChkpt( this );
+	}
+	
+	/**
 	 * activates this checkpoint if not already active
 	 */
 	public void hitPlayer( Player player ) {
@@ -103,13 +110,6 @@ public class CheckPoint extends Entity {
 	 */
 	public Entity getEntity( ) {
 		return entity;
-	}
-
-	/**
-	 * calls the progress manager and sets next checkpoint if this is removed
-	 */
-	public void removeThisFromPM( ) {
-		progressManager.setNextChkpt( );
 	}
 	
 	/**

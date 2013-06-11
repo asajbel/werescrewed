@@ -391,6 +391,10 @@ public class Skeleton extends Platform {
 		return false;
 	}
 
+	public boolean isRemoved( ) {
+		return removed;
+	}
+	
 	/**
 	 * This update function is ONLY called on the very root skeleton, it takes
 	 * care of the child sksletons
@@ -633,7 +637,7 @@ public class Skeleton extends Platform {
 							case CHECKPOINT:
 								CheckPoint chkpt = checkpointMap
 										.remove( e.name );
-								chkpt.removeThisFromPM( );
+								chkpt.setNextCheckPointInPM( );
 								chkpt.remove( );
 								break;
 							default:
@@ -674,7 +678,7 @@ public class Skeleton extends Platform {
 		}
 		screwMap.clear( );
 		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-			chkpt.removeThisFromPM( );
+			chkpt.setNextCheckPointInPM( );
 			chkpt.remove( );
 		}
 		checkpointMap.clear( );
@@ -700,14 +704,16 @@ public class Skeleton extends Platform {
 		// index++;
 		// }
 		// }
-		while ( body.getJointList( ).iterator( ).hasNext( ) ) {
-			world.destroyJoint( body.getJointList( ).get( 0 ).joint );
-		}
-		world.destroyBody( body );
-		this.fgDecals.clear( );
-		this.bgDecals.clear( );
-		this.bgSprite = null;
-		this.fgSprite = null;
+		//while ( body.getJointList( ).iterator( ).hasNext( ) ) {
+		//	world.destroyJoint( body.getJointList( ).get( 0 ).joint );
+		//}
+		body.setActive( false );
+		body.setAwake( true );
+		//world.destroyBody( body );
+		//this.fgDecals.clear( );
+		//this.bgDecals.clear( );
+		//this.bgSprite = null;
+		//this.fgSprite = null;
 		this.removed = true;
 	}
 
@@ -748,8 +754,12 @@ public class Skeleton extends Platform {
 					if ( this.useBoundingRect ) {
 						if ( inRectangleBounds( this.boundingRect,
 								screw.getPositionPixel( ) ) ) {
-							screw.body.setAwake( true );
-							screw.body.setActive( false );
+							if ( screw.getDepth( ) >= 0 ) {
+								screw.body.setAwake( true );
+								screw.body.setActive( false );
+							} else {
+								screw.dontPutToSleep = true;
+							}
 						} else {
 							screw.dontPutToSleep = true;
 						}
@@ -959,7 +969,6 @@ public class Skeleton extends Platform {
 			screw.dispose( );
 		}
 		for ( CheckPoint chkpt : checkpointMap.values( ) ) {
-			chkpt.removeThisFromPM( );
 			chkpt.dispose( );
 		}
 		screwMap.clear( );

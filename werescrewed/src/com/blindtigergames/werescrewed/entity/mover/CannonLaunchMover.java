@@ -8,6 +8,7 @@ import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
 import com.blindtigergames.werescrewed.entity.screws.Screw;
 import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundRef;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class CannonLaunchMover implements IMover {
@@ -27,7 +28,6 @@ public class CannonLaunchMover implements IMover {
 
 	@Override
 	public void move( float deltaTime, Body body ) {
-		sounds.update(deltaTime);
 		delay -= deltaTime;
 		if ( delay <= 0f ) {
 			// Gdx.app.log( "CannonLaunchMover", "LAUNCHING!" );
@@ -37,10 +37,12 @@ public class CannonLaunchMover implements IMover {
 			( ( Entity ) ( body.getUserData( ) ) ).setMoverNullAtCurrentState( ); // delete
 																					// this
 																					// mover!
-			sounds.playSound( "launch" );
+			SoundRef launch = sounds.getSound( "launch" );
+			launch.setVolume(1.0f);
+			launch.play( true );
 			cannon.addBehindParticleEffect( "cannon", true, true ).start( );
 		}
-
+		sounds.update(deltaTime);
 	}
 
 	@Override
