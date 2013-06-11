@@ -163,12 +163,17 @@ public class PlayerSpinemator implements ISpinemator {
 			break;
 		}
 
+
+		if (next == PlayerAnim.SCREWING_HANG || next == PlayerAnim.SCREWING_GROUND) {
+			animState = ScrewState.READY; 
+			readyTime = draw.getDuration( );
+		}
 		if ( player.getExtraState( ) == ConcurrentState.ScrewReady
-				&& player.getState( ) != PlayerState.Screwing ) {
+				&& player.getExtraState( ) == ConcurrentState.ScrewReady ) {
 			switch ( animState ) {
 			case IGNORE:
-				readyTime = 0f;
 				draw.apply( skel, readyTime, PlayerAnim.SCREW_DRAW.loopBool );
+				readyTime = 0f;
 				animState = ScrewState.DRAW;
 				break;
 			case DRAW:
@@ -200,20 +205,19 @@ public class PlayerSpinemator implements ISpinemator {
 				break;
 			case DRAW:
 				float alpha = 1 - readyTime / draw.getDuration( );
-				readyTime = stow.getDuration( ) * alpha;
 				stow.mix( skel, readyTime, PlayerAnim.SCREW_STOW.loopBool,
 						alpha );
+				readyTime = stow.getDuration( ) * alpha;
 				animState = ScrewState.STOW;
 				break;
 			case READY:
 				readyTime = 0f;
-				stow.apply( skel, readyTime, PlayerAnim.SCREW_STOW.loopBool );
 				animState = ScrewState.STOW;
 				break;
 			case STOW:
 				if ( readyTime < draw.getDuration( ) ) {
-					readyTime += delta;
 					stow.apply( skel, readyTime, PlayerAnim.SCREW_STOW.loopBool );
+					readyTime += delta;
 				} else {
 					animState = ScrewState.IGNORE;
 				}
