@@ -396,7 +396,7 @@ public class TiledPlatform extends Platform {
 	}
 	
 	public void setTilesGold(){
-		this.setTileColor(187, 59, 48);
+		//this.setTileColor(30, 102, 226);
 	}
 
 }
