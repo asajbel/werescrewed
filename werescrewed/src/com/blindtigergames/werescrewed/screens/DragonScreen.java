@@ -83,8 +83,8 @@ public class DragonScreen extends Screen {
 	boolean tail2ToTail3Unscrewed = false;
 	float mouthFireTimer=0;
 	final float mouthFireDelay, mouthFireTotalTime;
-	boolean mouthFireTriggered=false;
-	boolean oneTimeTail2Fire1 = true;
+	boolean mouthFireTriggered = false;
+	boolean oneTimeTail2Fire1 = true, headAnchorEvent = false;;
 	// the numbers here correspond to gleed numbers
 	Fire tail3Fire2, tail3Fire3, tail3Fire4, tail3Fire5, tail3Fire6;
 
@@ -328,13 +328,15 @@ public class DragonScreen extends Screen {
 				headSkeleton.anchors.get( 0 ).activate( );
 				headEvent = false;
 				
+				headAnchorEvent = true;
 
 			} else {
 
 				headSkeleton.setFade( true );
 			}
-		}else if (!headSkeleton.anchors.get( 0 ).activated){
+		}else if (!headSkeleton.anchors.get( 0 ).activated && headAnchorEvent){
 			headSkeleton.setFade( true );
+			headAnchorEvent = false;
 		}
 		
 
