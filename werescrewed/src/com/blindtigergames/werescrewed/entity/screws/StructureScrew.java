@@ -18,7 +18,6 @@ import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
-import com.blindtigergames.werescrewed.input.mappings.Mapping;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -131,29 +130,14 @@ public class StructureScrew extends Screw {
 		}
 
 		if ( depth < maxDepth && depth > 0 ) {
-			diff = startRegion - region;
-			newDiff = diff - prevDiff;
-			if ( newDiff < -10 ) {
-				newDiff = 0;
-			}
-			prevDiff = diff;
-
 			// body.setAngularVelocity( -1 );
-			if ( newDiff != 0 )
-				newDiff /= newDiff;
-			if ( Mapping.isAndroid( ) ) {
-				depth += newDiff * 4;
-			} else {
-				depth += newDiff;
+			depth += 1;
+			int rotAfter = rotation - 10;
+			if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
+				screwSound( diff, 5 );
 			}
-			if ( diff != 0 ) {
-				int rotAfter = rotation + ( -newDiff * 5 );
-				if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
-					screwSound( diff, 5 );
-				}
-				rotation = rotAfter;
-			}
-			screwStep = depth + 5;
+			rotation = rotAfter;
+			screwStep = depth + 6;
 		}
 
 	}
@@ -181,33 +165,14 @@ public class StructureScrew extends Screw {
 			prevDiff = 0;
 		}
 
-		if ( depth > 0 ) {
-			diff = startRegion - region;
-			newDiff = diff - prevDiff;
-			if ( newDiff > 10 ) {
-				newDiff = 0;
-			}
-			prevDiff = diff;
-
+		if ( depth > -10 ) {
 			// body.setAngularVelocity( 1 );
-			if ( newDiff != 0 )
-				newDiff /= newDiff;
-			newDiff *= -1;
-
-			if ( Mapping.isAndroid( ) ) {
-				depth += newDiff * 4;
-			} else {
-				depth += newDiff;
+			depth -= 1;
+			int rotAfter = rotation + 10;
+			if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
+				screwSound( diff, 5 );
 			}
-			spriteRegion += region;
-			if ( diff != 0 ) {
-				int rotAfter = rotation + ( -newDiff * 5 );
-				if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
-					unscrewSound( diff, 5 );
-				}
-				rotation = rotAfter;
-			}
-
+			rotation = rotAfter;
 			screwStep = depth + 5;
 		}
 
