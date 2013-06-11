@@ -80,8 +80,9 @@ public class OptionButton extends Button {
 				cursorPosition.y );
 		
 		control.draw( batch );
-		if ( ( isIntersect && ( Gdx.input.isTouched( ) || Gdx.input
-				.isButtonPressed( Buttons.LEFT ) ) ) || selected ) {
+		//if ( ( isIntersect && ( Gdx.input.isTouched( ) || Gdx.input
+		//		.isButtonPressed( Buttons.LEFT ) ) ) || selected ) {
+		if ( selected ) {
 			selected = false;
 			control.setActive( true );
 		}
