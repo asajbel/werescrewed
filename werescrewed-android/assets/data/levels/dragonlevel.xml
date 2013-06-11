@@ -34,7 +34,7 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="tail_skeleton_super" Visible="false">
+                <Item xsi:type="RectangleItem" Name="tail_skeleton_super" Visible="true">
                     <Position>
                         <X>5360</X>
                         <Y>-3136</Y>
@@ -997,7 +997,7 @@
                 <Item xsi:type="PathItem" Name="balloon2" Visible="true">
                     <Position>
                         <X>1296</X>
-                        <Y>-3120</Y>
+                        <Y>-3152</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1047,35 +1047,35 @@
                     <WorldPoints>
                         <Vector2>
                             <X>1296</X>
-                            <Y>-3120</Y>
+                            <Y>-3152</Y>
                         </Vector2>
                         <Vector2>
                             <X>669.4375</X>
-                            <Y>-3120</Y>
+                            <Y>-3152</Y>
                         </Vector2>
                         <Vector2>
                             <X>838.71875</X>
-                            <Y>-2893.38062</Y>
+                            <Y>-2925.38062</Y>
                         </Vector2>
                         <Vector2>
                             <X>1746.61938</X>
-                            <Y>-2893.38062</Y>
+                            <Y>-2925.38062</Y>
                         </Vector2>
                         <Vector2>
                             <X>1913.22437</X>
-                            <Y>-3136</Y>
+                            <Y>-3168</Y>
                         </Vector2>
                         <Vector2>
                             <X>1746.61938</X>
-                            <Y>-3385.28125</Y>
+                            <Y>-3417.28125</Y>
                         </Vector2>
                         <Vector2>
                             <X>845.3806</X>
-                            <Y>-3385.28125</Y>
+                            <Y>-3417.28125</Y>
                         </Vector2>
                         <Vector2>
                             <X>669.4375</X>
-                            <Y>-3120</Y>
+                            <Y>-3152</Y>
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
@@ -1218,7 +1218,7 @@
                 <Item xsi:type="TextureItem" Name="balloon2_rope1" Visible="true">
                     <Position>
                         <X>864</X>
-                        <Y>-2896</Y>
+                        <Y>-2928</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1228,16 +1228,16 @@
                             <string>balloon2_super</string>
                         </Property>
                         <Property Name="links" Type="string" Description="">
-                            <string>5</string>
+                            <string>6</string>
                         </Property>
                         <Property Name="attachedto" Type="string" Description="">
                             <string>balloon2</string>
                         </Property>
-                        <Property Name="createscrewthird" Type="string" Description="">
-                            <string />
-                        </Property>
                         <Property Name="linkheight" Type="string" Description="">
                             <string>128</string>
+                        </Property>
+                        <Property Name="createscrewsecond" Type="string" Description="">
+                            <string />
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -1264,7 +1264,7 @@
                 <Item xsi:type="TextureItem" Name="balloon2_rope2" Visible="true">
                     <Position>
                         <X>1712</X>
-                        <Y>-2896</Y>
+                        <Y>-2928</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -1274,12 +1274,12 @@
                             <string>balloon2_super</string>
                         </Property>
                         <Property Name="links" Type="string" Description="">
-                            <string>5</string>
+                            <string>6</string>
                         </Property>
                         <Property Name="attachedto" Type="string" Description="">
                             <string>balloon2</string>
                         </Property>
-                        <Property Name="createscrewthird" Type="string" Description="">
+                        <Property Name="createscrewsecond" Type="string" Description="">
                             <string />
                         </Property>
                         <Property Name="linkheight" Type="string" Description="">
@@ -1451,7 +1451,7 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="balloon3_super" Visible="false">
+                <Item xsi:type="RectangleItem" Name="balloon3_super" Visible="true">
                     <Position>
                         <X>2096</X>
                         <Y>-3536</Y>
@@ -18994,8 +18994,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="switch_balloon1" Visible="true">
                     <Position>
-                        <X>-176</X>
-                        <Y>1728</Y>
+                        <X>-384</X>
+                        <Y>1744</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -19695,7 +19695,7 @@
                 </Item>
                 <Item xsi:type="RectangleItem" Name="Rectangle_1251" Visible="true">
                     <Position>
-                        <X>3312</X>
+                        <X>3376</X>
                         <Y>-1792</Y>
                     </Position>
                     <CustomProperties>
@@ -19734,8 +19734,8 @@
         <NextItemNumber>1251</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-1045.59131</X>
-            <Y>966.6575</Y>
+            <X>3454.41284</X>
+            <Y>-1700.01147</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
