@@ -1060,4 +1060,8 @@ public class Skeleton extends Platform {
 	public boolean isFadingSkel( ) {
 		return applyFadeToFGDecals;
 	}
+	
+	public EventTrigger getEvent(String eventName){
+		return eventMap.get( eventName );
+	}
 }

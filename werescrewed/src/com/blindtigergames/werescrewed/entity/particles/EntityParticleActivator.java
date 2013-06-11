@@ -7,6 +7,13 @@ import com.blindtigergames.werescrewed.entity.action.IAction;
 
 public class EntityParticleActivator implements IAction {
 
+	
+	boolean activateState;
+	
+	public EntityParticleActivator(boolean activeState){
+		this.activateState=activeState;
+	}
+	
 	@Override
 	public void act( ) {
 		// TODO Auto-generated method stub
@@ -15,16 +22,11 @@ public class EntityParticleActivator implements IAction {
 
 	@Override
 	public void act( Entity entity ) {
-		if ( entity.getEntityType( ) == EntityType.PARTICLE_EMITTER ) {
-			// Gdx.app.log("ParticleActivator called on non-ParticleSystem: ",
-			// entity.name);
+		if ( entity!=null&& entity.getEntityType( ) != EntityType.PARTICLE_EMITTER ) {
 			return;
 		}
 		EntityParticleEmitter pE = ( EntityParticleEmitter ) entity;
-		if ( pE.isActive( ) )
-			pE.setActive( true );
-		else
-			pE.setActive( false );
+		pE.setEmittingActive( activateState );
 	}
 
 	public ActionType getActionType( ) {
