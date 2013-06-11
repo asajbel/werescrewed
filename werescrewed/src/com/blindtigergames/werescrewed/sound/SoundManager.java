@@ -33,7 +33,11 @@ public class SoundManager implements Disposable {
 		 * Still not sure if speech should be implemented as music or sound.
 		 * We'll have to see how far we can break up each sound file.
 		 */
-		SPEECH
+		SPEECH,
+		/*
+		 * Manually adjust volume.
+		 */
+		MANUAL
 	}
 	
 	public static EnumMap< SoundType, Float > globalVolume;
@@ -475,6 +479,7 @@ public class SoundManager implements Disposable {
 		protected float depthFactor = 3.0f;
 		protected int state = 4;
 		
+		protected SoundManager.SoundType type = SoundType.SFX;
 		
 		protected float falloff = 2.0f;
 		protected Vector2 offset = new Vector2(0,0);
@@ -559,7 +564,7 @@ public class SoundManager implements Disposable {
 			if (state == 1 && time > startDelay){//Start Delay
 				//Play start sound, if present
 				if (start != null){
-					start.play(finalVolume * getSoundVolume(), finalPitch, pan);
+					start.play(finalVolume, finalPitch, pan);
 				}
 				setState(2);
 			}
@@ -571,7 +576,7 @@ public class SoundManager implements Disposable {
 				} else {
 					//Else, play end sound if present and go to state 4
 					if (end != null){
-						end.play(finalVolume * getSoundVolume(), finalPitch, pan);
+						end.play(finalVolume, finalPitch, pan);
 					}
 					setState(4);
 				}
@@ -583,7 +588,7 @@ public class SoundManager implements Disposable {
 					loopId = -1;
 				}
 				if (end != null){
-					end.play(finalVolume * getSoundVolume(), finalPitch, pan);
+					end.play(finalVolume, finalPitch, pan);
 				}
 				setState(4);
 			}
@@ -607,6 +612,18 @@ public class SoundManager implements Disposable {
 
 		public void setVolume( float extVol ) {
 			finalVolume = Math.min( Math.max(volume * extVol , 0.0f) , 1.0f);
+			switch (type){
+				case MUSIC:
+					finalVolume *= getMusicVolume();
+					break;
+				case SFX:
+					finalVolume *= getSoundVolume();
+					break;
+				case NOISE:
+					finalVolume *= getNoiseVolume();
+					break;
+				default:
+			}
 			if (loopSounds.contains( this )){
 				loopSounds.remove(this);
 				loopSounds.add( this );
@@ -616,6 +633,10 @@ public class SoundManager implements Disposable {
 			}
 		}
 
+		public void setType(SoundManager.SoundType t){
+			type = t;
+		}
+		
 		public void setVolumeRange(float value){
 			volumeRange = value;
 		}
