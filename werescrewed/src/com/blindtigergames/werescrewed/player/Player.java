@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.player;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
@@ -770,7 +769,6 @@ public class Player extends Entity {
 								* body.getAngle( ) );
 					}
 				}
-				Gdx.app.log( name, " hi" );
 				tutorial.draw( batch );
 			}
 		}
