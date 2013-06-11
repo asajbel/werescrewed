@@ -25,7 +25,7 @@ public class LevelSelectScreen extends MenuScreen {
 	private Label screenLabel = null;
 //	private TextButton resurrectButton = null;
 //	private TextButton hazardButton = null;
-	private TextButton physicsButton = null;
+//	private TextButton physicsButton = null;
 	private int lineHeight = 0;
 	private TextButton level1Button;
 	private TextButton backButton = null;
@@ -94,7 +94,7 @@ public class LevelSelectScreen extends MenuScreen {
 		}
 		menuBG.draw( batch );
 		// screenLabel.draw( batch );
-		physicsButton.draw( batch, camera );
+//		physicsButton.draw( batch, camera );
 //		resurrectButton.draw( batch, camera );
 //		hazardButton.draw( batch, camera );
 		level1Button.draw( batch, camera );
@@ -143,19 +143,19 @@ public class LevelSelectScreen extends MenuScreen {
 		screenLabel.setY( centerY + 3 * lineHeight );
 
 		// quick fix
-		physicsButton.setX( leftX - physicsButton.getWidth( ) / 2 );
-		physicsButton.setY( centerY + lineHeight * 2 );
+//		physicsButton.setX( leftX - physicsButton.getWidth( ) / 2 );
+//		physicsButton.setY( centerY + lineHeight * 2 );
 //		resurrectButton.setX( leftX - resurrectButton.getWidth( ) / 2 );
 //		resurrectButton.setY( centerY + lineHeight * 2 );
 //		hazardButton.setX( leftX - hazardButton.getWidth( ) / 2 );
 //		hazardButton.setY( centerY + lineHeight * 1 );
 		level1Button.setX( leftX - level1Button.getWidth( ) / 2 );
-		level1Button.setY( centerY + lineHeight * 1 );
+		level1Button.setY( centerY + lineHeight * 2 - 25 );
 		dragonButton.setX( leftX - dragonButton.getWidth( ) / 2 );
-		dragonButton.setY( centerY + lineHeight * 0 );
+		dragonButton.setY( centerY + lineHeight * 1 - 25 );
 
 		backButton.setX( leftX - backButton.getWidth( ) / 2 );
-		backButton.setY( centerY + lineHeight * -1 );
+		backButton.setY( centerY + lineHeight * 0 - 25 );
 
 		man.setPosition( WereScrewedGame.getWidth( ) / 2 - 50, WereScrewedGame.getHeight( ) / 2 + 50 );
 		lady.setPosition( WereScrewedGame.getWidth( ) / 2 + 200, WereScrewedGame.getHeight( ) / 2 - 200 );
@@ -174,8 +174,8 @@ public class LevelSelectScreen extends MenuScreen {
 	private void loadButtons( ) {		
 		buttonTex = WereScrewedGame.manager.getAtlas( "menu-textures" ).findRegion( "button" );
 		
-		physicsButton = new TextButton( "Physics Test Screen", fancyFont, buttonTex,
-				new ScreenSwitchHandler( ScreenType.PHYSICS ) );
+//		physicsButton = new TextButton( "Physics Test Screen", fancyFont, buttonTex,
+//				new ScreenSwitchHandler( ScreenType.PHYSICS ) );
 //		resurrectButton = new TextButton( "Parallax Test Screen", fancyFont,
 //				new ScreenSwitchHandler( ScreenType.RESURRECT ) );
 //		hazardButton = new TextButton( "Hazard Test Screen", fancyFont,
@@ -187,9 +187,9 @@ public class LevelSelectScreen extends MenuScreen {
 
 		backButton = new TextButton( "Back", fancyFont, buttonTex,
 				new ScreenSwitchHandler( ScreenType.MAIN_MENU ) );
-		physicsButton.setColored( true );
+		level1Button.setColored( true );
 
-		Buttons.add( physicsButton );
+//		Buttons.add( physicsButton );
 //		Buttons.add( resurrectButton );
 //		Buttons.add( hazardButton );
 		Buttons.add( level1Button );

@@ -62,9 +62,10 @@ public class TextButton extends Button {
 		boolean isIntersect = bounds.contains( cursorPosition.x,
 				cursorPosition.y );
 		
-		if ( ( isIntersect && !WereScrewedGame.isMouseClicked( ) && ( Gdx.input
-				.isTouched( ) || Gdx.input.isButtonPressed( Buttons.LEFT ) ) )
-				|| selected ) {
+		//if ( ( isIntersect && !WereScrewedGame.isMouseClicked( ) && ( Gdx.input
+		//		.isTouched( ) || Gdx.input.isButtonPressed( Buttons.LEFT ) ) )
+		//		|| selected ) {
+		if ( selected ) {
 			selected = false;
 			handler.onClick( );
 		}

@@ -62,9 +62,10 @@ public class SwitchButton extends Button{
 		boolean isIntersect = bounds.contains( cursorPosition.x,
 				cursorPosition.y );
 		
-		if ( ( isIntersect && !WereScrewedGame.isMouseClicked( ) && ( Gdx.input
-				.isTouched( ) ) )
-				|| selected ) {
+		//if ( ( isIntersect && !WereScrewedGame.isMouseClicked( ) && ( Gdx.input
+		//		.isTouched( ) ) )
+		//		|| selected ) {
+		if ( selected ) {
 			selected = false; 
 			handler.onClick( );
 		}

@@ -128,10 +128,10 @@ public class ResurrectScrew extends Screw {
 			}
 			rotation = rotAfter;
 			screwStep = depth + 5;
-			if ( deadPlayer.isPlayerDead( ) ) {
-				playerMover.moveAnalog( this, ( float ) depth
-						/ ( ( float ) maxDepth ), deadPlayer.body );
-			}
+//			if ( deadPlayer.isPlayerDead( ) ) {
+//				playerMover.moveAnalog( this, ( float ) depth
+//						/ ( ( float ) maxDepth ), deadPlayer.body );
+//			}
 		}
 	}
 
@@ -144,25 +144,18 @@ public class ResurrectScrew extends Screw {
 		}
 
 		if ( depth < maxDepth ) {
-			diff = startRegion - region;
-			newDiff = diff - prevDiff;
-			if ( newDiff < -10 ) {
-				newDiff = 0;
+			depth++;
+			body.setAngularVelocity( -15 );
+			int rotAfter = rotation - 10;
+			if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
+				screwSound( diff, 5 );
 			}
-			prevDiff = diff;
-
-			body.setAngularVelocity( -1 );
-			if ( newDiff != 0 )
-				newDiff /= newDiff;
-			depth += newDiff;
-			if ( diff != 0 ) {
-				rotation += ( -newDiff * 5 );
-			}
+			rotation = rotAfter;
 			screwStep = depth + 5;
-			if ( deadPlayer.isPlayerDead( ) ) {
-				playerMover.moveAnalog( this, ( float ) depth
-						/ ( ( float ) maxDepth ), deadPlayer.body );
-			}
+//			if ( deadPlayer.isPlayerDead( ) ) {
+//				playerMover.moveAnalog( this, ( float ) depth
+//						/ ( ( float ) maxDepth ), deadPlayer.body );
+//			}
 		}
 
 	}
@@ -256,17 +249,17 @@ public class ResurrectScrew extends Screw {
 				if ( depth == screwStep ) {
 					body.setAngularVelocity( 0 );
 				}
-				if ( deadPlayer.isPlayerDead( ) ) {
-					Vector2 temp = this.getPositionPixel( ).cpy( );
-					playerMover.changeEndPos( temp );
-					if ( playerOffset.x > 0 ) {
-						playerMover.changeBeginPos( temp.sub( playerOffset ) );
-					} else {
-						playerMover.changeBeginPos( temp.sub( playerOffset ) );
-					}
-					playerMover.moveAnalog( this, ( float ) depth
-							/ ( ( float ) maxDepth ), deadPlayer.body );
-				}
+//				if ( deadPlayer.isPlayerDead( ) ) {
+//					Vector2 temp = this.getPositionPixel( ).cpy( );
+//					playerMover.changeEndPos( temp );
+//					if ( playerOffset.x > 0 ) {
+//						playerMover.changeBeginPos( temp.sub( playerOffset ) );
+//					} else {
+//						playerMover.changeBeginPos( temp.sub( playerOffset ) );
+//					}
+//					playerMover.moveAnalog( this, ( float ) depth
+//							/ ( ( float ) maxDepth ), deadPlayer.body );
+//				}
 				if ( playerAttached ) {
 					if ( screwInterface.sprite.getAnimator( ).getFrame( ) == 0 ) {
 						screwUIAnimator.speed( 1 );

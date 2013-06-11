@@ -20,8 +20,8 @@ legs_right
 legs_left
   rotate: false
   xy: 1442, 414
-  size: 381, 414
-  orig: 381, 414
+  size: 483, 406
+  orig: 483, 406
   offset: 0, 0
   index: -1
 neck
