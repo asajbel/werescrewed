@@ -1633,12 +1633,19 @@ public class DragonScreen extends Screen {
 		
 		
 		//change body skeleton to fireball emitter
-		Skeleton bodySkeleton = (Skeleton)LevelFactory.entities.get( "body_skeleton" );
-		//bodySkeleton.getEvent(bodySkeleton.name+"-fg-fader").setBeginIAction( new EntityParticleActivator(true) ).addEntityToTrigger( fireballEmitter );
+		//Skeleton bodySkeleton = (Skeleton)LevelFactory.entities.get( "body_skeleton" );
+		//bodySkeleton.getEvent(bodySkeleton.name+"-fg-fader").
 		//bodySkeleton.getEvent(bodySkeleton.name+"-fg-fader").setEndIAction( new EntityParticleActivator(false) );
 	
-		EventTrigger headFireballEvent;
+		//EventTrigger headFireballEvent = (EventTrigger)LevelFactory.entities.get( "fireball_event" );
 		//headFireballEvent.setBeginIAction( new EntityParticleActivator(true) ).addEntitiesToTrigger( brainEmitter1,brainEmitter2,brainEmitter3,brainEmitter4 );
+	
+		//headFireballEvent.setBeginIAction(  new EntityParticleActivator(true) );
+		//headFireballEvent.setEndIAction( new EntityParticleActivator(false) );
+		//headFireballEvent.addEntityToTrigger( fireballEmitter );
+		//headFireballEvent.actOnEntity = true;
+		
+	
 	}
 	
 	Enemy createBoltEnemy(Vector2 pos, int index){
