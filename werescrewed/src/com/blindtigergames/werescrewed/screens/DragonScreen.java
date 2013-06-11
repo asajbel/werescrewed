@@ -69,7 +69,7 @@ public class DragonScreen extends Screen {
 	Skeleton jaw_skeleton;
 	MouthFire mouthFire;
 	boolean headEvent = false;
-	int headEventTimer = 180;
+	int headEventTimer = 1;
 	
 	boolean balloon2_ss1Unscrewed = false;
 	boolean balloon2_ss2Unscrewed = false;
@@ -288,7 +288,7 @@ public class DragonScreen extends Screen {
 		}
 		
 		
-		if(jawStructureScrew.getDepth( )>0)mouthFireTimer+=deltaTime;
+		if(jawStructureScrew.getDepth( )>0 && jaw_skeleton.body.isActive( ))mouthFireTimer+=deltaTime;
 		else mouthFireTimer=0.0f;
 		if(mouthFireTimer>=mouthFireDelay && !mouthFireTriggered){
 			Vector2 roarPos = new Vector2(25000, 900);
@@ -323,17 +323,19 @@ public class DragonScreen extends Screen {
 			headEventTimer--;
 			if ( headEventTimer == 0 ) {
 				headSkeleton.setFade( false );
+				headSkeleton.anchors.get( 0 ).setTimer( 200 );
+				headSkeleton.anchors.get( 0 ).activate( );
 				headEvent = false;
+				
 
 			} else {
 
 				headSkeleton.setFade( true );
 			}
+		}else if (!headSkeleton.anchors.get( 0 ).activated){
+			headSkeleton.setFade( true );
 		}
-		// if(tail1Left.body == null && tail2.body == null){
-		//
-		//
-		// }
+		
 
 		if ( dragonBrainSwitch.isTurnedOn( ) && dragonBrainSwitch2.isTurnedOn( ) ) {
 
@@ -517,14 +519,20 @@ public class DragonScreen extends Screen {
 		addFGEntityToBack( skel );
 
 		// base
-		skel.addPlatform( pb.name( "cannon-base" ).dimensions( dim.x, 1 )
-				.position( pos.cpy( ) ).buildTilePlatform( ) );
+		TiledPlatform p1 = pb.name( "cannon-base" ).dimensions( dim.x, 1 )
+				.position( pos.cpy( ) ).buildTilePlatform( );
+		p1.setVisible( false );
+		skel.addPlatform( p1 );
 		// left
-		skel.addPlatform( pb.name( "cannon-left" ).dimensions( 1, dim.y )
-				.position( left.cpy( ) ).buildTilePlatform( ) );
+		TiledPlatform p2 = pb.name( "cannon-left" ).dimensions( 1, dim.y )
+				.position( left.cpy( ) ).buildTilePlatform( );
+		p2.setVisible( false );
+		skel.addPlatform( p2 );
 		// right
-		skel.addPlatform( pb.name( "cannon-right" ).dimensions( 1, dim.y )
-				.position( right.cpy( ) ).buildTilePlatform( ) );
+		TiledPlatform p3 = pb.name( "cannon-right" ).dimensions( 1, dim.y )
+				.position( right.cpy( ) ).buildTilePlatform( );
+		p3.setVisible( false );
+		skel.addPlatform( p3 );
 
 		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
 
@@ -836,9 +844,10 @@ public class DragonScreen extends Screen {
 
 		Skeleton balloon3CannonSkeleton = ( Skeleton ) LevelFactory.entities
 				.get( "balloon3_cannon_skeleton" );
+		balloon3CannonSkeleton.bgSprite = null;
 		balloon3CannonSkeleton.setFgFade( false );
 		buildCannon( balloon3CannonSkeleton,
-				balloon3CannonSkeleton.getPositionPixel( ), 200, 200, 0.5f, 1f );
+				balloon3CannonSkeleton.getPositionPixel( ), 195, 350, 0.5f, 1f );
 		balloon3CannonSkeleton.setLocalRot( -Util.PI / 4 );
 
 		// Skeleton cannonPuzzle = ( Skeleton ) LevelFactory.entities
@@ -1185,7 +1194,7 @@ public class DragonScreen extends Screen {
 
 		// inside of head.
 		headSkeleton.addBGDecal( Sprite.scale(
-				head_interior.createSprite( "head-interior" ), 1f / .4f ),
+				head_interior.createSprite( "head-interior" ), 1f / .4f, 1f/ .38f ),
 				new Vector2( -1420, -740 ) );
 		addBGSkeleton( headSkeleton );
 
@@ -1471,15 +1480,15 @@ public class DragonScreen extends Screen {
 		Vector2 bodyP = bodySkeleton.getPositionPixel( );
 		screw = LevelFactory.entities.get( "body_rotate_puzzle2" );
 		Vector2 screwP = new Vector2( -338, -383 );
-		bodySkeleton.addBGDecal(
-				dragon_objects.createSprite( "rotation_machine_decal_left" ),
-				new Vector2( 0, 8 ).add( screwP ) );
+//		bodySkeleton.addBGDecal(
+//				dragon_objects.createSprite( "rotation_machine_decal_left" ),
+//				new Vector2( 0, 8 ).add( screwP ) );
 
 		screw = LevelFactory.entities.get( "body_rotate_puzzle4" );
-		bodySkeleton.addBGDecal(
-				dragon_objects.createSprite( "rotation_machine_decal_right" ),
-				new Vector2( 995, 9 ).add( screwP ) );
-		addBGSkeleton( bodySkeleton );
+//		bodySkeleton.addBGDecal(
+//				dragon_objects.createSprite( "rotation_machine_decal_right" ),
+//				new Vector2( 995, 9 ).add( screwP ) );
+//		addBGSkeleton( bodySkeleton );
 
 		// balloons
 		TextureAtlas balloons = WereScrewedGame.manager.getAtlas( "balloons" );
