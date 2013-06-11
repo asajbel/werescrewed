@@ -433,6 +433,11 @@ public class EventTrigger extends Platform {
 	public void addEntityToTrigger( Entity entity ) {
 		entityList.add( entity );
 	}
+	
+	public void addEntitiesToTrigger( Entity... entities ) {
+		for(Entity e:entities)
+			addEntitiesToTrigger( e );
+	}
 
 	/**
 	 * Add IAction as a Begin Action
@@ -441,7 +446,7 @@ public class EventTrigger extends Platform {
 	 *            - IAction
 	 * @author Ranveer
 	 */
-	public EventTrigger addBeginIAction( IAction action ) {
+	public EventTrigger setBeginIAction( IAction action ) {
 		this.beginAction = action;
 		return this;
 	}
@@ -453,7 +458,7 @@ public class EventTrigger extends Platform {
 	 *            - IAction
 	 * @author Ranveer
 	 */
-	public EventTrigger addEndIAction( IAction action ) {
+	public EventTrigger setEndIAction( IAction action ) {
 		this.endAction = action;
 		return this;
 	}

@@ -666,14 +666,14 @@ public class DragonScreen extends Screen {
 		tail3Switch1.actOnEntity = true;
 		tail3Switch1.addEntityToTrigger( tail3MiddlePipe1 );
 		tail3Switch1.addEntityToTrigger( tail3MiddlePipe2 );
-		tail3Switch1.addBeginIAction( new RotateTweenAction( Util.PI / 2 ) );
-		tail3Switch1.addEndIAction( new RotateTweenAction( 0 ) );
+		tail3Switch1.setBeginIAction( new RotateTweenAction( Util.PI / 2 ) );
+		tail3Switch1.setEndIAction( new RotateTweenAction( 0 ) );
 
 		tail3Switch2.actOnEntity = true;
 		tail3Switch2.addEntityToTrigger( tail3MiddlePipe1 );
 		tail3Switch2.addEntityToTrigger( tail3MiddlePipe2 );
-		tail3Switch2.addBeginIAction( new RotateTweenAction( 0 ) );
-		tail3Switch2.addEndIAction( new RotateTweenAction( Util.PI / 2 ) );
+		tail3Switch2.setBeginIAction( new RotateTweenAction( 0 ) );
+		tail3Switch2.setEndIAction( new RotateTweenAction( Util.PI / 2 ) );
 
 	}
 
@@ -843,8 +843,6 @@ public class DragonScreen extends Screen {
 		
 		
 		
-		//bodySkeleton.getEvent(bodySkeleton.name+"-fg-fader").addBeginIAction( new EntityParticleActivator(true) ).addEntityToTrigger( fireballEmitter );
-		//bodySkeleton.getEvent(bodySkeleton.name+"-fg-fader").addEndIAction( new EntityParticleActivator(false) );
 	}
 
 	void buildAllCannons( ) {
@@ -1379,20 +1377,20 @@ public class DragonScreen extends Screen {
 		tail2Switch1.actOnEntity = true;
 		tail2Switch1.addEntityToTrigger( tail2Pipe1 );
 		tail2Switch1.addEntityToTrigger( tail2Pipe2 );
-		tail2Switch1.addBeginIAction( new RotateTweenAction( -Util.PI / 2 ) );
-		tail2Switch1.addEndIAction( new RotateTweenAction( 0 ) );
+		tail2Switch1.setBeginIAction( new RotateTweenAction( -Util.PI / 2 ) );
+		tail2Switch1.setEndIAction( new RotateTweenAction( 0 ) );
 
 		tail2Switch2.actOnEntity = true;
 		tail2Switch2.addEntityToTrigger( tail2Pipe1 );
 		tail2Switch2.addEntityToTrigger( tail2Pipe2 );
-		tail2Switch2.addBeginIAction( new RotateTweenAction( -Util.PI / 2 ) );
-		tail2Switch2.addEndIAction( new RotateTweenAction( 0 ) );
+		tail2Switch2.setBeginIAction( new RotateTweenAction( -Util.PI / 2 ) );
+		tail2Switch2.setEndIAction( new RotateTweenAction( 0 ) );
 
 		tail2Switch3.actOnEntity = true;
 		tail2Switch3.addEntityToTrigger( tail2Pipe1 );
 		tail2Switch3.addEntityToTrigger( tail2Pipe2 );
-		tail2Switch3.addBeginIAction( new RotateTweenAction( -Util.PI / 2 ) );
-		tail2Switch3.addEndIAction( new RotateTweenAction( 0 ) );
+		tail2Switch3.setBeginIAction( new RotateTweenAction( -Util.PI / 2 ) );
+		tail2Switch3.setEndIAction( new RotateTweenAction( 0 ) );
 
 	}
 
@@ -1631,6 +1629,16 @@ public class DragonScreen extends Screen {
 			brainEmitter4.addParticle( createBoltEnemy( pos4.cpy().add(0,n*h), i ), boltLife, 1, i*boltLife/boltsPerEmitter );
 		}
 		level.root.addLooseEntity( brainEmitter4 );
+		
+		
+		
+		//change body skeleton to fireball emitter
+		Skeleton bodySkeleton = (Skeleton)LevelFactory.entities.get( "body_skeleton" );
+		//bodySkeleton.getEvent(bodySkeleton.name+"-fg-fader").setBeginIAction( new EntityParticleActivator(true) ).addEntityToTrigger( fireballEmitter );
+		//bodySkeleton.getEvent(bodySkeleton.name+"-fg-fader").setEndIAction( new EntityParticleActivator(false) );
+	
+		EventTrigger headFireballEvent;
+		//headFireballEvent.setBeginIAction( new EntityParticleActivator(true) ).addEntitiesToTrigger( brainEmitter1,brainEmitter2,brainEmitter3,brainEmitter4 );
 	}
 	
 	Enemy createBoltEnemy(Vector2 pos, int index){
