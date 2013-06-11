@@ -1812,7 +1812,7 @@ public class Player extends Entity {
 			playerState = PlayerState.Standing;
 		}
 		checkHeadStandState( );
-		if ( inputHandler.jumpPressed( ) ) {
+		if ( inputHandler.jumpPressed( ) && have_control) {
 			processJumpState( );
 		}
 		resetScrewJumpGrabKeyboard( );
@@ -1903,11 +1903,11 @@ public class Player extends Entity {
 			}
 		}
 		checkHeadStandState( );
-		if ( controllerListener.jumpPressed( ) ) {
+		if ( controllerListener.jumpPressed( ) && have_control ) {
 			processJumpStateController( );
 		}
 		resetScrewJumpGrab( );
-		if ( controllerListener.leftPressed( ) ) {
+		if ( controllerListener.leftPressed( ) && have_control ) {
 			processMovingState( );
 			if ( controllerListener.analogUsed( ) ) {
 				if ( playerState == PlayerState.Falling
@@ -1921,7 +1921,7 @@ public class Player extends Entity {
 			}
 			prevButton = PovDirection.west;
 		}
-		if ( controllerListener.rightPressed( ) ) {
+		if ( controllerListener.rightPressed( ) && have_control ) {
 			processMovingState( );
 			if ( controllerListener.analogUsed( ) ) {
 				if ( playerState == PlayerState.Falling

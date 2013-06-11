@@ -165,7 +165,7 @@ public class StructureScrew extends Screw {
 			prevDiff = 0;
 		}
 
-		if ( depth > 0 ) {
+		if ( depth > -10 ) {
 			// body.setAngularVelocity( 1 );
 			depth -= 1;
 			int rotAfter = rotation + 10;
