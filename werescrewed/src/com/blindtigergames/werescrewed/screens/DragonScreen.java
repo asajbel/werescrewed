@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
+import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -294,11 +295,14 @@ public class DragonScreen extends Screen {
 			fireballEmitter.setActive( true );
 		}
 		if ( jawStructureScrew != null ) {
-
+			
 			if ( jawStructureScrew.getDepth( ) == 0 ) {
 				jaw_skeleton.body.setType( BodyType.DynamicBody );
 				headEvent = true;
 				sounds.playSound( "roar_angry" );
+				CheckPoint checkpointHead = ( CheckPoint ) LevelFactory.entities
+						.get( "checkpoint_head" );
+				checkpointHead.setRemoveNextStep( );
 			}
 		}
 		
@@ -1189,7 +1193,7 @@ public class DragonScreen extends Screen {
 		// inside of head.
 		headSkeleton.addBGDecal( Sprite.scale(
 				head_interior.createSprite( "head-interior" ), 1f / .4f, 1f/ .38f ),
-				new Vector2( -1420, -740 ) );
+				new Vector2( -1440, -740 ) );
 		addBGSkeleton( headSkeleton );
 
 		scale = 1f / .50f;
@@ -1565,11 +1569,11 @@ public class DragonScreen extends Screen {
 		int w = 15, n = 10, h = 140;
 
 		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
-				new Vector2( new Vector2(13750, 300).add(0,n*h) ),
+				new Vector2( new Vector2(13730, 1650) ),
 				new Vector2(),
 				 level.world, true );
 		for(int i =0; i < 4; ++i ){
-			fireballEmitter.addParticle( createBoltEnemy( new Vector2(13750, 300).add(0,n*h), i ), 10, 3, i*5 );
+			fireballEmitter.addParticle( createBoltEnemy( new Vector2(13730, 1650), i ), 10, 3, i*5 );
 		}
 		level.root.addLooseEntity( fireballEmitter );
 	//	fireballEmitter.setEmittingActive( false );
