@@ -97,7 +97,7 @@ public class DragonScreen extends Screen {
 
 		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
 		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( )
-				.width( 10 ).height( 30000 )
+				.width( 10 ).height( 30500 )
 				.position( new Vector2( 15500, -1500 ) )
 				.beginAction( new RemoveEntityAction( ) ).build( );
 		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER,
@@ -105,12 +105,20 @@ public class DragonScreen extends Screen {
 		level.root.addEventTrigger( removeTrigger );
 		
 		EventTrigger removeTrigger2 = etb.name( "removeEntity" ).rectangle( )
-				.width( 3500 ).height( 170 )
-				.position( new Vector2( 500, 100 ) )
+				.width( 10 ).height( 250 )
+				.position( new Vector2( 450, 1000 ) )
 				.beginAction( new RemoveEntityAction( ) ).build( );
 		removeTrigger2.setCategoryMask( Util.CATEGORY_PLAYER,
-				Util.CATEGORY_EVERYTHING );
+				Util.CATEGORY_PLAYER );
 		level.root.addEventTrigger( removeTrigger2 );
+		
+		EventTrigger removeTrigger3 = etb.name( "removeEntity" ).rectangle( )
+				.width( 10 ).height( 2000 )
+				.position( new Vector2( 0, -2500 ) )
+				.beginAction( new RemoveEntityAction( ) ).build( );
+		removeTrigger3.setCategoryMask( Util.CATEGORY_PLAYER,
+				Util.CATEGORY_PLAYER );
+		level.root.addEventTrigger( removeTrigger3 );
 
 		buildBalloon( );
 
