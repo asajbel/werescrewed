@@ -2,8 +2,10 @@ package com.blindtigergames.werescrewed.screens;
 
 import java.util.Random;
 
+import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
@@ -36,7 +38,6 @@ import com.blindtigergames.werescrewed.entity.mover.LerpMover;
 import com.blindtigergames.werescrewed.entity.mover.LinearAxis;
 import com.blindtigergames.werescrewed.entity.mover.ParallaxMover;
 import com.blindtigergames.werescrewed.entity.mover.TimelineTweenMover;
-import com.blindtigergames.werescrewed.entity.particles.EntityParticleActivator;
 import com.blindtigergames.werescrewed.entity.particles.EntityParticleEmitter;
 import com.blindtigergames.werescrewed.entity.platforms.Pipe;
 import com.blindtigergames.werescrewed.entity.platforms.Platform;
@@ -128,35 +129,34 @@ public class DragonScreen extends Screen {
 
 		introBalloonDecals();
 		
+		//********** Mouth fire stuff *******/
 		mouthFire = new MouthFire( "mouth-fire", new Vector2(25000, 900), new Vector2(32000, 75),
 				4f, 100f, 800f, level.world);
 		mouthFire.dontPutToSleep=true;
 		Skeleton head_skeleton = ( Skeleton ) LevelFactory.entities
 				.get( "head_sub_skeleton1" );
 		head_skeleton.addHazard( mouthFire );
-
 		jawStructureScrew = ( StructureScrew ) LevelFactory.entities
 				.get( "jaw_structure_screw" );
 
 		jaw_skeleton = ( Skeleton ) LevelFactory.entities.get( "jaw_skeleton" );
 		Timeline t = Timeline.createSequence( );
-		
 		mouthFireDelay = 8f;
 		mouthFireTotalTime=22f;
-		
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
 				.ease( TweenEquations.easeNone ).target( -Util.PI / 20 )
-				.start( ).delay( 2f ) );
+				.start( ).delay( 2f ).setCallback( new ShootFireCallback( ) ) );
+
 
 		t.push( Tween.to( jaw_skeleton, PlatformAccessor.LOCAL_ROT, 6f )
 				.ease( TweenEquations.easeNone ).target( 0 ).delay( 8f )
-				.start( ) );
+				.setCallback( new PlayJawCloseCallback( ) ).start( ) );
 
 		t.repeat( Tween.INFINITY, 0f );
 		jaw_skeleton.addMover( new TimelineTweenMover( t.start( ) ) );
 
+		
 		headDecals( );
-
 		initEyebrow( );
 
 	}
@@ -303,40 +303,6 @@ public class DragonScreen extends Screen {
 		}
 		
 		
-		if(jawStructureScrew.getDepth( )>0 && jaw_skeleton.body.isActive( ))mouthFireTimer+=deltaTime;
-		else mouthFireTimer=0.0f;
-		if(mouthFireTimer>=mouthFireDelay && !mouthFireTriggered){
-			Vector2 roarPos = new Vector2(25000, 900);
-			Vector2 camPos = new Vector2(Camera.getCurrentCameraCoords( ).x, Camera.getCurrentCameraCoords( ).y);
-			SoundRef roarRef;
-			boolean fireSound;
-			if (roarPos.dst( camPos ) < 4000.0f){
-				roarRef = sounds.getSound( "roar_angry" );
-				fireSound = (jaw_skeleton.body != null);
-			} else {
-				roarRef = sounds.getSound( "roar_calm" );
-				fireSound = false;
-			}
-			float volume = roarRef.calculatePositionalVolume( roarPos, Camera.CAMERA_RECT );
-			roarRef.setVolume( volume );
-			roarRef.play( false );
-			if (fireSound){
-				SoundRef fireRef = sounds.getSound("fire_breath");
-				fireRef.setVolume( volume );
-				fireRef.play( false );
-			}
-			mouthFire.setActiveHazard( true );
-			mouthFireTriggered = true;
-		}
-		if ( mouthFireTimer >= mouthFireTotalTime ) {
-			mouthFireTimer = 0;
-			mouthFireTriggered = false;
-			float volume = sounds.calculatePositionalVolume( "jaw_close",
-					new Vector2( 25000, 900 ), Camera.CAMERA_RECT );
-			SoundRef jawRef = sounds.getSound( "jaw_close" );
-			jawRef.setVolume( volume );
-			jawRef.play( false);
-		}
 
 		// Zoom out and fade the head skeleton back in so you can see the jaw
 		// fall off
@@ -1709,5 +1675,55 @@ public class DragonScreen extends Screen {
 			skele.addBGDecal( Sprite.scale( s,(i==1)?scale*1.33f:scale), pos);
 			addBGSkeleton( skele );
 		}
+	}
+	
+	public class ShootFireCallback implements TweenCallback{
+
+		@Override
+		public void onEvent( int type, BaseTween< ? > source ) {
+			if(jawStructureScrew.getDepth( )>0){
+				Vector2 roarPos = new Vector2(25000, 900);
+				Vector2 camPos = new Vector2(Camera.getCurrentCameraCoords( ).x, Camera.getCurrentCameraCoords( ).y);
+				SoundRef roarRef;
+				if (roarPos.dst( camPos ) < 3000.0f){
+					roarRef = sounds.getSound( "roar_angry" );
+				} else {
+					roarRef = sounds.getSound( "roar_calm" );
+				}
+				float volume = roarRef.calculatePositionalVolume( roarPos, Camera.CAMERA_RECT );
+				roarRef.setVolume( volume );
+				roarRef.play( false );
+				mouthFire.setActiveHazard( true );
+				
+				
+				boolean fireSound;
+				if (roarPos.dst( camPos ) < 4000.0f){
+					roarRef = sounds.getSound( "roar_angry" );
+					fireSound = (jaw_skeleton.body != null);
+				} else {
+					roarRef = sounds.getSound( "roar_calm" );
+					fireSound = false;
+				}
+				if (fireSound){
+					SoundRef fireRef = sounds.getSound("fire_breath");
+					fireRef.setVolume( volume );
+					fireRef.play( false );
+				}
+			}
+			
+		}
+	}
+	
+	public class PlayJawCloseCallback implements TweenCallback{
+
+		@Override
+		public void onEvent( int type, BaseTween< ? > source ) {
+			float volume = sounds.calculatePositionalVolume( "jaw_close",
+					new Vector2( 25000, 900 ), Camera.CAMERA_RECT );
+			SoundRef jawRef = sounds.getSound( "jaw_close" );
+			jawRef.setVolume( volume );
+			jawRef.play( false);
+		}
+		
 	}
 }
