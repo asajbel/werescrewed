@@ -63,7 +63,7 @@ public class LoadingScreen extends Screen {
 						sT_trophy = ScreenType.TROPHY_1;
 					}
 					else if ( parts[1].equals( "level3" ) ) {
-						sT_trophy = ScreenType.TROPHY_2;
+						sT_trophy = ScreenType.TROPHY_END;
 					}
 				}
 			}
