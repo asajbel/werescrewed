@@ -41,7 +41,7 @@ class OptionsScreen extends MenuScreen {
 	private Slider soundSlider = null;
 	private Slider noiseSlider = null;
 	// private CheckBox subBox = null;
-	private Button controls = null;
+	//private Button controls = null;
 	private OptionButton music = null;
 	private OptionButton sound = null;
 	private OptionButton noise = null;
@@ -88,7 +88,7 @@ class OptionsScreen extends MenuScreen {
 		transInEnd = false;
 
 		fancyFont.setScale( 1.0f );
-		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 40 );
+		lineHeight = Math.round( 2.5f * font.getCapHeight( ) + 50 );
 		screenLabel = new Label( "OPTIONS", fancyFont );
 
 		loadButtons( );
@@ -96,12 +96,24 @@ class OptionsScreen extends MenuScreen {
 	}
 
 	@Override
+	public void show(){
+		super.show( );
+		SoundManager.setEnableLoops( false );
+	}
+
+	@Override	
+	public void hide(){
+		super.hide( );
+		SoundManager.setEnableLoops( true );
+	}
+	
+	@Override
 	public void render( float delta ) {
 		super.render( delta );
 		batch.begin( );
 		fancyFont.setScale( 1.0f );
 		screenLabel.draw( batch );
-		controls.draw( batch, camera );
+		//controls.draw( batch, camera );
 		music.draw( batch, camera );
 		sound.draw( batch, camera );
 		noise.draw( batch, camera );
@@ -154,9 +166,9 @@ class OptionsScreen extends MenuScreen {
 		// fade.setPosition( 0, 0 );
 
 		screenLabel.setX( centerX - screenLabel.getWidth( ) / 2 );
-		screenLabel.setY( centerY + 7 * ( lineHeight - 20 ) );
-		controls.setX( leftX - controls.getWidth( ) / 2 );
-		controls.setY( centerY + 4 * lineHeight );
+		screenLabel.setY( centerY + 6 * ( lineHeight - 25 ) );
+		//controls.setX( leftX - controls.getWidth( ) / 2 );
+		//controls.setY( centerY + 4 * lineHeight );
 		music.setX( leftX - music.getWidth( ) / 2 );
 		music.setY( centerY + 3 * lineHeight );
 		sound.setX( leftX - sound.getWidth( ) / 2 );
@@ -210,7 +222,7 @@ class OptionsScreen extends MenuScreen {
 				SoundType.SFX, slidTex, screwTex );
 		noiseSlider = new Slider( VOLUME_MIN, VOLUME_MAX, VOLUME_MAX / 2,
 				SoundType.NOISE, slidTex, screwTex );
-		controls = new Button( "Controls", fancyFont, buttonTex );
+		//controls = new Button( "Controls", fancyFont, buttonTex );
 		music = new OptionButton( "Music", fancyFont, buttonTex, musicSlider );
 		sound = new OptionButton( "Sound", fancyFont, buttonTex, soundSlider );
 		noise = new OptionButton( "Noise", fancyFont, buttonTex, noiseSlider );
@@ -220,10 +232,10 @@ class OptionsScreen extends MenuScreen {
 		backButton = new TextButton( "Back", fancyFont, buttonTex,
 				new ScreenSwitchHandler( back ) );
 
-		controls.setColored( true );
+		music.setColored( true );
 
 		Buttons = new ArrayList< Button >( );
-		Buttons.add( controls );
+		//Buttons.add( controls );
 		Buttons.add( music );
 		Buttons.add( sound );
 		Buttons.add( noise );

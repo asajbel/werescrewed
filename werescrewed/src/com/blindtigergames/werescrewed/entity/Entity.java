@@ -37,6 +37,7 @@ import com.blindtigergames.werescrewed.level.GleedLoadable;
 import com.blindtigergames.werescrewed.player.Player;
 import com.blindtigergames.werescrewed.sound.SoundManager;
 import com.blindtigergames.werescrewed.sound.SoundManager.SoundRef;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundType;
 import com.blindtigergames.werescrewed.util.ArrayHash;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -431,7 +432,7 @@ public class Entity implements GleedLoadable {
 		if ( sounds != null ) {
 			if ( sounds.hasSound( "idle" ) ) {
 				SoundRef ref = sounds.getSound( "idle" );
-				ref.setVolume( ref.calculatePositionalVolume( this.getPositionPixel(),  Camera.CAMERA_RECT ) );
+				ref.setVolume( SoundManager.getNoiseVolume( ) * ref.calculatePositionalVolume( this.getPositionPixel(),  Camera.CAMERA_RECT ) );
 			}
 			handleMovementSounds( deltaTime );
 			sounds.update( deltaTime );
@@ -1568,6 +1569,7 @@ public class Entity implements GleedLoadable {
 	public void idleSound( ) {
 		if ( sounds != null && sounds.hasSound( "idle" ) ) {
 			SoundRef ref = sounds.getSound( "idle" );
+			ref.setType( SoundType.NOISE );
 			ref.setVolume( 0.0f );
 			ref.loop( false );
 			// Gdx.app.log( name, "Starting Idle Sound" );

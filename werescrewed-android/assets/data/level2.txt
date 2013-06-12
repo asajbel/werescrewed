@@ -16,6 +16,9 @@
 /levels/dragon/sounds/cannon.ogg
 /levels/dragon/sounds/dragon_roar_calm.ogg
 /levels/dragon/sounds/dragon_roar_angry.ogg
+/levels/dragon/sounds/fire-breath-start.ogg
+/levels/dragon/sounds/fire-breath-loop.ogg
+/levels/dragon/sounds/fire-breath-end.ogg
 /levels/dragon/sounds/jawClose.ogg
 
 ##common tilesets

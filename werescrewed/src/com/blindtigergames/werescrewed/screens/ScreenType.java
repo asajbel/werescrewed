@@ -220,7 +220,7 @@ public enum ScreenType {
 		       //--Goes to Level 3!!
 		@Override
 		protected com.badlogic.gdx.Screen getScreenInstance( ) {
-			TrophyScreen trophy = new TrophyScreen( ScreenType.LOADING_3 );
+			TrophyScreen trophy = new TrophyScreen( ScreenType.CREDITS );
 			trophy.screenType = ScreenType.TROPHY;
 			return trophy;
 		}

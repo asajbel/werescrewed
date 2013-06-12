@@ -20,6 +20,7 @@ public class EntityParticleEmitter extends Entity {
 	private ArrayList< EntityParticle > particles;
 	private boolean activeEmitting;
 	private Vector2 emitionImpusle;
+	private boolean recentlyActivated=false;
 
 	/**
 	 * Entity used to manage Particle Systems, in which the Particles are
@@ -36,6 +37,7 @@ public class EntityParticleEmitter extends Entity {
 	public EntityParticleEmitter( String name, Vector2 positionPixels, Vector2 particleEmitImpulse, World world,
 			boolean active ) {
 		super( name, positionPixels, null, null, false );
+		
 		particles = new ArrayList< EntityParticle >( );
 		this.world = world;
 		constructBody( positionPixels );
@@ -94,6 +96,13 @@ public class EntityParticleEmitter extends Entity {
 	 *            float
 	 */
 	public void update( float deltaTime ) {
+		if(recentlyActivated){
+			for ( EntityParticle particle : particles ) {
+				particle.hardReset( );
+				particle.getEntity( ).body.setActive( true );
+			}
+			recentlyActivated=false;
+		}
 		if(activeEmitting){
 			for ( EntityParticle p : particles ) {
 				p.update( deltaTime );
@@ -108,6 +117,11 @@ public class EntityParticleEmitter extends Entity {
 					//p.getEntity( ).body.applyLinearImpulse( emitionImpusle, p.getEntity( ).body.getWorldCenter( ) );
 				}
 			}
+		}else{
+			//HOLD THE particle in emitting place.
+			//for ( EntityParticle p : particles ) {
+			//	p.hardReset( );
+			//}
 		}
 	}
 	
@@ -138,5 +152,10 @@ public class EntityParticleEmitter extends Entity {
 				((Hazard)e).setActiveHazard(isActive);
 			}
 		}
+	}
+	
+	public void setEmittingActive(boolean isEmitting){
+		activeEmitting=isEmitting;
+		recentlyActivated=true;
 	}
 }

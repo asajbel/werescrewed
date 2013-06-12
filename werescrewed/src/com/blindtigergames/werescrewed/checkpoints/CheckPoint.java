@@ -84,6 +84,13 @@ public class CheckPoint extends Entity {
 	}
 
 	/**
+	 * sets the next checkpoint to one after this one
+	 */
+	public void setNextCheckPointInPM( ) {
+		progressManager.setNextChkpt( this );
+	}
+	
+	/**
 	 * activates this checkpoint if not already active
 	 */
 	public void hitPlayer( Player player ) {
@@ -104,7 +111,7 @@ public class CheckPoint extends Entity {
 	public Entity getEntity( ) {
 		return entity;
 	}
-
+	
 	/**
 	 * returns whether the checkpoint is the most recent active checkpoint
 	 * 

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
@@ -940,6 +941,12 @@ public class LevelFactory {
 			out.setTilesBlack();
 		}
 		
+		if(item.props.containsKey( "gold" )){
+			out.setTilesGold();
+		}
+		if(item.props.containsKey( "defaultcolor" )){
+			out.setTileColor(WereScrewedGame.manager.getTileColor( ));
+		}
 		if(item.props.containsKey("color")){
 			
 		}
@@ -1803,10 +1810,10 @@ public class LevelFactory {
 			String action = item.props.get( "beginaction" );
 
 			if ( action.equals( "activate_hazard" ) ) {
-				ps.addBeginIAction( new HazardActivateAction( ) );
+				ps.setBeginIAction( new HazardActivateAction( ) );
 			}
 			if ( action.equals( "activate_mover" ) ) {
-				ps.addBeginIAction( new EntityActivateMoverAction( )  );
+				ps.setBeginIAction( new EntityActivateMoverAction( )  );
 			}
 			
 		}
@@ -1815,11 +1822,11 @@ public class LevelFactory {
 			String action = item.props.get( "endaction" );
 
 			if ( action.equals( "deactivate_hazard" ) ) {
-				ps.addEndIAction( new HazardDeactivateAction( ) );
+				ps.setEndIAction( new HazardDeactivateAction( ) );
 			}
 			
 			if ( action.equals( "deactivate_mover" ) ) {
-				ps.addBeginIAction( new EntityDeactivateMoverAction( )  );
+				ps.setBeginIAction( new EntityDeactivateMoverAction( )  );
 			}
 		}
 

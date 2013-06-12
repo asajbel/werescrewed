@@ -229,8 +229,8 @@ public class EventTriggerBuilder extends
 		et.setRepeatable( this.repeatableAction );
 		et.setTwoPlayersToActivate( this.twoPlayersToActivate );
 		et.setTwoPlayersToDeactivate( this.twoPlayersToDeactive );
-		et.addBeginIAction( this.beginAction );
-		et.addEndIAction( this.endAction );
+		et.setBeginIAction( this.beginAction );
+		et.setEndIAction( this.endAction );
 		et.setActingOnEntity( this.actOnEntity );
 
 		for ( Entity e : entitiesToAdd ) {
