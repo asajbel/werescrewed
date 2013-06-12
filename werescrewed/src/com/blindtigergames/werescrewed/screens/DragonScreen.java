@@ -170,13 +170,16 @@ public class DragonScreen extends Screen {
 		}
 		if (sounds == null){
 			sounds = new SoundManager();
-			sounds.getSound( "roar_calm",  WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_calm.ogg").setRange( 80000 );
-			sounds.getSound( "roar_angry", WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_angry.ogg").setRange( 8000 );
+			SoundRef calmRoar = sounds.getSound( "roar_calm",  WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_calm.ogg");
+			calmRoar.setRange( 80000 );
+			SoundRef angryRoar = sounds.getSound( "roar_angry", WereScrewedGame.dirHandle + "/levels/dragon/sounds/dragon_roar_angry.ogg");
+			angryRoar.setRange( 8000 );
+			angryRoar.setInternalVolume( 0.75f );
 			sounds.getSound( "jaw_close", WereScrewedGame.dirHandle + "/levels/dragon/sounds/jawClose.ogg" ).setRange( 8000 );
 			sounds.loadMultiSound( "fire_breath", 0, 
-									2.0f, WereScrewedGame.dirHandle + "/levels/dragon/sounds/fire-breath-start.ogg", 
+									1.0f, WereScrewedGame.dirHandle + "/levels/dragon/sounds/fire-breath-start.ogg", 
 									0.9f, WereScrewedGame.dirHandle + "/levels/dragon/sounds/fire-breath-loop.ogg", 
-									1.4f, WereScrewedGame.dirHandle + "/levels/dragon/sounds/fire-breath-end.ogg", 
+									1.2f, WereScrewedGame.dirHandle + "/levels/dragon/sounds/fire-breath-end.ogg", 
 									-0.1f );
 			//sounds.getSound( "jaw_open",WereScrewedGame.dirHandle + "/levels/dragon/sounds/cannon.ogg" );
 		}

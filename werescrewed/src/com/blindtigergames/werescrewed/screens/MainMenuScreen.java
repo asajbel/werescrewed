@@ -4,6 +4,7 @@ import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -83,6 +84,7 @@ class MainMenuScreen extends MenuScreen {
 		
 		loadButtons( );
 		setClearColor( 105f/255f, 208f/255f, 255f/255f, 1f );
+		bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle + "/menu/menuTheme.mp3" ,Music.class);
 	}
 	
 	@Override

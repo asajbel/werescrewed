@@ -144,15 +144,10 @@ public class MyContactListener implements ContactListener {
 									if ( playerFix.equals( player.topSensor )
 											&& !plat.oneSided
 											&& painForce.len( ) > MINIMUM_HIT_FORCE ) {
-										player.sounds
-												.playSound(
-														"hit",
-														player.sounds
-																.randomSoundId( "hit" ),
-														0.5f,
-														painForce.len( )
-																/ MAXIMUM_HIT_FORCE,
-														1.0f );
+										SoundRef hitSound = player.sounds.getSound( "hit" , 
+																					player.sounds.randomSoundId( "hit" ));
+										hitSound.setVolume( painForce.len( ) / MAXIMUM_HIT_FORCE );
+										hitSound.play( false );
 										player.sounds.setDelay( "hit", HIT_SOUND_DELAY );
 									}
 								}

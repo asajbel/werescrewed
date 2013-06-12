@@ -4,3 +4,6 @@
 
 ##temp background
 /common/menu_placeholder.png
+
+##background music
+/menu/menuTheme.mp3
