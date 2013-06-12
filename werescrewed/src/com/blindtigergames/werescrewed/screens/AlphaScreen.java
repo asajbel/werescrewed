@@ -63,6 +63,7 @@ import com.blindtigergames.werescrewed.joint.PrismaticJointBuilder;
 import com.blindtigergames.werescrewed.joint.RevoluteJointBuilder;
 import com.blindtigergames.werescrewed.level.LevelFactory;
 import com.blindtigergames.werescrewed.sound.SoundManager;
+import com.blindtigergames.werescrewed.sound.SoundManager.SoundRef;
 import com.blindtigergames.werescrewed.util.Util;
 
 public class AlphaScreen extends Screen {
@@ -311,6 +312,13 @@ public class AlphaScreen extends Screen {
 		super.render( deltaTime );
 		powerScrewUpdate( deltaTime );
 
+		SoundRef leftArmSound = sounds.getSound( "left_arm_movement" );
+		SoundRef rightArmSound = sounds.getSound( "left_arm_movement" );
+		SoundRef rightArmSound2 = sounds.getSound( "left_arm_movement" );
+		leftArmSound.setVolume( 1.0f );
+		rightArmSound.setVolume( 1.0f );
+		rightArmSound2.setVolume( 1.0f );
+		
 		// If everything is on
 		if ( powerSwitch1.isTurnedOn( ) && powerSwitch2.isTurnedOn( )
 				&& powerSwitch3.isTurnedOn( ) && powerSwitch4.isTurnedOn( )
