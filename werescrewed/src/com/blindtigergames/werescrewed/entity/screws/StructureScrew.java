@@ -18,6 +18,7 @@ import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
+import com.blindtigergames.werescrewed.input.mappings.Mapping;
 import com.blindtigergames.werescrewed.util.Util;
 
 /**
@@ -38,11 +39,10 @@ public class StructureScrew extends Screw {
 	private final int lastMotionFrame = 14;
 	private final int animeSteps = 12;
 
-
 	public StructureScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, Vector2 detachDirection ) {
-		super( name, pos, WereScrewedGame.manager.getAtlas(
-				"common-textures" ).findRegion( "flat_head_circular" ) );
+		super( name, pos, WereScrewedGame.manager.getAtlas( "common-textures" )
+				.findRegion( "flat_head_circular" ) );
 		loadSounds( );
 		this.world = world;
 		this.detachDirection = detachDirection;
@@ -85,8 +85,8 @@ public class StructureScrew extends Screw {
 
 	public StructureScrew( String name, Vector2 pos, int max, World world,
 			Vector2 detachDirection ) {
-		super( name, pos, WereScrewedGame.manager.getAtlas(
-				"common-textures" ).findRegion( "flat_head_circular" ) );
+		super( name, pos, WereScrewedGame.manager.getAtlas( "common-textures" )
+				.findRegion( "flat_head_circular" ) );
 		loadSounds( );
 		this.world = world;
 		this.detachDirection = detachDirection;
@@ -130,14 +130,38 @@ public class StructureScrew extends Screw {
 		}
 
 		if ( depth < maxDepth && depth > 0 ) {
-			// body.setAngularVelocity( -1 );
-			depth += 1;
-			int rotAfter = rotation - 10;
-			if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
-				screwSound( diff, 5 );
+			if ( Mapping.isAndroid( ) ) {
+				// body.setAngularVelocity( -1 );
+				depth += 1;
+				int rotAfter = rotation - 10;
+				if ( rotAfter % SCREW_SOUND_DEGREES != rotation
+						% SCREW_SOUND_DEGREES ) {
+					screwSound( diff, 5 );
+				}
+				rotation = rotAfter;
+				screwStep = depth + 6;
+			} else {
+				diff = startRegion - region;
+				newDiff = diff - prevDiff;
+				if ( newDiff < -10 ) {
+					newDiff = 0;
+				}
+				prevDiff = diff;
+
+				// body.setAngularVelocity( -1 );
+				if ( newDiff != 0 )
+					newDiff /= newDiff;
+				depth += newDiff;
+				if ( diff != 0 ) {
+					int rotAfter = rotation + ( -newDiff * 5 );
+					if ( rotAfter % SCREW_SOUND_DEGREES != rotation
+							% SCREW_SOUND_DEGREES ) {
+						screwSound( diff, 5 );
+					}
+					rotation = rotAfter;
+				}
+				screwStep = depth + 5;
 			}
-			rotation = rotAfter;
-			screwStep = depth + 6;
 		}
 
 	}
@@ -149,7 +173,8 @@ public class StructureScrew extends Screw {
 			// body.setAngularVelocity( 1 );
 			depth -= 1;
 			int rotAfter = rotation + 10;
-			if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
+			if ( rotAfter % SCREW_SOUND_DEGREES != rotation
+					% SCREW_SOUND_DEGREES ) {
 				screwSound( diff, 5 );
 			}
 			rotation = rotAfter;
@@ -166,14 +191,42 @@ public class StructureScrew extends Screw {
 		}
 
 		if ( depth > -10 ) {
-			// body.setAngularVelocity( 1 );
-			depth -= 1;
-			int rotAfter = rotation + 10;
-			if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
-				screwSound( diff, 5 );
+			if ( Mapping.isAndroid( ) ) {
+				// body.setAngularVelocity( 1 );
+				depth -= 1;
+				int rotAfter = rotation + 10;
+				if ( rotAfter % SCREW_SOUND_DEGREES != rotation
+						% SCREW_SOUND_DEGREES ) {
+					screwSound( diff, 5 );
+				}
+				rotation = rotAfter;
+				screwStep = depth + 5;
+			} else {
+				diff = startRegion - region;
+				newDiff = diff - prevDiff;
+				if ( newDiff > 10 ) {
+					newDiff = 0;
+				}
+				prevDiff = diff;
+
+				// body.setAngularVelocity( 1 );
+				if ( newDiff != 0 )
+					newDiff /= newDiff;
+				newDiff *= -1;
+
+				depth += newDiff;
+				spriteRegion += region;
+				if ( diff != 0 ) {
+					int rotAfter = rotation + ( -newDiff * 5 );
+					if ( rotAfter % SCREW_SOUND_DEGREES != rotation
+							% SCREW_SOUND_DEGREES ) {
+						unscrewSound( diff, 5 );
+					}
+					rotation = rotAfter;
+
+					screwStep = depth + 5;
+				}
 			}
-			rotation = rotAfter;
-			screwStep = depth + 5;
 		}
 
 	}
@@ -185,7 +238,8 @@ public class StructureScrew extends Screw {
 			// body.setAngularVelocity( -1 );
 			depth += 1;
 			int rotAfter = rotation - 10;
-			if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
+			if ( rotAfter % SCREW_SOUND_DEGREES != rotation
+					% SCREW_SOUND_DEGREES ) {
 				screwSound( diff, 5 );
 			}
 			rotation = rotAfter;
@@ -277,8 +331,11 @@ public class StructureScrew extends Screw {
 		if ( playerAttached ) {
 			screwInterface.sprite.draw( batch );
 		}
-		if ( sprite != null && visible && !removeNextStep
-				&& sprite.getBoundingRectangle( ).overlaps( camera.getBounds( ) )) {
+		if ( sprite != null
+				&& visible
+				&& !removeNextStep
+				&& sprite.getBoundingRectangle( )
+						.overlaps( camera.getBounds( ) ) ) {
 			sprite.draw( batch );
 		}
 	}

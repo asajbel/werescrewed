@@ -18,6 +18,7 @@ import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator;
 import com.blindtigergames.werescrewed.entity.animator.SimpleFrameAnimator.LoopBehavior;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.graphics.TextureAtlas;
+import com.blindtigergames.werescrewed.input.mappings.Mapping;
 import com.blindtigergames.werescrewed.puzzles.PuzzleManager;
 import com.blindtigergames.werescrewed.util.Util;
 
@@ -37,13 +38,14 @@ public class PuzzleScrew extends Screw {
 	private int startFrame = 15;
 	private final int lastMotionFrame = 14;
 	private final int animeSteps = 12;
-	//private int soundCounter = 0;
-	
+
+	// private int soundCounter = 0;
+
 	public PuzzleScrew( String name, Vector2 pos, int max, Entity entity,
 			World world, int startDepth, boolean resetable,
 			Vector2 detachDirection ) {
-		super( name, pos, WereScrewedGame.manager.getAtlas(
-				"common-textures" ).findRegion( "hex_screw" ) );
+		super( name, pos, WereScrewedGame.manager.getAtlas( "common-textures" )
+				.findRegion( "hex_screw" ) );
 		this.world = world;
 		this.detachDirection = detachDirection;
 		this.entity = entity;
@@ -87,8 +89,8 @@ public class PuzzleScrew extends Screw {
 
 	public PuzzleScrew( String name, Vector2 pos, int max, World world,
 			int startDepth, boolean resetable ) {
-		super( name, pos, WereScrewedGame.manager.getAtlas(
-				"common-textures" ).findRegion( "hex_screw" ) );
+		super( name, pos, WereScrewedGame.manager.getAtlas( "common-textures" )
+				.findRegion( "hex_screw" ) );
 		this.world = world;
 		maxDepth = max;
 		this.startDepth = depth = startDepth;
@@ -129,20 +131,55 @@ public class PuzzleScrew extends Screw {
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
-			//soundCounter = 0;
+			// soundCounter = 0;
 		}
 
 		if ( depth > 0 ) {
-			body.setAngularVelocity( 1 );
-			depth -= 1;
-			int rotAfter = rotation + 10;
-			if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
-				unscrewSound( diff, 5 );
+			if ( Mapping.isAndroid( ) ) {
+				body.setAngularVelocity( 1 );
+				depth -= 1;
+				int rotAfter = rotation + 10;
+				if ( rotAfter % SCREW_SOUND_DEGREES != rotation
+						% SCREW_SOUND_DEGREES ) {
+					unscrewSound( diff, 5 );
+				}
+				rotation = rotAfter;
+				screwStep = depth + 5;
+				puzzleManager.runElement( this, ( float ) depth
+						/ ( ( float ) maxDepth ) );
+			} else {
+				diff = startRegion - region;
+				newDiff = diff - prevDiff;
+				if ( Mapping.isAndroid( ) ) {
+					newDiff *= 10;
+				}
+				if ( newDiff > 10 ) {
+					newDiff = 0;
+				}
+				prevDiff = diff;
+
+				body.setAngularVelocity( 1 );
+				if ( newDiff != 0 )
+					newDiff /= newDiff;
+				newDiff *= -1;
+				depth += newDiff;
+
+				if ( depth < 0 )
+					depth = 0;
+				spriteRegion += region;
+				if ( diff != 0 ) {
+					int rotAfter = rotation + ( -newDiff * 5 );
+					if ( rotAfter % SCREW_SOUND_DEGREES != rotation
+							% SCREW_SOUND_DEGREES ) {
+						unscrewSound( diff, 5 );
+					}
+					rotation = rotAfter;
+
+				}
+				screwStep = depth + 5;
+				puzzleManager.runElement( this, ( float ) depth
+						/ ( ( float ) maxDepth ) );
 			}
-			rotation = rotAfter;
-			screwStep = depth + 5;
-			puzzleManager.runElement( this, ( float ) depth
-					/ ( ( float ) maxDepth ) );
 		}
 
 	}
@@ -154,7 +191,8 @@ public class PuzzleScrew extends Screw {
 			body.setAngularVelocity( 1 );
 			depth -= 1;
 			int rotAfter = rotation + 10;
-			if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
+			if ( rotAfter % SCREW_SOUND_DEGREES != rotation
+					% SCREW_SOUND_DEGREES ) {
 				unscrewSound( diff, 5 );
 			}
 			rotation = rotAfter;
@@ -174,18 +212,52 @@ public class PuzzleScrew extends Screw {
 		if ( switchedDirections ) {
 			startRegion = region;
 			prevDiff = 0;
-			//soundCounter = 0;
+			// soundCounter = 0;
 		}
 
 		if ( depth < maxDepth ) {
-			body.setAngularVelocity( -1 );
-			depth += 1;
+			if ( Mapping.isAndroid( ) ) {
+				body.setAngularVelocity( -1 );
+				depth += 1;
 
-			screwSound( 2, 2 );
-			rotation -= 10;
-			screwStep = depth + 6;
-			puzzleManager.runElement( this, ( float ) depth
-					/ ( ( float ) maxDepth ) );
+				screwSound( 2, 2 );
+				rotation -= 10;
+				screwStep = depth + 6;
+				puzzleManager.runElement( this, ( float ) depth
+						/ ( ( float ) maxDepth ) );
+			} else {
+				diff = startRegion - region;
+				newDiff = diff - prevDiff;
+				if ( newDiff < -10 ) {
+					newDiff = 0;
+				}
+				prevDiff = diff;
+
+				body.setAngularVelocity( -1 );
+				if ( newDiff != 0 )
+					newDiff /= newDiff;
+				depth += newDiff;
+				// System.out.println( soundCounter);
+				// if(soundCounter > maxDepth/8) {
+				// sounds.playSound( "screwing" , 0 );
+				// soundCounter = 0;
+				// System.out.println( soundCounter);
+				// }
+				if ( depth > maxDepth )
+					depth = maxDepth;
+				if ( diff != 0 ) {
+					int rotAfter = rotation + ( -newDiff * 5 );
+					if ( rotAfter % SCREW_SOUND_DEGREES != rotation
+							% SCREW_SOUND_DEGREES ) {
+						screwSound( diff, 5 );
+					}
+					rotation = rotAfter;
+
+				}
+				screwStep = depth + 5;
+				puzzleManager.runElement( this, ( float ) depth
+						/ ( ( float ) maxDepth ) );
+			}
 		}
 
 	}
@@ -243,12 +315,15 @@ public class PuzzleScrew extends Screw {
 	}
 
 	@Override
-	public void draw( SpriteBatch batch, float deltaTime, Camera camera  ) {
+	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
 		if ( playerAttached ) {
 			screwInterface.sprite.draw( batch );
 		}
-		if ( sprite != null && visible && !removeNextStep
-				&& sprite.getBoundingRectangle( ).overlaps( camera.getBounds( ) )) {
+		if ( sprite != null
+				&& visible
+				&& !removeNextStep
+				&& sprite.getBoundingRectangle( )
+						.overlaps( camera.getBounds( ) ) ) {
 			sprite.draw( batch );
 		}
 	}
