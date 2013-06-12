@@ -7,11 +7,16 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
+import com.blindtigergames.werescrewed.entity.animator.SimpleSpinemator;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
+import com.blindtigergames.werescrewed.util.Util;
 
 class CreditsScreen extends MenuScreen {
 	// implements com.badlogic.gdx.Screen
@@ -30,6 +35,11 @@ class CreditsScreen extends MenuScreen {
 	private Label soundLabel = null;
 	private TextButton backButton = null;
 	private int lineHeight = 0;
+	
+	private SimpleSpinemator man = null;
+	private SimpleSpinemator lady = null;
+	
+	World world;
 
 	public CreditsScreen( ) {
 		super( );
@@ -69,6 +79,36 @@ class CreditsScreen extends MenuScreen {
 				new ScreenSwitchHandler( ScreenType.LOADING_MENU ) );
 		backButton.setColored( true );
 		 initPeople( );
+		 
+		 
+		 
+		initWorld( );
+	}
+	
+	private void initWorld(){
+		world = new World( Vector2.Zero, false );
+		int radius = ( int ) ( WereScrewedGame.getWidth( )*.46875f );
+		Vector2 origin = new Vector2(WereScrewedGame.getWidth() / 2, -radius/1.3f);
+		
+		Skeleton circle = new Skeleton( "circle", origin.cpy( ), null, world );
+		
+		man = new SimpleSpinemator( "red_male_atlas", "male", "run_screw_ready", true );
+		lady = new SimpleSpinemator( "red_female_atlas", "female", "run", true );
+		man.setScale( new Vector2(0.5f,0.5f) );
+		lady.setScale( new Vector2(0.5f,0.5f) );
+		
+		man.setPosition( WereScrewedGame.getWidth() / 2 - 50,  WereScrewedGame.getHeight() / 2 + 50 );
+		lady.setPosition( WereScrewedGame.getWidth() / 2 + 200,  WereScrewedGame.getHeight() / 2 - 200 );
+		
+		Vector2 manPos = Util.PointOnCircle( radius, Util.PI/3f, origin );
+		man.setPosition( manPos );
+		man.setRotation( Util.angleBetweenPoints( origin, manPos )*Util.RAD_TO_DEG-90 );
+		
+		Vector2 ladyPos =  Util.PointOnCircle( radius, 2*Util.PI/3f, origin );
+		lady.setRotation( Util.angleBetweenPoints( origin, ladyPos )*Util.RAD_TO_DEG-90);
+		lady.setPosition( ladyPos );
+		
+		
 	}
 	
 	private void initPeople ( ) {
@@ -117,6 +157,10 @@ class CreditsScreen extends MenuScreen {
 		if ( !transOutEnd ) {
 			drawTransOut( batch, ScreenType.LOADING_MENU );
 		}
+		man.update( delta  );
+		lady.update( delta  );
+		man.draw( batch );
+		lady.draw( batch );
 		
 		batch.end( );
 		
@@ -133,6 +177,9 @@ class CreditsScreen extends MenuScreen {
 		if ( Gdx.input.isKeyPressed( Input.Keys.ENTER ) && transOutEnd ) {
 			transOutEnd = false;
 		} 
+		
+		
+		world.step( WereScrewedGame.oneOverTargetFrameRate, 2, 1 );
 	}
 
 	@Override
