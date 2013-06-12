@@ -168,9 +168,9 @@ public class DragonScreen extends Screen {
 			angryRoar.setInternalVolume( 0.75f );
 			sounds.getSound( "jaw_close", WereScrewedGame.dirHandle + "/levels/dragon/sounds/jawClose.ogg" ).setRange( 8000 );
 			sounds.loadMultiSound( "fire_breath", 0, 
-									2.0f, WereScrewedGame.dirHandle + "/levels/dragon/sounds/fire-breath-start.ogg", 
+									1.0f, WereScrewedGame.dirHandle + "/levels/dragon/sounds/fire-breath-start.ogg", 
 									0.9f, WereScrewedGame.dirHandle + "/levels/dragon/sounds/fire-breath-loop.ogg", 
-									1.4f, WereScrewedGame.dirHandle + "/levels/dragon/sounds/fire-breath-end.ogg", 
+									1.2f, WereScrewedGame.dirHandle + "/levels/dragon/sounds/fire-breath-end.ogg", 
 									-0.1f );
 			//sounds.getSound( "jaw_open",WereScrewedGame.dirHandle + "/levels/dragon/sounds/cannon.ogg" );
 		}
