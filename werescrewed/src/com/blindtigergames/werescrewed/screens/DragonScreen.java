@@ -1592,7 +1592,7 @@ public class DragonScreen extends Screen {
 		Vector2 pos = new Vector2( 24032, 136 );
 		brainEmitter1 = new EntityParticleEmitter( "brainEmitter1",
 				new Vector2( pos.cpy().add(0,n*h) ),
-				new Vector2(-brain_impulse - 0.02f, 0),
+				new Vector2(-brain_impulse - 0.03f, 0),
 				 level.world, true );
 		
 		int boltsPerEmitter = 2, boltLife = 5;
@@ -1604,7 +1604,7 @@ public class DragonScreen extends Screen {
 		Vector2 pos2 = new Vector2( 25218, 136 );
 		brainEmitter2 = new EntityParticleEmitter( "brainEmitter2",
 				new Vector2( pos2.cpy().add(0,n*h) ),
-				new Vector2(brain_impulse, 0),
+				new Vector2(brain_impulse + 0.03f, 0),
 				 level.world, true );
 		
 		for(int i =0; i < boltsPerEmitter; ++i ){
@@ -1615,7 +1615,7 @@ public class DragonScreen extends Screen {
 		Vector2 pos3 = new Vector2( 24032, -198 );
 		brainEmitter3 = new EntityParticleEmitter( "brainEmitter3",
 				new Vector2( pos3.cpy().add(0,n*h) ),
-				new Vector2(-brain_impulse - 0.02f, 0),
+				new Vector2(-brain_impulse - 0.05f, 0),
 				 level.world, true );
 		
 		for(int i =0; i < boltsPerEmitter; ++i ){
