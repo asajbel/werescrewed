@@ -38,9 +38,7 @@ import com.blindtigergames.werescrewed.util.Util;
  */
 public class ResurrectScrew extends Screw {
 	private Player deadPlayer;
-	private Vector2 playerOffset;
 	private boolean removeNextStep = false;
-	private LerpMover playerMover;
 	private Entity screwInterface;
 	private SimpleFrameAnimator screwUIAnimator;
 	private final int startFrame = 15;
@@ -64,8 +62,6 @@ public class ResurrectScrew extends Screw {
 		this.depth = 0;
 		this.maxDepth = 50;
 		this.deadPlayer = deadPlayer;
-		this.playerOffset = new Vector2( offset.x, offset.y );
-		playerMover = lm;
 		extraJoints = new ArrayList< Joint >( );
 		active = true;
 		screwType = ScrewType.SCREW_RESURRECT;
@@ -88,19 +84,21 @@ public class ResurrectScrew extends Screw {
 				* Util.DEG_TO_RAD );
 		rotation = ( int ) ( body.getAngle( ) * Util.RAD_TO_DEG );
 		connectScrewToEntity( entity );
-		addBehindParticleEffect( "ghost_spark", false, true ).start( ); 
+		addBehindParticleEffect( "ghost_spark", false, true ).start( );
 	}
-	
+
 	@Override
-	public void loadSounds(){
+	public void loadSounds( ) {
 		sounds = new SoundManager( );
-		sounds.getSound( "screwing", WereScrewedGame.dirHandle
-				+ "/common/sounds/rezzScrew.ogg" ).setInternalVolume( 0.40f );
+		sounds.getSound( "screwing",
+				WereScrewedGame.dirHandle + "/common/sounds/rezzScrew.ogg" )
+				.setInternalVolume( 0.40f );
 		sounds.getSound( "attach", WereScrewedGame.dirHandle
 				+ "/common/sounds/screwAtt.ogg" );
 		sounds.getSound( "detach", WereScrewedGame.dirHandle
-				+ "/common/sounds/screwDet.ogg" );	}
-	
+				+ "/common/sounds/screwDet.ogg" );
+	}
+
 	/**
 	 * if the pulley weight goes to the left use left to draw dead player closer
 	 */
@@ -123,15 +121,12 @@ public class ResurrectScrew extends Screw {
 			depth++;
 			body.setAngularVelocity( -15 );
 			int rotAfter = rotation - 10;
-			if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
+			if ( rotAfter % SCREW_SOUND_DEGREES != rotation
+					% SCREW_SOUND_DEGREES ) {
 				screwSound( diff, 5 );
 			}
 			rotation = rotAfter;
 			screwStep = depth + 5;
-//			if ( deadPlayer.isPlayerDead( ) ) {
-//				playerMover.moveAnalog( this, ( float ) depth
-//						/ ( ( float ) maxDepth ), deadPlayer.body );
-//			}
 		}
 	}
 
@@ -147,15 +142,12 @@ public class ResurrectScrew extends Screw {
 			depth++;
 			body.setAngularVelocity( -15 );
 			int rotAfter = rotation - 10;
-			if (rotAfter % SCREW_SOUND_DEGREES != rotation % SCREW_SOUND_DEGREES){
+			if ( rotAfter % SCREW_SOUND_DEGREES != rotation
+					% SCREW_SOUND_DEGREES ) {
 				screwSound( diff, 5 );
 			}
 			rotation = rotAfter;
 			screwStep = depth + 5;
-//			if ( deadPlayer.isPlayerDead( ) ) {
-//				playerMover.moveAnalog( this, ( float ) depth
-//						/ ( ( float ) maxDepth ), deadPlayer.body );
-//			}
 		}
 
 	}
@@ -206,8 +198,8 @@ public class ResurrectScrew extends Screw {
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
 		if ( !removed ) {
-			//if mover is at end re-spawn the player
-			if ( playerMover.atEnd( ) || depth == maxDepth ) {
+			// if mover is at end re-spawn the player
+			if ( depth >= maxDepth ) {
 				deadPlayer.body
 						.setTransform(
 								this.getPositionPixel( )
@@ -218,7 +210,8 @@ public class ResurrectScrew extends Screw {
 				deadPlayer.body.setLinearVelocity( Vector2.Zero );
 				Filter filter = new Filter( );
 				for ( Fixture f : deadPlayer.body.getFixtureList( ) ) {
-					if ( f != deadPlayer.rightSensor && f != deadPlayer.leftSensor
+					if ( f != deadPlayer.rightSensor
+							&& f != deadPlayer.leftSensor
 							&& f != deadPlayer.topSensor ) {
 						f.setSensor( false );
 					}
@@ -249,17 +242,17 @@ public class ResurrectScrew extends Screw {
 				if ( depth == screwStep ) {
 					body.setAngularVelocity( 0 );
 				}
-//				if ( deadPlayer.isPlayerDead( ) ) {
-//					Vector2 temp = this.getPositionPixel( ).cpy( );
-//					playerMover.changeEndPos( temp );
-//					if ( playerOffset.x > 0 ) {
-//						playerMover.changeBeginPos( temp.sub( playerOffset ) );
-//					} else {
-//						playerMover.changeBeginPos( temp.sub( playerOffset ) );
-//					}
-//					playerMover.moveAnalog( this, ( float ) depth
-//							/ ( ( float ) maxDepth ), deadPlayer.body );
-//				}
+				// if ( deadPlayer.isPlayerDead( ) ) {
+				// Vector2 temp = this.getPositionPixel( ).cpy( );
+				// playerMover.changeEndPos( temp );
+				// if ( playerOffset.x > 0 ) {
+				// playerMover.changeBeginPos( temp.sub( playerOffset ) );
+				// } else {
+				// playerMover.changeBeginPos( temp.sub( playerOffset ) );
+				// }
+				// playerMover.moveAnalog( this, ( float ) depth
+				// / ( ( float ) maxDepth ), deadPlayer.body );
+				// }
 				if ( playerAttached ) {
 					if ( screwInterface.sprite.getAnimator( ).getFrame( ) == 0 ) {
 						screwUIAnimator.speed( 1 );
@@ -332,6 +325,6 @@ public class ResurrectScrew extends Screw {
 		RevoluteJointDef revoluteJointDef = new RevoluteJointDef( );
 		revoluteJointDef.initialize( body, entity.body, body.getPosition( ) );
 		revoluteJointDef.enableMotor = false;
-		entityJoint = (RevoluteJoint) world.createJoint( revoluteJointDef );
+		entityJoint = ( RevoluteJoint ) world.createJoint( revoluteJointDef );
 	}
 }
