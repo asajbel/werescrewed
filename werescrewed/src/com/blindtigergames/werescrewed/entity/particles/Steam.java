@@ -108,7 +108,7 @@ public class Steam extends Platform {
 	public void update( float dT ) {
 		SoundRef idle = sounds.getSound( "idle" );
 		idle.setVolume( this.isActive() ? 
-							idle.calculatePositionalVolume(getPositionPixel( ), Camera.CAMERA_RECT ) 
+							SoundManager.getNoiseVolume( ) * idle.calculatePositionalVolume(getPositionPixel( ), Camera.CAMERA_RECT ) 
 							: 0f );
 		super.update( dT );
 	}
