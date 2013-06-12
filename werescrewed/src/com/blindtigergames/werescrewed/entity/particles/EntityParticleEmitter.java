@@ -20,6 +20,7 @@ public class EntityParticleEmitter extends Entity {
 	private ArrayList< EntityParticle > particles;
 	private boolean activeEmitting;
 	private Vector2 emitionImpusle;
+	private boolean recentlyActivated=false;
 
 	/**
 	 * Entity used to manage Particle Systems, in which the Particles are
@@ -95,6 +96,13 @@ public class EntityParticleEmitter extends Entity {
 	 *            float
 	 */
 	public void update( float deltaTime ) {
+		if(recentlyActivated){
+			for ( EntityParticle particle : particles ) {
+				particle.hardReset( );
+				particle.getEntity( ).body.setActive( true );
+			}
+			recentlyActivated=false;
+		}
 		if(activeEmitting){
 			for ( EntityParticle p : particles ) {
 				p.update( deltaTime );
@@ -111,9 +119,9 @@ public class EntityParticleEmitter extends Entity {
 			}
 		}else{
 			//HOLD THE particle in emitting place.
-			for ( EntityParticle p : particles ) {
-				p.hardReset( );
-			}
+			//for ( EntityParticle p : particles ) {
+			//	p.hardReset( );
+			//}
 		}
 	}
 	
@@ -148,9 +156,6 @@ public class EntityParticleEmitter extends Entity {
 	
 	public void setEmittingActive(boolean isEmitting){
 		activeEmitting=isEmitting;
-		for ( EntityParticle particle : particles ) {
-			particle.hardReset( );
-			particle.getEntity( ).body.setActive( isEmitting );
-		}
+		recentlyActivated=true;
 	}
 }

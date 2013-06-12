@@ -105,7 +105,7 @@ public class Fire extends Hazard {
 	public void update( float deltaTime){
 		SoundRef idle = sounds.getSound( "idle" );
 		idle.setVolume( this.activeHazard ? 
-							idle.calculatePositionalVolume(getPositionPixel( ), Camera.CAMERA_RECT ) 
+							SoundManager.getNoiseVolume( ) * idle.calculatePositionalVolume(getPositionPixel( ), Camera.CAMERA_RECT ) 
 							: 0f );
 		sounds.update( deltaTime );
 	}

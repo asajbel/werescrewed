@@ -96,6 +96,18 @@ class OptionsScreen extends MenuScreen {
 	}
 
 	@Override
+	public void show(){
+		super.show( );
+		SoundManager.setEnableLoops( false );
+	}
+
+	@Override	
+	public void hide(){
+		super.hide( );
+		SoundManager.setEnableLoops( true );
+	}
+	
+	@Override
 	public void render( float delta ) {
 		super.render( delta );
 		batch.begin( );

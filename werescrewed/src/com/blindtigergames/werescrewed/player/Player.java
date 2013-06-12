@@ -161,6 +161,7 @@ public class Player extends Entity {
 	
 	private float controlValue = 0f;
 
+	private float deathTime = 0f;
 
 	//private IMover mover;
 
@@ -284,7 +285,7 @@ public class Player extends Entity {
 	 */
 	public void update( float deltaTime ) {
 		super.update( deltaTime );
-
+		
 		updateMover( deltaTime );
 
 		if ( switchTimer > 0 )
@@ -298,12 +299,14 @@ public class Player extends Entity {
 		
 		if ( drawTutorial ) {
 			tutorialTimer++;
-			if ( tutorialTimer > 90 ) { // controls frame time on tutorials
-				tutorialFrame++;
-				if ( tutorialFrame > tutorialEnd )
-					tutorialFrame = tutorialBegin;
-				tutorial.setTexture( tutorials[ tutorialFrame ] );
-				tutorialTimer = 0;
+			if(deathTime == 0f || deathTime > 5f ){
+				if ( tutorialTimer > 45 ) { // controls frame time on tutorials
+					tutorialFrame++;
+					if ( tutorialFrame > tutorialEnd )
+						tutorialFrame = tutorialBegin;
+					tutorial.setTexture( tutorials[ tutorialFrame ] );
+					tutorialTimer = 0;
+				}
 			}
 		}
 //		if ( Gdx.input.isKeyPressed( Keys.NUM_7 ) )
@@ -334,6 +337,7 @@ public class Player extends Entity {
 					&& playerState != PlayerState.RespawnMode ) {
 				killPlayer( );
 			}
+			deathTime += deltaTime;
 			// check input only for grab mode
 			// to allow player to re-spawn
 			if ( controller != null ) {
@@ -388,6 +392,7 @@ public class Player extends Entity {
 				}
 			}
 		}
+		
 		updateFootFrictionNew( );
 		// switch between states
 		switch ( playerState ) {
@@ -564,6 +569,7 @@ public class Player extends Entity {
 				setTutorial( 10, 11 );
 				setDrawTutorial( true );
 				deathBubble = true;
+				deathTime = 0.01f;
 				if ( otherPlayer != null
 						&& otherPlayer.getState( ) == PlayerState.HeadStand ) {
 					otherPlayer.checkHeadStandState( );
@@ -575,9 +581,10 @@ public class Player extends Entity {
 				setMoverAtCurrentState( null );
 				Filter filter = new Filter( );
 				for ( Fixture f : body.getFixtureList( ) ) {
-					f.setSensor( true );
 					filter.categoryBits = Util.CATEGORY_SUBPLAYER;
-					filter.maskBits = Util.CATEGORY_CHECKPOINTS | Util.CATEGORY_SCREWS;
+					filter.maskBits = Util.CATEGORY_CHECKPOINTS 
+							| Util.CATEGORY_SCREWS 
+							| Util.CATEGORY_PLATFORMS;
 					f.setFilterData( filter );
 				}
 				playerState = PlayerState.Dead;
@@ -627,6 +634,7 @@ public class Player extends Entity {
 	public void respawnPlayer( ) {
 		setDrawTutorial( false );
 		deathBubble = false;
+		deathTime = 0f;
 		topCrush = false;
 		botCrush = false;
 		leftCrush = false;
@@ -723,10 +731,10 @@ public class Player extends Entity {
 	/**
 	 * draws tutorials when appropriate
 	 */
-	public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
-		drawBubble( batch );
+	/*public void draw( SpriteBatch batch, float deltaTime, Camera camera ) {
+		if(deathTime == 0f || deathTime > 10f ) drawBubble( batch );
 		super.draw( batch, deltaTime, camera );
-	}
+	}*/
 
 	/**
 	 * draws tutorials when appropriate
@@ -735,32 +743,35 @@ public class Player extends Entity {
 	 *            SpriteBatch
 	 */
 	public void drawBubble( SpriteBatch batch ) {
-		if ( drawTutorial ) {
-			float xpos = body.getPosition( ).x;
-			float ypos = body.getPosition( ).y;
-			bubble.getScaleX( );
-			if ( tutorial != null ) {
-				if( !deathBubble ){
-					bubble.setPosition(
-						xpos * Util.BOX_TO_PIXEL - bubble.getWidth( ) / 2.0f
-								+ 350f, ypos * Util.BOX_TO_PIXEL + 100f );
-					bubble.setRotation( MathUtils.radiansToDegrees
-						* body.getAngle( ) );
-					tutorial.setPosition(
-							xpos * Util.BOX_TO_PIXEL - tutorial.getWidth( ) / 2.0f
-									+ 350f, ypos * Util.BOX_TO_PIXEL + 230 );
-					tutorial.setRotation( MathUtils.radiansToDegrees
-							* body.getAngle( ) );
-					bubble.draw( batch );
+		if ( deathTime == 0f || deathTime > 5f ) {
+			if ( drawTutorial ) {
+				float xpos = body.getPosition( ).x;
+				float ypos = body.getPosition( ).y;
+				bubble.getScaleX( );
+				if ( tutorial != null ) {
+					if ( !deathBubble ) {
+						bubble.setPosition(
+								xpos * Util.BOX_TO_PIXEL - bubble.getWidth( )
+										/ 2.0f + 350f, ypos * Util.BOX_TO_PIXEL
+										+ 100f );
+						bubble.setRotation( MathUtils.radiansToDegrees
+								* body.getAngle( ) );
+						tutorial.setPosition( xpos * Util.BOX_TO_PIXEL
+								- tutorial.getWidth( ) / 2.0f + 350f, ypos
+								* Util.BOX_TO_PIXEL + 230 );
+						tutorial.setRotation( MathUtils.radiansToDegrees
+								* body.getAngle( ) );
+						bubble.draw( batch );
+					} else {
+						tutorial.setPosition( xpos * Util.BOX_TO_PIXEL
+								- tutorial.getWidth( ) / 2.0f + 64, ypos
+								* Util.BOX_TO_PIXEL + 50 );
+						tutorial.setRotation( MathUtils.radiansToDegrees
+								* body.getAngle( ) );
+					}
 				}
-				else{
-					tutorial.setPosition(
-						xpos * Util.BOX_TO_PIXEL - tutorial.getWidth( ) / 2.0f + 64, ypos * Util.BOX_TO_PIXEL + 50 );
-					tutorial.setRotation( MathUtils.radiansToDegrees
-						* body.getAngle( ) );
-				}
+				tutorial.draw( batch );
 			}
-			tutorial.draw( batch );
 		}
 	}
 
@@ -1154,7 +1165,7 @@ public class Player extends Entity {
 						body.getLinearVelocity( ).y );
 			}
 		}
-		if ( prevButton == null ) {
+		if ( prevButton == null  || isDead) {
 			if ( feet.getFriction( ) < PLAYER_FRICTION ) {
 				frictionCounter += FRICTION_INCREMENT;
 				if ( frictionCounter > PLAYER_FRICTION ) {

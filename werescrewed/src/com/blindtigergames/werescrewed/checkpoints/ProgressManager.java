@@ -352,7 +352,7 @@ public class ProgressManager {
 					LinearAxis.DIAGONAL );
 		}
 		player.body.setLinearVelocity( Vector2.Zero );
-		player.body.setType( BodyType.KinematicBody );
+//		player.body.setType( BodyType.KinematicBody );
 		rezScrewMap.put( player.name, rezzBuilder.playerOffset( true )
 				.lerpMover( screwMover ).position( screwPos ).entity( currentCheckPoint.getParentSkeleton( ).getRoot( ) )
 				.buildRezzScrew( ) );
@@ -396,6 +396,7 @@ public class ProgressManager {
 		removeRezScrew( );
 		player.setRezTime( 0f );
 		player.respawnPlayer( );
+		player.body.setType( BodyType.KinematicBody ); 
 
 		Filter filter = new Filter( );
 		for ( Fixture f : player.body.getFixtureList( ) ) {
