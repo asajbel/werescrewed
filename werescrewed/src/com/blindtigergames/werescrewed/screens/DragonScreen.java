@@ -307,7 +307,7 @@ public class DragonScreen extends Screen {
 		}
 		if ( jawStructureScrew != null ) {
 			
-			if ( jawStructureScrew.getDepth( ) == 0 ) {
+			if ( jawStructureScrew.getDepth( ) == 0) {
 				jaw_skeleton.body.setType( BodyType.DynamicBody );
 				headEvent = true;
 				sounds.playSound( "roar_angry" );
