@@ -384,7 +384,7 @@ public class DragonScreen extends Screen {
 						.get( "balloon1_ledge3" );
 
 				PathBuilder pb = new PathBuilder( );
-				pb.begin( balloon1LeftHatch ).target( 0f, -200f, 1f ).loops( 0 );
+				pb.begin( balloon1LeftHatch ).target( 0f, -200f, 0.5f ).loops( 0 );
 				balloon1LeftHatch.addMover( pb.build( ) );
 
 				PathBuilder pb2 = new PathBuilder( );

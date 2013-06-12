@@ -68,8 +68,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="cameraPosition" Visible="true">
                     <Position>
-                        <X>14480</X>
-                        <Y>-2048</Y>
+                        <X>-1728</X>
+                        <Y>-48</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -191,8 +191,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerOne" Visible="true">
                     <Position>
-                        <X>14416</X>
-                        <Y>-1952</Y>
+                        <X>-1584</X>
+                        <Y>2080</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -222,8 +222,8 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="playerTwo" Visible="true">
                     <Position>
-                        <X>14544</X>
-                        <Y>-1952</Y>
+                        <X>-1456</X>
+                        <Y>2080</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5319,7 +5319,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="body_section1_skeleton" Visible="true">
+                <Item xsi:type="RectangleItem" Name="body_section1_skeleton" Visible="false">
                     <Position>
                         <X>13776</X>
                         <Y>-2032</Y>
@@ -18587,7 +18587,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="switch_balloon1" Visible="true">
                     <Position>
-                        <X>-384</X>
+                        <X>-432</X>
                         <Y>1744</Y>
                     </Position>
                     <CustomProperties>
@@ -19958,8 +19958,8 @@
         <NextItemNumber>1262</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>19981.3848</X>
-            <Y>-1132.67944</Y>
+            <X>-335.3285</X>
+            <Y>1950.65869</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
