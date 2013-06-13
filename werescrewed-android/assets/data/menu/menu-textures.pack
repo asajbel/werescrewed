@@ -1,33 +1,40 @@
 menu-textures.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 offset: 0, 0
 slider
   rotate: false
-  xy: 2, 771
-  size: 284, 44
-  orig: 284, 44
+  xy: 4, 836
+  size: 288, 48
+  orig: 288, 48
   offset: 0, 0
   index: -1
 menu
   rotate: false
-  xy: 2, 96
-  size: 463, 673
-  orig: 463, 673
+  xy: 1294, 4
+  size: 467, 677
+  orig: 467, 677
   offset: 0, 0
   index: -1
 screw
   rotate: false
-  xy: 467, 96
-  size: 42, 42
-  orig: 42, 42
+  xy: 4, 890
+  size: 46, 46
+  orig: 46, 46
   offset: 0, 0
   index: -1
 button
   rotate: false
-  xy: 2, 2
-  size: 287, 92
-  orig: 287, 92
+  xy: 4, 734
+  size: 291, 96
+  orig: 291, 96
+  offset: 0, 0
+  index: -1
+credits
+  rotate: false
+  xy: 4, 4
+  size: 1284, 724
+  orig: 1284, 724
   offset: 0, 0
   index: -1
