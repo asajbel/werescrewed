@@ -181,6 +181,8 @@ public class AlphaScreen extends Screen {
 					.definition( "red_female" ).buildPlayer( );
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
+		level.player1.setThatGuy( level.player2 );
+		level.player2.setThatGuy( level.player1 );
 
 		// background stuff
 		level.backgroundBatch = new SpriteBatch( );

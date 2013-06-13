@@ -34,7 +34,7 @@
                         <Y>32</Y>
                     </Origin>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="tail_skeleton_super" Visible="true">
+                <Item xsi:type="RectangleItem" Name="tail_skeleton_super" Visible="false">
                     <Position>
                         <X>5360</X>
                         <Y>-3136</Y>
@@ -3557,7 +3557,7 @@
                 </Item>
                 <Item xsi:type="TextureItem" Name="tail_to_tail2_ss" Visible="true">
                     <Position>
-                        <X>7664</X>
+                        <X>7648</X>
                         <Y>-880</Y>
                     </Position>
                     <CustomProperties>
@@ -3578,6 +3578,9 @@
                         </Property>
                         <Property Name="degreelimit" Type="string" Description="">
                             <string>-20f</string>
+                        </Property>
+                        <Property Name="setinvisible" Type="string" Description="">
+                            <string />
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -4942,7 +4945,7 @@
                 <Item xsi:type="RectangleItem" Name="tail3_fire1" Visible="true">
                     <Position>
                         <X>10416</X>
-                        <Y>-1984</Y>
+                        <Y>-2320</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -4953,7 +4956,7 @@
                         </Property>
                     </CustomProperties>
                     <Width>32</Width>
-                    <Height>144</Height>
+                    <Height>464</Height>
                     <FillColor>
                         <R>192</R>
                         <G>0</G>
@@ -5011,7 +5014,7 @@
                 <Item xsi:type="RectangleItem" Name="tail3_fire4" Visible="true">
                     <Position>
                         <X>12144</X>
-                        <Y>-2064</Y>
+                        <Y>-2032</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5034,7 +5037,7 @@
                 <Item xsi:type="RectangleItem" Name="tail3_fire5" Visible="true">
                     <Position>
                         <X>12528</X>
-                        <Y>-2080</Y>
+                        <Y>-2048</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -5218,6 +5221,9 @@
                         </Property>
                         <Property Name="degreelimit" Type="string" Description="">
                             <string>-20f</string>
+                        </Property>
+                        <Property Name="setinvisible" Type="string" Description="">
+                            <string />
                         </Property>
                     </CustomProperties>
                     <Rotation>0</Rotation>
@@ -9238,29 +9244,6 @@
                         <X>32</X>
                         <Y>32</Y>
                     </Origin>
-                </Item>
-                <Item xsi:type="RectangleItem" Name="tail2_fire1" Visible="true">
-                    <Position>
-                        <X>7760</X>
-                        <Y>-2096</Y>
-                    </Position>
-                    <CustomProperties>
-                        <Property Name="Definition" Type="string" Description="">
-                            <string>fire</string>
-                        </Property>
-                        <Property Name="AttachToSkeleton" Type="string" Description="">
-                            <string>tail2_sub_skeleton</string>
-                        </Property>
-                    </CustomProperties>
-                    <Width>32</Width>
-                    <Height>448</Height>
-                    <FillColor>
-                        <R>192</R>
-                        <G>0</G>
-                        <B>192</B>
-                        <A>145</A>
-                        <PackedValue>2445279424</PackedValue>
-                    </FillColor>
                 </Item>
                 <Item xsi:type="RectangleItem" Name="tail3_to_body_plat" Visible="true">
                     <Position>
@@ -14040,7 +14023,7 @@
                 <Item xsi:type="PathItem" Name="Path_1027" Visible="true">
                     <Position>
                         <X>10432</X>
-                        <Y>-1888</Y>
+                        <Y>-2080</Y>
                     </Position>
                     <CustomProperties>
                         <Property Name="Definition" Type="string" Description="">
@@ -14057,13 +14040,13 @@
                         </Vector2>
                         <Vector2>
                             <X>0</X>
-                            <Y>896</Y>
+                            <Y>1088</Y>
                         </Vector2>
                     </LocalPoints>
                     <WorldPoints>
                         <Vector2>
                             <X>10432</X>
-                            <Y>-1888</Y>
+                            <Y>-2080</Y>
                         </Vector2>
                         <Vector2>
                             <X>10432</X>
@@ -14114,7 +14097,7 @@
                         </Vector2>
                     </WorldPoints>
                     <IsPolygon>false</IsPolygon>
-                    <LineWidth>4</LineWidth>
+                    <LineWidth>10</LineWidth>
                     <LineColor>
                         <R>192</R>
                         <G>0</G>
@@ -14165,6 +14148,29 @@
                         <A>145</A>
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
+                </Item>
+                <Item xsi:type="RectangleItem" Name="tail2_fire1" Visible="true">
+                    <Position>
+                        <X>7760</X>
+                        <Y>-2080</Y>
+                    </Position>
+                    <CustomProperties>
+                        <Property Name="Definition" Type="string" Description="">
+                            <string>fire</string>
+                        </Property>
+                        <Property Name="AttachToSkeleton" Type="string" Description="">
+                            <string>tail2_sub_skeleton</string>
+                        </Property>
+                    </CustomProperties>
+                    <Width>32</Width>
+                    <Height>496</Height>
+                    <FillColor>
+                        <R>192</R>
+                        <G>0</G>
+                        <B>192</B>
+                        <A>145</A>
+                        <PackedValue>2445279424</PackedValue>
+                    </FillColor>
                 </Item>
                 <Item xsi:type="TextureItem" Name="tail3_inside_stripped3" Visible="true">
                     <Position>
@@ -16590,9 +16596,6 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>tail_skeleton</string>
                         </Property>
-                        <Property Name="onesided" Type="string" Description="">
-                            <string />
-                        </Property>
                         <Property Name="defaultcolor" Type="string" Description="">
                             <string />
                         </Property>
@@ -18017,9 +18020,6 @@
                         </Property>
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>tail2_sub_skeleton</string>
-                        </Property>
-                        <Property Name="onesided" Type="string" Description="">
-                            <string />
                         </Property>
                         <Property Name="defaultcolor" Type="string" Description="">
                             <string />
@@ -19932,8 +19932,8 @@
         <NextItemNumber>1262</NextItemNumber>
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
-            <X>-5118.677</X>
-            <Y>2017.323</Y>
+            <X>10581.3223</X>
+            <Y>-949.3482</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>

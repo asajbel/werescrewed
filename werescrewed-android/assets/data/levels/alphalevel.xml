@@ -131,7 +131,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </LineColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton1" Visible="true">
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton1" Visible="false">
                     <Position>
                         <X>-368</X>
                         <Y>-4384</Y>
@@ -163,7 +163,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton2" Visible="true">
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton2" Visible="false">
                     <Position>
                         <X>-1728</X>
                         <Y>-6464</Y>
@@ -195,7 +195,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton3" Visible="true">
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton3" Visible="false">
                     <Position>
                         <X>-1472</X>
                         <Y>-5120</Y>
@@ -227,7 +227,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton4" Visible="true">
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton4" Visible="false">
                     <Position>
                         <X>1248</X>
                         <Y>-4896</Y>
@@ -259,7 +259,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton5" Visible="true">
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton5" Visible="false">
                     <Position>
                         <X>1104</X>
                         <Y>-6368</Y>
@@ -291,7 +291,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton6" Visible="true">
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton6" Visible="false">
                     <Position>
                         <X>-240</X>
                         <Y>-6448</Y>
@@ -323,7 +323,7 @@
                         <PackedValue>2445279424</PackedValue>
                     </FillColor>
                 </Item>
-                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton7" Visible="true">
+                <Item xsi:type="RectangleItem" Name="chest_sub_skeleton7" Visible="false">
                     <Position>
                         <X>-288</X>
                         <Y>-5456</Y>
@@ -14616,6 +14616,9 @@
                         <Property Name="AttachToSkeleton" Type="string" Description="">
                             <string>chest_sub_skeleton1</string>
                         </Property>
+                        <Property Name="dontsleep" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -18371,6 +18374,9 @@
                         <Property Name="sequence" Type="string" Description="">
                             <string>0 1</string>
                         </Property>
+                        <Property Name="repeatable" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -18455,6 +18461,9 @@
                         <Property Name="sequence" Type="string" Description="">
                             <string>2 4</string>
                         </Property>
+                        <Property Name="repeatable" Type="string" Description="">
+                            <string />
+                        </Property>
                     </CustomProperties>
                     <LocalPoints>
                         <Vector2>
@@ -18538,6 +18547,9 @@
                         </Property>
                         <Property Name="sequence" Type="string" Description="">
                             <string>5 6</string>
+                        </Property>
+                        <Property Name="repeatable" Type="string" Description="">
+                            <string />
                         </Property>
                     </CustomProperties>
                     <LocalPoints>
@@ -21618,7 +21630,7 @@
         <ContentRootFolder>gleed-textures</ContentRootFolder>
         <CameraPosition>
             <X>274.01178</X>
-            <Y>-2542.71875</Y>
+            <Y>-2159.38354</Y>
         </CameraPosition>
         <Version>1.3.0.0</Version>
     </EditorRelated>
