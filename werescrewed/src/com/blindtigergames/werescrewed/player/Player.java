@@ -1,5 +1,6 @@
 package com.blindtigergames.werescrewed.player;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
@@ -135,6 +136,7 @@ public class Player extends Entity {
 	private boolean deathBubble;
 
 	private Player otherPlayer;
+	private Player thatGuy;
 	private RevoluteJoint playerJoint;
 	private Platform currentPlatform;
 	private Platform lastPlatformHit;
@@ -173,6 +175,7 @@ public class Player extends Entity {
 	private boolean deadPlayerHitCheckpnt = false; 
 	
 	private boolean have_control = true;
+	public boolean tutOn = false;
 
 	// Enums
 	/**
@@ -697,7 +700,16 @@ public class Player extends Entity {
 	 *            boolean
 	 */
 	public void setDrawTutorial( boolean value ) {
-		drawTutorial = value;
+		if(value && thatGuy != null && (thatGuy.tutOn == false) || thatGuy.getBeginTutorial() != tutorialBegin){
+			drawTutorial = value;
+			tutOn = true;
+		}
+		else if (!value){
+			if (thatGuy != null) Gdx.app.log(thatGuy.name + ".tutOn: ","" + tutOn);
+			Gdx.app.log(name + ".tutOn: ","" + tutOn);
+			drawTutorial = value;
+			tutOn = false;
+		}
 		if ( value )
 			bubbleAnchor.activate( );
 		else
@@ -725,6 +737,13 @@ public class Player extends Entity {
 	 */
 	public void clearTutorial( ) {
 		tutorial = null;
+	}
+	
+	/**
+	 * returns tutorialBegin
+	 */
+	public int getBeginTutorial(){
+		return tutorialBegin;
 	}
 
 	/**
@@ -2339,5 +2358,12 @@ public class Player extends Entity {
 	public void addAnchor(Anchor anchor) {
 		super.addAnchor( anchor );
 		anchor.player = true;
+	}
+	
+	/**
+	 * sets variable thatGuy
+	 */
+	public void setThatGuy(Player dude){
+		thatGuy = dude;
 	}
 }
