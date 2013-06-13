@@ -105,6 +105,17 @@
 /common/slides/slide5_dragon.png
 /common/slides/slide6_dragon.png
 
+/common/slides/slide1_outro.png
+/common/slides/slide2_outro.png
+/common/slides/slide3_outro.png
+/common/slides/slide4_outro.png
+/common/slides/slide5_outro.png
+/common/slides/slide6_outro.png
+/common/slides/slide7_outro.png
+/common/slides/slide8_outro.png
+/common/slides/slide9_outro.png
+/common/slides/slide10_outro.png
+
 ##Particle effects
 skid_left.p
 skid_right.p
