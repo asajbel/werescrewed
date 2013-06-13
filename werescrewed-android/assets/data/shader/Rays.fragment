@@ -1,0 +1,43 @@
+#ifdef GL_ES
+	#define PRECISION mediump
+	#define LOWP lowp
+	precision PRECISION float;
+#else
+	#define LOWP
+#endif
+
+uniform float origin_x;
+uniform float origin_y;
+//uniform float time;
+
+varying LOWP vec4 v_color;
+varying vec2 v_texCoords;
+varying vec2 v_cameraCoords;
+
+uniform sampler2D u_texture;
+uniform sampler2D s_texture;
+uniform sampler2D n_texture;
+
+const int num_samples = 64;
+const float Density = .5;
+const float Decay = .95;
+const float Weight = 1.0;
+const float Exposure = .15;
+
+void main(){
+	vec2 deltaTextCoord = vec2( v_texCoords - vec2(origin_x,origin_y) );
+ 	deltaTextCoord *= 1.0 /  float(num_samples) * Density;
+ 	vec2 textCoo = v_texCoords;
+ 	float IlluminationDecay = 1.0;//(sin(time)+1.0)/2;
+ 	//time = time+1.0;
+	
+ 	for(int i=0; i < num_samples ; i++) {
+		textCoo -= deltaTextCoord;
+    	vec4 sample = texture2D(u_texture, textCoo );
+    	sample *= IlluminationDecay * Weight;
+    	gl_FragColor += sample;
+    	IlluminationDecay *= Decay;
+ 	}
+ 	
+ 	gl_FragColor *= Exposure;
+}

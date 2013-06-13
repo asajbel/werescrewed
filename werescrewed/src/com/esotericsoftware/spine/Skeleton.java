@@ -35,12 +35,12 @@ public class Skeleton {
 	final Array< Slot > slots;
 	final Array< Slot > drawOrder;
 	Skin skin;
-	Color color;
+	final Color color;
 	float time;
 	boolean flipX, flipY;
 
 	@SuppressWarnings( { "unchecked", "rawtypes" } )
-	public Skeleton( SkeletonData data ) {
+	public Skeleton( SkeletonData data, Color c ) {
 		if ( data == null )
 			throw new IllegalArgumentException( "data cannot be null." );
 		this.data = data;
@@ -62,7 +62,11 @@ public class Skeleton {
 			drawOrder.add( slot );
 		}
 
-		color = new Color( 1, 1, 1, 1 );
+		color = new Color( c );
+	}
+	
+	public Skeleton( SkeletonData data ){
+		this( data, new Color(1,1,1,1) );
 	}
 
 	/** Copy constructor. */
