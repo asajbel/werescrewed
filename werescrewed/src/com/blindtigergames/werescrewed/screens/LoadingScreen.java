@@ -37,6 +37,7 @@ public class LoadingScreen extends Screen {
 	private OrthographicCamera camera = null;
 	
 	private boolean initialLoadFinished = false;
+	
 
 	/**
 	 * Displays the loading screen and loads the appropriate contents for the
@@ -126,6 +127,9 @@ public class LoadingScreen extends Screen {
 							"data/common/slides/slide3_alphabot.png", Texture.class ) );
 					storyBoardArray.add( WereScrewedGame.manager.get(
 							"data/common/slides/slide4_players.png", Texture.class ) );
+					//duplicate to stay on last slide longer
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide4_players.png", Texture.class ) );
 				} if (currLevel == 2 ){
 					WereScrewedGame.manager.load(
 							"data/common/slides/slide1_dragon.png", Texture.class );
@@ -152,6 +156,9 @@ public class LoadingScreen extends Screen {
 							"data/common/slides/slide4_dragon.png", Texture.class ) );
 					storyBoardArray.add( WereScrewedGame.manager.get(
 							"data/common/slides/slide5_dragon.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide6_dragon.png", Texture.class ) );
+					//duplicate to stay on last slide longer
 					storyBoardArray.add( WereScrewedGame.manager.get(
 							"data/common/slides/slide6_dragon.png", Texture.class ) );
 				}

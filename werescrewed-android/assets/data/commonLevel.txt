@@ -67,13 +67,6 @@
 
 /common/gear.png
 /common/sawblade.png
-/common/redScrewDriver.png
-#/common/pipe/pipeEndD.png
-#/common/pipe/pipeEndL.png
-#/common/pipe/pipeEndR.png
-#/common/pipe/pipeEndU.png
-#/common/pipe/pipeLR.png
-#/common/pipe/pipeUD.png
 
 #delete these when final art comes in
 /common/powerswitches/on.png
@@ -96,12 +89,7 @@
 
 ##Fonts
 /debug/debug_font.fnt
-#/fonts/ornatique-26.fnt
-#/fonts/ornatique.fnt
-#/fonts/ArmenianCircus.fnt
-#/fonts/Screwball.fnt
 /fonts/longdon.fnt
-#/fonts/longdon-small.fnt
 
 #slides
 ## TODO: unload these during the level

@@ -56,6 +56,9 @@ class CreditsScreen extends MenuScreen {
 		backButton.setColored( true );
 		
 		creditSprite = WereScrewedGame.manager.getAtlas( "menu-textures" ).createSprite( "credits" );
+	if (bgm == null){
+			bgm = Gdx.audio.newMusic( Gdx.files.internal(WereScrewedGame.dirHandle + "/menu/trophy-credits.mp3") );
+		}
 		
 	}
 	

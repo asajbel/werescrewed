@@ -8,6 +8,7 @@ import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -180,6 +181,8 @@ public class AlphaScreen extends Screen {
 					.definition( "red_female" ).buildPlayer( );
 			level.progressManager.addPlayerTwo( level.player2 );
 		}
+		level.player1.setThatGuy( level.player2 );
+		level.player2.setThatGuy( level.player1 );
 
 		// background stuff
 		level.backgroundBatch = new SpriteBatch( );
@@ -240,10 +243,7 @@ public class AlphaScreen extends Screen {
 	@Override
 	public void load(){
 		if (bgm == null){
-			/*
-			 * bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/common/music/waltz.mp3", Music.class );
-			 */
-			bgm = Gdx.audio.newMusic(Gdx.files.internal("data/common/music/waltz.mp3"));
+			bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/common/music/waltz.mp3", Music.class );
 		}
 		if (sounds == null){
 			sounds = new SoundManager( );
@@ -311,13 +311,6 @@ public class AlphaScreen extends Screen {
 		
 		super.render( deltaTime );
 		powerScrewUpdate( deltaTime );
-
-		SoundRef leftArmSound = sounds.getSound( "left_arm_movement" );
-		SoundRef rightArmSound = sounds.getSound( "left_arm_movement" );
-		SoundRef rightArmSound2 = sounds.getSound( "left_arm_movement" );
-		leftArmSound.setVolume( 1.0f );
-		rightArmSound.setVolume( 1.0f );
-		rightArmSound2.setVolume( 1.0f );
 		
 		// If everything is on
 		if ( powerSwitch1.isTurnedOn( ) && powerSwitch2.isTurnedOn( )
@@ -935,7 +928,13 @@ public class AlphaScreen extends Screen {
 	}
 
 	private void powerScrewUpdate( float deltaTime ) {
-
+		SoundRef leftArmSound = sounds.getSound( "left_arm_movement" );
+		SoundRef rightArmSound = sounds.getSound( "left_arm_movement" );
+		SoundRef rightArmSound2 = sounds.getSound( "left_arm_movement" );
+		leftArmSound.setVolume( 1.0f );
+		rightArmSound.setVolume( 1.0f );
+		rightArmSound2.setVolume( 1.0f );
+		
 		if ( powerSwitch1.isTurnedOn( ) && powerSwitch2.isTurnedOn( ) ) {
 			kneeMovingPlat.setActive( true );
 
@@ -977,7 +976,7 @@ public class AlphaScreen extends Screen {
 		if ( powerSwitch7.isTurnedOn( ) && powerSwitch8.isTurnedOn( ) ) {
 			if ( leftShoulderSkeleton.currentMover( ) == null ) {
 				//sounds.playSound( "arm_start", 2.0f );
-				sounds.loopSound( "left_arm_movement" );
+				leftArmSound.loop( false );
 				updatePanels( "left_arm" );
 				Timeline t = Timeline.createSequence( );
 
@@ -994,7 +993,7 @@ public class AlphaScreen extends Screen {
 			} else if (leftShoulderSkeleton.anchors.get( 0 ).activated){
 				if (leftShoulderSkeleton.isTimeLineMoverFinished( )){
 					// deactivate anchor
-					sounds.getSound( "left_arm_movement" ).stop( false );
+					leftArmSound.stop( false );
 					sounds.playSound( "applause_action", 1.0f );
 					leftShoulderSkeleton.anchors.get( 0 ).deactivate( );
 				}
@@ -1008,7 +1007,7 @@ public class AlphaScreen extends Screen {
 
 			if ( rightElbowSkeleton.currentMover( ) == null ) {
 				//sounds.playSound( "arm_start", 2.0f );
-				sounds.loopSound( "right_arm_movement_1" );
+				rightArmSound.loop( false );
 				updatePanels( "right_arm" );
 				Timeline t = Timeline.createSequence( );
 
@@ -1025,8 +1024,8 @@ public class AlphaScreen extends Screen {
 			} else if (rightElbowSkeleton.anchors.get( 0 ).activated){
 				if (rightElbowSkeleton.isTimeLineMoverFinished( )){
 					// deactivate anchor
-					sounds.getSound( "right_arm_movement_1" ).stop( false );
-					sounds.loopSound( "right_arm_movement_2" );
+					rightArmSound.stop( false );
+					rightArmSound2.loop( false );
 					//sounds.playSound( "arm_end", 5.0f );
 					rightElbowSkeleton.anchors.get( 0 ).deactivate( );
 				}
@@ -1049,7 +1048,7 @@ public class AlphaScreen extends Screen {
 			} else if ( rightShoulderSkeleton.anchors.get( 0 ).activated ) {
 				if (rightShoulderSkeleton.isTimeLineMoverFinished( )){
 					// deactivate anchor
-					sounds.getSound( "right_arm_movement_2" ).stop( false );
+					rightArmSound2.stop( false );
 					sounds.playSound( "applause_action", 1.0f );
 					rightShoulderSkeleton.anchors.get( 0 ).deactivate( );
 				}
