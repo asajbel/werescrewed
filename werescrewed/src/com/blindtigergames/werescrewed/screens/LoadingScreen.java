@@ -61,6 +61,7 @@ public class LoadingScreen extends Screen {
 					screenTag = "menu";
 					if ( parts[1].equals( "level2" ) ) {
 						sT_trophy = ScreenType.TROPHY_1;
+						currLevel = 99;
 					}
 					else if ( parts[1].equals( "level3" ) ) {
 						sT_trophy = ScreenType.TROPHY_END;
@@ -154,6 +155,51 @@ public class LoadingScreen extends Screen {
 							"data/common/slides/slide5_dragon.png", Texture.class ) );
 					storyBoardArray.add( WereScrewedGame.manager.get(
 							"data/common/slides/slide6_dragon.png", Texture.class ) );
+					
+				} if (currLevel == 99 ){
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide1_outro.png", Texture.class );
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide2_outro.png", Texture.class );
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide3_outro.png", Texture.class );
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide4_outro.png", Texture.class );
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide5_outro.png", Texture.class );
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide6_outro.png", Texture.class );
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide7_outro.png", Texture.class );
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide8_outro.png", Texture.class );
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide9_outro.png", Texture.class );
+					WereScrewedGame.manager.load(
+							"data/common/slides/slide10_outro.png", Texture.class );
+		
+					WereScrewedGame.manager.finishLoading( );
+		
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide1_outro.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide2_outro.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide3_outro.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide4_outro.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide5_outro.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide6_outro.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide7_outro.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide8_outro.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide9_outro.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide10_outro.png", Texture.class ) );
 				}
 							
 				pressStart = new Label( "Press Start To Volunteer!",
