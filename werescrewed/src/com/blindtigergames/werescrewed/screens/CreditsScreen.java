@@ -1,26 +1,18 @@
 package com.blindtigergames.werescrewed.screens;
 
-import java.sql.Time;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Version;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.blindtigergames.werescrewed.WereScrewedGame;
-import com.blindtigergames.werescrewed.camera.Camera;
-import com.blindtigergames.werescrewed.entity.Entity;
-import com.blindtigergames.werescrewed.entity.RootSkeleton;
 import com.blindtigergames.werescrewed.entity.Skeleton;
 import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.entity.animator.SimpleSpinemator;
-import com.blindtigergames.werescrewed.entity.builders.SkeletonBuilder;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
 import com.blindtigergames.werescrewed.gui.Label;
 import com.blindtigergames.werescrewed.gui.TextButton;
@@ -44,17 +36,10 @@ class CreditsScreen extends MenuScreen {
 	private TextButton backButton = null;
 	private int lineHeight = 0;
 	
-	//ASSETS FOR PRETTY CREDITS SCREEN
 	private SimpleSpinemator man = null;
 	private SimpleSpinemator lady = null;
-	private Texture flareTexture;
-	private ShaderProgram flareShader;
-	float time;
-	
 	
 	World world;
-	RootSkeleton root;
-	Camera camWrapper;
 
 	public CreditsScreen( ) {
 		super( );
@@ -101,23 +86,11 @@ class CreditsScreen extends MenuScreen {
 	}
 	
 	private void initWorld(){
-		
-		
-		
-		flareShader = new ShaderProgram( Gdx.files.internal( "data/shader/vertex.vertex" ), Gdx.files.internal( "data/shader/Rays.fragment" ) );
-		
-		flareTexture = new Texture( Gdx.files.internal( "data/menu/flare2.png" ) );
-		
 		world = new World( Vector2.Zero, false );
 		int radius = ( int ) ( WereScrewedGame.getWidth( )*.46875f );
 		Vector2 origin = new Vector2(WereScrewedGame.getWidth() / 2, -radius/1.3f);
-		origin.add( 0,0 );
-		Skeleton circle = new Skeleton( "circle", origin.cpy( ), null, world );
-		SkeletonBuilder sbBuilder = new SkeletonBuilder( world );
-		circle = sbBuilder.position( origin.cpy( )).name( "circle" ).dynamic( ).build( );
-		root = sbBuilder.buildRoot( );
-		root.addPlatformRotatingCenterWithMot( circle, 1 );
 		
+		Skeleton circle = new Skeleton( "circle", origin.cpy( ), null, world );
 		
 		man = new SimpleSpinemator( "red_male_atlas", "male", "run_screw_ready", true );
 		lady = new SimpleSpinemator( "red_female_atlas", "female", "run", true );
@@ -134,8 +107,6 @@ class CreditsScreen extends MenuScreen {
 		Vector2 ladyPos =  Util.PointOnCircle( radius, 2*Util.PI/3f, origin );
 		lady.setRotation( Util.angleBetweenPoints( origin, ladyPos )*Util.RAD_TO_DEG-90);
 		lady.setPosition( ladyPos );
-		
-		
 		
 		
 	}
@@ -166,36 +137,7 @@ class CreditsScreen extends MenuScreen {
 		super.render( delta );
 		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
-		
-		root.update( delta );
-		
-		time+=delta;
 		batch.begin( );
-		
-		/*float[] color = {1f,1f,1f,1.0f};
-		//pretty credit screen
-		flareShader.setUniform4fv( "color", color, 0, 4 );
-		flareShader.setUniformf( "origin_x", (Gdx.input.getX( )-Gdx.graphics.getWidth( )/2)/Gdx.graphics.getWidth( ) );
-		//flareShader.setUniformf( "origin_y", 1 );
-		//batch.setShader(flareShader);
-		
-		batch.setShader(flareShader);
-		//flareShader.setUniformf( "time", time );
-		batch.draw( flareTexture, 0, 0 );
-		batch.setShader(null);
-		
-		batch.setColor( Color.BLACK );*/
-		
-		
-		
-		man.update( delta  );
-		lady.update( delta  );
-		man.draw( batch );
-		lady.draw( batch );
-		
-		//end pretty credit screen
-		
-		
 		//batch.draw( logo, 0, 0 );
 		screenLabel.draw( batch );
 		licenseLabel.draw( batch );
@@ -215,6 +157,10 @@ class CreditsScreen extends MenuScreen {
 		if ( !transOutEnd ) {
 			drawTransOut( batch, ScreenType.LOADING_MENU );
 		}
+		man.update( delta  );
+		lady.update( delta  );
+		man.draw( batch );
+		lady.draw( batch );
 		
 		batch.end( );
 		
@@ -231,7 +177,8 @@ class CreditsScreen extends MenuScreen {
 		if ( Gdx.input.isKeyPressed( Input.Keys.ENTER ) && transOutEnd ) {
 			transOutEnd = false;
 		} 
-
+		
+		
 		world.step( WereScrewedGame.oneOverTargetFrameRate, 2, 1 );
 	}
 
@@ -286,12 +233,5 @@ class CreditsScreen extends MenuScreen {
 		versionLabel.setY( centerY + k * lineHeight );
 		backButton.setX( centerX - backButton.getWidth( ) / 2 );
 		backButton.setY( 100 + backButton.getHeight( ) );
-	}
-	
-	@Override
-	public void dispose(){
-		super.dispose( );
-		flareShader.dispose( );
-		flareTexture.dispose( );
 	}
 }
