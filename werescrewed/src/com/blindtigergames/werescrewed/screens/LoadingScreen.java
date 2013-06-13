@@ -216,7 +216,7 @@ public class LoadingScreen extends Screen {
 
 		timer++;
 
-		if ( timer > 100 ) {
+		if ( timer > 300 ) {
 			timer = 0;
 			if ( !( currIndex == storyBoardArray.size( ) - 1 ) ) {
 				currIndex++;

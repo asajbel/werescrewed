@@ -59,7 +59,7 @@ class CreditsScreen extends MenuScreen {
 		versionLabel = new Label( "Ver. " + Version.VERSION, fancyFont );
 		codeLabel = new Label( "Programmers: ", fancyFont );
 		artLabel = new Label( "Artists: ", fancyFont );
-		soundLabel = new Label( "Musicians", fancyFont );
+		soundLabel = new Label( "Musicians:", fancyFont );
 		
 		WereScrewedGame.manager.loadAtlas( "data/menu/menu-textures.pack" );
 		
@@ -82,14 +82,14 @@ class CreditsScreen extends MenuScreen {
 		authorsLabel[ 7 ] = new Label( "Kevin Cameron", fancyFont );
 		authorsLabel[ 8 ] = new Label( "Nick Patti", fancyFont );
 		authorsLabel[ 9 ] = new Label( "Ranveer Dhaliwal", fancyFont );
-		authorsLabel[ 10 ] = new Label( "Stewart Bracken", fancyFont );
+		authorsLabel[ 10 ] = new Label( "B. Stewart Bracken", fancyFont );
 		authorsLabel[ 11 ] = new Label( "Victor Nguyen", fancyFont );
 		authorsLabel[ 12 ] = new Label( "Lindsey Dillon", fancyFont );
 		authorsLabel[ 13 ] = new Label( "Melissa Eap", fancyFont );
 		authorsLabel[ 14 ] = new Label( "Michael Monterrosa", fancyFont );
 		authorsLabel[ 15 ] = new Label( "Rebecca Alto", fancyFont );
 		authorsLabel[ 16 ] = new Label( "Augustus Sandage", fancyFont );
-		authorsLabel[ 17 ] = new Label( "Falcon Wong", fancyFont );
+		authorsLabel[ 17 ] = new Label( "Daniel Greiner", fancyFont );
 	}
 
 	@Override
