@@ -69,6 +69,9 @@ class CreditsScreen extends MenuScreen {
 				new ScreenSwitchHandler( ScreenType.LOADING_MENU ) );
 		backButton.setColored( true );
 		 initPeople( );
+		if (bgm == null){
+			bgm = Gdx.audio.newMusic( Gdx.files.internal(WereScrewedGame.dirHandle + "/menu/trophy-credits.mp3") );
+		}
 	}
 	
 	private void initPeople ( ) {

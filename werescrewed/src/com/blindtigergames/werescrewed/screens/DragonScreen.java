@@ -95,6 +95,9 @@ public class DragonScreen extends Screen {
 		String filename = "data/levels/dragonlevel.xml";
 		level = new LevelFactory( ).load( filename );
 
+		level.player1.setThatGuy( level.player2 );
+		level.player2.setThatGuy( level.player1 );
+		
 		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
 		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( )
 				.width( 10 ).height( 30500 )
