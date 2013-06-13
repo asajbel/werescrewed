@@ -207,6 +207,10 @@ public class LoadingScreen extends Screen {
 					storyBoardArray.add( WereScrewedGame.manager.get(
 							"data/common/slides/slide10_outro.png", Texture.class ) );
 				}
+				
+				for (Texture t : storyBoardArray) {
+					t.setFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear ); 
+				}
 							
 				pressStart = new Label( "Press Start To Volunteer!",
 							WereScrewedGame.manager.getFont( "longdon" ) );
