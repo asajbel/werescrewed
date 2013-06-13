@@ -209,7 +209,7 @@ class MainMenuScreen extends MenuScreen {
 
 		storyButton = new TextButton( "Start", fancyFont, buttonTex, 
 				new ScreenSwitchHandler( ScreenType.LOADING_1 ) );
-		levelSelectButton = new TextButton( "Level", fancyFont, buttonTex, 
+		levelSelectButton = new TextButton( "Levels", fancyFont, buttonTex, 
 				new ScreenSwitchHandler( ScreenType.LEVEL_SELECT ) );
 		optionsButton = new TextButton( "Options", fancyFont, buttonTex, 
 				new ScreenSwitchHandler( ScreenType.OPTIONS_MENU ) );

@@ -23,10 +23,10 @@ import com.blindtigergames.werescrewed.util.Metrics;
 import com.blindtigergames.werescrewed.util.WereScrewedPreferences;
 
 public class WereScrewedGame extends Game {
-	private static WereScrewedPreferences preferences; 
+	private static WereScrewedPreferences preferences;
 	public static final float targetFrameRate = 60f;
-	public static final float oneOverTargetFrameRate = 1f/targetFrameRate;
-	
+	public static final float oneOverTargetFrameRate = 1f / targetFrameRate;
+
 	public static AssetManager manager;
 	public static FileHandle dirHandle;
 
@@ -36,7 +36,6 @@ public class WereScrewedGame extends Game {
 	private boolean metricsFlag = false;
 
 	private static boolean mouseJustClicked = false;
-	
 
 	public static boolean isMouseClicked( ) {
 		return mouseJustClicked;
@@ -49,30 +48,34 @@ public class WereScrewedGame extends Game {
 	public static Controller p1Controller, p2Controller;
 	public static MyControllerListener p1ControllerListener,
 			p2ControllerListener;
-	
-	public static boolean debug; 
+
+	public static boolean debug;
 
 	// used to decide which player is which character, if player1female is false
 	// then
 	// player 1 is the male character
 	public static boolean player1Female = false;
-	
+
 	private static final int width = 1280;
-	private static final int height = 720; 
-	
+	private static final int height = 720;
+
 	private static boolean reconnect = false;
-	
 
 	@Override
 	public void create( ) {
-		preferences = new WereScrewedPreferences();  
+		preferences = new WereScrewedPreferences( );
 		random = new Random( 0 );
 		manager = new AssetManager( );
 
 		ScreenManager.getInstance( ).initialize( this );
-		if (preferences.isFullScreen( )) {
-			DisplayMode mode = Gdx.graphics.getDesktopDisplayMode( );
-			Gdx.graphics.setDisplayMode( mode.width, mode.height, true );
+
+		if ( Gdx.app.getType( ) == ApplicationType.Desktop ) {
+			if ( preferences.isFullScreen( ) ) {
+				DisplayMode mode = Gdx.graphics.getDesktopDisplayMode( );
+				Gdx.graphics.setDisplayMode( mode.width, mode.height, true );
+			}
+			if ( !debug )
+				Gdx.input.setCursorCatched( true );
 		}
 
 		// used to stop auto call of render
@@ -88,20 +91,19 @@ public class WereScrewedGame extends Game {
 		logger = new FPSLogger( );
 
 		manager.loadDummyAssets( );
-		
 
 		setUpControllers( );
 	}
-	
-	public static WereScrewedPreferences getPrefs() {
-		return preferences; 
+
+	public static WereScrewedPreferences getPrefs( ) {
+		return preferences;
 	}
 
 	@Override
 	public void dispose( ) {
 		super.dispose( );
-		manager.dispose( ); 
-//		ScreenManager.getInstance( ).dispose( );
+		manager.dispose( );
+		// ScreenManager.getInstance( ).dispose( );
 	}
 
 	@Override
@@ -155,28 +157,29 @@ public class WereScrewedGame extends Game {
 	}
 
 	public void restart( ) {
-//		this.dispose( );
+		// this.dispose( );
 		manager = new AssetManager( );
 		ScreenManager.getInstance( ).initialize( this );
 		ScreenManager.getInstance( ).show( ScreenType.LOADING_MENU );
 	}
-	
+
 	public void pause( ) {
 		super.pause( );
 	}
-	
+
 	public void resume( ) {
 		super.resume( );
-//		manager = new AssetManager( );
-//		ScreenManager.getInstance( ).initialize( this );
-//		ScreenManager.getInstance( ).show( ScreenType.LOADING );
+		// manager = new AssetManager( );
+		// ScreenManager.getInstance( ).initialize( this );
+		// ScreenManager.getInstance( ).show( ScreenType.LOADING );
 	}
 
 	public void update( float dT ) {
 	}
 
 	public static void setUpControllers( ) {
-		//Gdx.app.log( "Set up controllers", Controllers.getControllers( ).size + "" );
+		// Gdx.app.log( "Set up controllers", Controllers.getControllers( ).size
+		// + "" );
 		if ( Controllers.getControllers( ).size >= 1 ) {
 
 			p1ControllerListener = new MyControllerListener( );
@@ -191,9 +194,9 @@ public class WereScrewedGame extends Game {
 			p2Controller.addListener( p2ControllerListener );
 
 		}
-		 
 
 	}
+
 	public static void reconnectControllers( ) {
 		if ( p1Controller != null ) {
 			p1Controller.removeListener( p1ControllerListener );
@@ -201,16 +204,16 @@ public class WereScrewedGame extends Game {
 		if ( p2Controller != null ) {
 			p2Controller.removeListener( p2ControllerListener );
 		}
-		setUpControllers( ); 
-		reconnect = false; 
+		setUpControllers( );
+		reconnect = false;
 	}
 
 	public static int getWidth( ) {
 		return width;
 	}
-	
+
 	public static int getHeight( ) {
-		return height; 
+		return height;
 	}
 
 	public static boolean isReconnect( ) {
@@ -220,5 +223,5 @@ public class WereScrewedGame extends Game {
 	public static void setReconnect( boolean reconnect ) {
 		WereScrewedGame.reconnect = reconnect;
 	}
-	
+
 }

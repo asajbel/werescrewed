@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.blindtigergames.werescrewed.WereScrewedGame;
 import com.blindtigergames.werescrewed.camera.Camera;
+import com.blindtigergames.werescrewed.checkpoints.CheckPoint;
 import com.blindtigergames.werescrewed.entity.Entity;
 import com.blindtigergames.werescrewed.entity.RobotState;
 import com.blindtigergames.werescrewed.entity.Skeleton;
@@ -96,7 +97,7 @@ public class DragonScreen extends Screen {
 
 		EventTriggerBuilder etb = new EventTriggerBuilder( level.world );
 		EventTrigger removeTrigger = etb.name( "removeEntity" ).rectangle( )
-				.width( 10 ).height( 30000 )
+				.width( 10 ).height( 30500 )
 				.position( new Vector2( 15500, -1500 ) )
 				.beginAction( new RemoveEntityAction( ) ).build( );
 		removeTrigger.setCategoryMask( Util.CATEGORY_PLAYER,
@@ -104,12 +105,20 @@ public class DragonScreen extends Screen {
 		level.root.addEventTrigger( removeTrigger );
 		
 		EventTrigger removeTrigger2 = etb.name( "removeEntity" ).rectangle( )
-				.width( 3500 ).height( 170 )
-				.position( new Vector2( 500, 100 ) )
+				.width( 10 ).height( 250 )
+				.position( new Vector2( 450, 1000 ) )
 				.beginAction( new RemoveEntityAction( ) ).build( );
 		removeTrigger2.setCategoryMask( Util.CATEGORY_PLAYER,
-				Util.CATEGORY_EVERYTHING );
+				Util.CATEGORY_PLAYER );
 		level.root.addEventTrigger( removeTrigger2 );
+		
+		EventTrigger removeTrigger3 = etb.name( "removeEntity" ).rectangle( )
+				.width( 10 ).height( 2000 )
+				.position( new Vector2( 0, -2500 ) )
+				.beginAction( new RemoveEntityAction( ) ).build( );
+		removeTrigger3.setCategoryMask( Util.CATEGORY_PLAYER,
+				Util.CATEGORY_PLAYER );
+		level.root.addEventTrigger( removeTrigger3 );
 
 		buildBalloon( );
 
@@ -297,11 +306,14 @@ public class DragonScreen extends Screen {
 			fireballEmitter.setActive( true );
 		}
 		if ( jawStructureScrew != null ) {
-
-			if ( jawStructureScrew.getDepth( ) == 0 ) {
+			
+			if ( jawStructureScrew.getDepth( ) == 0) {
 				jaw_skeleton.body.setType( BodyType.DynamicBody );
 				headEvent = true;
 				sounds.playSound( "roar_angry" );
+				CheckPoint checkpointHead = ( CheckPoint ) LevelFactory.entities
+						.get( "checkpoint_head" );
+				checkpointHead.setRemoveNextStep( );
 			}
 		}
 		
@@ -380,7 +392,7 @@ public class DragonScreen extends Screen {
 						.get( "balloon1_ledge3" );
 
 				PathBuilder pb = new PathBuilder( );
-				pb.begin( balloon1LeftHatch ).target( 0f, -200f, 1f ).loops( 0 );
+				pb.begin( balloon1LeftHatch ).target( 0f, -200f, 0.5f ).loops( 0 );
 				balloon1LeftHatch.addMover( pb.build( ) );
 
 				PathBuilder pb2 = new PathBuilder( );
@@ -1192,7 +1204,7 @@ public class DragonScreen extends Screen {
 		// inside of head.
 		headSkeleton.addBGDecal( Sprite.scale(
 				head_interior.createSprite( "head-interior" ), 1f / .4f, 1f/ .38f ),
-				new Vector2( -1420, -740 ) );
+				new Vector2( -1440, -740 ) );
 		addBGSkeleton( headSkeleton );
 
 		scale = 1f / .50f;
@@ -1568,19 +1580,19 @@ public class DragonScreen extends Screen {
 		int w = 15, n = 10, h = 140;
 
 		fireballEmitter = new EntityParticleEmitter( "bolt emitter",
-				new Vector2( new Vector2(13750, 300).add(0,n*h) ),
+				new Vector2( new Vector2(13730, 1650) ),
 				new Vector2(),
 				 level.world, true );
 		for(int i =0; i < 4; ++i ){
-			fireballEmitter.addParticle( createBoltEnemy( new Vector2(13750, 300).add(0,n*h), i ), 10, 3, i*5 );
+			fireballEmitter.addParticle( createBoltEnemy( new Vector2(13730, 1650), i ), 10, 3, i*5 );
 		}
 		level.root.addLooseEntity( fireballEmitter );
 	//	fireballEmitter.setEmittingActive( false );
 		float brain_impulse = 0.1f;
-		Vector2 pos = new Vector2( 23950, 120 );
+		Vector2 pos = new Vector2( 24032, 136 );
 		brainEmitter1 = new EntityParticleEmitter( "brainEmitter1",
 				new Vector2( pos.cpy().add(0,n*h) ),
-				new Vector2(-brain_impulse, 0),
+				new Vector2(-brain_impulse - 0.03f, 0),
 				 level.world, true );
 		
 		int boltsPerEmitter = 2, boltLife = 5;
@@ -1589,10 +1601,10 @@ public class DragonScreen extends Screen {
 		}
 		level.root.addLooseEntity( brainEmitter1 );
 
-		Vector2 pos2 = new Vector2( 25250, 120 );
+		Vector2 pos2 = new Vector2( 25218, 136 );
 		brainEmitter2 = new EntityParticleEmitter( "brainEmitter2",
 				new Vector2( pos2.cpy().add(0,n*h) ),
-				new Vector2(brain_impulse, 0),
+				new Vector2(brain_impulse + 0.03f, 0),
 				 level.world, true );
 		
 		for(int i =0; i < boltsPerEmitter; ++i ){
@@ -1600,10 +1612,10 @@ public class DragonScreen extends Screen {
 		}
 		level.root.addLooseEntity( brainEmitter2 );
 
-		Vector2 pos3 = new Vector2( 23950, -150 );
+		Vector2 pos3 = new Vector2( 24032, -198 );
 		brainEmitter3 = new EntityParticleEmitter( "brainEmitter3",
 				new Vector2( pos3.cpy().add(0,n*h) ),
-				new Vector2(-brain_impulse, 0),
+				new Vector2(-brain_impulse - 0.05f, 0),
 				 level.world, true );
 		
 		for(int i =0; i < boltsPerEmitter; ++i ){
@@ -1611,7 +1623,7 @@ public class DragonScreen extends Screen {
 		}
 		level.root.addLooseEntity( brainEmitter3 );
 
-		Vector2 pos4 = new Vector2( 25250, -150 );
+		Vector2 pos4 = new Vector2( 25218, -198 );
 		brainEmitter4 = new EntityParticleEmitter( "brainEmitter4",
 				new Vector2( pos4.cpy().add(0,n*h) ),
 				new Vector2(brain_impulse, 0),
