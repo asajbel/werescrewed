@@ -33,7 +33,7 @@ public class Slot {
 	final SlotData data;
 	final Bone bone;
 	private final Skeleton skeleton;
-	Color color;
+	final Color color;
 	Attachment attachment;
 	private float attachmentTime;
 
@@ -127,9 +127,5 @@ public class Slot {
 
 	public String toString( ) {
 		return data.name;
-	}
-	
-	public void setColor(Color c){
-		this.color.set( c );
 	}
 }

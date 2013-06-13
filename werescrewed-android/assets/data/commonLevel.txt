@@ -4,7 +4,7 @@
 ## Notes: Always put the @ options in the beginning of these
 ## index files or the loading bar will be interrupted
 
-##Default robot parameters:
+##Default robot textures:
 @ bg /levels/alphabot/alphabot-interior.png
 @ outline /levels/alphabot/alphabot-outline.png
 @ fg /levels/alphabot/alphabot-fg.png

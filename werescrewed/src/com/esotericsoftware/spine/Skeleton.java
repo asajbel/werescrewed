@@ -35,7 +35,7 @@ public class Skeleton {
 	final Array< Slot > slots;
 	final Array< Slot > drawOrder;
 	Skin skin;
-	Color color;
+	final Color color;
 	float time;
 	boolean flipX, flipY;
 
@@ -310,10 +310,5 @@ public class Skeleton {
 
 	public String toString( ) {
 		return data.name != null ? data.name : super.toString( );
-	}
-	
-	public void setColor(Color c){
-		for ( Slot slot : this.drawOrder )
-			slot.setColor( c );
 	}
 }
