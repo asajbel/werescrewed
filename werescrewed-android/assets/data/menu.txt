@@ -7,3 +7,4 @@
 
 ##background music
 /menu/menuTheme.mp3
+/menu/trophy-credits.mp3

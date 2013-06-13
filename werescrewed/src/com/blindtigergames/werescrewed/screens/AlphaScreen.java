@@ -8,6 +8,7 @@ import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -240,10 +241,7 @@ public class AlphaScreen extends Screen {
 	@Override
 	public void load(){
 		if (bgm == null){
-			/*
-			 * bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/common/music/waltz.mp3", Music.class );
-			 */
-			bgm = Gdx.audio.newMusic(Gdx.files.internal("data/common/music/waltz.mp3"));
+			bgm = WereScrewedGame.manager.get( WereScrewedGame.dirHandle.path( ) + "/common/music/waltz.mp3", Music.class );
 		}
 		if (sounds == null){
 			sounds = new SoundManager( );

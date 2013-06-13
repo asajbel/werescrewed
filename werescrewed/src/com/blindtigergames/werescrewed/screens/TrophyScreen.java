@@ -7,6 +7,7 @@ import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -66,6 +67,7 @@ public class TrophyScreen extends Screen {
 		}
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
+		
 		fancyFont = WereScrewedGame.manager.getFont( "longdon" );
 		smallerFont = WereScrewedGame.manager.getFont( "longdon" );
 		fancyFont.setScale( 1.0f );
@@ -801,31 +803,16 @@ public class TrophyScreen extends Screen {
 	@Override
 	public void dispose( ) {
 		// TODO Auto-generated method stub
+		super.dispose();
 		texAtlas.dispose();
 
 	}
-
+	
 	@Override
-	public void hide( ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void pause( ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void resume( ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void show( ) {
-		// TODO Auto-generated method stub
-
+	public void load(){
+		super.load();		
+		if (bgm == null){
+			bgm = Gdx.audio.newMusic( Gdx.files.internal(WereScrewedGame.dirHandle + "/menu/trophy-credits.mp3") );
+		}
 	}
 }
