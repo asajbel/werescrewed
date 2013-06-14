@@ -3,7 +3,7 @@
 /menu/transition.png
 
 ##temp background
-/common/menu_placeholder.png
+#/common/menu_placeholder.png
 
 ##background music
 /menu/menuTheme.mp3
