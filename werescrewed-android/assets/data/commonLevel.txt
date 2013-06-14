@@ -93,13 +93,8 @@
 
 #slides
 ## TODO: unload these during the level
-<<<<<<< HEAD
-
 /common/slides/slide1_dragonOut.png
-
-=======
 /common/slides/slide0_intro_text.png
->>>>>>> 1bfeb52d7487dc371c277c3c0175b89742927a84
 /common/slides/slide1_intro.png
 /common/slides/slide2_audience.png
 /common/slides/slide3_alphabot.png
@@ -115,6 +110,14 @@
 /common/slides/slide4_dragon.png
 /common/slides/slide5_dragon.png
 /common/slides/slide6_dragon.png
+/common/slides/slide0_dragon_text.png
+/common/slides/slide1_dragon_text.png
+/common/slides/slide2_dragon_text.png
+/common/slides/slide3_dragon_text.png
+/common/slides/slide4_dragon_text.png
+/common/slides/slide5_dragon_text.png
+/common/slides/slide6_dragon_text.png
+
 
 /common/slides/slide1_outro.png
 /common/slides/slide2_outro.png
