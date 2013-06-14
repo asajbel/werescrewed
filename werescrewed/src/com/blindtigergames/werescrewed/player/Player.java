@@ -1,6 +1,5 @@
 package com.blindtigergames.werescrewed.player;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
@@ -705,8 +704,8 @@ public class Player extends Entity {
 			tutOn = true;
 		}
 		else if (!value){
-			if (thatGuy != null) Gdx.app.log(thatGuy.name + ".tutOn: ","" + tutOn);
-			Gdx.app.log(name + ".tutOn: ","" + tutOn);
+			//if (thatGuy != null) Gdx.app.log(thatGuy.name + ".tutOn: ","" + tutOn);
+			//Gdx.app.log(name + ".tutOn: ","" + tutOn);
 			drawTutorial = value;
 			tutOn = false;
 		}

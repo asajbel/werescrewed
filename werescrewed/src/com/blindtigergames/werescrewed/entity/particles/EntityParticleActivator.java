@@ -27,7 +27,7 @@ public class EntityParticleActivator implements IAction {
 		}
 		EntityParticleEmitter pE = ( EntityParticleEmitter ) entity;
 		pE.setEmittingActive( activateState );
-		Gdx.app.log("EntityParticleActivator",pE.name+"is now "+activateState);
+		//Gdx.app.log("EntityParticleActivator",pE.name+"is now "+activateState);
 	}
 
 	public ActionType getActionType( ) {
