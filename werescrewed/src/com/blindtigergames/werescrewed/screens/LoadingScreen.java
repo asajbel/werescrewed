@@ -156,22 +156,36 @@ public class LoadingScreen extends Screen {
 							"data/common/slides/slide6_dragon.png", Texture.class );
 		
 					WereScrewedGame.manager.finishLoading( );
-		
+
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide0_dragon_text.png", Texture.class ) );
 					storyBoardArray.add( WereScrewedGame.manager.get(
 							"data/common/slides/slide1_dragon.png", Texture.class ) );
 					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide1_dragon_text.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
 							"data/common/slides/slide2_dragon.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide2_dragon_text.png", Texture.class ) );
 					storyBoardArray.add( WereScrewedGame.manager.get(
 							"data/common/slides/slide3_dragon.png", Texture.class ) );
 					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide3_dragon_text.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
 							"data/common/slides/slide4_dragon.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide4_dragon_text.png", Texture.class ) );
 					storyBoardArray.add( WereScrewedGame.manager.get(
 							"data/common/slides/slide5_dragon.png", Texture.class ) );
 					storyBoardArray.add( WereScrewedGame.manager.get(
-							"data/common/slides/slide6_dragon.png", Texture.class ) );
-					//duplicate to stay on last slide longer
+							"data/common/slides/slide5_dragon_text.png", Texture.class ) );
 					storyBoardArray.add( WereScrewedGame.manager.get(
 							"data/common/slides/slide6_dragon.png", Texture.class ) );
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide6_dragon_text.png", Texture.class ) );
+					//duplicate to stay on last slide longer
+					storyBoardArray.add( WereScrewedGame.manager.get(
+							"data/common/slides/slide6_dragon_text.png", Texture.class ) );
 				} if (currLevel == 99 ){
 					WereScrewedGame.manager.load(
 							"data/common/slides/slide1_outro.png", Texture.class );
