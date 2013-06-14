@@ -361,7 +361,7 @@ public class LoadingScreen extends Screen {
 		for( int i=0; i<WereScrewedGame.manager.getAtlases( ).length; i++ ) {
 			WereScrewedGame.manager.unloadAtlas( (String)atlases[i] );
 		}
-		WereScrewedGame.dirHandle = Gdx.files.internal( "data/" );
+		
 		readLoadFiles( "commonLevel" );
 		if ( !screenTag.equals( "commonLevel" ) ) {
 			readLoadFiles( screenTag );

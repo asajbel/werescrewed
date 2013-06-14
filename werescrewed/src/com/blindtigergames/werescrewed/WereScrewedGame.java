@@ -63,6 +63,7 @@ public class WereScrewedGame extends Game {
 
 	@Override
 	public void create( ) {
+		dirHandle  = Gdx.files.internal( "data/" );
 		preferences = new WereScrewedPreferences( );
 		random = new Random( 0 );
 		manager = new AssetManager( );
@@ -86,7 +87,7 @@ public class WereScrewedGame extends Game {
 		else
 			defaultShader = null;
 
-		ScreenManager.getInstance( ).show( ScreenType.LOADING_MENU );
+		ScreenManager.getInstance( ).show( ScreenType.INTRO );
 
 		logger = new FPSLogger( );
 

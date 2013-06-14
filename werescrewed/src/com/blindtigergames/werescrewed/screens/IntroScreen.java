@@ -1,129 +1,116 @@
 package com.blindtigergames.werescrewed.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Version;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.blindtigergames.werescrewed.WereScrewedGame;
+import com.blindtigergames.werescrewed.entity.Sprite;
 import com.blindtigergames.werescrewed.graphics.SpriteBatch;
+import com.blindtigergames.werescrewed.gui.Label;
+import com.blindtigergames.werescrewed.gui.TextButton;
+import com.blindtigergames.werescrewed.input.mappings.Mapping;
 
-class IntroScreen implements com.badlogic.gdx.Screen {
-
-	public ScreenType screenType;
-	@SuppressWarnings( "unused" )
+class IntroScreen extends Screen {
+	// implements com.badlogic.gdx.Screen
 	private SpriteBatch batch = null;
-	@SuppressWarnings( "unused" )
+	private OrthographicCamera camera = null;
 	private BitmapFont font = null;
-	static TextureRegion player = WereScrewedGame.manager.getAtlas(
-			"common-textures" ).findRegion( "flat_head_circular" );
-	private Texture intro, audience, alphabot, players;
-	Stage stage;
-
+	private BitmapFont fancyFont = null;
+	private TextButton backButton = null;
+	private Sprite creditSprite=null;
+	private float timer = 0;
+	
 	public IntroScreen( ) {
+		super( );
 		batch = new SpriteBatch( );
 		font = new BitmapFont( );
-		WereScrewedGame.manager.load( "data/common/slides/slide1_intro.png",
-				Texture.class );
-		WereScrewedGame.manager.load( "data/common/slides/slide2_audience.png",
-				Texture.class );
-		WereScrewedGame.manager.load( "data/common/slides/slide3_alphabot.png",
-				Texture.class );
-		WereScrewedGame.manager.load( "data/common/slides/slide4_players.png",
-				Texture.class );
-
-		intro = WereScrewedGame.manager.get(
-				"data/common/slides/slide1_intro.png", Texture.class );
-		audience = WereScrewedGame.manager.get(
-				"data/common/slides/slide2_audience.png", Texture.class );
-		alphabot = WereScrewedGame.manager.get(
-				"data/common/slides/slide3_alphabot.png", Texture.class );
-		players = WereScrewedGame.manager.get(
-				"data/common/slides/slide4_players.png", Texture.class );
-
-		stage = new Stage( );
-		Gdx.input.setInputProcessor( stage );
-
-		Image introImage = new Image( intro );
-		Image audienceImage = new Image( audience );
-		Image alphabotImage = new Image( alphabot );
-		Image playersImage = new Image( players );
-		// Image splashImage = new Image(Assets.logoTexture);
-		// splashImage.addAction(Actions.fadeIn( 2f ));
-		introImage.addAction( Actions.sequence( Actions.delay( 0f ),
-				Actions.fadeIn( 2f ), Actions.fadeOut( 2f ), Actions.hide( ) ) );
-
-		audienceImage.addAction( Actions.sequence( Actions.delay( 4f ),
-				Actions.fadeIn( 2f ), Actions.fadeOut( 2f ), Actions.hide( ) ) );
-
-		alphabotImage.addAction( Actions.sequence( Actions.delay( 8f ),
-				Actions.fadeIn( 2f ), Actions.fadeOut( 2f ), Actions.hide( ) ) );
-
-		playersImage.addAction( Actions.sequence( Actions.delay( 16f ),
-				Actions.fadeIn( 2f ), Actions.fadeOut( 2f ),
-				Actions.run( onSplashFinishedRunnable ) ) );
-
-		stage.addActor( playersImage );
-
-		stage.addActor( alphabotImage );
-
-		stage.addActor( audienceImage );
-		stage.addActor( introImage );
 	}
+	
+	@Override
+	public void load( ){
+		super.load( );
+		
+		//logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
+		//		+ "/common/title_background.png", Texture.class );
+		WereScrewedGame.manager.load("data/transitions/trans-gear.png", Texture.class );
+		
+		WereScrewedGame.manager.finishLoading( );
+		
+		Texture transition = WereScrewedGame.manager.get("data/transitions/trans-gear.png", Texture.class );
+		trans = new Sprite( transition );
+		maxScale = trans.getHeight( ) * SCALE_SIZE;
+		scale = 1.0f;
+		transInEnd = false;
+		
+
+		
+		
+		
+		WereScrewedGame.manager.loadAtlas( "data/menu/menu-textures.pack" );
+		
+		
+		
+		
+		
+		creditSprite = WereScrewedGame.manager.getAtlas( "menu-textures" ).createSprite( "btg_logo720" );
+	
+		
+	}
+	
+	
 
 	@Override
 	public void render( float delta ) {
-		Gdx.gl.glClearColor( 1f, 1f, 1f, 1f );
+		super.render( delta );
+		Gdx.gl.glClearColor( 0.0f, 0.0f, 0.0f, 1f );
 		Gdx.gl.glClear( GL10.GL_COLOR_BUFFER_BIT );
-
-		stage.act( delta );
-		stage.draw( );
-	}
-
-	@Override
-	public void resize( int width, int height ) {
-		stage.setViewport( width, height, true );
-		for ( Actor a : stage.getActors( ) ) {
-			a.setX( width / 2 );
-			a.setY( height / 2 );
+		batch.begin( );
+		creditSprite.draw( batch );
+		
+		timer += delta;
+		if(timer > 3){
+			ScreenManager.getInstance( ).show( ScreenType.LOADING_MENU );
 		}
-
-	}
-
-	@Override
-	public void show( ) {
-		/* schedule to show main menu screen after 2 seconds */
-		// Timer.schedule(new ScreenSwitchTask(Screen.MAIN_MENU), 2f);
-
-	}
-
-	Runnable onSplashFinishedRunnable = new Runnable( ) {
-
-		@Override
-		public void run( ) {
-			ScreenManager.getInstance( ).show( ScreenType.LOADING_1 );
-
+		if ( !transInEnd ) {
+			drawTransIn( batch );
 		}
-	};
-
-	@Override
-	public void hide( ) {
+		
+		if ( !transOutEnd ) {
+			drawTransOut( batch, ScreenType.LOADING_MENU );
+		}
+		
+		batch.end( );
+		
+		if ( WereScrewedGame.p1Controller != null ) {
+			if ( WereScrewedGame.p1ControllerListener.jumpPressed( ) && transOutEnd ) {
+				transOutEnd = false;
+			}
+		}
+		if ( WereScrewedGame.p2Controller != null ) {
+			if ( WereScrewedGame.p2ControllerListener.jumpPressed( ) && transOutEnd ) {
+				transOutEnd = false;
+			}
+		}
+		if ( Gdx.input.isKeyPressed( Input.Keys.ENTER ) && transOutEnd ) {
+			transOutEnd = false;
+		} 
 	}
 
 	@Override
-	public void pause( ) {
+	public void resize( int _width, int _height ) {
+		super.resize( _width, _height );
+		camera = new OrthographicCamera( );
+		camera.setToOrtho( false, width, height );
+		batch.setProjectionMatrix( camera.combined );
+		
+		float xScale = width/creditSprite.getWidth( );
+		float YScale = height/creditSprite.getHeight( );
+		creditSprite.setScale( xScale, YScale );
+		
+		
 	}
-
-	@Override
-	public void resume( ) {
-	}
-
-	@Override
-	public void dispose( ) {
-	}
-
 }
