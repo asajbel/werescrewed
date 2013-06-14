@@ -93,10 +93,15 @@
 
 #slides
 ## TODO: unload these during the level
+/common/slides/slide0_intro_text.png
 /common/slides/slide1_intro.png
 /common/slides/slide2_audience.png
 /common/slides/slide3_alphabot.png
 /common/slides/slide4_players.png
+/common/slides/slide1_intro_text.png
+/common/slides/slide2_audience_text.png
+/common/slides/slide3_alphabot_text.png
+/common/slides/slide4_players_text.png
 
 /common/slides/slide1_dragon.png
 /common/slides/slide2_dragon.png
