@@ -36,6 +36,7 @@ public class TrophyScreen extends Screen {
 	private int lineHeight = 0;
 	private int trophyMax = 30; // Current number of possible trophies
 	private float offSet = 256;
+	private float outTime = 0f;
 	private ScreenType screenTag = null;
 	private Label[ ] player1 = new Label[ trophyLength ];
 	private Label[ ] player1Desc = new Label[ trophyLength ];
@@ -106,6 +107,9 @@ public class TrophyScreen extends Screen {
 		emptyTrophies( );
 		addTrophies( );
 		Metrics.resetTrophyMetric( );
+		
+		WereScrewedGame.manager.load(
+				"data/common/slides/slide1_dragonOut.png", Texture.class );
 		
 		//offSet = trophies1[ 0 ].getWidth( ) + 50;
 	}
@@ -705,7 +709,7 @@ public class TrophyScreen extends Screen {
 		}
 		
 		if ( !transOutEnd ) {
-			drawTransOut( batch, screenTag );
+			drawTransOut( batch, screenTag, delta );
 		}
 		batch.end( );
 
@@ -813,6 +817,32 @@ public class TrophyScreen extends Screen {
 		super.load();		
 		if (bgm == null){
 			bgm = Gdx.audio.newMusic( Gdx.files.internal(WereScrewedGame.dirHandle + "/menu/trophy-credits.mp3") );
+		}
+	}
+	
+	protected void drawTransOut ( SpriteBatch batch, ScreenType screen, float deltaTime ) {
+		scale += SCALE_ADJUST;
+		trans.setOrigin( trans.getWidth( ) / 2, trans.getHeight( ) / 2 );
+		trans.rotate( 5.0f );
+		trans.setScale( scale );
+		trans.setPosition( width / 2 - trans.getWidth( ) / 2, 
+				height / 2 - trans.getHeight( ) / 2 );
+		trans.draw( batch );
+		if ( scale > SCALE_MAX ) {
+			if(screenTag == ScreenType.CREDITS){
+				int posX = width / 2
+						- WereScrewedGame.manager.get(
+								"data/common/slides/slide1_dragonOut.png", Texture.class ).getWidth( ) / 2;
+				int posY = height / 2
+						- WereScrewedGame.manager.get(
+								"data/common/slides/slide1_dragonOut.png", Texture.class ).getHeight( ) / 2;
+				batch.draw( WereScrewedGame.manager.get(
+						"data/common/slides/slide1_dragonOut.png", Texture.class ), posX, posY );
+				outTime += deltaTime;
+				//scale = SCALE_MAX;
+				if(outTime > 5f) ScreenManager.getInstance( ).show( screen );
+			} 
+			else ScreenManager.getInstance( ).show( screen );
 		}
 	}
 }
