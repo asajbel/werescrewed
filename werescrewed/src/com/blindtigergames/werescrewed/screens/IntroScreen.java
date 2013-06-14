@@ -3,6 +3,7 @@ package com.blindtigergames.werescrewed.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Version;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,6 +24,8 @@ class IntroScreen extends Screen {
 	private TextButton backButton = null;
 	private Sprite creditSprite=null;
 	private float timer = 0;
+	private Sound growl;
+	private boolean playOnce = true;
 	
 	public IntroScreen( ) {
 		super( );
@@ -37,6 +40,8 @@ class IntroScreen extends Screen {
 		//logo = WereScrewedGame.manager.get( WereScrewedGame.dirHandle
 		//		+ "/common/title_background.png", Texture.class );
 		WereScrewedGame.manager.load("data/transitions/trans-gear.png", Texture.class );
+		growl = Gdx.audio.newSound( Gdx.files.internal( "data/common/sounds/growl.ogg" ) );
+		
 		
 		WereScrewedGame.manager.finishLoading( );
 		
@@ -57,7 +62,6 @@ class IntroScreen extends Screen {
 		
 		
 		creditSprite = WereScrewedGame.manager.getAtlas( "menu-textures" ).createSprite( "btg_logo720" );
-	
 		
 	}
 	
@@ -72,8 +76,14 @@ class IntroScreen extends Screen {
 		creditSprite.draw( batch );
 		
 		timer += delta;
-		if(timer > 3){
+		if(timer > 5){
 			ScreenManager.getInstance( ).show( ScreenType.LOADING_MENU );
+		}
+		if(timer > 2){
+			if(playOnce){
+				growl.play();
+				playOnce = false;
+			}
 		}
 		if ( !transInEnd ) {
 			drawTransIn( batch );
